@@ -43,7 +43,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Yang\Documents\main\Parser;C:\Users\Yang\Documents\main\DataStorage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzFile\Parser;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzFile\DataStorage;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
