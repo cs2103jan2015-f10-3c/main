@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OperationCenter", "OperationCenter\OperationCenter.vcxproj", "{CCD1B74B-F51B-42BF-9642-7D0DE361E5E5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "Parser\Parser.vcxproj", "{5ADE7A2B-4AB1-46D9-A035-80E2063160A7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataStorage", "DataStorage\DataStorage.vcxproj", "{513095B3-77FF-4081-AE77-22CB95259A9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CCD1B74B-F51B-42BF-9642-7D0DE361E5E5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CCD1B74B-F51B-42BF-9642-7D0DE361E5E5}.Debug|Win32.Build.0 = Debug|Win32
+		{CCD1B74B-F51B-42BF-9642-7D0DE361E5E5}.Release|Win32.ActiveCfg = Release|Win32
+		{CCD1B74B-F51B-42BF-9642-7D0DE361E5E5}.Release|Win32.Build.0 = Release|Win32
+		{5ADE7A2B-4AB1-46D9-A035-80E2063160A7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5ADE7A2B-4AB1-46D9-A035-80E2063160A7}.Debug|Win32.Build.0 = Debug|Win32
+		{5ADE7A2B-4AB1-46D9-A035-80E2063160A7}.Release|Win32.ActiveCfg = Release|Win32
+		{5ADE7A2B-4AB1-46D9-A035-80E2063160A7}.Release|Win32.Build.0 = Release|Win32
+		{513095B3-77FF-4081-AE77-22CB95259A9B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{513095B3-77FF-4081-AE77-22CB95259A9B}.Debug|Win32.Build.0 = Debug|Win32
+		{513095B3-77FF-4081-AE77-22CB95259A9B}.Release|Win32.ActiveCfg = Release|Win32
+		{513095B3-77FF-4081-AE77-22CB95259A9B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
