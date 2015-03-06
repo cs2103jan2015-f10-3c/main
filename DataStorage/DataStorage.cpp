@@ -34,6 +34,10 @@ void DataStorage::displayList()
 
 void DataStorage::setRecentInput(string command, string item){
 
+	while (recentInput.size() != 0){
+		recentInput.pop_back();
+	}
+	
 	recentInput.push_back(command);
 	recentInput.push_back(item);
 
