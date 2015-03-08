@@ -11,8 +11,8 @@ class TimeMacro{
 private:
 
 	//private attributes
-	int date;
 	std::string day;
+	int date;
 	int month;
 	int year;
 	
@@ -20,9 +20,14 @@ private:
 public:
 
 	//constructors
-	TimeMacro ();
-	TimeMacro (int inDate, int inMonth, int inYear);
-	TimeMacro (std::string day);
+	TimeMacro () :
+		day("undefined"), date(99), month(99), year(9999) {}
+	TimeMacro (int inDate, int inMonth, int inYear) :
+		day("undefined"), date(inDate), month(inMonth), year(inYear) {}
+	TimeMacro (std::string inDay):
+		day(inDay), date(99), month(99), year(9999) {}
+	TimeMacro (std::string inDay, int inDate, int inMonth, int inYear) :
+		day(inDay), date(inDate), month(inMonth), year(inYear) {}
 
 	//getter methods
 	int getDate();
