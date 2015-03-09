@@ -10,6 +10,8 @@
 #include <sstream>
 #include "Commons.h"
 #include "DataProcessor.h"
+#include "Parser.h"
+#include "DataStorage.h"
 
 using namespace std;
 class OperationCenter{
