@@ -6,7 +6,8 @@
 #include <string>
 #include <vector>
 #include "Commons.h"
-
+#include <iterator>
+#include <queue>
 
 class DataBase {
 private:
@@ -26,6 +27,7 @@ public:
 	static void deleteData(int uniqueCode);
 	static void getData(int startNo, int endNo);
 	static void clearData(TimeMacro startTime, TimeMacro endTime);
+	static IterStorage searchPeriod(TimeMacro startTime, TimeMacro endTime);
 
 
 	//maynotneed
@@ -43,15 +45,23 @@ public:
 
 class DisplayStorage {
 private:
-	std::vector<Data> displayList;
+	static std::vector<Data> displayList;
 
 public:
-	std::vector<Data> updateDisplay(TimeMacro startTime, TimeMacro endTime);
-
+	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
+	
+	static void updateTaskNo();
 
 };
 
+//helper class for searching/clearing/etc methods
+class IterStorage {
+public:
+	static std::vector<Data>::iterator iterBeg;
+	static std::vector<Data>::iterator iterEnd;
 
+
+};
 
 
 #endif

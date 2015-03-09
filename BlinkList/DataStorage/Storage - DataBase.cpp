@@ -1,6 +1,4 @@
 #include "DataStorage.h"
-#include <iterator>
-#include <queue>
 
 
 /*
@@ -121,10 +119,15 @@ void DataBase::deleteData(int uniqueCode){
 
 void DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
-	std::vector<Data>::iterator iter;
-	std::vector<Data>::iterator iterBeg;
-	std::vector<Data>::iterator iterEnd;
+	searchPeriod(startTime , endTime);
+	dataList.erase(IterStorage::iterBeg,IterStorage::iterEnd+1);
 
+}
+
+IterStorage DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
+
+	std::vector<Data>::iterator iter;
+	
 	bool marker = false;
 
 	for(iter = dataList.begin(); marker == false || iter < dataList.end(); iter++){
@@ -134,7 +137,7 @@ void DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 			time.getMonth() == startTime.getMonth() &&
 			time.getYear() == startTime.getYear()) {
 				marker = true;
-				iterBeg=iter;
+				IterStorage::iterBeg = iter;
 		}
 	}
 
@@ -145,9 +148,7 @@ void DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 			time.getMonth() == endTime.getMonth() &&
 			time.getYear() == endTime.getYear()) {
 				marker = false;
-				iterEnd=iter;
+				IterStorage::iterEnd = iter;
 		}
 	}
-
-	dataList.erase(iterBeg,iterEnd+1);
 }
