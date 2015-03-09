@@ -79,7 +79,8 @@ private:
 	bool completeStatus;
 	int taskNo;
 	std::string desc;
-	TimeMacro macroTime;
+	TimeMacro macroTimeBeg;
+	TimeMacro macroTimeEnd;
 	TimeMicro microTime;
 
 
@@ -87,14 +88,15 @@ public:
 
 	//constructors
 	Data ();
-	Data (TimeMacro inMacro, TimeMicro inMicro, std::string inDesc);
+	Data (TimeMacro inMacroBeg, TimeMacro inMacroEnd, TimeMicro inMicro, std::string inDesc);
 	Data (std::string inDesc); //constructor for floating task
 
 	//getter methods
 	bool getCompleteStatus();
 	int getTaskNo();
 	std::string getDesc();
-	TimeMacro getTimeMacro();
+	TimeMacro getTimeMacroBeg();
+	TimeMacro getTimeMacroEnd();
 	TimeMicro getTimeMicro();
 
 	//update methods
@@ -102,7 +104,8 @@ public:
 	//return false for failed operation
 	bool updateCompleteStatus();
 	bool updateDesc(std::string inDesc);
-	bool updateTimeMacro(TimeMacro inMacro);
+	bool updateTimeMacro(TimeMacro inMacroBeg);
+	bool updateTimeMacro(TimeMacro inMacroEnd);
 	bool updateTimeMicro(TimeMicro inMicro);
 
 
