@@ -20,13 +20,12 @@ public:
 	DataProcessor();
 	string showWelcomeMessage();
 	string addTask(Data task);
-	string display(TimeMacro startTime, TimeMacro endTime);
+	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(Data task);
 	string clearTask(TimeMacro startTime, TimeMacro endTime);
 	string executeUndo();
 	string searchTask(string word);
 	string editTask(int taskNumber, Data task);
-	string displayDaily(TimeMacro startTime, TimeMacro endTime);
 
 	string convertTaskListToString(vector<Data> taskList);
 

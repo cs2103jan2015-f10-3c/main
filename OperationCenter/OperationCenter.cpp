@@ -22,7 +22,7 @@ string OperationCenter::executeInput(string input){
 		returnString = dataProcessor.addTask(task);
 	}
 	else if(command == "display") {
-		returnString = dataProcessor.display(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
+		returnString = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
 	}
 	else if(command == "delete"){
 		returnString = dataProcessor.deleteTask(task);
@@ -43,7 +43,7 @@ string OperationCenter::executeInput(string input){
 		cout<<"invalid command"<<endl;
 	}
 	if(command != "display"){
-		dataProcessor.displayDaily(currentTime, currentTime);
+		dataProcessor.displayTask(currentTime, currentTime);
 	}
 	return returnString;
 }

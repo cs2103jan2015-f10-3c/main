@@ -36,14 +36,8 @@ string DataProcessor::deleteTask(Data task){
 	return deleteMessage;
 }
 
-string DataProcessor::display(TimeMacro startTime, TimeMacro endTime){
+string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 	string taskString; 
 	taskString = convertTaskListToString(dataStorage.getTaskList(startTime, endTime));
-	return taskString;
-}
-
-string DataProcessor::displayDaily(TimeMacro startTime, TimeMacro endTime){
-	string taskString;
-	taskString = convertTaskListToString(dataStorage.displayStorage(startTime, endTime));
 	return taskString;
 }
