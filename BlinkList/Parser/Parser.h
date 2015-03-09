@@ -9,26 +9,21 @@ using namespace std;
 class Parser {
 private: 
 	string _command;
-	int _taskNo;
-	string _taskDesc;
-	string _keyword;
-	TimeMicro _timeMicro;
-	TimeMacro _timeMacroBeg;
-	TimeMacro _timeMacroEnd;
+	Data _myData;
 
 	Parser () {
 	}
 
 	Parser (string commandWord, TimeMacro timeMacroBeg, TimeMicro timeMicro, string desc) {
 		_command = commandWord;
-		_timeMacroBeg = timeMacroBeg;
-		_timeMicro = timeMicro;
-		_taskDesc = desc;
+		_myData.updateTimeMacroBeg (timeMacroBeg);
+		_myData.updateTimeMicro (timeMicro);
+		_myData.updateDesc (desc);
 	}
 
 	Parser (string commandWord, string keyword) {
 		_command = commandWord;
-		_keyword = keyword;
+		_myData.updateDesc (keyword);
 	}
 
 	Parser (string commandWord) {
@@ -64,13 +59,33 @@ private:
 public: 
 
 	//getters
-	string getCommand ();
-	int getTaskNo ();
-	string getTaskDesc ();
-	string getKeyword ();
-	TimeMicro getTimeMicro ();
-	TimeMacro getTimeMacroBeg ();
-	TimeMacro getTimeMacroEnd ();
+    string Parser::getCommand () {
+	    return _command;
+    }
+
+    int Parser::getTaskNo () {
+	    return _taskNo;
+    }
+
+    string Parser::getTaskDesc () {
+	    return _taskDesc;
+    }
+
+    string Parser::getKeyword () {
+	    return _keyword;
+    }
+
+    TimeMicro Parser::getTimeMicro () {
+	    return _timeMicro;
+    }
+
+    TimeMacro Parser::getTimeMacroBeg () {
+	    return _timeMacroBeg;
+    }
+
+    TimeMacro Parser::getTimeMacroEnd () {
+	    return _timeMacroEnd;
+    }
 
 
 	Parser parseInput (string userInput);

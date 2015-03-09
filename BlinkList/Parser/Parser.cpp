@@ -17,33 +17,6 @@ static const string MINUTE_FIRST_DIGIT = "012345";
 static const string MINUTE_SECOND_DIGIT = "0123456789";
 static const int LENGTH_OF_ATTRIBUTE = 4;
 
-string Parser::getCommand () {
-	return _command;
-}
-
-int Parser::getTaskNo () {
-	return _taskNo;
-}
-
-string Parser::getTaskDesc () {
-	return _taskDesc;
-}
-
-string Parser::getKeyword () {
-	return _keyword;
-}
-
-TimeMicro Parser::getTimeMicro () {
-	return _timeMicro;
-}
-
-TimeMacro Parser::getTimeMacroBeg () {
-	return _timeMacroBeg;
-}
-
-TimeMacro Parser::getTimeMacroEnd () {
-	return _timeMacroEnd;
-}
 
 Parser Parser::parseInput (string userInput) {
 	string commandWord;
