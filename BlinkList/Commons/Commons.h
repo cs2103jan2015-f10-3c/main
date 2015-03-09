@@ -15,17 +15,21 @@ private:
 	int date;
 	int month;
 	int year;
+
 	
 
 public:
 
-	//constructors
+	//constructors 
+	//default is day("undefined"), date(00), month(00), year(0000)
+	//if it's default it means, there is no input
+	//UI should not display default
 	TimeMacro () :
-		day("undefined"), date(99), month(99), year(9999) {}
+		day("undefined"), date(00), month(00), year(0000) {}
 	TimeMacro (int inDate, int inMonth, int inYear) :
 		day("undefined"), date(inDate), month(inMonth), year(inYear) {}
 	TimeMacro (std::string inDay):
-		day(inDay), date(99), month(99), year(9999) {}
+		day(inDay), date(00), month(00), year(0000) {}
 	TimeMacro (std::string inDay, int inDate, int inMonth, int inYear) :
 		day(inDay), date(inDate), month(inMonth), year(inYear) {}
 
@@ -76,8 +80,13 @@ public:
 
 class Data {
 private:
-	bool completeStatus;
+	//private attribute of internal working
+	bool completeStatus; 
 	int taskNo;
+	int uniqueCode;
+	int psedoDate;
+
+	//main attribute for Data
 	std::string desc;
 	TimeMacro macroTimeBeg;
 	TimeMacro macroTimeEnd;
@@ -94,18 +103,27 @@ public:
 	//getter methods
 	bool getCompleteStatus();
 	int getTaskNo();
+	int getUniqueCode();
+	int getPsedoDate();
+
 	std::string getDesc();
 	TimeMacro getTimeMacroBeg();
 	TimeMacro getTimeMacroEnd();
 	TimeMicro getTimeMicro();
 
+
+
 	//update methods
 	//return true for succesful operation
 	//return false for failed operation
-	bool updateCompleteStatus();
+	bool updateTaskNo(int no);
+	bool updateUniqueCode(int no);
+	bool updateCompleteStatus(bool status);
+	bool updatePsedoDate(int sDate);
+
 	bool updateDesc(std::string inDesc);
-	bool updateTimeMacro(TimeMacro inMacroBeg);
-	bool updateTimeMacro(TimeMacro inMacroEnd);
+	bool updateTimeMacroBeg(TimeMacro inMacroBeg);
+	bool updateTimeMacroEnd(TimeMacro inMacroEnd);
 	bool updateTimeMicro(TimeMicro inMicro);
 
 
