@@ -1,5 +1,4 @@
 #include "OperationCenter.h"
-#include "OperationCenter.h"
 
 using namespace std;
 
@@ -8,6 +7,11 @@ OperationCenter::OperationCenter(){
 }
 
 string OperationCenter::executeInput(string input){
+	time_t now;
+	struct tm *current;
+	now = time(0);
+	current = localtime(&now);
+	TimeMacro currentTime(current->tm_mday, current->tm_mon, current->tm_year + 1900);
 	Parser parser;
 	parser.parseInput(input);
 	string command = parser.getCommand();
@@ -18,13 +22,13 @@ string OperationCenter::executeInput(string input){
 		returnString = dataProcessor.addTask(task);
 	}
 	else if(command == "display") {
-		returnString = dataProcessor.display(task.getTimeMacro, task.getTimeMicro);	
+		returnString = dataProcessor.display(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
 	}
 	else if(command == "delete"){
 		returnString = dataProcessor.deleteTask(task);
 	}
 	else if(command == "clear"){
-		returnString = dataProcessor.clearTask(task.getTimeMacro, task.getTimeMicro);
+		returnString = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 	}
 	else if(command == "sort"){
 		returnString = "under construction";
@@ -33,11 +37,12 @@ string OperationCenter::executeInput(string input){
 		returnString = dataProcessor.searchTask(task.getDesc);
 	}
 	else if(command == "edit"){
-		returnString = "under construction";
+		returnString = dataProcessor.editTask(int taskNumber, Data task);
 	}
 	else{
 		cout<<"invalid command"<<endl;
 	}
-	cout<<"command: ";
-	cin >> command;
+	if(command != "display"){
+		dataProcessor.displayDaily(currentTime, currentTime);
+	}
 }
