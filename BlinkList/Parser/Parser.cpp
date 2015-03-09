@@ -41,6 +41,9 @@ Parser Parser::parseInput (string userInput) {
 	else if (commandWord == "undo") {
 		returnInput = ParseUndo (commandWord, returnInput);
 	}
+	else if (commandWord == "delete") {
+		returnInput = ParseDelete (userInput, commandWord, returnInput);
+	}
 	return returnInput;
 }
 
@@ -115,13 +118,20 @@ Parser Parser::ParseEdit (string userInput, string commandWord, Parser returnInp
 }
 
 Parser Parser::ParseSearch (string userInput, string commandWord, Parser returnInput) {
-	string desc = userInput;
+	string desc = userInput.substr (commandWord.size() + 1);
 	returnInput = Parser (commandWord, desc);
 	return returnInput;
 }
 
 Parser Parser::ParseUndo (string commandWord, Parser returnInput) {
 	returnInput = Parser (commandWord);
+	return returnInput;
+}
+
+Parser Parser::ParseDelete (string userInput, string commandWord, Parser returnInput) {
+	string index = userInput.substr (commandWord.size() + 1);
+	int taskNo = atoi (index.c_str());
+	returnInput = Parser (commandWord, taskNo);
 	return returnInput;
 }
 
