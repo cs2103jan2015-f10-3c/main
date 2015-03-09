@@ -22,12 +22,12 @@ string DataProcessor::addTask(Data task){
 }
 
 string DataProcessor::deleteTask(Data task){
-	string taskUniqueNumber = task.getUniqueNumber();
-	string taskDescription = task.getDescription();
+	int taskNumber = task.getTaskNo();
+	string taskDescription = task.getDesc();
 	ostringstream out;
 	if(dataStorage.deleteTaskList(task)){ //deleteTaskList is DataStorage's API to delete specific object in the private taskList
 										  //Data Storage return bool
-		out << "'" << taskUniqueNumber << " " << taskDescription << "' is deleted successfully" << endl;
+		out << "'" << taskNumber << " " << taskDescription << "' is deleted successfully" << endl;
 	} else {
 		out << "'" << taskUniqueNumber << "' does not exist" << endl; 
 	}
@@ -36,8 +36,14 @@ string DataProcessor::deleteTask(Data task){
 	return deleteMessage;
 }
 
-string DataProcessor::display(Time startTime, Time endTime){
+string DataProcessor::display(TimeMacro startTime, TimeMacro endTime){
 	string taskString; 
 	taskString = convertTaskListToString(dataStorage.getTaskList(startTime, endTime));
+	return taskString;
+}
+
+string DataProcessor::displayDaily(TimeMacro startTime, TimeMacro endTime){
+	string taskString;
+	taskString = convertTaskListToString(dataStorage.displayStorage(startTime, endTime));
 	return taskString;
 }
