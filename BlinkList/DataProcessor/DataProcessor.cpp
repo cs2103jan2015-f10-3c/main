@@ -75,12 +75,18 @@ string DataProcessor::searchTask(string word){
 
 }
 
+//This function reads in two TimeMacro objects which indicate the 
+//period that the user wants tasks to be cleared.
+//Post-condition: tasks under the desired period will be cleared
+//from the current taskList
 string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
-
+	DataBase.clearData(startTime, endTime);
 }
 
 string DataProcessor::editTask(vector<string> infoType, Data task){
-
+	//get taskList currently in display by reference
+	//match the task number
+	//update the corresponding info
 }
 
 string DataProcessor::executeUndo(){
