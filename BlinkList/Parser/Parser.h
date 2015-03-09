@@ -20,6 +20,11 @@ private:
 		_myData.updateTimeMicro (timeMicro);
 		_myData.updateDesc (desc);
 	}
+
+	Parser (string commandWord, string desc) {
+		_command = commandWord;
+		_myData.updateDesc (desc);
+	}
 /*
 	Parser (string commandWord) {
 		_command = commandWord;

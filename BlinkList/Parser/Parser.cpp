@@ -76,6 +76,7 @@ Parser Parser::ParseAdd (string userInput, string commandWord, Parser returnInpu
 Parser Parser::ParseEdit (string userInput, string commandWord, Parser returnInput) {
 	TimeMacro timeMacro;
 	TimeMicro timeMicro;
+	string desc;
 	string inputToBeParsed = userInput;
 	string index = parseTaskNo (string inputToBeParsed);
 	int taskNo = atoi (index.c_str());
@@ -112,7 +113,8 @@ Parser Parser::ParseEdit (string userInput, string commandWord, Parser returnInp
 
 Parser Parser::ParseSearch (string userInput, string commandWord, Parser returnInput) {
 	string desc = userInput;
-
+	returnInput = Parser (commandWord, desc);
+	return returnInput;
 }
 
 TimeMacro Parser::parseDate (string inputToBeParsesd) {
