@@ -12,6 +12,7 @@
 #include "DataProcessor.h"
 #include "Parser.h"
 #include "DataStorage.h"
+#include <time.h>
 
 using namespace std;
 class OperationCenter{
