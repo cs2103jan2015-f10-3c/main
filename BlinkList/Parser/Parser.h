@@ -9,21 +9,26 @@ using namespace std;
 class Parser {
 private: 
 	string _command;
-	Data _myData;
+	int _taskNo;
+	string _taskDesc;
+	string _keyword;
+	TimeMicro _timeMicro;
+	TimeMacro _timeMacroBeg;
+	TimeMacro _timeMacroEnd;
 
 	Parser () {
 	}
 
-	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicro, string desc) {
+	Parser (string commandWord, TimeMacro timeMacroBeg, TimeMicro timeMicro, string desc) {
 		_command = commandWord;
-		_myData.updateTimeMacro (timeMacro);
-		_myData.updateTimeMicro (timeMicro);
-		_myData.updateDesc (desc);
+		_timeMacroBeg = timeMacroBeg;
+		_timeMicro = timeMicro;
+		_taskDesc = desc;
 	}
 
-	Parser (string commandWord, string desc) {
+	Parser (string commandWord, string keyword) {
 		_command = commandWord;
-		_myData.updateDesc (desc);
+		_keyword = keyword;
 	}
 
 	Parser (string commandWord) {
@@ -32,7 +37,7 @@ private:
 
 	Parser (string commandWord, int taskNo) {
 		_command = commandWord;
-		_myData.updateTaskNo (taskNo);
+		_taskNo = taskNo;
 	}
 /*
 	Parser (TimeMacro timeMacro) {
@@ -56,9 +61,18 @@ private:
 	static const string MINUTE_SECOND_DIGIT;
 	static const int LENGTH_OF_ATTRIBUTE;
 
-public: //dont forget getter
+public: 
+
+	//getters
 	string getCommand ();
-	Data getData ();
+	int getTaskNo ();
+	string getTaskDesc ();
+	string getKeyword ();
+	TimeMicro getTimeMicro ();
+	TimeMacro getTimeMacroBeg ();
+	TimeMacro getTimeMacroEnd ();
+
+
 	Parser parseInput (string userInput);
 	string extractCommandWord (string userInput);
 	Parser ParseAdd (string userInput, string commandWord, Parser returnInput);

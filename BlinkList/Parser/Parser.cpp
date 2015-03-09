@@ -21,8 +21,28 @@ string Parser::getCommand () {
 	return _command;
 }
 
-Data Parser::getData () {
-	return _myData;
+int Parser::getTaskNo () {
+	return _taskNo;
+}
+
+string Parser::getTaskDesc () {
+	return _taskDesc;
+}
+
+string Parser::getKeyword () {
+	return _keyword;
+}
+
+TimeMicro Parser::getTimeMicro () {
+	return _timeMicro;
+}
+
+TimeMacro Parser::getTimeMacroBeg () {
+	return _timeMacroBeg;
+}
+
+TimeMacro Parser::getTimeMacroEnd () {
+	return _timeMacroEnd;
 }
 
 Parser Parser::parseInput (string userInput) {
@@ -58,12 +78,12 @@ string Parser::extractCommandWord (string userInput) {
 
 //Assume a task will always have a description
 Parser Parser::ParseAdd (string userInput, string commandWord, Parser returnInput) {
-	TimeMacro timeMacro;
+	TimeMacro timeMacroBeg;
 	TimeMicro timeMicro;
 	string inputToBeParsed = userInput;
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
-	timeMacro = parseDate (inputToBeParsed);
+	timeMacroBeg = parseDate (inputToBeParsed);
 	if (isDate (inputToBeParsed)) {
         inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE);
 	}
@@ -74,7 +94,7 @@ Parser Parser::ParseAdd (string userInput, string commandWord, Parser returnInpu
 	if (isStartingTime (inputToBeParsed)) {
 		desc = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME);
 	}
-	returnInput = Parser (commandWord, timeMacro, timeMicro, desc);
+	returnInput = Parser (commandWord, timeMacroBeg, timeMicro, desc);
 	return returnInput;
 }
 
