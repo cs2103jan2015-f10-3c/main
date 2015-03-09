@@ -25,11 +25,11 @@ private:
 		_command = commandWord;
 		_myData.updateDesc (desc);
 	}
-/*
+
 	Parser (string commandWord) {
 		_command = commandWord;
 	}
-
+/*
 	Parser (TimeMacro timeMacro) {
 		_myData.updateTimemacro (timeMacro);
 	}
@@ -59,6 +59,7 @@ public: //dont forget getter
 	Parser ParseAdd (string userInput, string commandWord, Parser returnInput);
 	Parser ParseEdit (string userInput, string commandWord, Parser returnInput);
 	Parser ParseSearch (string userInput, string commandWord, Parser returnInput);
+	Parser ParseUndo (string commandWord, Parser returnInput);
 	TimeMacro parseDate (string inputToBeParsesd);
 	TimeMicro parseTime (string inputToBeParsed);
 	string parseTaskNo (string inputToBeParsed);

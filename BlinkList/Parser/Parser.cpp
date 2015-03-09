@@ -38,6 +38,9 @@ Parser Parser::parseInput (string userInput) {
 	else if (commandWord == "search") {
 		returnInput = ParseSearch (userInput, commandWord, returnInput);
 	}
+	else if (commandWord == "undo") {
+		returnInput = ParseUndo (commandWord, returnInput);
+	}
 	return returnInput;
 }
 
@@ -114,6 +117,11 @@ Parser Parser::ParseEdit (string userInput, string commandWord, Parser returnInp
 Parser Parser::ParseSearch (string userInput, string commandWord, Parser returnInput) {
 	string desc = userInput;
 	returnInput = Parser (commandWord, desc);
+	return returnInput;
+}
+
+Parser Parser::ParseUndo (string commandWord, Parser returnInput) {
+	returnInput = Parser (commandWord);
 	return returnInput;
 }
 
