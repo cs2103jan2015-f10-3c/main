@@ -34,10 +34,10 @@ string OperationCenter::executeInput(string input){
 		returnString = "under construction";
 	}
 	else if(command == "search"){
-		returnString = dataProcessor.searchTask(task.getDesc);
+		returnString = dataProcessor.searchTask(task.getDesc());
 	}
 	else if(command == "edit"){
-		returnString = dataProcessor.editTask(int taskNumber, Data task);
+		returnString = dataProcessor.editTask(task.getTaskNo(), task);
 	}
 	else{
 		cout<<"invalid command"<<endl;
@@ -45,4 +45,5 @@ string OperationCenter::executeInput(string input){
 	if(command != "display"){
 		dataProcessor.displayDaily(currentTime, currentTime);
 	}
+	return returnString;
 }
