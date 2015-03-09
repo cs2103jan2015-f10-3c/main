@@ -17,6 +17,14 @@ static const string MINUTE_FIRST_DIGIT = "012345";
 static const string MINUTE_SECOND_DIGIT = "0123456789";
 static const int LENGTH_OF_ATTRIBUTE = 4;
 
+string Parser::getCommand () {
+	return _command;
+}
+
+Data Parser::getData () {
+	return _myData;
+}
+
 Parser Parser::parseInput (string userInput) {
 	string commandWord;
 	Parser returnInput;
@@ -26,6 +34,9 @@ Parser Parser::parseInput (string userInput) {
 	}
 	else if (commandWord == "edit") {
 		returnInput = ParseEdit (userInput, commandWord, returnInput);
+	}
+	else if (commandWord == "search") {
+		returnInput = ParseSearch (userInput, commandWord, returnInput);
 	}
 	return returnInput;
 }
@@ -97,6 +108,11 @@ Parser Parser::ParseEdit (string userInput, string commandWord, Parser returnInp
 	}
 	returnInput = Parser (commandWord, timeMacro, timeMicro, desc);
 	return returnInput;
+}
+
+Parser Parser::ParseSearch (string userInput, string commandWord, Parser returnInput) {
+	string desc = userInput;
+
 }
 
 TimeMacro Parser::parseDate (string inputToBeParsesd) {

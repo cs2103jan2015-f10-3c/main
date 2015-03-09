@@ -47,10 +47,13 @@ private:
 	static const int LENGTH_OF_ATTRIBUTE;
 
 public: //dont forget getter
+	string getCommand ();
+	Data getData ();
 	Parser parseInput (string userInput);
 	string extractCommandWord (string userInput);
 	Parser ParseAdd (string userInput, string commandWord, Parser returnInput);
 	Parser ParseEdit (string userInput, string commandWord, Parser returnInput);
+	Parser ParseSearch (string userInput, string commandWord, Parser returnInput);
 	TimeMacro parseDate (string inputToBeParsesd);
 	TimeMicro parseTime (string inputToBeParsed);
 	string parseTaskNo (string inputToBeParsed);
