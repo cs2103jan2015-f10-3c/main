@@ -29,7 +29,8 @@ public:
 
 	string convertTaskListToString(vector<Data> taskList);
 	//new function
-	string getClearMessage(TimeMacro startTime, TimeMacro endTime)
+	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
+	string getEditMessage(Data uneditedTask);
 
 };
 #endif
