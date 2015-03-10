@@ -50,6 +50,9 @@ private:
 public:
 	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	
+	static std::vector<Data> getDisplayList();
+
+
 	static void updateTaskNo();
 
 };

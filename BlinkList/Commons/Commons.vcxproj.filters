@@ -20,7 +20,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Commons.cpp">
+    <ClCompile Include="Commons-TimeMacro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

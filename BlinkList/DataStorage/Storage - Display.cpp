@@ -1,5 +1,8 @@
 #include "DataStorage.h"
 
+//getter method
+//requires the time frame
+//return the displayList
 std::vector<Data> DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
 
 	DataBase::searchPeriod(startTime,endTime);
@@ -16,6 +19,15 @@ std::vector<Data> DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro 
 
 	return displayList;
 }
+
+
+//getter method
+//used for displaying withot time frame e.g for keyword search
+//return the displayList
+std::vector<Data> DisplayStorage::getDisplayList(){
+	return displayList;
+}
+
 
 //may not need
 /*
