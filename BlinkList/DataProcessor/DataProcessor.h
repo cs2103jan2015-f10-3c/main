@@ -28,6 +28,8 @@ public:
 	string editTask(vector<string> infoType, Data task);
 
 	string convertTaskListToString(vector<Data> taskList);
+	//new function
+	string getClearMessage(TimeMacro startTime, TimeMacro endTime)
 
 };
 #endif

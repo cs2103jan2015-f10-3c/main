@@ -62,7 +62,7 @@ string DataProcessor::searchTask(string word){
 	
 	//For every matched task, store it in returnTaskList
 	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
-		taskDescription = (*iter).getDesc;
+		taskDescription = (*iter).getDesc();
 		found = taskDescription.find(word);
 		if(found != string::npos){
 			returnTaskList.push_back(*iter);
@@ -81,12 +81,25 @@ string DataProcessor::searchTask(string word){
 //from the current taskList
 string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 	DataBase.clearData(startTime, endTime);
+	string clearMessage = getClearMessage(startTime, endTime);
+	return clearMessage;
+}
+
+string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
+	string clearMessage;
+	ostringstream out;
+	out << "All tasks between " << startTime.getDay() << " " << startTime.getDate() << "/" 
+		<< startTime.getMonth() << "/" << startTime.getYear()
+		<< "-" << endTime.getDay() << " " << endTime.getDate() << "/" << endTime.getMonth << "/"
+		<< endTime.getYear() << " are cleared from your schedule." ;
+	return clearMessage = out.str();
 }
 
 string DataProcessor::editTask(vector<string> infoType, Data task){
 	//get taskList currently in display by reference
 	//match the task number
 	//update the corresponding info
+
 }
 
 string DataProcessor::executeUndo(){
