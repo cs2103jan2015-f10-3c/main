@@ -67,7 +67,7 @@
     <ClInclude Include="Commons.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Commons.cpp" />
+    <ClCompile Include="Commons-TimeMacro.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

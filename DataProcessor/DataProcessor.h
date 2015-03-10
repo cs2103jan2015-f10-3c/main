@@ -21,7 +21,7 @@ public:
 	string showWelcomeMessage();
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
-	string deleteTask(Data task);
+	string deleteTask(int number);
 	string clearTask(TimeMacro startTime, TimeMacro endTime);
 	string executeUndo();
 	string searchTask(string word);

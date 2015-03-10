@@ -16,6 +16,7 @@ string OperationCenter::executeInput(string input){
 	parser.parseInput(input);
 	string command = parser.getCommand();
 	Data task = parser.getTask();
+	int taskNo = parser.getTaskNo();
 	string returnString;
 	DataProcessor dataProcessor;
 	if(command == "add") {
@@ -25,7 +26,7 @@ string OperationCenter::executeInput(string input){
 		returnString = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
 	}
 	else if(command == "delete"){
-		returnString = dataProcessor.deleteTask(task);
+		returnString = dataProcessor.deleteTask(taskNo);
 	}
 	else if(command == "clear"){
 		returnString = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
