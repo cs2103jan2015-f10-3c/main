@@ -53,8 +53,8 @@ string DataProcessor::display(TimeMacro startTime, TimeMacro endTime){
 
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
-string DataProcessor::searchTask(string word){
-	vector<Data> currTaskList = TaskList.getDataList();
+string DataProcessor::searchTask(string keyword){
+	vector<Data> currTaskList = DataBase::getDataList(keyword);
 	vector<Data> returnTaskList;
 	vector<Data>::iterator iter;
 	string taskDescription;
@@ -63,11 +63,14 @@ string DataProcessor::searchTask(string word){
 	//For every matched task, store it in returnTaskList
 	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
 		taskDescription = (*iter).getDesc();
-		found = taskDescription.find(word);
+		found = taskDescription.find(keyword);
 		if(found != string::npos){
 			returnTaskList.push_back(*iter);
 		}
 	}
+
+	//Update current display list to show matched tasks
+	DisplayStorage::updateDisplayList(returnTaskList);
 
 	//Convert the taskList into a string that is ready for UI to display
 	string returnTaskListString;

@@ -24,7 +24,7 @@ public:
 	string deleteTask(Data task);
 	string clearTask(TimeMacro startTime, TimeMacro endTime);
 	string executeUndo();
-	string searchTask(string word);
+	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
 
 	string convertTaskListToString(vector<Data> taskList);
