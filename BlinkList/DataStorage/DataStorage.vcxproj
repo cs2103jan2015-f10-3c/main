@@ -69,6 +69,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataStorage.cpp" />
+    <ClCompile Include="Storage - DataBase.cpp" />
+    <ClCompile Include="Storage - Display.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.vcxproj">
