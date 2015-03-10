@@ -1,7 +1,5 @@
 #include "Commons.h"
 
-TimeMacro::TimeMacro (){}
-TimeMicro::TimeMicro (){}
 
 
 
