@@ -10,14 +10,15 @@ class Parser {
 private: 
 	string _command;
 	Data _myData;
+	int _taskNo;
 
 	Parser () {
 	}
 
-	Parser (string commandWord, TimeMacro timeMacroBeg, TimeMicro timeMicro, string desc) {
+	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicro, string desc) {
 		_command = commandWord;
-		_myData.updateTimeMacroBeg (timeMacroBeg);
-		_myData.updateTimeMicro (timeMicro);
+		_myData.updataTimeMacroBeg (timeMacro);
+		_myData.updataTimeMicro (timeMicro);
 		_myData.updateDesc (desc);
 	}
 
@@ -34,11 +35,7 @@ private:
 		_command = commandWord;
 		_taskNo = taskNo;
 	}
-/*
-	Parser (TimeMacro timeMacro) {
-		_myData.updateTimemacro (timeMacro);
-	}
-	*/
+
 	static const int LENGTH_OF_DATE;
     static const string DATE_FIRST_DIGIT;
     static const string DATE_SECOND_DIGIT;
@@ -67,34 +64,18 @@ public:
 	    return _taskNo;
     }
 
-    string Parser::getTaskDesc () {
-	    return _taskDesc;
-    }
-
-    string Parser::getKeyword () {
-	    return _keyword;
-    }
-
-    TimeMicro Parser::getTimeMicro () {
-	    return _timeMicro;
-    }
-
-    TimeMacro Parser::getTimeMacroBeg () {
-	    return _timeMacroBeg;
-    }
-
-    TimeMacro Parser::getTimeMacroEnd () {
-	    return _timeMacroEnd;
-    }
+    Data getData () {
+		return _myData;
+	}
 
 
-	Parser parseInput (string userInput);
+	void parseInput (string userInput);
 	string extractCommandWord (string userInput);
-	Parser ParseAdd (string userInput, string commandWord, Parser returnInput);
-	Parser ParseEdit (string userInput, string commandWord, Parser returnInput);
-	Parser ParseSearch (string userInput, string commandWord, Parser returnInput);
-	Parser ParseUndo (string commandWord, Parser returnInput);
-	Parser ParseDelete (string userInput, string commandWord, Parser returnInput);
+	void ParseAdd (string userInput, string commandWord);
+	void ParseEdit (string userInput, string commandWord);
+	void ParseSearch (string userInput, string commandWord);
+	void ParseUndo (string commandWord);
+	void ParseDelete (string userInput, string commandWord);
 	TimeMacro parseDate (string inputToBeParsesd);
 	TimeMicro parseTime (string inputToBeParsed);
 	string parseTaskNo (string inputToBeParsed);

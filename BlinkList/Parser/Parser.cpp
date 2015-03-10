@@ -18,39 +18,38 @@ static const string MINUTE_SECOND_DIGIT = "0123456789";
 static const int LENGTH_OF_ATTRIBUTE = 4;
 
 
-Parser Parser::parseInput (string userInput) {
+void Parser::parseInput (string userInput) {
 	string commandWord;
-	Parser returnInput;
+
 	commandWord = extractCommandWord (userInput); //not sure
 	if (commandWord == "add") {
-		returnInput = ParseAdd (userInput, commandWord, returnInput);
+		ParseAdd (userInput, commandWord);
 	}
 	else if (commandWord == "edit") {
-		returnInput = ParseEdit (userInput, commandWord, returnInput);
+		ParseEdit (userInput, commandWord);
 	}
 	else if (commandWord == "search") {
-		returnInput = ParseSearch (userInput, commandWord, returnInput);
+		ParseSearch (userInput, commandWord);
 	}
 	else if (commandWord == "undo") {
-		returnInput = ParseUndo (commandWord, returnInput);
+		ParseUndo (commandWord);
 	}
 	else if (commandWord == "delete") {
-		returnInput = ParseDelete (userInput, commandWord, returnInput);
+		ParseDelete (userInput, commandWord);
 	}
-	return returnInput;
 }
 
 string Parser::extractCommandWord (string userInput) {
-	int start = 0;
 	int end = 0;
 	string commandWord;
 	end = userInput.find_first_of (" ");
-	commandWord = userInput.substr (start, end - start);
+	commandWord = userInput.substr (0, end);
 	return commandWord;
 }
 
 //Assume a task will always have a description
-Parser Parser::ParseAdd (string userInput, string commandWord, Parser returnInput) {
+void Parser::ParseAdd (string userInput, string commandWord) {
+	Parser returnInput;
 	TimeMacro timeMacroBeg;
 	TimeMicro timeMicro;
 	string inputToBeParsed = userInput;
@@ -68,11 +67,11 @@ Parser Parser::ParseAdd (string userInput, string commandWord, Parser returnInpu
 		desc = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME);
 	}
 	returnInput = Parser (commandWord, timeMacroBeg, timeMicro, desc);
-	return returnInput;
 }
 
 //assume desc put as the last one
-Parser Parser::ParseEdit (string userInput, string commandWord, Parser returnInput) {
+void Parser::ParseEdit (string userInput, string commandWord) {
+	Parser returnInput;
 	TimeMacro timeMacro;
 	TimeMicro timeMicro;
 	string desc;
@@ -107,25 +106,24 @@ Parser Parser::ParseEdit (string userInput, string commandWord, Parser returnInp
 		end = inputToBeParsed.find_first_of (' ');
 	}
 	returnInput = Parser (commandWord, timeMacro, timeMicro, desc);
-	return returnInput;
 }
 
-Parser Parser::ParseSearch (string userInput, string commandWord, Parser returnInput) {
+void Parser::ParseSearch (string userInput, string commandWord) {
+	Parser returnInput;
 	string desc = userInput.substr (commandWord.size() + 1);
 	returnInput = Parser (commandWord, desc);
-	return returnInput;
 }
 
-Parser Parser::ParseUndo (string commandWord, Parser returnInput) {
+void Parser::ParseUndo (string commandWord) {
+	Parser returnInput;
 	returnInput = Parser (commandWord);
-	return returnInput;
 }
 
-Parser Parser::ParseDelete (string userInput, string commandWord, Parser returnInput) {
+void Parser::ParseDelete (string userInput, string commandWord) {
+	Parser returnInput;
 	string index = userInput.substr (commandWord.size() + 1);
 	int taskNo = atoi (index.c_str());
 	returnInput = Parser (commandWord, taskNo);
-	return returnInput;
 }
 
 TimeMacro Parser::parseDate (string inputToBeParsesd) {
