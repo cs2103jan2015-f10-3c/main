@@ -68,7 +68,6 @@
     <ClInclude Include="DataStorage.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataStorage.cpp" />
     <ClCompile Include="Storage - DataBase.cpp" />
     <ClCompile Include="Storage - Display.cpp" />
   </ItemGroup>
