@@ -12,13 +12,11 @@ private:
 	Data _myData;
 	int _taskNo;
 
-	Parser () {
-	}
 
 	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicro, string desc) {
 		_command = commandWord;
-		_myData.updataTimeMacroBeg (timeMacro);
-		_myData.updataTimeMicro (timeMicro);
+		_myData.updateTimeMacroBeg (timeMacro);
+		_myData.updateTimeMicro (timeMicro);
 		_myData.updateDesc (desc);
 	}
 
@@ -34,6 +32,12 @@ private:
 	Parser (string commandWord, int taskNo) {
 		_command = commandWord;
 		_taskNo = taskNo;
+	}
+
+	Parser (string commandWord, TimeMacro timeMacroBeg, TimeMacro timeMacroEnd) {
+		_command = commandWord;
+		_myData.updateTimeMacroBeg (timeMacroBeg);
+		_myData.updateTimeMacroEnd (timeMacroEnd);
 	}
 
 	static const int LENGTH_OF_DATE;
@@ -54,6 +58,9 @@ private:
 	static const int LENGTH_OF_ATTRIBUTE;
 
 public: 
+	//default constructor
+	Parser () {
+	}
 
 	//getters
     string Parser::getCommand () {
@@ -76,6 +83,7 @@ public:
 	void ParseSearch (string userInput, string commandWord);
 	void ParseUndo (string commandWord);
 	void ParseDelete (string userInput, string commandWord);
+	void ParseDisplay (string userInput, string commandWord);
 	TimeMacro parseDate (string inputToBeParsesd);
 	TimeMicro parseTime (string inputToBeParsed);
 	string parseTaskNo (string inputToBeParsed);
@@ -84,5 +92,9 @@ public:
 	bool isStartingTime (string inputToBeParsed);
 	bool isTimePeriod (string inputToBeParsed);
 	bool searchSubstring (string string, char substring);
+	void getTodayDate (TimeMacro timeMacro);
+	void getTomorrowDate (TimeMacro timeMacro);
+	void getThisMonth (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd);
+	bool isLeapYear (int year);
 };
 #endif

@@ -37,6 +37,9 @@ void Parser::parseInput (string userInput) {
 	else if (commandWord == "delete") {
 		ParseDelete (userInput, commandWord);
 	}
+	else if (commandWord == "display") {
+		ParseDisplay (userInput, commandWord);
+	}
 }
 
 string Parser::extractCommandWord (string userInput) {
@@ -124,6 +127,25 @@ void Parser::ParseDelete (string userInput, string commandWord) {
 	string index = userInput.substr (commandWord.size() + 1);
 	int taskNo = atoi (index.c_str());
 	returnInput = Parser (commandWord, taskNo);
+}
+
+void Parser::ParseDisplay (string userInput, string commandWord) {
+	Parser returnInput;
+	TimeMacro timeMacroBeg;
+	TimeMacro timeMacroEnd;
+
+	string period = userInput.substr (commandWord.size() + 1);
+
+	if (period == "today") {
+		getTodayDate (timeMacroBeg);
+	}
+	else if (period == "tomorrow") {
+		getTomorrowDate (timeMacroBeg);
+	}
+	else if (period == "this month") {
+		getThisMonth (timeMacroBeg, timeMacroEnd);
+	}
+	returnInput = Parser (commandWord, timeMacroBeg, timeMacroEnd);
 }
 
 TimeMacro Parser::parseDate (string inputToBeParsesd) {
@@ -258,4 +280,89 @@ string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
   mktime ( timeinfo );
 
   return (weekday[timeinfo->tm_wday]);
+}
+
+void Parser::getTodayDate (TimeMacro timeMacro) {
+    time_t t = time (0);   // get time now
+    struct tm *now = localtime (&t);
+    now -> tm_year = now -> tm_year + 1900;
+    now -> tm_mon = now -> tm_mon + 1;
+    now -> tm_mday = now->tm_mday;
+	timeMacro.updateYear (now -> tm_year);
+	timeMacro.updateMonth (now -> tm_mon);
+	timeMacro.updateDate (now -> tm_yday);
+}
+
+void Parser::getTomorrowDate (TimeMacro timeMacro) {
+    time_t t = time (0);   // get time now
+    struct tm *now = localtime (&t);
+    now -> tm_year = now -> tm_year + 1900;
+    now -> tm_mon = now -> tm_mon + 1;
+    now -> tm_mday = now->tm_mday;
+
+	if (now -> tm_mday == 31) {
+		if (now -> tm_mon == 12) {
+			now -> tm_year += 1;
+			now -> tm_mon = 1;
+		}
+		else {
+			now -> tm_mon += 1;
+		}
+		now -> tm_mday = 1;
+	}
+	else if (now -> tm_mday == 30) {
+		if (now -> tm_mon == 4 || now -> tm_mon == 6 ||
+			now -> tm_mon == 9 || now -> tm_mon == 11) {
+				now -> tm_mday = 1;
+				now -> tm_mon += 1;
+		}
+	}
+	else if (now -> tm_mday == 28 && !isLeapYear (now -> tm_year) &&
+		now -> tm_mon == 2) {
+			now -> tm_mday = 1;
+			now -> tm_mon += 1;
+	}
+	else if (now -> tm_mday == 29 && isLeapYear (now -> tm_year) &&
+		now -> tm_mon ==2) {
+			now -> tm_mday =1;
+			now ->tm_mon += 1;
+	}
+	else {
+		now -> tm_mday += 1;
+	}
+
+    timeMacro.updateYear (now -> tm_year);
+	timeMacro.updateMonth (now -> tm_mon);
+	timeMacro.updateDate (now -> tm_yday);
+}
+
+void Parser::getThisMonth (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd) {
+	time_t t = time (0);   // get time now
+    struct tm *now = localtime (&t);
+    now -> tm_year = now -> tm_year + 1900;
+    now -> tm_mon = now -> tm_mon + 1;
+    now -> tm_mday = now->tm_mday;
+
+	timeMacroBeg.updateYear (now -> tm_year);
+	timeMacroBeg.updateMonth (now -> tm_mon);
+	timeMacroBeg.updateDate (0);
+
+	timeMacroEnd.updateYear (now -> tm_year);
+	timeMacroEnd.updateMonth (now -> tm_mon);
+	timeMacroEnd.updateDate (34);
+}
+
+bool Parser::isLeapYear (int year) {
+	if (year % 4 != 0) {
+		return false;
+	}
+	else if (year % 100 != 0) {
+		return true;
+	}
+	else if (year % 400 != 0) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }
