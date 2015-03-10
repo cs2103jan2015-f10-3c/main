@@ -17,8 +17,8 @@ private:
 
 	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicro, string desc) {
 		_command = commandWord;
-		_myData.updataTimeMacroBeg (timeMacro);
-		_myData.updataTimeMicro (timeMicro);
+		_myData.updateTimeMacroBeg (timeMacro);
+		_myData.updateTimeMicro (timeMicro);
 		_myData.updateDesc (desc);
 	}
 

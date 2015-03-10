@@ -15,12 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OperationCenter.h">
+    <ClInclude Include="Commons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OperationCenter.cpp">
+    <ClCompile Include="Commons-TimeMacro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
