@@ -3,7 +3,6 @@
 using namespace std;
 
 OperationCenter::OperationCenter(){
-	DataStorage dataStorage;
 }
 
 string OperationCenter::executeInput(string input){
@@ -15,9 +14,10 @@ string OperationCenter::executeInput(string input){
 	Parser parser;
 	parser.parseInput(input);
 	string command = parser.getCommand();
-	Data task = parser.getTask();
+	Data task = parser.getData();
 	int taskNo = parser.getTaskNo();
 	string returnString;
+	ostringstream out;
 	DataProcessor dataProcessor;
 	if(command == "add") {
 		returnString = dataProcessor.addTask(task);
@@ -43,8 +43,13 @@ string OperationCenter::executeInput(string input){
 	else{
 		cout<<"invalid command"<<endl;
 	}
+	string returnMessage;
 	if(command != "display"){
-		dataProcessor.displayTask(currentTime, currentTime);
+		out << returnString << endl << dataProcessor.displayTask(currentTime, currentTime);
 	}
-	return returnString;
+	else {
+		out << returnString;
+	}
+	returnMessage = out.str();
+	return returnMessage;
 }
