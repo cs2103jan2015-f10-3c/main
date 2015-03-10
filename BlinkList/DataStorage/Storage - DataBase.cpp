@@ -133,9 +133,9 @@ IterStorage DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	for(iter = dataList.begin(); marker == false || iter < dataList.end(); iter++){
 		TimeMacro time = iter->getTimeMacroBeg();
 
-		if(time.getDate() == startTime.getDate() &&
-			time.getMonth() == startTime.getMonth() &&
-			time.getYear() == startTime.getYear()) {
+		if(time.getDate() >= startTime.getDate() &&
+			time.getMonth() >= startTime.getMonth() &&
+			time.getYear() >= startTime.getYear()) {
 				marker = true;
 				IterStorage::iterBeg = iter;
 		}
@@ -144,9 +144,9 @@ IterStorage DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	for(iter = dataList.end()-1; marker == true || iter <= dataList.begin(); iter--){
 		TimeMacro time = iter->getTimeMacroBeg();
 
-		if(time.getDate() == endTime.getDate() &&
-			time.getMonth() == endTime.getMonth() &&
-			time.getYear() == endTime.getYear()) {
+		if(time.getDate() <= endTime.getDate() &&
+			time.getMonth() <= endTime.getMonth() &&
+			time.getYear() <= endTime.getYear()) {
 				marker = false;
 				IterStorage::iterEnd = iter;
 		}
