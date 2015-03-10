@@ -80,11 +80,12 @@ string DataProcessor::searchTask(string word){
 //Post-condition: tasks under the desired period will be cleared
 //from the current taskList
 string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
-	DataBase.clearData(startTime, endTime);
+	DataBase::clearData(startTime, endTime);
 	string clearMessage = getClearMessage(startTime, endTime);
 	return clearMessage;
 }
 
+//This function produces the string that contains the clear feature message
 string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
 	string clearMessage;
 	ostringstream out;
@@ -95,11 +96,27 @@ string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
 	return clearMessage = out.str();
 }
 
-string DataProcessor::editTask(vector<string> infoType, Data task){
-	//get taskList currently in display by reference
-	//match the task number
-	//update the corresponding info
+//This function reads in the taskNumber of the task that is
+//currently in display and the Data object which contains
+//the updated information about the task.
+//The return string is the successfuly message after edit operation
+string DataProcessor::editTask(int taskNumber, Data task){
+	Data uneditedTask;
+	uneditedTask = DisplayStorage::editData(taskNumber, task);
+	string editMessage = getEditMessage(uneditedTask);
 
+	return editMessage;
+}
+
+string getEditMessage(Data uneditedTask){
+	string uneditedTaskString;
+	string editMessage;
+	uneditedTaskString = convertDataObjectToString(uneditedTask);
+	ostringstream out;
+	out << uneditedTaskString << " is edited successfully.";
+	editMessage = out.str(); 
+	
+	return editMessage;
 }
 
 string DataProcessor::executeUndo(){
