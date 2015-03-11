@@ -20,17 +20,17 @@ private:
 	static void allocatePsedoDate();
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
+	static std::vector<Data>::iterator getData(int uniqueNo);
 
 
 public: 
 	static Data addData(Data inData);	
-	static void deleteData(int uniqueCode);
+	static Data deleteData(int taskNo);
 	static void getData(int startNo, int endNo);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
 	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDataList();
-
-
+	
 };
 
 class History {
@@ -49,7 +49,8 @@ public:
 	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDisplayList();
 	static void addData(Data inData);
-
+	static int getUniqueCode(int taskNo);
+	static Data getData(int taskNo);
 
 
 

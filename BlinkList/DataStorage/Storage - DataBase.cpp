@@ -39,7 +39,29 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 	return period;
 }
 
+//method for delete command
+//input the taskno of the displat list to be deleted
+//return the Data that was deleted
+Data DataBase::deleteData(int taskNo){
+	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	dataList.erase(getData(uniqueNo));
+	updateTaskNo();
 
+	return DisplayStorage::getData(taskNo);
+}
+
+//helper method for deleteData and editData
+//input int uniqueCode
+//return iterator to be modified/deleted
+std::vector<Data>::iterator DataBase::getData(int uniqueNo){
+	std::vector<Data>::iterator iter;
+	for(iter=dataList.begin(); iter < dataList.end(); iter++){
+		if(iter->getUniqueCode()==uniqueNo){
+			return iter;
+		}
+	}
+	return;// !! figure out how to return error here
+}
 
 
 
@@ -145,12 +167,6 @@ void DataBase::allocatePsedoDate(){
 }
 
 
-
-
-
-void DataBase::deleteData(int uniqueCode){
-
-}
 
 //helper method for search Data from a specific period
 //to be pass to DisplayStorage

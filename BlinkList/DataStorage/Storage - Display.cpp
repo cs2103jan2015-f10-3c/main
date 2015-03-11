@@ -30,10 +30,29 @@ std::vector<Data> DisplayStorage::getDisplayList(){
 
 //helper method for Data Processing
 //for keyword search command
-void DisplayStorage:: addData(Data inData){
+void DisplayStorage::addData(Data inData){
 	displayList.push_back(inData);
 }
 
+//helper method for DataBase to get unique code of the data
+//input is int TaskNo of the displayList
+//return the uniqueCode to be processed by DataStorage
+int DisplayStorage::getUniqueCode(int taskNo){
+	std::vector<Data>::iterator iter = displayList.begin();
+	advance(iter, taskNo-1);
+
+	return iter->getUniqueCode();
+}
+
+//helper method for getting Data from the displayList taskNo
+//input is int taskNo
+//return Data
+Data DisplayStorage::getData(int taskNo){
+	std::vector<Data>::iterator iter = displayList.begin();
+	advance(iter, taskNo-1);
+
+	return *iter;
+}
 
 
 //helper method for getDisplayList()
