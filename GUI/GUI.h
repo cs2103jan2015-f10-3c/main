@@ -1,4 +1,6 @@
 #pragma once
+#include <msclr/marshal_cppstd.h>
+#include <iostream>
 #include "OperationCenter.h"
 
 namespace GUI {
@@ -19,10 +21,22 @@ namespace GUI {
 		GUI(void)
 		{
 			InitializeComponent();
+			bool firstTime = true;
+			std::cout << "Is this your first time using this assistant? [Y/N]" << std::endl;
+			string userResponse;
+			if(userResponse == "Y"){
+				//create a new text file as a database
+			}
+			else if(userResponse == "N"){
+				std::cout << "Welcome back!" << std::endl;
+			}
+			else{
+				std::cout << "Invalid Response! Please answer again. [Y/N]" << std::endl;
+			}
+
 			//
 			//TODO: Add the constructor code here
 			//
-			OperationCenter myOperationCenter;
 		}
 
 	protected:
@@ -36,9 +50,16 @@ namespace GUI {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TextBox^  outputBox;
+
 	private: System::Windows::Forms::TextBox^  inputBox;
 	private: System::Windows::Forms::Button^  confirmInputButton;
+	private: System::Windows::Forms::TextBox^  outputMessageBox;
+	private: System::Windows::Forms::TextBox^  displayBox;
+
+
+
+
+
 	protected: 
 
 	protected: 
@@ -59,24 +80,20 @@ namespace GUI {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(GUI::typeid));
-			this->outputBox = (gcnew System::Windows::Forms::TextBox());
 			this->inputBox = (gcnew System::Windows::Forms::TextBox());
 			this->confirmInputButton = (gcnew System::Windows::Forms::Button());
+			this->outputMessageBox = (gcnew System::Windows::Forms::TextBox());
+			this->displayBox = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
-			// 
-			// outputBox
-			// 
-			resources->ApplyResources(this->outputBox, L"outputBox");
-			this->outputBox->Name = L"outputBox";
-			this->outputBox->ReadOnly = true;
-			this->outputBox->UseWaitCursor = true;
-			this->outputBox->TextChanged += gcnew System::EventHandler(this, &GUI::textBox1_TextChanged);
 			// 
 			// inputBox
 			// 
 			resources->ApplyResources(this->inputBox, L"inputBox");
 			this->inputBox->Name = L"inputBox";
 			this->inputBox->UseWaitCursor = true;
+			this->inputBox->Enter += gcnew System::EventHandler(this, &GUI::inputBox_Enter);
+			this->inputBox->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &GUI::inputBox_KeyUp);
+			this->inputBox->Leave += gcnew System::EventHandler(this, &GUI::inputBox_Leave);
 			// 
 			// confirmInputButton
 			// 
@@ -86,13 +103,28 @@ namespace GUI {
 			this->confirmInputButton->UseWaitCursor = true;
 			this->confirmInputButton->Click += gcnew System::EventHandler(this, &GUI::confirmInputButton_Click);
 			// 
+			// outputMessageBox
+			// 
+			resources->ApplyResources(this->outputMessageBox, L"outputMessageBox");
+			this->outputMessageBox->Name = L"outputMessageBox";
+			this->outputMessageBox->ReadOnly = true;
+			this->outputMessageBox->UseWaitCursor = true;
+			// 
+			// displayBox
+			// 
+			resources->ApplyResources(this->displayBox, L"displayBox");
+			this->displayBox->Name = L"displayBox";
+			this->displayBox->ReadOnly = true;
+			this->displayBox->UseWaitCursor = true;
+			// 
 			// GUI
 			// 
 			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->Controls->Add(this->displayBox);
+			this->Controls->Add(this->outputMessageBox);
 			this->Controls->Add(this->confirmInputButton);
 			this->Controls->Add(this->inputBox);
-			this->Controls->Add(this->outputBox);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->HelpButton = true;
 			this->MaximizeBox = false;
@@ -104,7 +136,15 @@ namespace GUI {
 
 		}
 #pragma endregion
+
+	//Actions happen whenever the user loads the application
 	private: System::Void GUI_Load(System::Object^  sender, System::EventArgs^  e) {
+				 //Show welcome message
+				 //string welcomeMessage = OperationCenter::welcomeUser();
+				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
+				 outputMessageBox->Text = "Hello Jim, Welcome to your Private Assistant!";
+				 string dailyAgenda = OperationCenter::executeInput("show today");
+				 displayBox->Text = msclr::interop::marshal_as<String^>(dailyAgenda);
 			 }
 	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 }
@@ -112,11 +152,46 @@ namespace GUI {
 	//User click the "Enter" button and the input is read
 	private: System::Void confirmInputButton_Click(System::Object^  sender, System::EventArgs^  e) {
 				 
-				 String^ userInput = inputBox->Text;
-				 String^ outputmessage;
+				 string userInput = msclr::interop::marshal_as<string>(inputBox->Text);
+				 std::vector<string> displayString;
 				 inputBox->Clear;
-				 outputMessage = myOperationCenter.executeInput(userInput);
-				 outputBox->Text = outputMessage;
-			 }
-	};
+				 displayString = OperationCenter::executeInput(userInput);
+				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(displayString[0]);
+				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString[1]);
+			}
+	
+	//User presses "Enter" key after typing
+	private: System::Void inputBox_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+					if(e->KeyCode == Keys::Enter){
+						confirmInputButton->PerformClick();
+					}
+
+			}
+	
+	private: System::Void inputBox_Enter(System::Object^  sender, System::EventArgs^  e) {
+				 //Change the foreground and background color when the textBox is entered
+				 if(inputBox->Text != String::Empty){
+					 inputBox->ForeColor == Color::Red;
+					 inputBox->BackColor == Color::Black;
+				
+				 //Move the selection pointer to the end of the text
+					 inputBox->Select(inputBox->Text->Length, 0);
+				 }
+
+
+			}
+
+	private: System::Void inputBox_Leave(System::Object^  sender, System::EventArgs^  e) {
+				 //Reset the foreground and backgound color when the user leaves the inputBox
+				 inputBox->ForeColor == Color::Black;
+				 inputBox->BackColor == Color::White;
+				 inputBox->Select(0,0);
+			}
+
+	private: System::Void inputBox_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+		 }
+	
+
+
+};
 }

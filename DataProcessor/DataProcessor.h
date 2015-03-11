@@ -24,10 +24,14 @@ public:
 	string deleteTask(int number);
 	string clearTask(TimeMacro startTime, TimeMacro endTime);
 	string executeUndo();
-	string searchTask(string word);
+	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
 
 	string convertTaskListToString(vector<Data> taskList);
+	string convertDataObjectToString(Data task);
+	//new function
+	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
+	string getEditMessage(Data uneditedTask);
 
 };
 #endif
