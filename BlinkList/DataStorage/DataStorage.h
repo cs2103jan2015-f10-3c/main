@@ -74,8 +74,6 @@ public:
 	static int getUniqueCode(int taskNo);
 	static Data getData(int taskNo);
 
-
-
 };
 
 //helper class for searching/clearing/etc methods
