@@ -70,6 +70,7 @@
   <ItemGroup>
     <ClCompile Include="Storage - DataBase.cpp" />
     <ClCompile Include="Storage - Display.cpp" />
+    <ClCompile Include="Storage - History.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.vcxproj">
