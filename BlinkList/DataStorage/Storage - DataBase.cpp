@@ -14,6 +14,7 @@ std::vector<Data> DataBase::getDataList() {
 //return the data that was added in the form of Data
 Data DataBase::addData(Data inData){
 
+	History::updateLatestData(inData); //store for undo
 	allocateUniqueCode(inData);
 	dataList.push_back(inData);
 	sortDataList();
@@ -28,6 +29,7 @@ Data DataBase::addData(Data inData){
 Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
 	searchPeriod(startTime , endTime);
+	History::updateLatestVector(); //update for undo
 	dataList.erase(IterStorage::getIterBeg(),IterStorage::getIterEnd()+1);
 	updateTaskNo();
 
@@ -44,6 +46,7 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	History::updateLatestData(*getData(uniqueNo)); //store in History
 	dataList.erase(getData(uniqueNo));
 	updateTaskNo();
 
@@ -54,6 +57,7 @@ Data DataBase::deleteData(int taskNo){
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data DataBase::editData(int taskNo, Data updatedData){
+	History::updateLatestData(updatedData); // store for undo
 	deleteData(taskNo);
 	addData(updatedData);
 

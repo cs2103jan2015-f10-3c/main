@@ -11,9 +11,11 @@
 
 class DataBase {
 private:
+	//Private Attribute
 	static std::vector<Data> dataList;
 	static int uniqueNo;
 
+	//Private method
 	static void updateTaskNo();
 	static void allocateUniqueCode(Data inData);
 	static void sortDataList();
@@ -24,31 +26,51 @@ private:
 
 
 public: 
+	//API for Data Processing
 	static Data addData(Data inData);	
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
-	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDataList();
+	
+	//Helper method for DisplayStorage
+	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
 };
 
 class History {
 private:
+	//private attribute
+	static std::string latestCommand;
+	static Data latestData;
+	static std::vector<Data> latestVector;
 
 public:
+	//API for Data Processing
+	static std::string getLatestCommand();
+	static Data getLatestData();
+	static std::vector<Data> getLatestVector();
+	static void updateLatestCommand(std::string inCommand);
+	static void updateLatestData(Data inData);
+	static void updateLatestVector();
 
 };
 
 class DisplayStorage {
 private:
+	//private attribute
 	static std::vector<Data> displayList;
+	
+	//private method
 	static void updateTaskNo();
 
 public:
+	//API for Data Processing
 	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDisplayList();
 	static void addData(Data inData);
+	
+	//Helper method for DataBase
 	static int getUniqueCode(int taskNo);
 	static Data getData(int taskNo);
 
@@ -57,6 +79,8 @@ public:
 };
 
 //helper class for searching/clearing/etc methods
+//Store two iteration
+//Used by class DataBase and DisplayStorage
 class IterStorage {
 private:
 	static std::vector<Data>::iterator iterBeg;
