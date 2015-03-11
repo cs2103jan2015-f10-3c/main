@@ -1,5 +1,6 @@
 #ifndef PARSER_H
 #define PARSER_H
+#include <iostream>
 #include <string>
 #include <time.h>
 #include "Commons.h"
@@ -40,7 +41,7 @@ private:
 		_myData.updateTimeMacroEnd (timeMacroEnd);
 	}
 
-	static const int LENGTH_OF_DATE;
+	static const unsigned int LENGTH_OF_DATE;
     static const string DATE_FIRST_DIGIT;
     static const string DATE_SECOND_DIGIT;
     static const string MONTH_FIRST_DIGIT;
@@ -49,13 +50,13 @@ private:
     static const string YEAR_SECOND_DIGIT;
     static const string YEAR_THIRD_DIGIT;
     static const string YEAR_FOURTH_DIGIT;
-	static const int LENGTH_OF_STARTING_TIME;
-	static const int LENGTH_OF_TIME_PERIOD;
+	static const unsigned int LENGTH_OF_STARTING_TIME;
+	static const unsigned int LENGTH_OF_TIME_PERIOD;
 	static const string HOUR_FIRST_DIGIT;
 	static const string HOUR_SECOND_DIGIT;
 	static const string MINUTE_FIRST_DIGIT;
 	static const string MINUTE_SECOND_DIGIT;
-	static const int LENGTH_OF_ATTRIBUTE;
+	static const unsigned int LENGTH_OF_ATTRIBUTE;
 
 public: 
 	//default constructor
@@ -96,5 +97,6 @@ public:
 	void getTomorrowDate (TimeMacro timeMacro);
 	void getThisMonth (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd);
 	bool isLeapYear (int year);
+	
 };
 #endif
