@@ -2,54 +2,66 @@
 
 using namespace std;
 
+const string OperationCenter::ADD_COMMAND = "add";
+const string OperationCenter::DELETE_COMMAND = "delete";
+const string OperationCenter::DISPLAY_COMMAND = "display";
+const string OperationCenter::CLEAR_COMMAND = "clear";
+const string OperationCenter::SORT_COMMAND = "sort";
+const string OperationCenter::SEARCH_COMMAND = "search";
+const string OperationCenter::EDIT_COMMAND = "edit";
+const string OperationCenter::EXIT_COMMAND = "exit";
+const string OperationCenter::EMPTY_RESPONSE = "";
+const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
+
 OperationCenter::OperationCenter(){
 }
 
-string OperationCenter::executeInput(string input){
+vector<string> OperationCenter::executeInput(string input){
 	time_t now;
 	struct tm *current;
 	now = time(0);
 	current = localtime(&now);
-	TimeMacro currentTime(current->tm_mday, current->tm_mon, current->tm_year + 1900);
+
+	vector<string> returnVector;
 	Parser parser;
+	DataProcessor dataProcessor;
+	TimeMacro currentTime(current->tm_mday, current->tm_mon, current->tm_year + 1900);
+	
 	parser.parseInput(input);
 	string command = parser.getCommand();
 	Data task = parser.getData();
 	int taskNo = parser.getTaskNo();
-	string returnString;
-	ostringstream out;
-	DataProcessor dataProcessor;
-	if(command == "add") {
-		returnString = dataProcessor.addTask(task);
+	
+	string returnResponse;
+	string returnDisplay;
+	
+	
+	if(command == ADD_COMMAND) {
+		returnResponse = dataProcessor.addTask(task);
+	}else if(command == DISPLAY_COMMAND) {
+		returnResponse = EMPTY_RESPONSE;
+		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
+	}else if(command == DELETE_COMMAND){
+		returnResponse = dataProcessor.deleteTask(taskNo);
+	}else if(command == CLEAR_COMMAND){
+		returnResponse = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
+	}else if(command == SORT_COMMAND){
+		returnResponse = "under construction";
+	}else if(command == SEARCH_COMMAND){
+		returnDisplay = dataProcessor.searchTask(task.getDesc());
+		returnResponse = EMPTY_RESPONSE;
+	}else if(command == EDIT_COMMAND){
+		returnResponse = dataProcessor.editTask(task.getTaskNo(), task);
+	}else{
+		returnResponse = IVALID_COMMAND_MESSAGE;
 	}
-	else if(command == "display") {
-		returnString = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
+	
+	if(command != DISPLAY_COMMAND && command != SEARCH_COMMAND){
+		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
 	}
-	else if(command == "delete"){
-		returnString = dataProcessor.deleteTask(taskNo);
-	}
-	else if(command == "clear"){
-		returnString = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
-	}
-	else if(command == "sort"){
-		returnString = "under construction";
-	}
-	else if(command == "search"){
-		returnString = dataProcessor.searchTask(task.getDesc());
-	}
-	else if(command == "edit"){
-		returnString = dataProcessor.editTask(task.getTaskNo(), task);
-	}
-	else{
-		cout<<"invalid command"<<endl;
-	}
-	string returnMessage;
-	if(command != "display"){
-		out << returnString << endl << dataProcessor.displayTask(currentTime, currentTime);
-	}
-	else {
-		out << returnString;
-	}
-	returnMessage = out.str();
-	return returnMessage;
+
+	returnVector.push_back(returnDisplay);
+	returnVector.push_back(returnResponse);
+
+	return returnVector;
 }

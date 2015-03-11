@@ -15,12 +15,22 @@
 
 using namespace std;
 class OperationCenter{
-
+private:
+	static const string ADD_COMMAND;
+	static const string DELETE_COMMAND;
+	static const string DISPLAY_COMMAND;
+	static const string CLEAR_COMMAND;
+	static const string SORT_COMMAND;
+	static const string SEARCH_COMMAND;
+	static const string EDIT_COMMAND;
+	static const string EXIT_COMMAND;
+	static const string EMPTY_RESPONSE;
+	static const string IVALID_COMMAND_MESSAGE;
 
 public:
 
 	OperationCenter();
-	static string executeInput (string input);
+	static vector<string> executeInput (string input);
 
 };
 
