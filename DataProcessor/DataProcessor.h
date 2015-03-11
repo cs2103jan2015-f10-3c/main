@@ -20,7 +20,7 @@ public:
 	DataProcessor();
 	string showWelcomeMessage();
 	string addTask(Data task);
-	string display(TimeMacro startTime, TimeMacro endTime);
+	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);
 	string clearTask(TimeMacro startTime, TimeMacro endTime);
 	string executeUndo();
@@ -28,6 +28,7 @@ public:
 	string editTask(int taskNumber, Data task);
 
 	string convertTaskListToString(vector<Data> taskList);
+	string convertDataObjectToString(Data task);
 	//new function
 	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
 	string getEditMessage(Data uneditedTask);
