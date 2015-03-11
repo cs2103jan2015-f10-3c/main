@@ -76,13 +76,13 @@ void Parser::ParseEdit (string userInput, string commandWord) {
 	TimeMicro timeMicro;
 	string desc;
 	string inputToBeParsed = userInput;
-	string index = parseTaskNo (string inputToBeParsed);
+	string index = parseTaskNo (inputToBeParsed);
 	int taskNo = atoi (index.c_str());
 
 	inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 	int end = 0;
 	string attribute;
-	int end = inputToBeParsed.find_first_of (' ');
+	end = inputToBeParsed.find_first_of (' ');
 	while (end != string::npos) {
 		attribute = inputToBeParsed.substr (0, end);
 		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_ATTRIBUTE + 1);
