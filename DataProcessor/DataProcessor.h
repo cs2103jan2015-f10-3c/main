@@ -13,7 +13,12 @@
 
 using namespace std;
 class DataProcessor{
-
+private:
+	static const string WELCOME_MESSAGE;
+	static const string ADD_MESSAGE;
+	static const string DELETE_MESSAGE;
+	static const string CLEAR_MESSAGE;
+	static const string EDIT_MESSAGE;
 
 public:
 
