@@ -40,12 +40,22 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 }
 
 //method for delete command
-//input the taskno of the displat list to be deleted
+//input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
 	dataList.erase(getData(uniqueNo));
 	updateTaskNo();
+
+	return DisplayStorage::getData(taskNo);
+}
+
+//method for edit command
+//input the taskno of the displayList and the updatedData
+//return Data that was edited
+Data DataBase::editData(int taskNo, Data updatedData){
+	deleteData(taskNo);
+	addData(updatedData);
 
 	return DisplayStorage::getData(taskNo);
 }

@@ -26,7 +26,7 @@ private:
 public: 
 	static Data addData(Data inData);	
 	static Data deleteData(int taskNo);
-	static void getData(int startNo, int endNo);
+	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
 	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDataList();
