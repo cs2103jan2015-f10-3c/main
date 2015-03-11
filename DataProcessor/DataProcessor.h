@@ -9,7 +9,7 @@
 #include <algorithm>
 #include <vector>
 #include "Commons.h"
-//#include "DataStorage.h"
+#include "DataStorage.h"
 
 using namespace std;
 class DataProcessor{
@@ -21,7 +21,7 @@ public:
 	string showWelcomeMessage();
 	string addTask(Data task);
 	string display(TimeMacro startTime, TimeMacro endTime);
-	string deleteTask(Data task);
+	string deleteTask(int number);
 	string clearTask(TimeMacro startTime, TimeMacro endTime);
 	string executeUndo();
 	string searchTask(string keyword);

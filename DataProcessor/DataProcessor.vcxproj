@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Yang\Desktop\Projects\main\BlinkList\DataStorage;C:\Users\Yang\Desktop\Projects\main\BlinkList\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Yang\Desktop\Projects\main\DataStorage;C:\Users\Yang\Desktop\Projects\main\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -68,15 +68,15 @@
     <ClInclude Include="DataProcessor.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataProcessor.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.vcxproj">
       <Project>{76a15500-02b2-4482-8610-9fbba376f502}</Project>
     </ProjectReference>
     <ProjectReference Include="..\DataStorage\DataStorage.vcxproj">
       <Project>{21daf16e-0aeb-4767-8b3e-9c7322507362}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="DataProcessor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
