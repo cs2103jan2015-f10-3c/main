@@ -126,6 +126,8 @@ namespace GUI {
 				 //string welcomeMessage = OperationCenter::welcomeUser();
 				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
 				 outputMessageBox->Text = "Hello Jim, Welcome to your Private Assistant!";
+				 string dailyAgenda = OperationCenter::executeInput("show today");
+				 displayBox->Text = msclr::interop::marshal_as<String^>(dailyAgenda);
 			 }
 	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 }
@@ -134,10 +136,14 @@ namespace GUI {
 	private: System::Void confirmInputButton_Click(System::Object^  sender, System::EventArgs^  e) {
 				 
 				 string userInput = msclr::interop::marshal_as<string>(inputBox->Text);
-				 string outputmessage;
+				 std::vector<string> displayString;
 				 inputBox->Clear;
-				 outputmessage = OperationCenter::executeInput(userInput);
-				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(outputmessage);
+				 displayString = OperationCenter::executeInput(userInput);
+				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(displayString[0]);
+				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString[1]);
 			 }
-	};
+	
+private: System::Void inputBox_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+		 }
+};
 }
