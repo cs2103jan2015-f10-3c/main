@@ -28,8 +28,6 @@ public:
 	static void getData(int startNo, int endNo);
 	static void clearData(TimeMacro startTime, TimeMacro endTime);
 	static IterStorage searchPeriod(TimeMacro startTime, TimeMacro endTime);
-
-
 	//maynotneed
 	//	static std::vector<Data> getDataList();
 
