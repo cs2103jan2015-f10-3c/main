@@ -1,5 +1,6 @@
 #pragma once
 #include <msclr/marshal_cppstd.h>
+#include <iostream>
 #include "OperationCenter.h"
 
 namespace GUI {
@@ -20,6 +21,19 @@ namespace GUI {
 		GUI(void)
 		{
 			InitializeComponent();
+			bool firstTime = true;
+			std::cout << "Is this your first time using this assistant? [Y/N]" << std::endl;
+			string userResponse;
+			if(userResponse == "Y"){
+				//create a new text file as a database
+			}
+			else if(userResponse == "N"){
+				std::cout << "Welcome back!" << std::endl;
+			}
+			else{
+				std::cout << "Invalid Response! Please answer again. [Y/N]" << std::endl;
+			}
+
 			//
 			//TODO: Add the constructor code here
 			//
