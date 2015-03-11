@@ -122,9 +122,39 @@ string DataProcessor::executeUndo(){
 string convertDataObjectToString(Data task){
 	string taskString;
 	ostringstream outData;
-	outData << task.getTimeMacro << " " 
-			<< task.getTimeMicro << " " 
-			<< task.getDesc << endl;
+	TimeMacro timeMacroBeg, timeMacroEnd;
+	timeMacroBeg = task.getTimeMacroBeg;
+	timeMacroEnd = task.getTimeMacroEnd;
+	TimeMicro timeMicro = task.getTimeMicro;
+
+	//If there is deadline date associated with the task
+	if(timeMacroBeg.getDate != NULL){
+		outData << timeMacroBeg.getDate << "/"
+				<< timeMacroBeg.getMonth << "/"
+				<< timeMacroBeg.getYear;
+
+	}
+	if(timeMacroEnd.getDate != NULL){
+		outData << "-"
+				<< timeMacroEnd.getDate << "/"
+				<< timeMacroEnd.getMonth << "/"
+				<< timeMacroEnd.getYear;
+	}else
+	{
+		//If there is a start date and no end date specified
+		if(timeMacroBeg.getDate != NULL){
+				outData << " ";
+		}
+	}
+	//If there is deadline time associated with the task
+	if(timeMicro.getHourBeg != NULL){
+		outData << timeMicro.getHourBeg << ":"
+				<< timeMicro.getMinBeg << "-"
+				<< timeMicro.getHourEnd << ":"
+				<< timeMicro.getMinEnd << " ";
+	}
+	
+	outData << task.getDesc << endl;
 	taskString = outData.str();
 	return taskString;
 
