@@ -23,15 +23,12 @@ private:
 
 
 public: 
-	static void addData(Data inData);	
+	static Data addData(Data inData);	
 	static void deleteData(int uniqueCode);
 	static void getData(int startNo, int endNo);
-	static void clearData(TimeMacro startTime, TimeMacro endTime);
-	static IterStorage searchPeriod(TimeMacro startTime, TimeMacro endTime);
-
-
-	//maynotneed
-	//	static std::vector<Data> getDataList();
+	static Data clearData(TimeMacro startTime, TimeMacro endTime);
+	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<Data> getDataList();
 
 
 };
@@ -46,24 +43,38 @@ public:
 class DisplayStorage {
 private:
 	static std::vector<Data> displayList;
+	static void updateTaskNo();
 
 public:
 	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
-	
 	static std::vector<Data> getDisplayList();
+	static void addData(Data inData);
 
 
-	static void updateTaskNo();
+
 
 };
 
 //helper class for searching/clearing/etc methods
 class IterStorage {
-public:
+private:
 	static std::vector<Data>::iterator iterBeg;
 	static std::vector<Data>::iterator iterEnd;
 
-
+public:
+	static void updateIterBeg(std::vector<Data>::iterator iBeg) {
+		iterBeg = iBeg; 
+	}
+	static void updateIterEnd(std::vector<Data>::iterator iEnd) {
+		iterEnd = iEnd;
+	}
+	static std::vector<Data>::iterator getIterBeg() {
+		return iterBeg;
+	}
+	static std::vector<Data>::iterator getIterEnd() {
+		return iterEnd;
+	}
+	
 };
 
 

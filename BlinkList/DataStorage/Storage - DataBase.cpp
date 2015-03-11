@@ -1,27 +1,80 @@
 #include "DataStorage.h"
 
-
-/*
+//return the DataBase list 
+//to be accessed by data Processor
+//for command such as search
 std::vector<Data> DataBase::getDataList() {
 	return dataList;
-}*/
+}
 
-//add command update the dataList
+//for add command to update the dataList
 //it allocates uniqueCode into Data
 //and also automaticallly sort dataList and update taskNo 
 //the added Data inside dataList will be ready for printing
-void DataBase::addData(Data inData){
+//return the data that was added in the form of Data
+Data DataBase::addData(Data inData){
 
 	allocateUniqueCode(inData);
 	dataList.push_back(inData);
 	sortDataList();
 	updateTaskNo();
 
+	return inData;
 }
+
+//for clear command
+//return a Data that shows the time period
+//contain startTime and endTime in TimeMacroBeg and TimeMacro End
+Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
+
+	searchPeriod(startTime , endTime);
+	dataList.erase(IterStorage::getIterBeg(),IterStorage::getIterEnd()+1);
+	updateTaskNo();
+
+	//for returning the time frame
+	Data period;
+	period.updateTimeMacroBeg(startTime);
+	period.updateTimeMacroEnd(endTime);
+
+	return period;
+}
+
+
+
+
+
+
+
+
+
+//allocate uniqueCode to each Data
+//For internal working
+void DataBase::allocateUniqueCode(Data inData){
+	uniqueNo++;
+	inData.updateUniqueCode(uniqueNo);
+	
+}
+
+//to update all taskNo in dataList vector
+//after sorting or adding
+void DataBase::updateTaskNo(){
+	std::vector<Data>::iterator iter;
+	int TrackNo=1;
+
+	for(iter = dataList.begin(); iter < dataList.end(); iter++){
+		if(iter->getTaskNo() != TrackNo){
+			iter->updateTaskNo(TrackNo);
+		}
+	}
+	TrackNo++;
+
+}
+
 
 //sorting dataList for maintenance
 //use radix sorting algorithm
 //allocation of psedoDate is done here. to help sorting
+//for internal working
 void DataBase::sortDataList(){
 	std::vector<Data>::iterator iter;
 	allocatePsedoDate();
@@ -72,6 +125,7 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 
 //allocate psedoDate for all Data in dataList
 //used for sorting purposes
+//for internal working
 void DataBase::allocatePsedoDate(){
 
 	std::vector<Data>::iterator iter;
@@ -90,41 +144,18 @@ void DataBase::allocatePsedoDate(){
 
 }
 
-//allocate uniqueCode to each Data
-void DataBase::allocateUniqueCode(Data inData){
-	uniqueNo++;
-	inData.updateUniqueCode(uniqueNo);
-	
-}
 
-//to update all taskNo in dataList vector
-//after sorting or adding
-void DataBase::updateTaskNo(){
-	std::vector<Data>::iterator iter;
-	int TrackNo=1;
 
-	for(iter = dataList.begin(); iter < dataList.end(); iter++){
-		if(iter->getTaskNo() != TrackNo){
-			iter->updateTaskNo(TrackNo);
-		}
-	}
-	TrackNo++;
-
-}
 
 
 void DataBase::deleteData(int uniqueCode){
 
 }
 
-void DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
-
-	searchPeriod(startTime , endTime);
-	dataList.erase(IterStorage::iterBeg,IterStorage::iterEnd+1);
-
-}
-
-IterStorage DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
+//helper method for search Data from a specific period
+//to be pass to DisplayStorage
+//updates IterStorage to contain the relevant iteration
+void DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 
 	std::vector<Data>::iterator iter;
 	
@@ -137,7 +168,7 @@ IterStorage DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 			time.getMonth() >= startTime.getMonth() &&
 			time.getYear() >= startTime.getYear()) {
 				marker = true;
-				IterStorage::iterBeg = iter;
+				IterStorage::updateIterBeg(iter);
 		}
 	}
 
@@ -148,7 +179,7 @@ IterStorage DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 			time.getMonth() <= endTime.getMonth() &&
 			time.getYear() <= endTime.getYear()) {
 				marker = false;
-				IterStorage::iterEnd = iter;
+				IterStorage::updateIterEnd(iter);
 		}
 	}
 }
