@@ -1,4 +1,5 @@
 #pragma once
+#include <msclr/marshal_cppstd.h>
 #include "OperationCenter.h"
 
 namespace GUI {
@@ -22,7 +23,6 @@ namespace GUI {
 			//
 			//TODO: Add the constructor code here
 			//
-			OperationCenter myOperationCenter;
 		}
 
 	protected:
@@ -36,9 +36,16 @@ namespace GUI {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::TextBox^  outputBox;
+
 	private: System::Windows::Forms::TextBox^  inputBox;
 	private: System::Windows::Forms::Button^  confirmInputButton;
+	private: System::Windows::Forms::TextBox^  outputMessageBox;
+	private: System::Windows::Forms::TextBox^  displayBox;
+
+
+
+
+
 	protected: 
 
 	protected: 
@@ -59,18 +66,11 @@ namespace GUI {
 		void InitializeComponent(void)
 		{
 			System::ComponentModel::ComponentResourceManager^  resources = (gcnew System::ComponentModel::ComponentResourceManager(GUI::typeid));
-			this->outputBox = (gcnew System::Windows::Forms::TextBox());
 			this->inputBox = (gcnew System::Windows::Forms::TextBox());
 			this->confirmInputButton = (gcnew System::Windows::Forms::Button());
+			this->outputMessageBox = (gcnew System::Windows::Forms::TextBox());
+			this->displayBox = (gcnew System::Windows::Forms::TextBox());
 			this->SuspendLayout();
-			// 
-			// outputBox
-			// 
-			resources->ApplyResources(this->outputBox, L"outputBox");
-			this->outputBox->Name = L"outputBox";
-			this->outputBox->ReadOnly = true;
-			this->outputBox->UseWaitCursor = true;
-			this->outputBox->TextChanged += gcnew System::EventHandler(this, &GUI::textBox1_TextChanged);
 			// 
 			// inputBox
 			// 
@@ -86,13 +86,28 @@ namespace GUI {
 			this->confirmInputButton->UseWaitCursor = true;
 			this->confirmInputButton->Click += gcnew System::EventHandler(this, &GUI::confirmInputButton_Click);
 			// 
+			// outputMessageBox
+			// 
+			resources->ApplyResources(this->outputMessageBox, L"outputMessageBox");
+			this->outputMessageBox->Name = L"outputMessageBox";
+			this->outputMessageBox->ReadOnly = true;
+			this->outputMessageBox->UseWaitCursor = true;
+			// 
+			// displayBox
+			// 
+			resources->ApplyResources(this->displayBox, L"displayBox");
+			this->displayBox->Name = L"displayBox";
+			this->displayBox->ReadOnly = true;
+			this->displayBox->UseWaitCursor = true;
+			// 
 			// GUI
 			// 
 			resources->ApplyResources(this, L"$this");
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->Controls->Add(this->displayBox);
+			this->Controls->Add(this->outputMessageBox);
 			this->Controls->Add(this->confirmInputButton);
 			this->Controls->Add(this->inputBox);
-			this->Controls->Add(this->outputBox);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->HelpButton = true;
 			this->MaximizeBox = false;
@@ -104,7 +119,13 @@ namespace GUI {
 
 		}
 #pragma endregion
+
+	//Actions happen whenever the user loads the application
 	private: System::Void GUI_Load(System::Object^  sender, System::EventArgs^  e) {
+				 //Show welcome message
+				 //string welcomeMessage = OperationCenter::welcomeUser();
+				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
+				 outputMessageBox->Text = "Hello Jim, Welcome to your Private Assistant!";
 			 }
 	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 }
@@ -112,11 +133,11 @@ namespace GUI {
 	//User click the "Enter" button and the input is read
 	private: System::Void confirmInputButton_Click(System::Object^  sender, System::EventArgs^  e) {
 				 
-				 String^ userInput = inputBox->Text;
-				 String^ outputmessage;
+				 string userInput = msclr::interop::marshal_as<string>(inputBox->Text);
+				 string outputmessage;
 				 inputBox->Clear;
-				 outputMessage = myOperationCenter.executeInput(userInput);
-				 outputBox->Text = outputMessage;
+				 outputmessage = OperationCenter::executeInput(userInput);
+				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(outputmessage);
 			 }
 	};
 }

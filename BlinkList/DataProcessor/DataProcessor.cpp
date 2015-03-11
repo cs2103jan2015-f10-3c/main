@@ -67,6 +67,7 @@ string DataProcessor::searchTask(string keyword){
 	//Convert the taskList into a string that is ready for UI to display
 	string returnTaskListString;
 	returnTaskListString = convertTaskListToString(returnTaskList);
+	return returnTaskListString;
 
 }
 

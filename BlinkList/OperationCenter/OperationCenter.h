@@ -18,7 +18,7 @@ class OperationCenter{
 public:
 
 	OperationCenter();
-	string executeInput (string input);
+	static string executeInput (string input);
 
 };
 

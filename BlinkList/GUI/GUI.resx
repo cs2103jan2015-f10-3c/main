@@ -118,99 +118,120 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="outputBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 22</value>
+  <data name="inputBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 499</value>
   </data>
-  <data name="&gt;&gt;outputBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+  <data name="inputBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>756, 21</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="inputBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="&gt;&gt;outputBox.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;outputBox.Name" xml:space="preserve">
-    <value>outputBox</value>
-  </data>
-  <data name="confirmInputButton.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;$this.Name" xml:space="preserve">
-    <value>GUI</value>
-  </data>
-  <data name="inputBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>532, 21</value>
-  </data>
-  <data name="inputBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>12, 428</value>
-  </data>
-  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>676, 483</value>
-  </data>
-  <data name="&gt;&gt;inputBox.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="outputBox.Multiline" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="&gt;&gt;confirmInputButton.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="confirmInputButton.Text" xml:space="preserve">
-    <value>Enter</value>
-  </data>
-  <data name="&gt;&gt;inputBox.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;inputBox.Name" xml:space="preserve">
+    <value>inputBox</value>
   </data>
   <data name="&gt;&gt;inputBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="&gt;&gt;inputBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;inputBox.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="confirmInputButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>835, 497</value>
+  </data>
   <data name="confirmInputButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
   </data>
-  <data name="&gt;&gt;inputBox.Name" xml:space="preserve">
-    <value>inputBox</value>
+  <data name="confirmInputButton.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
   </data>
-  <data name="&gt;&gt;confirmInputButton.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;confirmInputButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="outputBox.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;outputBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="confirmInputButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>563, 426</value>
+  <data name="confirmInputButton.Text" xml:space="preserve">
+    <value>Enter</value>
   </data>
   <data name="&gt;&gt;confirmInputButton.Name" xml:space="preserve">
     <value>confirmInputButton</value>
   </data>
-  <data name="$this.Text" xml:space="preserve">
-    <value>BlinkList</value>
+  <data name="&gt;&gt;confirmInputButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;confirmInputButton.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;confirmInputButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="outputMessageBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 35</value>
+  </data>
+  <data name="outputMessageBox.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="outputMessageBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>866, 48</value>
+  </data>
+  <data name="outputMessageBox.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;outputMessageBox.Name" xml:space="preserve">
+    <value>outputMessageBox</value>
+  </data>
+  <data name="&gt;&gt;outputMessageBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;outputMessageBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;outputMessageBox.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="displayBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>44, 101</value>
+  </data>
+  <data name="displayBox.Multiline" type="System.Boolean, mscorlib">
+    <value>True</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="outputBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
+  <data name="displayBox.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Vertical</value>
   </data>
-  <data name="outputBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>626, 385</value>
+  <data name="displayBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>866, 380</value>
+  </data>
+  <data name="displayBox.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;displayBox.Name" xml:space="preserve">
+    <value>displayBox</value>
+  </data>
+  <data name="&gt;&gt;displayBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;displayBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;displayBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <metadata name="$this.Language" type="System.Globalization.CultureInfo, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>en</value>
-  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 12</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>962, 576</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>BlinkList</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>GUI</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
