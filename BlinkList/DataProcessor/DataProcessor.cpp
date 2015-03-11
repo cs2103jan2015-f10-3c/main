@@ -12,35 +12,27 @@ string DataProcessor::showWelcomeMessage(){
 }
 
 string DataProcessor::addTask(Data task){
-	dataStorage.addTaskList(task); //dataStorage is a DataStorage object initialized in O/C
+	DataBase::addData(task); //dataStorage is a DataStorage object initialized in O/C
 								   //addTaskList is DataStorage's API to add task  to the private taskList
 	ostringstream out;
-	out << "'" << task.getDescription() << "'" << "is successfully added" <<endl;
+	out << "'" << task.getDesc() << "'" << "is successfully added" <<endl;
 	string addMessage;
 	addMessage = out.str();
 	return addMessage;
 }
 
-string DataProcessor::deleteTask(Data task){
-	string taskUniqueNumber = task.getUniqueNumber();
-	string taskDescription = task.getDescription();
+string DataProcessor::deleteTask(int number){
+	Data data = DataBase::deleteData(number);
 	ostringstream out;
-	if(dataStorage.deleteTaskList(task)){ //deleteTaskList is DataStorage's API to delete specific object in the private taskList
-										  //Data Storage return bool
-		out << "'" << taskUniqueNumber << " " << taskDescription << "' is deleted successfully" << endl;
-	} else {
-		out << "'" << taskUniqueNumber << "' does not exist" << endl; 
-	}
+	out << "'" << data.getDesc() <<  "' is deleted" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
 }
 
-string DataProcessor::display(TimeMacro startTime, TimeMacro endTime){
-	vector<Data> taskList; 
-	taskList = dataStorage.getTaskList(startTime, endTime); //getTaskList() return vector
+string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 	string taskString; 
-	taskString = convertTaskListToString(vector<Data> taskList);
+	taskString = convertTaskListToString(DisplayStorage::getDisplayList(startTime, endTime));
 	return taskString;
 }
 
