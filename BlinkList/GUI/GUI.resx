@@ -119,7 +119,7 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="inputBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 499</value>
+    <value>44, 545</value>
   </data>
   <data name="inputBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>756, 21</value>
@@ -141,7 +141,7 @@
     <value>3</value>
   </data>
   <data name="confirmInputButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>835, 497</value>
+    <value>835, 543</value>
   </data>
   <data name="confirmInputButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -171,7 +171,7 @@
     <value>True</value>
   </data>
   <data name="outputMessageBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>866, 48</value>
+    <value>866, 60</value>
   </data>
   <data name="outputMessageBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -199,7 +199,7 @@
     <value>Vertical</value>
   </data>
   <data name="displayBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>866, 380</value>
+    <value>866, 436</value>
   </data>
   <data name="displayBox.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -223,7 +223,7 @@
     <value>6, 12</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>962, 576</value>
+    <value>953, 596</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BlinkList</value>

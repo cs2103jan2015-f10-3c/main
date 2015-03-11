@@ -77,6 +77,9 @@ namespace GUI {
 			resources->ApplyResources(this->inputBox, L"inputBox");
 			this->inputBox->Name = L"inputBox";
 			this->inputBox->UseWaitCursor = true;
+			this->inputBox->Enter += gcnew System::EventHandler(this, &GUI::inputBox_Enter);
+			this->inputBox->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &GUI::inputBox_KeyUp);
+			this->inputBox->Leave += gcnew System::EventHandler(this, &GUI::inputBox_Leave);
 			// 
 			// confirmInputButton
 			// 
@@ -141,9 +144,40 @@ namespace GUI {
 				 displayString = OperationCenter::executeInput(userInput);
 				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(displayString[0]);
 				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString[1]);
-			 }
+			}
 	
-private: System::Void inputBox_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
+	//User presses "Enter" key after typing
+	private: System::Void inputBox_KeyUp(System::Object^  sender, System::Windows::Forms::KeyEventArgs^  e) {
+					if(e->KeyCode == Keys::Enter){
+						confirmInputButton->PerformClick();
+					}
+
+			}
+	
+	private: System::Void inputBox_Enter(System::Object^  sender, System::EventArgs^  e) {
+				 //Change the foreground and background color when the textBox is entered
+				 if(inputBox->Text != String::Empty){
+					 inputBox->ForeColor == Color::Red;
+					 inputBox->BackColor == Color::Black;
+				
+				 //Move the selection pointer to the end of the text
+					 inputBox->Select(inputBox->Text->Length, 0);
+				 }
+
+
+			}
+
+	private: System::Void inputBox_Leave(System::Object^  sender, System::EventArgs^  e) {
+				 //Reset the foreground and backgound color when the user leaves the inputBox
+				 inputBox->ForeColor == Color::Black;
+				 inputBox->BackColor == Color::White;
+				 inputBox->Select(0,0);
+			}
+
+	private: System::Void inputBox_KeyPress(System::Object^  sender, System::Windows::Forms::KeyPressEventArgs^  e) {
 		 }
+	
+
+
 };
 }
