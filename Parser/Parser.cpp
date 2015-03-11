@@ -1,27 +1,26 @@
 #include "Parser.h"
 
-static const int LENGTH_OF_DATE = 10;  //"dd/mm/yyyy"
-static const string DATE_FIRST_DIGIT = "0123";
-static const string DATE_SECOND_DIGIT = "0123456789";
-static const string MONTH_FIRST_DIGIT = "01";
-static const string MONTH_SECOND_DIGIT = "0123456789";
-static const string YEAR_FIRST_DIGIT = "2";
-static const string YEAR_SECOND_DIGIT = "0123456789";
-static const string YEAR_THIRD_DIGIT = "0123456789";
-static const string YEAR_FOURTH_DIGIT = "0123456789";
-static const int LENGTH_OF_STARTING_TIME = 5;  //"09:00"
-static const int LENGTH_OF_TIME_PERIOD = 11;  //"09:00-10:30"
-static const string HOUR_FIRST_DIGIT = "012";
-static const string HOUR_SECOND_DIGIT = "01234567890";
-static const string MINUTE_FIRST_DIGIT = "012345";
-static const string MINUTE_SECOND_DIGIT = "0123456789";
-static const int LENGTH_OF_ATTRIBUTE = 4;
-
+const unsigned int Parser::LENGTH_OF_DATE = 10;  //"dd/mm/yyyy"
+const string Parser::DATE_FIRST_DIGIT = "0123";
+const string Parser::DATE_SECOND_DIGIT = "0123456789";
+const string Parser::MONTH_FIRST_DIGIT = "01";
+const string Parser::MONTH_SECOND_DIGIT = "0123456789";
+const string Parser::YEAR_FIRST_DIGIT = "2";
+const string Parser::YEAR_SECOND_DIGIT = "0123456789";
+const string Parser::YEAR_THIRD_DIGIT = "0123456789";
+const string Parser::YEAR_FOURTH_DIGIT = "0123456789";
+const unsigned int Parser::LENGTH_OF_STARTING_TIME = 5;  //"09:00"
+const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 11;  //"09:00-10:30"
+const string Parser::HOUR_FIRST_DIGIT = "012";
+const string Parser::HOUR_SECOND_DIGIT = "01234567890";
+const string Parser::MINUTE_FIRST_DIGIT = "012345";
+const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
+const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
 
 void Parser::parseInput (string userInput) {
 	string commandWord;
 
-	commandWord = extractCommandWord (userInput); //not sure
+	commandWord = extractCommandWord (userInput);
 	if (commandWord == "add") {
 		ParseAdd (userInput, commandWord);
 	}
@@ -36,6 +35,9 @@ void Parser::parseInput (string userInput) {
 	}
 	else if (commandWord == "delete") {
 		ParseDelete (userInput, commandWord);
+	}
+	else if (commandWord == "display") {
+		ParseDisplay (userInput, commandWord);
 	}
 }
 
@@ -124,6 +126,25 @@ void Parser::ParseDelete (string userInput, string commandWord) {
 	string index = userInput.substr (commandWord.size() + 1);
 	int taskNo = atoi (index.c_str());
 	returnInput = Parser (commandWord, taskNo);
+}
+
+void Parser::ParseDisplay (string userInput, string commandWord) {
+	Parser returnInput;
+	TimeMacro timeMacroBeg;
+	TimeMacro timeMacroEnd;
+
+	string period = userInput.substr (commandWord.size() + 1);
+
+	if (period == "today") {
+		getTodayDate (timeMacroBeg);
+	}
+	else if (period == "tomorrow") {
+		getTomorrowDate (timeMacroBeg);
+	}
+	else if (period == "this month") {
+		getThisMonth (timeMacroBeg, timeMacroEnd);
+	}
+	returnInput = Parser (commandWord, timeMacroBeg, timeMacroEnd);
 }
 
 TimeMacro Parser::parseDate (string inputToBeParsesd) {
@@ -233,7 +254,7 @@ bool Parser::isTimePeriod (string inputToBeParsed) {
 }
 
 bool Parser::searchSubstring (string string, char substring) {
-	int index = 0;
+	unsigned int index = 0;
 	for (index = 0; index < string.size(); index ++) {
 		if (substring == string[index]) {
 			return true;
@@ -244,18 +265,107 @@ bool Parser::searchSubstring (string string, char substring) {
 
 string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
   time_t rawtime;
-  struct tm * timeinfo;
+  struct tm timeinfo;
   const char * weekday[] = { "Sunday", "Monday",
                              "Tuesday", "Wednesday",
                              "Thursday", "Friday", "Saturday"};
 
   time ( &rawtime );
-  timeinfo = localtime ( &rawtime );
-  timeinfo->tm_year = year - 1900;
-  timeinfo->tm_mon = month - 1;
-  timeinfo->tm_mday = date;
+  //timeinfo = localtime ( &rawtime );
+  localtime_s (&timeinfo, &rawtime);
+  timeinfo.tm_year = year - 1900;
+  timeinfo.tm_mon = month - 1;
+  timeinfo.tm_mday = date;
 
-  mktime ( timeinfo );
+  mktime ( &timeinfo );
 
-  return (weekday[timeinfo->tm_wday]);
+  return (weekday[timeinfo.tm_wday]);
+}
+
+void Parser::getTodayDate (TimeMacro timeMacro) {
+    time_t t = time (0);   // get time now
+    struct tm now;
+	localtime_s (&now, &t);
+    now.tm_year = now.tm_year + 1900;
+    now.tm_mon = now.tm_mon + 1;
+    now.tm_mday = now.tm_mday;
+	timeMacro.updateYear (now.tm_year);
+	timeMacro.updateMonth (now.tm_mon);
+	timeMacro.updateDate (now.tm_yday);
+}
+
+void Parser::getTomorrowDate (TimeMacro timeMacro) {
+    time_t t = time (0);   // get time now
+    struct tm now;
+	localtime_s (&now, &t);
+    now.tm_year = now.tm_year + 1900;
+    now.tm_mon = now.tm_mon + 1;
+    now.tm_mday = now.tm_mday;
+
+	if (now.tm_mday == 31) {
+		if (now.tm_mon == 12) {
+			now.tm_year += 1;
+			now.tm_mon = 1;
+		}
+		else {
+			now.tm_mon += 1;
+		}
+		now.tm_mday = 1;
+	}
+	else if (now.tm_mday == 30) {
+		if (now.tm_mon == 4 || now.tm_mon == 6 ||
+			now.tm_mon == 9 || now.tm_mon == 11) {
+				now.tm_mday = 1;
+				now.tm_mon += 1;
+		}
+	}
+	else if (now.tm_mday == 28 && !isLeapYear (now.tm_year) &&
+		now.tm_mon == 2) {
+			now.tm_mday = 1;
+			now.tm_mon += 1;
+	}
+	else if (now.tm_mday == 29 && isLeapYear (now.tm_year) &&
+		now.tm_mon ==2) {
+			now.tm_mday =1;
+			now.tm_mon += 1;
+	}
+	else {
+		now.tm_mday += 1;
+	}
+
+    timeMacro.updateYear (now.tm_year);
+	timeMacro.updateMonth (now.tm_mon);
+	timeMacro.updateDate (now.tm_yday);
+}
+
+void Parser::getThisMonth (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd) {
+	time_t t = time (0);   // get time now
+    struct tm now;
+	localtime_s (&now, &t);
+    now.tm_year = now.tm_year + 1900;
+    now.tm_mon = now.tm_mon + 1;
+    now.tm_mday = now.tm_mday;
+
+	timeMacroBeg.updateYear (now.tm_year);
+	timeMacroBeg.updateMonth (now.tm_mon);
+	timeMacroBeg.updateDate (0);
+
+	timeMacroEnd.updateYear (now.tm_year);
+	timeMacroEnd.updateMonth (now.tm_mon);
+	timeMacroEnd.updateDate (34);
+}
+
+bool Parser::isLeapYear (int year) {
+	if (year % 4 != 0) {
+		return false;
+	}
+	else if (year % 100 != 0) {
+		return true;
+	}
+	else if (year % 400 != 0) {
+		return false;
+	}
+	else {
+		return true;
+	}
 }
