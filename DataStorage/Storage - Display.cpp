@@ -24,13 +24,11 @@ std::vector<Data> DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro 
 void DisplayStorage::updateTaskNo(){
 	std::vector<Data>::iterator iter;
 	int TrackNo=1;
-
 	for(iter = displayList.begin(); iter < displayList.end(); iter++){
 		if(iter->getTaskNo() != TrackNo){
 			iter->updateTaskNo(TrackNo);
 		}
 	}
 	TrackNo++;
-
 }
 */

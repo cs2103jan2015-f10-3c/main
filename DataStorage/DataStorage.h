@@ -5,9 +5,10 @@
 #include <cstdio>
 #include <string>
 #include <vector>
-#include "Commons.h"
 #include <iterator>
 #include <queue>
+#include "Commons.h"
+
 
 class DataBase {
 private:
@@ -28,8 +29,6 @@ public:
 	static void getData(int startNo, int endNo);
 	static void clearData(TimeMacro startTime, TimeMacro endTime);
 	static IterStorage searchPeriod(TimeMacro startTime, TimeMacro endTime);
-
-
 	//maynotneed
 	//	static std::vector<Data> getDataList();
 

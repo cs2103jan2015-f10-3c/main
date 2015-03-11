@@ -8,8 +8,10 @@
 #include <algorithm>
 #include <vector>
 #include <sstream>
+#include <time.h>
 #include "Commons.h"
 #include "DataProcessor.h"
+#include "Parser.h"
 
 using namespace std;
 class OperationCenter{
@@ -18,7 +20,7 @@ class OperationCenter{
 public:
 
 	OperationCenter();
-	string executeInput (string input);
+	static string executeInput (string input);
 
 };
 
