@@ -199,14 +199,15 @@ void DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	for(iter = dataList.begin(); marker == false || iter < dataList.end(); iter++){
 		if(iter->getPsedoDate() >= pStartTime){
 			marker = true;
-			IterStorage::updateIterBeg(iter);
+			//IterStorage::updateIterBeg(iter);
 		}
+		
 	}
 
 	for(iter = dataList.end()-1; marker == true || iter <= dataList.begin(); iter--){
 		if(iter->getPsedoDate() <= pEndTime) {
 			marker = false;
-			IterStorage::updateIterEnd(iter);
+			//IterStorage::updateIterEnd(iter);
 		}
 	}
 }
