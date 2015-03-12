@@ -2,17 +2,12 @@
 
 using namespace std;
 
-const string DataProcessor::WELCOME_MESSAGE = "Welcome to BlinkList";
 const string DataProcessor::ADD_MESSAGE = "is added";
 const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
 const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
 const string DataProcessor::EDIT_MESSAGE = "is edited";
 
 DataProcessor::DataProcessor(){
-}
-
-string DataProcessor::showWelcomeMessage(){
-	return WELCOME_MESSAGE;
 }
 
 //This function reads in the Data object to be added,

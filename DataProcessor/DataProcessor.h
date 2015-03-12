@@ -14,7 +14,6 @@
 using namespace std;
 class DataProcessor{
 private:
-	static const string WELCOME_MESSAGE;
 	static const string ADD_MESSAGE;
 	static const string DELETE_MESSAGE;
 	static const string CLEAR_MESSAGE;
@@ -23,7 +22,6 @@ private:
 public:
 
 	DataProcessor();
-	string showWelcomeMessage();
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);
