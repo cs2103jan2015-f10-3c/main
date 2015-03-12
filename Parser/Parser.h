@@ -13,42 +13,36 @@ private:
 	Data _myData;
 	int _taskNo;
 
-
-	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicro, string desc) {
-		_command = commandWord;
-		_myData.updateTimeMacroBeg (timeMacro);
-		_myData.updateTimeMicroBeg (timeMicro);
-		_myData.updateDesc (desc);
-	}
-
-	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicroBeg, 
-		TimeMicro timeMicroEnd, string desc) {
-			_command = commandWord;
-		    _myData.updateTimeMacroBeg (timeMacro);
-		    _myData.updateTimeMicroBeg (timeMicroBeg);
-			_myData.updateTimeMicroEnd (timeMicroEnd);
-		    _myData.updateDesc (desc);
-	}
-
-	Parser (string commandWord, string keyword) {
-		_command = commandWord;
-		_myData.updateDesc (keyword);
-	}
-
-	Parser (string commandWord) {
+	void updateCommand (string commandWord) {
 		_command = commandWord;
 	}
 
-	Parser (string commandWord, int taskNo) {
-		_command = commandWord;
+	void updateTaskNo (int taskNo) {
 		_taskNo = taskNo;
 	}
 
-	Parser (string commandWord, TimeMacro timeMacroBeg, TimeMacro timeMacroEnd) {
-		_command = commandWord;
+	void updateTimeMicro (TimeMicro timeMicro) {
+		_myData.updateTimeMicroBeg (timeMicro);
+	}
+
+	void updateTimeMicroPeriod (TimeMicro timeMicroBeg, TimeMicro timeMicroEnd) {
+		_myData.updateTimeMicroBeg (timeMicroBeg);
+		_myData.updateTimeMicroEnd (timeMicroEnd);
+	}
+
+	void updateTimeMacro (TimeMacro timeMacro) {
+		_myData.updateTimeMacroBeg (timeMacro);
+	}
+
+	void updateTimeMacroPeriod (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd) {
 		_myData.updateTimeMacroBeg (timeMacroBeg);
 		_myData.updateTimeMacroEnd (timeMacroEnd);
 	}
+
+	void updateDesc (string desc) {
+		_myData.updateDesc (desc);
+	}
+	
 
 	static const unsigned int LENGTH_OF_DATE;
     static const string DATE_FIRST_DIGIT;

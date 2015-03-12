@@ -53,7 +53,6 @@ string Parser::extractCommandWord (string userInput) {
 //a task will end with a description if there is one
 //all 3 attributes can stand alone
 void Parser::ParseAdd (string userInput, string commandWord) {
-	Parser returnInput;
 	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
 	TimeMicro timeMicroEnd;
@@ -70,24 +69,26 @@ void Parser::ParseAdd (string userInput, string commandWord) {
 	    if (isTimePeriod (inputToBeParsed)) {
 		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
 	    }
-	    if (isStartingTime (inputToBeParsed)) {
+	    else if (isStartingTime (inputToBeParsed)) {
 		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
 	     }
 	}
 	desc = inputToBeParsed;
 	
-	returnInput = Parser (commandWord, timeMacro, timeMicroBeg, timeMicroEnd, desc);
+	updateCommand (commandWord);
+	updateTimeMacro (timeMacro);
+	updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+	updateDesc (desc);
 }
 
 //a task will end with a description if there is one
 //all 3 attributes can stand alone
 void Parser::ParseEdit (string userInput, string commandWord) {
-	Parser returnInput;
 	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
 	TimeMicro timeMicroEnd;
 	string desc;
-	string inputToBeParsed = userInput;
+	string inputToBeParsed = userInput.substr (0, commandWord.size() + 1);
 	string index = parseTaskNo (inputToBeParsed);
 	int taskNo = atoi (index.c_str());
 
@@ -102,35 +103,36 @@ void Parser::ParseEdit (string userInput, string commandWord) {
 	    if (isTimePeriod (inputToBeParsed)) {
 		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
 	    }
-	    if (isStartingTime (inputToBeParsed)) {
+	    else if (isStartingTime (inputToBeParsed)) {
 		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
 	     }
 	}
 	desc = inputToBeParsed;
 
-	returnInput = Parser (commandWord, timeMacro, timeMicroBeg, timeMicroEnd, desc);
+	updateCommand (commandWord);
+	updateTimeMacro (timeMacro);
+	updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+    updateDesc (desc);
 }
 
 void Parser::ParseSearch (string userInput, string commandWord) {
-	Parser returnInput;
 	string desc = userInput.substr (commandWord.size() + 1);
-	returnInput = Parser (commandWord, desc);
+
+    updateCommand (commandWord);
+	updateDesc (desc);
 }
 
 void Parser::ParseUndo (string commandWord) {
-	Parser returnInput;
-	returnInput = Parser (commandWord);
+    updateCommand (commandWord);
 }
 
 void Parser::ParseDelete (string userInput, string commandWord) {
-	Parser returnInput;
 	string index = userInput.substr (commandWord.size() + 1);
 	int taskNo = atoi (index.c_str());
-	returnInput = Parser (commandWord, taskNo);
+	updateCommand (commandWord);
 }
 
 void Parser::ParseDisplay (string userInput, string commandWord) {
-	Parser returnInput;
 	TimeMacro timeMacroBeg;
 	TimeMacro timeMacroEnd;
 
@@ -145,7 +147,9 @@ void Parser::ParseDisplay (string userInput, string commandWord) {
 	else if (period == "this month") {
 		getThisMonth (timeMacroBeg, timeMacroEnd);
 	}
-	returnInput = Parser (commandWord, timeMacroBeg, timeMacroEnd);
+
+	updateCommand (commandWord);
+	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 }
 
 TimeMacro Parser::parseDate (string inputToBeParsesd) {
@@ -172,8 +176,16 @@ void Parser::parseTime (string inputToBeParsed, TimeMicro timeMicroBeg, TimeMicr
 		string minuteBeg = inputToBeParsed.substr (3, 2);
 		int hourBegInt = atoi (hourBeg.c_str());
 		int minuteBegInt = atoi (minuteBeg.c_str());
-		timeMicroBeg.updateHour (hourBegInt);
-		timeMicroBeg.updateMin (minuteBegInt);
+		//bool checkHour = false;
+		//bool checkMin = false;
+		//checkHour = 
+			timeMicroBeg.updateHour (hourBegInt);
+		//checkMin = 
+			timeMicroBeg.updateMin (minuteBegInt);
+		//if(checkHour){
+		//}
+		//if(checkMin){
+		//}
 	}
 	if (isTimePeriod (inputToBeParsed)) {
 		string hourEnd = inputToBeParsed.substr (6, 2);
