@@ -36,7 +36,7 @@ void Data::updateTaskNo(int no){
 	taskNo = no;
 }
 
-void Data::updateUniqueCode(int no{
+void Data::updateUniqueCode(int no){
 	uniqueCode = no;
 }
 
