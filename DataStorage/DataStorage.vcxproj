@@ -16,7 +16,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Yang\Desktop\Projects\main\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkList\Commons;C:\Users\Yang\Desktop\Projects\BlinkList\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -65,11 +65,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Storage - DataBase.cpp" />
-    <ClCompile Include="Storage - Display.cpp" />
+    <ClInclude Include="DataStorage.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataStorage.h" />
+    <ClCompile Include="Storage - DataBase.cpp" />
+    <ClCompile Include="Storage - Display.cpp" />
+    <ClCompile Include="Storage - History.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.vcxproj">

@@ -34,16 +34,16 @@ public:
 		day(inDay), date(inDate), month(inMonth), year(inYear) {}
 
 	//getter methods
-	int getDate();
 	std::string getDay();
+	int getDate();
 	int getMonth();
 	int getYear();
 
 	//update methods
 	//return true for succesful operation
 	//return false for failed operation
-	bool updateDate(int inDate);
 	bool updateDay(std::string inDay);
+	bool updateDate(int inDate);
 	bool updateMonth(int inMonth);
 	bool updateYear (int inYear);
 
@@ -51,30 +51,24 @@ public:
 
 class TimeMicro{
 private:
-	int hourBeg;
-	int minuteBeg;
-	int hourEnd;
-	int minuteEnd;
+	int hour;
+	int minute;
 
 public:
 
 	//constructors
 	TimeMicro ();
-	TimeMicro (int inHourbeg, int inMinBeg, int inHourEnd, int inMinEnd);
+	TimeMicro (int inHourBeg, int inMinBeg);
 
 	//getter methods
-	int getHourBeg();
-	int getHourEnd();
-	int getMinBeg();
-	int getMinEnd();
+	int getHour();
+	int getMin();
 
 	//update methods
 	//return true for succesful operation
 	//return false for failed operation
-	bool updateHourBeg(int inHour);
-	bool updateHourEnd(int inHour);
-	bool updateMinBeg(int inMin);
-	bool updateMinEnd(int inMin);
+	bool updateHour(int inHour);
+	bool updateMin(int inMin);
 };
 
 
@@ -90,15 +84,30 @@ private:
 	std::string desc;
 	TimeMacro macroTimeBeg;
 	TimeMacro macroTimeEnd;
-	TimeMicro microTime;
+	TimeMicro microTimeBeg;
+	TimeMicro microTimeEnd;
 
 
 public:
 
 	//constructors
-	Data ();
-	Data (TimeMacro inMacroBeg, TimeMacro inMacroEnd, TimeMicro inMicro, std::string inDesc);
-	Data (std::string inDesc); //constructor for floating task
+	//constructor for custom Data
+	Data () {} 
+	// constructor for activities that start and end at different days
+	Data (TimeMacro inMacroBeg, TimeMacro inMacroEnd, TimeMicro inMicroBeg, 
+		TimeMicro inMicroEnd, std::string inDesc) : 
+		macroTimeBeg(inMacroBeg), macroTimeEnd(inMacroEnd), microTimeBeg(inMicroBeg), 
+		microTimeEnd(inMicroEnd), desc(inDesc) {} 
+	//constructor for activities that start and end at the same time
+	Data (TimeMacro inMacro, TimeMicro inMicroBeg, TimeMicro inMicroEnd, std::string inDesc) :
+		macroTimeBeg(inMacro), microTimeBeg(inMicroBeg), microTimeEnd(inMicroEnd) {}
+	//constructor for activities that only have a deadline
+	Data (TimeMacro inMacro, std::string inDesc) :
+		macroTimeBeg(inMacro), desc(inDesc) {}
+	//constructor for floating task
+	Data (std::string inDesc) : 
+		desc(inDesc) {}
+	
 
 	//getter methods
 	bool getCompleteStatus();
@@ -109,22 +118,24 @@ public:
 	std::string getDesc();
 	TimeMacro getTimeMacroBeg();
 	TimeMacro getTimeMacroEnd();
-	TimeMicro getTimeMicro();
+	TimeMicro getTimeMicroBeg();
+	TimeMicro getTimeMicroEnd();
 
 
 
 	//update methods
 	//return true for succesful operation
 	//return false for failed operation
-	bool updateTaskNo(int no);
-	bool updateUniqueCode(int no);
-	bool updateCompleteStatus(bool status);
-	bool updatePsedoDate(int sDate);
+	void updateTaskNo(int no);
+	void updateUniqueCode(int no);
+	void updateCompleteStatus(bool status);
+	void updatePsedoDate(int sDate);
 
-	bool updateDesc(std::string inDesc);
-	bool updateTimeMacroBeg(TimeMacro inMacroBeg);
-	bool updateTimeMacroEnd(TimeMacro inMacroEnd);
-	bool updateTimeMicro(TimeMicro inMicro);
+	void updateDesc(std::string inDesc);
+	void updateTimeMacroBeg(TimeMacro inMacroBeg);
+	void updateTimeMacroEnd(TimeMacro inMacroEnd);
+	void updateTimeMicroBeg(TimeMicro inMicroBeg);
+	void updateTimeMicroEnd(TimeMicro inMicroEnd);
 
 
 
