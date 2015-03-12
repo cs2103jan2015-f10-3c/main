@@ -57,8 +57,11 @@ private:
 public:
 
 	//constructors
-	TimeMicro ();
-	TimeMicro (int inHourBeg, int inMinBeg);
+	TimeMicro () :
+		hour(-1),minute(-1) {}
+
+	TimeMicro (int inHourBeg, int inMinBeg) :
+		hour(inHourBeg), minute(inMinBeg){}
 
 	//getter methods
 	int getHour();
