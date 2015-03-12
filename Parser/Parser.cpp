@@ -287,10 +287,11 @@ void Parser::getTodayDate (TimeMacro timeMacro) {
 	localtime_s (&now, &t);
     now.tm_year = now.tm_year + 1900;
     now.tm_mon = now.tm_mon + 1;
-    now.tm_mday = now.tm_mday;
+	string dayOfTheWeek = convertDateToDayOfTheWeek (now.tm_mday, now.tm_mon, now.tm_year);
 	timeMacro.updateYear (now.tm_year);
 	timeMacro.updateMonth (now.tm_mon);
 	timeMacro.updateDate (now.tm_yday);
+	timeMacro.updateDay (dayOfTheWeek);
 }
 
 void Parser::getTomorrowDate (TimeMacro timeMacro) {
@@ -332,9 +333,11 @@ void Parser::getTomorrowDate (TimeMacro timeMacro) {
 		now.tm_mday += 1;
 	}
 
+	string dayOfTheWeek = convertDateToDayOfTheWeek (now.tm_mday, now.tm_mon, now.tm_year);
     timeMacro.updateYear (now.tm_year);
 	timeMacro.updateMonth (now.tm_mon);
 	timeMacro.updateDate (now.tm_yday);
+	timeMacro.updateDay (dayOfTheWeek);
 }
 
 void Parser::getThisMonth (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd) {
