@@ -29,7 +29,7 @@ namespace DataProcessorTest
 			TimeMacro date(31, 1, 2000);
 			Data task1(start, "jim");
 			Data task2(end, "john");
-			Data task3(end, "jane");
+			Data task3(date, "jane");
 			DataProcessor myDataProcessor;
 			//string displayTask(TimeMacro startTime, TimeMacro endTime);
 			
@@ -39,8 +39,8 @@ namespace DataProcessorTest
 			std::string actualDisplay = myDataProcessor.displayTask(start, end);
 			ostringstream out;
 			out << 1 << ". 1/2/2000  jim" << endl
-				<< 2 << ". 1/2/2000  jane" << endl
-				<< 3 << ". 1/2/2001  john" << endl;
+				//<< 2 << ". 1/2/2000  jane" << endl
+				<< 2 << ". 1/2/2001  john" << endl;
 			std::string expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}

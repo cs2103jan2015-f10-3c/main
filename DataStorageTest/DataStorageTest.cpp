@@ -30,5 +30,24 @@ namespace DataStorageTest
 			Assert::AreEqual(expectedPsedoDate, actualPsedoDate);
 		}
 		
+		TEST_METHOD(DeleteDataTest){
+			DataProcessor myDataProcessor;
+			TimeMacro start(1, 2, 2000);
+			TimeMacro end(1, 2, 2001);
+			TimeMacro date(31, 1, 2000);
+			Data task1(start, "jim");
+			Data task2(end, "john");
+			Data task3(date, "jane");
+			DataBase::addData(task1);
+			DataBase::addData(task2);
+			DataBase::addData(task3);
+			std::vector<Data> displayList = DisplayStorage::getDisplayList(date, end);
+			Data actualDeleted = DataBase::deleteData(2);
+			std::string wholeDisplayList = myDataProcessor.convertTaskListToString(displayList);
+			std::string expectedDeletedDesc = "jane";
+			std::string actualDeletedDesc = actualDeleted.getDesc();
+			//Assert::AreEqual(expectedDeletedDesc, wholeDisplayList);
+			Assert::AreEqual(expectedDeletedDesc, actualDeletedDesc);
+		}
 	};
 }

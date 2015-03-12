@@ -11,9 +11,13 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "Parser\Parser.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataStorage", "DataStorage\DataStorage.vcxproj", "{21DAF16E-0AEB-4767-8B3E-9C7322507362}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataProcessorTest", "DataProcessorTest\DataProcessorTest.vcxproj", "{290DE6A5-061C-412A-AB02-0869705C60DA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommonsUnitTesting", "UnitTesting\UnitTesting.vcxproj", "{0ED25F72-0B14-4C96-8F43-5151EFE60775}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataStorageUnitTesting", "DataStorageUnitTesting\DataStorageUnitTesting.vcxproj", "{FBFB770E-067F-4DF3-A961-05705A83913B}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataStorageTest", "DataStorageTest\DataStorageTest.vcxproj", "{349D715D-70A8-4C06-A5D5-32D93B7E2919}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataProcessorTest", "DataProcessorTest\DataProcessorTest.vcxproj", "{290DE6A5-061C-412A-AB02-0869705C60DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,14 +45,22 @@ Global
 		{21DAF16E-0AEB-4767-8B3E-9C7322507362}.Debug|Win32.Build.0 = Debug|Win32
 		{21DAF16E-0AEB-4767-8B3E-9C7322507362}.Release|Win32.ActiveCfg = Release|Win32
 		{21DAF16E-0AEB-4767-8B3E-9C7322507362}.Release|Win32.Build.0 = Release|Win32
-		{290DE6A5-061C-412A-AB02-0869705C60DA}.Debug|Win32.ActiveCfg = Debug|Win32
-		{290DE6A5-061C-412A-AB02-0869705C60DA}.Debug|Win32.Build.0 = Debug|Win32
-		{290DE6A5-061C-412A-AB02-0869705C60DA}.Release|Win32.ActiveCfg = Release|Win32
-		{290DE6A5-061C-412A-AB02-0869705C60DA}.Release|Win32.Build.0 = Release|Win32
+		{0ED25F72-0B14-4C96-8F43-5151EFE60775}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0ED25F72-0B14-4C96-8F43-5151EFE60775}.Debug|Win32.Build.0 = Debug|Win32
+		{0ED25F72-0B14-4C96-8F43-5151EFE60775}.Release|Win32.ActiveCfg = Release|Win32
+		{0ED25F72-0B14-4C96-8F43-5151EFE60775}.Release|Win32.Build.0 = Release|Win32
+		{FBFB770E-067F-4DF3-A961-05705A83913B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FBFB770E-067F-4DF3-A961-05705A83913B}.Debug|Win32.Build.0 = Debug|Win32
+		{FBFB770E-067F-4DF3-A961-05705A83913B}.Release|Win32.ActiveCfg = Release|Win32
+		{FBFB770E-067F-4DF3-A961-05705A83913B}.Release|Win32.Build.0 = Release|Win32
 		{349D715D-70A8-4C06-A5D5-32D93B7E2919}.Debug|Win32.ActiveCfg = Debug|Win32
 		{349D715D-70A8-4C06-A5D5-32D93B7E2919}.Debug|Win32.Build.0 = Debug|Win32
 		{349D715D-70A8-4C06-A5D5-32D93B7E2919}.Release|Win32.ActiveCfg = Release|Win32
 		{349D715D-70A8-4C06-A5D5-32D93B7E2919}.Release|Win32.Build.0 = Release|Win32
+		{290DE6A5-061C-412A-AB02-0869705C60DA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{290DE6A5-061C-412A-AB02-0869705C60DA}.Debug|Win32.Build.0 = Debug|Win32
+		{290DE6A5-061C-412A-AB02-0869705C60DA}.Release|Win32.ActiveCfg = Release|Win32
+		{290DE6A5-061C-412A-AB02-0869705C60DA}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

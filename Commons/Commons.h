@@ -76,7 +76,7 @@ public:
 
 
 class Data {
-private:
+public:
 	//private attribute of internal working
 	bool completeStatus; 
 	int taskNo;
