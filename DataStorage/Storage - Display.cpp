@@ -42,6 +42,7 @@ void DisplayStorage::addData(Data inData){
 	updateTaskNo();
 }
 
+// !! unit test done
 //helper method for DataBase to get unique code of the data
 //input is int TaskNo of the displayList
 //return the uniqueCode to be processed by DataStorage
@@ -52,6 +53,7 @@ int DisplayStorage::getUniqueCode(int taskNo){
 	return iter->getUniqueCode();
 }
 
+// !!unit testing done
 //helper method for getting Data from the displayList taskNo
 //input is int taskNo
 //return Data
