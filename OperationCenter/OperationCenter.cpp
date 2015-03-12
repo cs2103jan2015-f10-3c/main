@@ -9,6 +9,7 @@ const string OperationCenter::CLEAR_COMMAND = "clear";
 const string OperationCenter::SORT_COMMAND = "sort";
 const string OperationCenter::SEARCH_COMMAND = "search";
 const string OperationCenter::EDIT_COMMAND = "edit";
+const string OperationCenter::UNDO_COMMAND = "undo";
 const string OperationCenter::EXIT_COMMAND = "exit";
 const string OperationCenter::EMPTY_RESPONSE = "";
 const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
@@ -22,7 +23,6 @@ vector<string> OperationCenter::executeInput(string input){
 	now = time(0);
 	current = localtime(&now);
 
-	vector<string> returnVector;
 	Parser parser;
 	DataProcessor dataProcessor;
 	TimeMacro currentTime(current->tm_mday, current->tm_mon, current->tm_year + 1900);
@@ -52,6 +52,8 @@ vector<string> OperationCenter::executeInput(string input){
 		returnResponse = EMPTY_RESPONSE;
 	}else if(command == EDIT_COMMAND){
 		returnResponse = dataProcessor.editTask(task.getTaskNo(), task);
+	}else if(command == UNDO_COMMAND){
+		returnResponse = dataProcessor.executeUndo();
 	}else{
 		returnResponse = IVALID_COMMAND_MESSAGE;
 	}
@@ -60,8 +62,7 @@ vector<string> OperationCenter::executeInput(string input){
 		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
 	}
 
-	returnVector.push_back(returnDisplay);
-	returnVector.push_back(returnResponse);
+	Feedback::updateDisplay(returnDisplay);
+	Feedback::updateResponse(returnResponse);
 
-	return returnVector;
 }

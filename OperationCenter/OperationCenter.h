@@ -24,14 +24,35 @@ private:
 	static const string SEARCH_COMMAND;
 	static const string EDIT_COMMAND;
 	static const string EXIT_COMMAND;
+	static const string UNDO_COMMAND;
 	static const string EMPTY_RESPONSE;
 	static const string IVALID_COMMAND_MESSAGE;
+
 
 public:
 
 	OperationCenter();
-	static vector<string> executeInput (string input);
+	static void executeInput (string input);
 
+};
+
+class Feedback{
+private:
+	static string display;
+	static string response;
+public:
+	static string getDisplay(){
+		return display;
+	}
+	static string getResponse(){
+		return response;
+	}
+	static void updateDisplay(string newDisplay){
+		display = newDisplay;
+	}
+	static void updateResponse(string newResponse){
+		response = newResponse;
+	}
 };
 
 #endif
