@@ -1,5 +1,10 @@
 #include "DataStorage.h"
 
+std::string History::latestCommand;
+Data History::latestData;
+std::vector<Data> History::latestVector;
+
+
 std::string History::getLatestCommand(){
 	return latestCommand;
 }

@@ -14,18 +14,17 @@ const string OperationCenter::EXIT_COMMAND = "exit";
 const string OperationCenter::EMPTY_RESPONSE = "";
 const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
 
-OperationCenter::OperationCenter(){
-}
+string Feedback::display;
+string Feedback::response;
 
 void OperationCenter::executeInput(string input){
-	time_t now;
-	struct tm *current;
-	now = time(0);
-	current = localtime(&now);
+	time_t t = time (0);   // get time now
+    struct tm now;
+	localtime_s (&now, &t);
 
+	TimeMacro currentTime(now.tm_mday, now.tm_mon + 1, now.tm_year + 1900);
 	Parser parser;
 	DataProcessor dataProcessor;
-	TimeMacro currentTime(current->tm_mday, current->tm_mon, current->tm_year + 1900);
 	
 	parser.parseInput(input);
 	string command = parser.getCommand();

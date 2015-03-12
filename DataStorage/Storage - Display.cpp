@@ -1,5 +1,7 @@
 #include "DataStorage.h"
 
+std::vector<Data> DisplayStorage::displayList;
+
 //getter method
 //requires the time frame
 //return the displayList

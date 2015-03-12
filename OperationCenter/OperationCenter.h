@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <vector>
 #include <sstream>
-#include <time.h>
+#include <ctime>
+#include <chrono>
 #include "Commons.h"
 #include "DataProcessor.h"
 #include "Parser.h"
@@ -31,16 +32,17 @@ private:
 
 public:
 
-	OperationCenter();
+	OperationCenter() {}
 	static void executeInput (string input);
 
 };
 
 class Feedback{
 private:
-	static string display;
-	static string response;
+	 static string display;
+	 static string response;
 public:
+
 	static string getDisplay(){
 		return display;
 	}

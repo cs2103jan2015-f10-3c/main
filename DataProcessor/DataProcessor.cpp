@@ -88,7 +88,7 @@ string DataProcessor::executeUndo(){
 
 //This function reads in a Data object and convert it into a string
 //that contains all the information of that data and ready to be displayed
-string convertDataObjectToString(Data task){
+string DataProcessor::convertDataObjectToString(Data task){
 	string taskString;
 	ostringstream outData;
 	TimeMacro timeMacroBeg, timeMacroEnd;
@@ -164,7 +164,7 @@ string DataProcessor::searchTask(string keyword){
 //This function reads in a vector of Data object and subsequently converts
 //them into a string that contains all datas in the vector
 //The string will be ready for display by UI
-string convertTaskListToString(vector<Data> taskList){
+string DataProcessor::convertTaskListToString(vector<Data> taskList){
 	string taskListString;
 	ostringstream outList;
 	vector<Data>::iterator iter;
@@ -180,7 +180,7 @@ string convertTaskListToString(vector<Data> taskList){
 
 }
 
-string getEditMessage(Data uneditedTask){
+string DataProcessor::getEditMessage(Data uneditedTask){
 	string uneditedTaskString;
 	string editMessage;
 	uneditedTaskString = convertDataObjectToString(uneditedTask);
