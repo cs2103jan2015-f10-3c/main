@@ -17,7 +17,7 @@ const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
 OperationCenter::OperationCenter(){
 }
 
-vector<string> OperationCenter::executeInput(string input){
+void OperationCenter::executeInput(string input){
 	time_t now;
 	struct tm *current;
 	now = time(0);
