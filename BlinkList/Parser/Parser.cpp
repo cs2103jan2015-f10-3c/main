@@ -51,6 +51,8 @@ string Parser::extractCommandWord (string userInput) {
 }
 
 //Assume a task will always have a description
+//a task will end with a description
+//order is date, time, desc
 void Parser::ParseAdd (string userInput, string commandWord) {
 	Parser returnInput;
 	TimeMacro timeMacroBeg;
@@ -61,19 +63,20 @@ void Parser::ParseAdd (string userInput, string commandWord) {
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
 	timeMacroBeg = parseDate (inputToBeParsed);
 	if (isDate (inputToBeParsed)) {
-        inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE);
+        inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
 	}
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 	if (isTimePeriod (inputToBeParsed)) {
-		desc = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD);
+		desc = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
 	}
 	if (isStartingTime (inputToBeParsed)) {
-		desc = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME);
+		desc = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
 	}
 	returnInput = Parser (commandWord, timeMacroBeg, timeMicroBeg, timeMicroEnd, desc);
 }
 
 //assume desc put as the last one
+//must have description
 void Parser::ParseEdit (string userInput, string commandWord) {
 	Parser returnInput;
 	TimeMacro timeMacro;
