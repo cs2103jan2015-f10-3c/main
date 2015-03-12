@@ -143,8 +143,9 @@ namespace GUI {
 				 //string welcomeMessage = OperationCenter::welcomeUser();
 				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
 				 outputMessageBox->Text = "Hello Jim, Welcome to your Private Assistant!";
-				 string dailyAgenda = OperationCenter::executeInput("show today");
-				 displayBox->Text = msclr::interop::marshal_as<String^>(dailyAgenda);
+				 vector<string> outputResponse = OperationCenter::executeInput("show today");
+				 displayBox->Text = msclr::interop::marshal_as<String^>(outputResponse[0]);
+				 outputMessageBox->Text =  msclr::interop::marshal_as<String^>(outputResponse[1]);
 			 }
 	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 }

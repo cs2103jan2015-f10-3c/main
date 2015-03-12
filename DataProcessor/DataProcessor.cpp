@@ -78,20 +78,21 @@ string DataProcessor::searchTask(string keyword){
 //from the current taskList
 string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 	DataBase::clearData(startTime, endTime);
-	string clearMessage = getClearMessage(startTime, endTime);
-	return clearMessage;
+	//string clearMessage = getClearMessage(startTime, endTime);
+	//return clearMessage;
+	return CLEAR_MESSAGE;
 }
 
 //This function produces the string that contains the clear feature message
-string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
-	string clearMessage;
-	ostringstream out;
-	out << "All tasks between " << startTime.getDay() << " " << startTime.getDate() << "/" 
-		<< startTime.getMonth() << "/" << startTime.getYear()
-		<< "-" << endTime.getDay() << " " << endTime.getDate() << "/" << endTime.getMonth << "/"
-		<< endTime.getYear() << " are cleared from your schedule." ;
-	return clearMessage = out.str();
-}
+//string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
+//	string clearMessage;
+//	ostringstream out;
+//	out << "All tasks between " << startTime.getDay() << " " << startTime.getDate() << "/" 
+//		<< startTime.getMonth() << "/" << startTime.getYear()
+//		<< "-" << endTime.getDay() << " " << endTime.getDate() << "/" << endTime.getMonth << "/"
+//		<< endTime.getYear() << " are cleared from your schedule." ;
+//	return clearMessage = out.str();
+//}
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
@@ -100,8 +101,7 @@ string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
 string DataProcessor::editTask(int taskNumber, Data task){
 	Data uneditedTask;
 	uneditedTask = DisplayStorage::editData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask);
-
+	string editMessage = getEditMessage(uneditedTask) + EDIT_MESSAGE;
 	return editMessage;
 }
 
@@ -110,7 +110,7 @@ string getEditMessage(Data uneditedTask){
 	string editMessage;
 	uneditedTaskString = convertDataObjectToString(uneditedTask);
 	ostringstream out;
-	out << uneditedTaskString << " is edited successfully.";
+	out << uneditedTaskString << " ";
 	editMessage = out.str(); 
 	
 	return editMessage;
@@ -125,9 +125,39 @@ string DataProcessor::executeUndo(){
 string convertDataObjectToString(Data task){
 	string taskString;
 	ostringstream outData;
-	outData << task.getTimeMacro << " " 
-			<< task.getTimeMicro << " " 
-			<< task.getDesc << endl;
+	TimeMacro timeMacroBeg, timeMacroEnd;
+	timeMacroBeg = task.getTimeMacroBeg;
+	timeMacroEnd = task.getTimeMacroEnd;
+	TimeMicro timeMicro = task.getTimeMicro;
+
+	//If there is deadline date associated with the task
+	if(timeMacroBeg.getDate != NULL){
+		outData << timeMacroBeg.getDate << "/"
+				<< timeMacroBeg.getMonth << "/"
+				<< timeMacroBeg.getYear;
+
+	}
+	if(timeMacroEnd.getDate != NULL){
+		outData << "-"
+				<< timeMacroEnd.getDate << "/"
+				<< timeMacroEnd.getMonth << "/"
+				<< timeMacroEnd.getYear;
+	}else
+	{
+		//If there is a start date and no end date specified
+		if(timeMacroBeg.getDate != NULL){
+				outData << " ";
+		}
+	}
+	//If there is deadline time associated with the task
+	if(timeMicro.getHourBeg != NULL){
+		outData << timeMicro.getHourBeg << ":"
+				<< timeMicro.getMinBeg << "-"
+				<< timeMicro.getHourEnd << ":"
+				<< timeMicro.getMinEnd << " ";
+	}
+	
+	outData << task.getDesc << endl;
 	taskString = outData.str();
 	return taskString;
 
