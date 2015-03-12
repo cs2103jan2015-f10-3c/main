@@ -15,7 +15,7 @@ const string Parser::HOUR_FIRST_DIGIT = "012";
 const string Parser::HOUR_SECOND_DIGIT = "01234567890";
 const string Parser::MINUTE_FIRST_DIGIT = "012345";
 const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
-const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
+//const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
 
 
 void Parser::parseInput (string userInput) {
@@ -23,22 +23,22 @@ void Parser::parseInput (string userInput) {
 
 	commandWord = extractCommandWord (userInput); //not sure
 	if (commandWord == "add") {
-		ParseAdd (userInput, commandWord);
+		parseAdd (userInput, commandWord);
 	}
 	else if (commandWord == "edit") {
-		ParseEdit (userInput, commandWord);
+		parseEdit (userInput, commandWord);
 	}
 	else if (commandWord == "search") {
-		ParseSearch (userInput, commandWord);
+		parseSearch (userInput, commandWord);
 	}
 	else if (commandWord == "undo") {
-		ParseUndo (commandWord);
+		parseUndo (commandWord);
 	}
 	else if (commandWord == "delete") {
-		ParseDelete (userInput, commandWord);
+		parseDelete (userInput, commandWord);
 	}
 	else if (commandWord == "display") {
-		ParseDisplay (userInput, commandWord);
+		parseDisplay (userInput, commandWord);
 	}
 }
 
@@ -50,93 +50,86 @@ string Parser::extractCommandWord (string userInput) {
 	return commandWord;
 }
 
-//Assume a task will always have a description
-//a task will end with a description
-//order is date, time, desc
-void Parser::ParseAdd (string userInput, string commandWord) {
-	Parser returnInput;
-	TimeMacro timeMacroBeg;
+//a task will end with a description if there is one
+//all 3 attributes can stand alone
+void Parser::parseAdd (string userInput, string commandWord) {
+	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
 	TimeMicro timeMicroEnd;
 	string inputToBeParsed = userInput;
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
-	timeMacroBeg = parseDate (inputToBeParsed);
-	if (isDate (inputToBeParsed)) {
-        inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
-	}
+
+		parseDate (inputToBeParsed, timeMacro);
+	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 	if (isTimePeriod (inputToBeParsed)) {
-		desc = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-	}
-	if (isStartingTime (inputToBeParsed)) {
-		desc = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-	}
-	returnInput = Parser (commandWord, timeMacroBeg, timeMicroBeg, timeMicroEnd, desc);
+			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
+	    }
+	    else if (isStartingTime (inputToBeParsed)) {
+            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+        }
+		desc = inputToBeParsed;
+
+	
+	updateCommand (commandWord);
+	updateTimeMacro (timeMacro);
+	updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+	updateDesc (desc);
 }
 
-//assume desc put as the last one
-//must have description
-void Parser::ParseEdit (string userInput, string commandWord) {
-	Parser returnInput;
+//a task will end with a description if there is one
+//all 3 attributes can stand alone
+//The task no must be followed by something to edit
+void Parser::parseEdit (string userInput, string commandWord) {
 	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
 	TimeMicro timeMicroEnd;
 	string desc;
-	string inputToBeParsed = userInput;
+	string inputToBeParsed = userInput.substr (commandWord.size() + 1);
 	string index = parseTaskNo (inputToBeParsed);
 	int taskNo = atoi (index.c_str());
-
+	
 	inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
-	int end = 0;
-	string attribute;
-	end = inputToBeParsed.find_first_of (' ');
-	while (end != string::npos) {
-		attribute = inputToBeParsed.substr (0, end);
-		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_ATTRIBUTE + 1);
-		if (attribute == "date") {
-			timeMacro = parseDate (inputToBeParsed);
-			inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_DATE + 1);
-		}
-		else if (attribute == "time") {
-			parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-			if (isStartingTime (inputToBeParsed)) {
-                inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_STARTING_TIME + 1);
-			}
-			else if (isTimePeriod (inputToBeParsed)) {
-				inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_TIME_PERIOD + 1);
-			}
-		}
-		else if (attribute == "desc") {
-            string desc = inputToBeParsed.substr (LENGTH_OF_ATTRIBUTE + 1);
-			inputToBeParsed = "";
-		}
-		end = inputToBeParsed.find_first_of (' ');
-	}
 
-		returnInput = Parser (commandWord, timeMacro, timeMicroBeg, timeMicroEnd, desc);
+	parseDate (inputToBeParsed, timeMacro);
+	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+	if (isTimePeriod (inputToBeParsed)) {
+			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
+	    }
+	    else if (isStartingTime (inputToBeParsed)) {
+            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+        }
+		desc = inputToBeParsed;
+
+
+	updateCommand (commandWord);
+	updateTaskNo (taskNo);
+	updateTimeMacro (timeMacro);
+	updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+    updateDesc (desc);
 }
 
-void Parser::ParseSearch (string userInput, string commandWord) {
-	Parser returnInput;
+void Parser::parseSearch (string userInput, string commandWord) {
 	string desc = userInput.substr (commandWord.size() + 1);
-	returnInput = Parser (commandWord, desc);
+
+    updateCommand (commandWord);
+	updateDesc (desc);
 }
 
-void Parser::ParseUndo (string commandWord) {
-	Parser returnInput;
-	returnInput = Parser (commandWord);
+void Parser::parseUndo (string commandWord) {
+    updateCommand (commandWord);
 }
 
-void Parser::ParseDelete (string userInput, string commandWord) {
-	Parser returnInput;
+void Parser::parseDelete (string userInput, string commandWord) {
 	string index = userInput.substr (commandWord.size() + 1);
 	int taskNo = atoi (index.c_str());
-	returnInput = Parser (commandWord, taskNo);
+	updateCommand (commandWord);
+	updateTaskNo (taskNo);
 }
 
-void Parser::ParseDisplay (string userInput, string commandWord) {
-	Parser returnInput;
+void Parser::parseDisplay (string userInput, string commandWord) {
 	TimeMacro timeMacroBeg;
 	TimeMacro timeMacroEnd;
 
@@ -151,11 +144,12 @@ void Parser::ParseDisplay (string userInput, string commandWord) {
 	else if (period == "this month") {
 		getThisMonth (timeMacroBeg, timeMacroEnd);
 	}
-	returnInput = Parser (commandWord, timeMacroBeg, timeMacroEnd);
+
+	updateCommand (commandWord);
+	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 }
 
-TimeMacro Parser::parseDate (string inputToBeParsesd) {
-	TimeMacro timeMacro;
+void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 	if (isDate (inputToBeParsesd)) {
 		string date = inputToBeParsesd.substr (0, 2);
 		string month = inputToBeParsesd.substr (3, 2);
@@ -169,10 +163,9 @@ TimeMacro Parser::parseDate (string inputToBeParsesd) {
 		timeMacro.updateMonth (monthInt);
 		timeMacro.updateYear (yearInt);
 	}
-	return timeMacro;
 }
 
-void Parser::parseTime (string inputToBeParsed, TimeMicro timeMicroBeg, TimeMicro timeMicroEnd) {
+void Parser::parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
 	if (isTimePeriod (inputToBeParsed) || isStartingTime (inputToBeParsed)) {
         string hourBeg = inputToBeParsed.substr (0, 2);
 		string minuteBeg = inputToBeParsed.substr (3, 2);
@@ -276,7 +269,6 @@ string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
                              "Thursday", "Friday", "Saturday"};
 
   time ( &rawtime );
-  //timeinfo = localtime ( &rawtime );
   localtime_s (&timeinfo, &rawtime);
   timeinfo.tm_year = year - 1900;
   timeinfo.tm_mon = month - 1;
@@ -287,25 +279,26 @@ string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
   return (weekday[timeinfo.tm_wday]);
 }
 
-void Parser::getTodayDate (TimeMacro timeMacro) {
+void Parser::getTodayDate (TimeMacro& timeMacro) {
     time_t t = time (0);   // get time now
     struct tm now;
 	localtime_s (&now, &t);
     now.tm_year = now.tm_year + 1900;
     now.tm_mon = now.tm_mon + 1;
-    now.tm_mday = now.tm_mday;
+	string dayOfTheWeek = convertDateToDayOfTheWeek (now.tm_mday, now.tm_mon, now.tm_year);
+	
 	timeMacro.updateYear (now.tm_year);
 	timeMacro.updateMonth (now.tm_mon);
-	timeMacro.updateDate (now.tm_yday);
+	timeMacro.updateDate (now.tm_mday);
+	timeMacro.updateDay (dayOfTheWeek);
 }
 
-void Parser::getTomorrowDate (TimeMacro timeMacro) {
+void Parser::getTomorrowDate (TimeMacro& timeMacro) {
     time_t t = time (0);   // get time now
     struct tm now;
 	localtime_s (&now, &t);
     now.tm_year = now.tm_year + 1900;
     now.tm_mon = now.tm_mon + 1;
-    now.tm_mday = now.tm_mday;
 
 	if (now.tm_mday == 31) {
 		if (now.tm_mon == 12) {
@@ -338,18 +331,19 @@ void Parser::getTomorrowDate (TimeMacro timeMacro) {
 		now.tm_mday += 1;
 	}
 
+	string dayOfTheWeek = convertDateToDayOfTheWeek (now.tm_mday, now.tm_mon, now.tm_year);
     timeMacro.updateYear (now.tm_year);
 	timeMacro.updateMonth (now.tm_mon);
-	timeMacro.updateDate (now.tm_yday);
+	timeMacro.updateDate (now.tm_mday);
+	timeMacro.updateDay (dayOfTheWeek);
 }
 
-void Parser::getThisMonth (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd) {
+void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
 	time_t t = time (0);   // get time now
     struct tm now;
 	localtime_s (&now, &t);
     now.tm_year = now.tm_year + 1900;
     now.tm_mon = now.tm_mon + 1;
-    now.tm_mday = now.tm_mday;
 
 	timeMacroBeg.updateYear (now.tm_year);
 	timeMacroBeg.updateMonth (now.tm_mon);
