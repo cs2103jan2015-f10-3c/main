@@ -44,32 +44,7 @@ string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 
 //Start of Yang Xiaozhou's part of DataProcessor
 
-//This function reads in the desired keyword to be searched in the current
-//task list, all tasks with description containing the keyword will be returned
-string DataProcessor::searchTask(string keyword){
-	vector<Data> currTaskList = DataBase::getDataList();
-	vector<Data> returnTaskList;
-	vector<Data>::iterator iter;
-	string taskDescription;
-	size_t found;
-	
-	//For every matched task, store it in returnTaskList
-	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
-		taskDescription = (*iter).getDesc();
-		found = taskDescription.find(keyword);
-		if(found != string::npos){
-			DisplayStorage::addData(*iter);
-		}
-	}
 
-	returnTaskList = DisplayStorage::getDisplayList();
-
-	//Convert the taskList into a string that is ready for UI to display
-	string returnTaskListString;
-	returnTaskListString = convertTaskListToString(returnTaskList);
-	return returnTaskListString;
-
-}
 
 //This function reads in two TimeMacro objects which indicate the 
 //period that the user wants tasks to be cleared.
@@ -104,19 +79,11 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	return editMessage;
 }
 
-string getEditMessage(Data uneditedTask){
-	string uneditedTaskString;
-	string editMessage;
-	uneditedTaskString = convertDataObjectToString(uneditedTask);
-	ostringstream out;
-	out << uneditedTaskString << " ";
-	editMessage = out.str(); 
-	
-	return editMessage;
-}
+
 
 string DataProcessor::executeUndo(){
-
+	string dummy;
+	return dummy;
 }
 
 //This function reads in a Data object and convert it into a string
@@ -125,45 +92,72 @@ string convertDataObjectToString(Data task){
 	string taskString;
 	ostringstream outData;
 	TimeMacro timeMacroBeg, timeMacroEnd;
-	timeMacroBeg = task.getTimeMacroBeg;
-	timeMacroEnd = task.getTimeMacroEnd;
+	timeMacroBeg = task.getTimeMacroBeg();
+	timeMacroEnd = task.getTimeMacroEnd();
 	TimeMicro timeMicroBeg, timeMicroEnd;
-	timeMicroBeg = task.getTimeMicroBeg;
-	timeMacroEnd = task.getTimeMicroEnd;
+	timeMicroBeg = task.getTimeMicroBeg();
+	timeMicroEnd = task.getTimeMicroEnd();
 
 	//If there is deadline date associated with the task
-	if(timeMacroBeg.getDate != NULL){
-		outData << timeMacroBeg.getDate << "/"
-				<< timeMacroBeg.getMonth << "/"
-				<< timeMacroBeg.getYear;
+	if(timeMacroBeg.getDate() != NULL){
+		outData << timeMacroBeg.getDate() << "/"
+				<< timeMacroBeg.getMonth() << "/"
+				<< timeMacroBeg.getYear();
 
 	}
-	if(timeMacroEnd.getDate != 0){
+	if(timeMacroEnd.getDate() != 0){
 		outData << "-"
-				<< timeMacroEnd.getDate << "/"
-				<< timeMacroEnd.getMonth << "/"
-				<< timeMacroEnd.getYear;
+				<< timeMacroEnd.getDate() << "/"
+				<< timeMacroEnd.getMonth() << "/"
+				<< timeMacroEnd.getYear();
 	}else
 	{
 		//If there is a start date and no end date specified
-		if(timeMacroBeg.getDate != 0){
+		if(timeMacroBeg.getDate() != 0){
 				outData << " ";
 		}
 	}
 	//Check if there is deadline time associated with the task
-	if(timeMicroBeg.getHour != -1){
-		outData << timeMicroBeg.getHour << ":"
-				<< timeMicroBeg.getMin;
+	if(timeMicroBeg.getHour() != -1){
+		outData << timeMicroBeg.getHour() << ":"
+				<< timeMicroBeg.getMin();
 
 	}
-	if(timeMicroEnd.getHour != -1){
-		outData << "-" << timeMicroEnd.getHour << ":"
-				<< timeMicroEnd.getMin;
+	if(timeMicroEnd.getHour() != -1){
+		outData << "-" << timeMicroEnd.getHour() << ":"
+				<< timeMicroEnd.getMin();
 	}
 	
-	outData << task.getDesc << endl;
+	outData << task.getDesc() << endl;
 	taskString = outData.str();
 	return taskString;
+
+}
+
+//This function reads in the desired keyword to be searched in the current
+//task list, all tasks with description containing the keyword will be returned
+string DataProcessor::searchTask(string keyword){
+	vector<Data> currTaskList = DataBase::getDataList();
+	vector<Data> returnTaskList;
+	vector<Data>::iterator iter;
+	string taskDescription;
+	size_t found;
+	
+	//For every matched task, store it in returnTaskList
+	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
+		taskDescription = (*iter).getDesc();
+		found = taskDescription.find(keyword);
+		if(found != string::npos){
+			DisplayStorage::addData(*iter);
+		}
+	}
+
+	returnTaskList = DisplayStorage::getDisplayList();
+
+	//Convert the taskList into a string that is ready for UI to display
+	string returnTaskListString;
+	returnTaskListString = convertTaskListToString(returnTaskList);
+	return returnTaskListString;
 
 }
 
@@ -184,4 +178,15 @@ string convertTaskListToString(vector<Data> taskList){
 	taskListString = outList.str();
 	return taskListString;
 
+}
+
+string getEditMessage(Data uneditedTask){
+	string uneditedTaskString;
+	string editMessage;
+	uneditedTaskString = convertDataObjectToString(uneditedTask);
+	ostringstream out;
+	out << uneditedTaskString << " ";
+	editMessage = out.str(); 
+	
+	return editMessage;
 }

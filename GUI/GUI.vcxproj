@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Yang\Desktop\Projects\main\OperationCenter</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter;C:\Users\Yang\Desktop\Projects\main\OperationCenter</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -95,6 +95,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Commons\Commons.vcxproj">
+      <Project>{76a15500-02b2-4482-8610-9fbba376f502}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\OperationCenter\OperationCenter.vcxproj">
       <Project>{075e28d9-9d3a-424d-adfb-7241a1522057}</Project>
     </ProjectReference>
