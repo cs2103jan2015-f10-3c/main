@@ -39,9 +39,10 @@ public:
 
 class Feedback{
 private:
-	static string display;
-	static string response;
+	 static string display;
+	 static string response;
 public:
+
 	static string getDisplay(){
 		return display;
 	}
