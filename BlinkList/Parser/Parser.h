@@ -17,8 +17,17 @@ private:
 	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicro, string desc) {
 		_command = commandWord;
 		_myData.updateTimeMacroBeg (timeMacro);
-		_myData.updateTimeMicro (timeMicro);
+		_myData.updateTimeMicroBeg (timeMicro);
 		_myData.updateDesc (desc);
+	}
+
+	Parser (string commandWord, TimeMacro timeMacro, TimeMicro timeMicroBeg, 
+		TimeMicro timeMicroEnd, string desc) {
+			_command = commandWord;
+		    _myData.updateTimeMacroBeg (timeMacro);
+		    _myData.updateTimeMicroBeg (timeMicroBeg);
+			_myData.updateTimeMicroEnd (timeMicroEnd);
+		    _myData.updateDesc (desc);
 	}
 
 	Parser (string commandWord, string keyword) {
@@ -86,7 +95,7 @@ public:
 	void ParseDelete (string userInput, string commandWord);
 	void ParseDisplay (string userInput, string commandWord);
 	TimeMacro parseDate (string inputToBeParsesd);
-	TimeMicro parseTime (string inputToBeParsed);
+	void parseTime (string inputToBeParsed, TimeMicro timeMicroBeg, TimeMicro timeMicroEnd);
 	string parseTaskNo (string inputToBeParsed);
 	bool isDate (string inputToBeParsed);
 	string convertDateToDayOfTheWeek (int date, int month, int year);

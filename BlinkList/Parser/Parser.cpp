@@ -1,21 +1,21 @@
 #include "Parser.h"
 
-static const unsigned int LENGTH_OF_DATE = 10;  //"dd/mm/yyyy"
-static const string DATE_FIRST_DIGIT = "0123";
-static const string DATE_SECOND_DIGIT = "0123456789";
-static const string MONTH_FIRST_DIGIT = "01";
-static const string MONTH_SECOND_DIGIT = "0123456789";
-static const string YEAR_FIRST_DIGIT = "2";
-static const string YEAR_SECOND_DIGIT = "0123456789";
-static const string YEAR_THIRD_DIGIT = "0123456789";
-static const string YEAR_FOURTH_DIGIT = "0123456789";
-static const unsigned int LENGTH_OF_STARTING_TIME = 5;  //"09:00"
-static const unsigned int LENGTH_OF_TIME_PERIOD = 11;  //"09:00-10:30"
-static const string HOUR_FIRST_DIGIT = "012";
-static const string HOUR_SECOND_DIGIT = "01234567890";
-static const string MINUTE_FIRST_DIGIT = "012345";
-static const string MINUTE_SECOND_DIGIT = "0123456789";
-static const unsigned int LENGTH_OF_ATTRIBUTE = 4;
+const unsigned int Parser::LENGTH_OF_DATE = 10;  //"dd/mm/yyyy"
+const string Parser::DATE_FIRST_DIGIT = "0123";
+const string Parser::DATE_SECOND_DIGIT = "0123456789";
+const string Parser::MONTH_FIRST_DIGIT = "01";
+const string Parser::MONTH_SECOND_DIGIT = "0123456789";
+const string Parser::YEAR_FIRST_DIGIT = "2";
+const string Parser::YEAR_SECOND_DIGIT = "0123456789";
+const string Parser::YEAR_THIRD_DIGIT = "0123456789";
+const string Parser::YEAR_FOURTH_DIGIT = "0123456789";
+const unsigned int Parser::LENGTH_OF_STARTING_TIME = 5;  //"09:00"
+const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 11;  //"09:00-10:30"
+const string Parser::HOUR_FIRST_DIGIT = "012";
+const string Parser::HOUR_SECOND_DIGIT = "01234567890";
+const string Parser::MINUTE_FIRST_DIGIT = "012345";
+const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
+const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
 
 
 void Parser::parseInput (string userInput) {
@@ -54,7 +54,8 @@ string Parser::extractCommandWord (string userInput) {
 void Parser::ParseAdd (string userInput, string commandWord) {
 	Parser returnInput;
 	TimeMacro timeMacroBeg;
-	TimeMicro timeMicro;
+	TimeMicro timeMicroBeg;
+	TimeMicro timeMicroEnd;
 	string inputToBeParsed = userInput;
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
@@ -62,21 +63,22 @@ void Parser::ParseAdd (string userInput, string commandWord) {
 	if (isDate (inputToBeParsed)) {
         inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE);
 	}
-	timeMicro = parseTime (inputToBeParsed);
+	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 	if (isTimePeriod (inputToBeParsed)) {
 		desc = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD);
 	}
 	if (isStartingTime (inputToBeParsed)) {
 		desc = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME);
 	}
-	returnInput = Parser (commandWord, timeMacroBeg, timeMicro, desc);
+	returnInput = Parser (commandWord, timeMacroBeg, timeMicroBeg, timeMicroEnd, desc);
 }
 
 //assume desc put as the last one
 void Parser::ParseEdit (string userInput, string commandWord) {
 	Parser returnInput;
 	TimeMacro timeMacro;
-	TimeMicro timeMicro;
+	TimeMicro timeMicroBeg;
+	TimeMicro timeMicroEnd;
 	string desc;
 	string inputToBeParsed = userInput;
 	string index = parseTaskNo (inputToBeParsed);
@@ -94,7 +96,7 @@ void Parser::ParseEdit (string userInput, string commandWord) {
 			inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_DATE + 1);
 		}
 		else if (attribute == "time") {
-			timeMicro = parseTime (inputToBeParsed);
+			parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 			if (isStartingTime (inputToBeParsed)) {
                 inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_STARTING_TIME + 1);
 			}
@@ -103,12 +105,13 @@ void Parser::ParseEdit (string userInput, string commandWord) {
 			}
 		}
 		else if (attribute == "desc") {
-            string desc = inputToBeParsed.substr (5);
+            string desc = inputToBeParsed.substr (LENGTH_OF_ATTRIBUTE + 1);
 			inputToBeParsed = "";
 		}
 		end = inputToBeParsed.find_first_of (' ');
 	}
-	returnInput = Parser (commandWord, timeMacro, timeMicro, desc);
+
+		returnInput = Parser (commandWord, timeMacro, timeMicroBeg, timeMicroEnd, desc);
 }
 
 void Parser::ParseSearch (string userInput, string commandWord) {
@@ -166,25 +169,23 @@ TimeMacro Parser::parseDate (string inputToBeParsesd) {
 	return timeMacro;
 }
 
-TimeMicro Parser::parseTime (string inputToBeParsed) {
-	TimeMicro timeMicro;
+void Parser::parseTime (string inputToBeParsed, TimeMicro timeMicroBeg, TimeMicro timeMicroEnd) {
 	if (isTimePeriod (inputToBeParsed) || isStartingTime (inputToBeParsed)) {
         string hourBeg = inputToBeParsed.substr (0, 2);
 		string minuteBeg = inputToBeParsed.substr (3, 2);
 		int hourBegInt = atoi (hourBeg.c_str());
 		int minuteBegInt = atoi (minuteBeg.c_str());
-		timeMicro.updateHourBeg (hourBegInt);
-		timeMicro.updateMinBeg (minuteBegInt);
+		timeMicroBeg.updateHour (hourBegInt);
+		timeMicroBeg.updateMin (minuteBegInt);
 	}
 	if (isTimePeriod (inputToBeParsed)) {
 		string hourEnd = inputToBeParsed.substr (6, 2);
 		string minuteEnd = inputToBeParsed.substr (8, 2);
 		int hourEndInt = atoi (hourEnd.c_str());
 		int minuteEndInt = atoi (minuteEnd.c_str());
-		timeMicro.updateHourEnd (hourEndInt);
-		timeMicro.updateMinEnd (minuteEndInt);
+		timeMicroEnd.updateHour (hourEndInt);
+		timeMicroEnd.updateMin (minuteEndInt);
 	}
-	return timeMicro;
 }
 
 string Parser::parseTaskNo (string inputToBeParsed) {
