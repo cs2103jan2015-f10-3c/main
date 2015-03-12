@@ -143,9 +143,11 @@ namespace GUI {
 				 //string welcomeMessage = OperationCenter::welcomeUser();
 				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
 				 outputMessageBox->Text = "Hello Jim, Welcome to your Private Assistant!";
-				 vector<string> outputResponse = OperationCenter::executeInput("show today");
-				 displayBox->Text = msclr::interop::marshal_as<String^>(outputResponse[0]);
-				 outputMessageBox->Text =  msclr::interop::marshal_as<String^>(outputResponse[1]);
+				 OperationCenter::executeInput("show today");
+				 string displayString = Feedback::getDisplay();
+				 string responseString = Feedback::getResponse();
+				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString);
+				 outputMessageBox->Text =  msclr::interop::marshal_as<String^>(responseString);
 			 }
 	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 }
@@ -154,11 +156,12 @@ namespace GUI {
 	private: System::Void confirmInputButton_Click(System::Object^  sender, System::EventArgs^  e) {
 				 
 				 string userInput = msclr::interop::marshal_as<string>(inputBox->Text);
-				 std::vector<string> displayString;
-				 inputBox->Clear;
-				 displayString = OperationCenter::executeInput(userInput);
-				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(displayString[0]);
-				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString[1]);
+				 inputBox->Clear();
+				 OperationCenter::executeInput(userInput);
+				 string displayString = Feedback::getDisplay();
+				 string responseString = Feedback::getResponse();
+				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(responseString);
+				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString);
 			}
 	
 	//User presses "Enter" key after typing

@@ -74,7 +74,7 @@ std::vector<Data>::iterator DataBase::getData(int uniqueNo){
 			return iter;
 		}
 	}
-	return;// !! figure out how to return error here
+	// !! figure out how to return error here
 }
 
 
@@ -166,7 +166,7 @@ void DataBase::allocatePsedoDate(){
 
 	std::vector<Data>::iterator iter;
 	for(iter = dataList.begin(); iter < dataList.end(); iter++){
-		TimeMacro time = iter->getTimeMacroBeg;
+		TimeMacro time = iter->getTimeMacroBeg();
 		
 		int year = time.getYear();
 		int month = time.getMonth();

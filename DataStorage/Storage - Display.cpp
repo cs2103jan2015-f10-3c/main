@@ -31,6 +31,7 @@ std::vector<Data> DisplayStorage::getDisplayList(){
 //helper method for Data Processing
 //for keyword search command
 void DisplayStorage::addData(Data inData){
+	displayList.clear();
 	displayList.push_back(inData);
 }
 
