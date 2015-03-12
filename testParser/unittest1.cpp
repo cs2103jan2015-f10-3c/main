@@ -214,7 +214,7 @@ namespace testParser
 			Parser parser;
 			string input = "undo";
 			string commandWord = "undo";
-			parser.ParseUndo (input);
+			parser.parseUndo (input);
 			Assert::AreEqual (parser.getCommand (), commandWord);
 		}
 
@@ -223,7 +223,7 @@ namespace testParser
 			Parser parser;
 			string input = "delete 3";
 			string commandWord = "delete";
-			parser.ParseDelete (input, commandWord);
+			parser.parseDelete (input, commandWord);
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (parser.getTaskNo (), 3);
 		}
@@ -233,7 +233,7 @@ namespace testParser
 			Parser parser;
 			string input = "delete 388";
 			string commandWord = "delete";
-			parser.ParseDelete (input, commandWord);
+			parser.parseDelete (input, commandWord);
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (parser.getTaskNo (), 388);
 		}
@@ -277,6 +277,32 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay (), expectedDay);
 		}
 
+		TEST_METHOD(testParseDate4)
+		{
+			Parser parser;
+			TimeMacro timeMacro;
+			string testString = "";
+			string expectedDay = "undefined";
+			parser.parseDate (testString, timeMacro);
+			Assert::AreEqual (timeMacro.getDate (), 0);
+			Assert::AreEqual (timeMacro.getMonth (), 0);
+			Assert::AreEqual (timeMacro.getYear (), 0);
+			Assert::AreEqual (timeMacro.getDay (), expectedDay);
+		}
+
+		TEST_METHOD(testParseDate5)
+		{
+			Parser parser;
+			TimeMacro timeMacro;
+			string testString = "09:00-10:00";
+			string expectedDay = "undefined";
+			parser.parseDate (testString, timeMacro);
+			Assert::AreEqual (timeMacro.getDate (), 0);
+			Assert::AreEqual (timeMacro.getMonth (), 0);
+			Assert::AreEqual (timeMacro.getYear (), 0);
+			Assert::AreEqual (timeMacro.getDay (), expectedDay);
+		}
+
 		TEST_METHOD(testTomorrowDate)
 		{
 			Parser parser;
@@ -306,20 +332,47 @@ namespace testParser
 		TEST_METHOD(testParseDisplay1)
 		{
 			Parser parser;
-			//TimeMacro timeMacroBeg;
-			//TimeMacro timeMacroEnd;
-			string userInput = "display this week";
+			string userInput = "display this month";
 			string commandWord = "display";
-			parser.ParseDisplay (userInput, commandWord);
-			Data myData = parser.getData ();
+			parser.parseDisplay (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual ((myData.getTimeMacroBeg ()).getDate (), 0);
-			Assert::AreEqual ((myData.getTimeMacroBeg ()).getMonth (), 3);
-			Assert::AreEqual ((myData.getTimeMacroBeg ()).getYear (), 2015);
-			Assert::AreEqual ((myData.getTimeMacroEnd ()).getDate (), 0);
-			Assert::AreEqual ((myData.getTimeMacroEnd ()).getMonth (), 3);
-			Assert::AreEqual ((myData.getTimeMacroEnd ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getDate (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getYear (), 2015);
+		}
+
+		TEST_METHOD(testParseDisplay2)
+		{
+			Parser parser;
+			string userInput = "display today";
+			string commandWord = "display";
+			string expectedDay = "Friday";
+			parser.parseDisplay (userInput, commandWord);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+		}
+
+		TEST_METHOD(testParseDisplay3)
+		{
+			Parser parser;
+			string userInput = "display tomorrow";
+			string commandWord = "display";
+			string expectedDay = "Saturday";
+			parser.parseDisplay (userInput, commandWord);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 14);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
 		}
 
 		TEST_METHOD(testParseSearch1)
@@ -328,11 +381,174 @@ namespace testParser
 			string userInput = "search breakfast";
 			string commandWord = "search";
 			string expectedDesc = "breakfast";
-			Data myData = parser.getData ();
-			parser.ParseDisplay (userInput, commandWord);
+			parser.parseSearch (userInput, commandWord);
 			
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (myData.getDesc (), expectedDesc);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expectedDesc);
+		}
+
+		TEST_METHOD(testParseSearch2)
+		{
+			Parser parser;
+			string userInput = "search breakfast at UT";
+			string commandWord = "search";
+			string expectedDesc = "breakfast at UT";
+			parser.parseSearch (userInput, commandWord);
+			
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expectedDesc);
+		}
+
+		TEST_METHOD(testParseEdit1)
+		{
+			Parser parser;
+			string userInput = "edit 4 13/03/2015 09:00 breakfast";
+			string commandWord = "edit";
+			string expectedDay = "Friday";
+			string expecedDesc = "breakfast";
+			parser.parseEdit (userInput, commandWord);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 4);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getHour (), 9);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getMin (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), -1);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), -1);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
+		}
+
+		TEST_METHOD(testParseEdit2)
+		{
+			Parser parser;
+			string userInput = "edit 33 13/03/2015 09:00-10:00 work out";
+			string commandWord = "edit";
+			string expectedDay = "Friday";
+			string expecedDesc = "work out";
+			parser.parseEdit (userInput, commandWord);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getHour (), 9);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getMin (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), 10);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), 0);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
+		}
+
+		TEST_METHOD(testParseAdd1)
+		{
+			Parser parser;
+			string userInput = "add 13/03/2015 19:00 dinner";
+			string commandWord = "add";
+			string expectedDay = "Friday";
+			string expecedDesc = "dinner";
+			parser.parseAdd (userInput, commandWord);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getHour (), 19);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getMin (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), -1);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), -1);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
+		}
+
+
+		TEST_METHOD(testParseAdd2)
+		{
+			Parser parser;
+			string userInput = "add 13/03/2015 10:00-14:00 project work";
+			string commandWord = "add";
+			string expectedDay = "Friday";
+			string expecedDesc = "project work";
+			parser.parseAdd (userInput, commandWord);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getHour (), 10);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getMin (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), 14);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), 0);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
+		}
+
+		TEST_METHOD(testParseInput1)
+		{
+			Parser parser;
+			string userInput = "add 13/03/2015 10:00-14:00 project work";
+			string expectedDay = "Friday";
+			string expecedDesc = "project work";
+			string commandWord = "add";
+			parser.parseInput (userInput);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getHour (), 10);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getMin (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), 14);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), 0);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
+		}
+
+		TEST_METHOD(testParseInput2)
+		{
+			Parser parser;
+			string userInput = "edit 9 13/03/2015 10:00 project work";
+			string expectedDay = "Friday";
+			string expecedDesc = "project work";
+			string commandWord = "edit";
+			parser.parseInput (userInput);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 9);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getHour (), 10);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getMin (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), -1);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), -1);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
+		}
+
+		TEST_METHOD(testParseInput3)
+		{
+			Parser parser;
+			string userInput = "delete 99";
+			string expectedDay = "undefined";
+			string expecedDesc = "";
+			string commandWord = "delete";
+			parser.parseInput (userInput);
+
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 99);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 0);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getHour (), -1);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroBeg ()).getMin (), -1);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), -1);
+			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), -1);
+			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
 		}
 
 	};

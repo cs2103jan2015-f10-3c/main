@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkList\Commons;C:\Users\Yang\Desktop\Projects\BlinkList\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\sony\Documents\Visual Studio 2012\Projects\BlinkList\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

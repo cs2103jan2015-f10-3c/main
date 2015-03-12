@@ -64,6 +64,9 @@ private:
 public: 
 	//default constructor
 	Parser () {
+		_command = "";
+		_myData;
+		_taskNo = 0;
 	}
 
 	//getters
@@ -82,23 +85,23 @@ public:
 
 	void parseInput (string userInput);
 	string extractCommandWord (string userInput);
-	void ParseAdd (string userInput, string commandWord);
-	void ParseEdit (string userInput, string commandWord);
-	void ParseSearch (string userInput, string commandWord);
-	void ParseUndo (string commandWord);
-	void ParseDelete (string userInput, string commandWord);
-	void ParseDisplay (string userInput, string commandWord);
-	TimeMacro parseDate (string inputToBeParsesd);
-	void parseTime (string inputToBeParsed, TimeMicro timeMicroBeg, TimeMicro timeMicroEnd);
+	void parseAdd (string userInput, string commandWord);
+	void parseEdit (string userInput, string commandWord);
+	void parseSearch (string userInput, string commandWord);
+	void parseUndo (string commandWord);
+	void parseDelete (string userInput, string commandWord);
+	void parseDisplay (string userInput, string commandWord);
+    void parseDate (string inputToBeParsesd, TimeMacro& timeMacro);
+	void parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
 	string parseTaskNo (string inputToBeParsed);
 	bool isDate (string inputToBeParsed);
 	string convertDateToDayOfTheWeek (int date, int month, int year);
 	bool isStartingTime (string inputToBeParsed);
 	bool isTimePeriod (string inputToBeParsed);
 	bool searchSubstring (string string, char substring);
-	void getTodayDate (TimeMacro timeMacro);
-	void getTomorrowDate (TimeMacro timeMacro);
-	void getThisMonth (TimeMacro timeMacroBeg, TimeMacro timeMacroEnd);
+	void getTodayDate (TimeMacro& timeMacro);
+	void getTomorrowDate (TimeMacro& timeMacro);
+	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);
 	bool isLeapYear (int year);
 	
 };
