@@ -21,7 +21,7 @@ private:
 
 public:
 
-	DataProcessor();
+	DataProcessor(){}
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);

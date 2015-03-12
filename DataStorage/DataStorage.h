@@ -19,7 +19,7 @@ private:
 	static void updateTaskNo();
 	static void allocateUniqueCode(Data inData);
 	static void sortDataList();
-	static void allocatePsedoDate();
+	//static void allocatePsedoDate();
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
 	static std::vector<Data>::iterator getData(int uniqueNo);
@@ -32,7 +32,7 @@ public:
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDataList();
-	
+	static void allocatePsedoDate();
 	//Helper method for DisplayStorage
 	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	

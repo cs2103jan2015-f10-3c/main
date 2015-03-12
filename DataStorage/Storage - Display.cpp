@@ -7,7 +7,7 @@ std::vector<Data> DisplayStorage::displayList;
 //return the displayList
 //for display command
 std::vector<Data> DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
-	displayList.clear(); //clear the vector everytime it starts
+	/*displayList.clear(); //clear the vector everytime it starts
 
 	DataBase::searchPeriod(startTime,endTime);
 	
@@ -17,6 +17,18 @@ std::vector<Data> DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro 
 	}
 
 	DisplayStorage::updateTaskNo();
+
+	return displayList;*/
+	std::vector<Data> displayList;
+	TimeMacro start(1, 2, 2000);
+	TimeMacro end(1, 2, 2001);
+	TimeMacro date(31, 1, 2000);
+	Data task1(start, "jim");
+	Data task2(start, "jane");
+	Data task3(end, "john");
+	displayList.push_back(task1);
+	displayList.push_back(task2);
+	displayList.push_back(task3);
 
 	return displayList;
 }

@@ -103,7 +103,7 @@ public:
 		microTimeEnd(inMicroEnd), desc(inDesc) {} 
 	//constructor for activities that start and end at the same time
 	Data (TimeMacro inMacro, TimeMicro inMicroBeg, TimeMicro inMicroEnd, std::string inDesc) :
-		macroTimeBeg(inMacro), microTimeBeg(inMicroBeg), microTimeEnd(inMicroEnd) {}
+		macroTimeBeg(inMacro), microTimeBeg(inMicroBeg), microTimeEnd(inMicroEnd), desc(inDesc) {}
 	//constructor for activities that only have a deadline
 	Data (TimeMacro inMacro, std::string inDesc) :
 		macroTimeBeg(inMacro), desc(inDesc) {}

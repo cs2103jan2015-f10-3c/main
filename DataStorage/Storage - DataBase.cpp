@@ -10,6 +10,19 @@ std::vector<Data>::iterator IterStorage::iterEnd;
 //for command such as search
 std::vector<Data> DataBase::getDataList() {
 	return dataList;
+	//for searchTest
+	/*std::vector<Data> returnVector;
+	TimeMacro start(1, 2, 2000);
+	TimeMacro end(1, 2, 2001);
+	TimeMacro date(31, 1, 2000);
+	Data task1(start, "jim is smart and stupid");
+	Data task2(date, "john is good looking or ugly");
+	Data task3(end, "jane is sexy and fat");
+	returnVector.push_back(task1);
+	returnVector.push_back(task2);
+	returnVector.push_back(task3);
+
+	return returnVector;*/
 }
 
 //for add command to update the dataList
@@ -50,23 +63,32 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
-	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	/*int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
 	History::updateLatestData(*getData(uniqueNo)); //store in History
 	dataList.erase(getData(uniqueNo));
 	updateTaskNo();
 
-	return DisplayStorage::getData(taskNo);
+	return DisplayStorage::getData(taskNo);*/
+	Data task("breakfast at utown");
+	return task;
 }
 
 //method for edit command
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data DataBase::editData(int taskNo, Data updatedData){
-	History::updateLatestData(updatedData); // store for undo
+	/*History::updateLatestData(updatedData); // store for undo
 	deleteData(taskNo);
 	addData(updatedData);
 
-	return DisplayStorage::getData(taskNo);
+	return DisplayStorage::getData(taskNo);*/
+	TimeMacro start(1, 2, 2000);
+	TimeMicro begin(1,30);
+	TimeMicro end(2, 30);
+	Data task1(start, begin, end, "jim");
+	Data task2(start, begin, end, "john");
+	
+	return task1;
 }
 
 //helper method for deleteData and editData
@@ -168,7 +190,6 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 //used for sorting purposes
 //for internal working
 void DataBase::allocatePsedoDate(){
-
 	std::vector<Data>::iterator iter;
 	for(iter = dataList.begin(); iter < dataList.end(); iter++){
 		TimeMacro time = iter->getTimeMacroBeg();

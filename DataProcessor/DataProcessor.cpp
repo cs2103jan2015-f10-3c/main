@@ -2,13 +2,11 @@
 
 using namespace std;
 
-const string DataProcessor::ADD_MESSAGE = "is added";
-const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
-const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
-const string DataProcessor::EDIT_MESSAGE = "is edited";
+const string DataProcessor::ADD_MESSAGE = " is added";
+const string DataProcessor::DELETE_MESSAGE = " is deleted from BlinkList";
+const string DataProcessor::CLEAR_MESSAGE = " all contents are cleared";
+const string DataProcessor::EDIT_MESSAGE = " is edited";
 
-DataProcessor::DataProcessor(){
-}
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
@@ -91,9 +89,9 @@ string DataProcessor::executeUndo(){
 string DataProcessor::convertDataObjectToString(Data task){
 	string taskString;
 	ostringstream outData;
-	TimeMacro timeMacroBeg, timeMacroEnd;
+	TimeMacro timeMacroBeg;//, timeMacroEnd;
 	timeMacroBeg = task.getTimeMacroBeg();
-	timeMacroEnd = task.getTimeMacroEnd();
+	//timeMacroEnd = task.getTimeMacroEnd();
 	TimeMicro timeMicroBeg, timeMicroEnd;
 	timeMicroBeg = task.getTimeMicroBeg();
 	timeMicroEnd = task.getTimeMicroEnd();
@@ -102,10 +100,10 @@ string DataProcessor::convertDataObjectToString(Data task){
 	if(timeMacroBeg.getDate() != NULL){
 		outData << timeMacroBeg.getDate() << "/"
 				<< timeMacroBeg.getMonth() << "/"
-				<< timeMacroBeg.getYear();
+				<< timeMacroBeg.getYear() << " ";
 
 	}
-	if(timeMacroEnd.getDate() != 0){
+	/*if(timeMacroEnd.getDate() != 0){
 		outData << "-"
 				<< timeMacroEnd.getDate() << "/"
 				<< timeMacroEnd.getMonth() << "/"
@@ -116,7 +114,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 		if(timeMacroBeg.getDate() != 0){
 				outData << " ";
 		}
-	}
+	}*/
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
 		outData << timeMicroBeg.getHour() << ":"
@@ -128,7 +126,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 				<< timeMicroEnd.getMin();
 	}
 	
-	outData << task.getDesc() << endl;
+	outData << " " << task.getDesc();
 	taskString = outData.str();
 	return taskString;
 
@@ -171,7 +169,7 @@ string DataProcessor::convertTaskListToString(vector<Data> taskList){
 	int numberOfTask = 1;
 	for(iter = taskList.begin(); iter != taskList.end(); iter++){
 		outList << numberOfTask << ". "
-				<< convertDataObjectToString(*iter); 
+				<< convertDataObjectToString(*iter) << endl; 
 		numberOfTask++;
 	}
 
@@ -185,7 +183,7 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 	string editMessage;
 	uneditedTaskString = convertDataObjectToString(uneditedTask);
 	ostringstream out;
-	out << uneditedTaskString << " ";
+	out << uneditedTaskString;
 	editMessage = out.str(); 
 	
 	return editMessage;
