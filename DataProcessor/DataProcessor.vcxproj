@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{075E28D9-9D3A-424D-ADFB-7241A1522057}</ProjectGuid>
-    <RootNamespace>OperationCenter</RootNamespace>
+    <ProjectGuid>{00748712-4A07-4125-B153-8DFFCF6C0827}</ProjectGuid>
+    <RootNamespace>DataProcessor</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -44,7 +44,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Yang\Desktop\Projects\BlinkList\DataProcessor;C:\Users\Yang\Desktop\Projects\BlinkList\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;C:\Users\Yang\Desktop\Projects\main\DataStorage;C:\Users\Yang\Desktop\Projects\main\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -65,18 +65,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="OperationCenter.h" />
+    <ClInclude Include="DataProcessor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DataProcessor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.vcxproj">
       <Project>{76a15500-02b2-4482-8610-9fbba376f502}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\DataProcessor\DataProcessor.vcxproj">
-      <Project>{00748712-4a07-4125-b153-8dffcf6c0827}</Project>
+    <ProjectReference Include="..\DataStorage\DataStorage.vcxproj">
+      <Project>{21daf16e-0aeb-4767-8b3e-9c7322507362}</Project>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="OperationCenter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
