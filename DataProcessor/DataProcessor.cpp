@@ -99,7 +99,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 	timeMicroEnd = task.getTimeMicroEnd();
 
 	//If there is deadline date associated with the task
-	if(timeMacroBeg.getDate() != NULL){
+	if(timeMacroBeg.getDate() != 0){
 		outData << timeMacroBeg.getDate() << "/"
 				<< timeMacroBeg.getMonth() << "/"
 				<< timeMacroBeg.getYear();
