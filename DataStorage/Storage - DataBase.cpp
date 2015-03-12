@@ -1,9 +1,11 @@
 #include "DataStorage.h"
 
-std::vector<Data> DataBase::dataList;
-
 std::vector<Data>::iterator IterStorage::iterBeg;
 std::vector<Data>::iterator IterStorage::iterEnd;
+
+
+std::vector<Data> DataBase::dataList;
+
 
 // !!test done by data processing
 //return the DataBase list 
@@ -182,30 +184,25 @@ void DataBase::allocatePsedoDate(){
 //to be pass to DisplayStorage
 //updates IterStorage to contain the relevant iteration
 void DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
-
+	allocatePsedoDate();
 	std::vector<Data>::iterator iter;
-	
+
+	int pStartTime = startTime.getYear()*10000 + startTime.getMonth()*100 + startTime.getDate();
+	int pEndTime = endTime.getYear()*10000 + endTime.getMonth()*100 + endTime.getDate();
+
 	bool marker = false;
 
 	for(iter = dataList.begin(); marker == false || iter < dataList.end(); iter++){
-		TimeMacro time = iter->getTimeMacroBeg();
-
-		if(time.getDate() >= startTime.getDate() &&
-			time.getMonth() >= startTime.getMonth() &&
-			time.getYear() >= startTime.getYear()) {
-				marker = true;
-				IterStorage::updateIterBeg(iter);
+		if(iter->getPsedoDate() >= pStartTime){
+			marker = true;
+			IterStorage::updateIterBeg(iter);
 		}
 	}
 
 	for(iter = dataList.end()-1; marker == true || iter <= dataList.begin(); iter--){
-		TimeMacro time = iter->getTimeMacroBeg();
-
-		if(time.getDate() <= endTime.getDate() &&
-			time.getMonth() <= endTime.getMonth() &&
-			time.getYear() <= endTime.getYear()) {
-				marker = false;
-				IterStorage::updateIterEnd(iter);
+		if(iter->getPsedoDate() <= pEndTime) {
+			marker = false;
+			IterStorage::updateIterEnd(iter);
 		}
 	}
 }
