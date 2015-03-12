@@ -18,7 +18,7 @@ int TimeMacro::getYear(){
 
 bool TimeMacro::updateDay(std::string inDay){
 	if (inDay == "Monday" || inDay == "Tuesday" || 
-		inDay == "Wednesday" || inDay == "Thrusday" || 
+		inDay == "Wednesday" || inDay == "Thursday" || 
 		inDay == "Friday" || inDay == "Saturday" || 
 		inDay == "Sunday"){
 			day = inDay;
