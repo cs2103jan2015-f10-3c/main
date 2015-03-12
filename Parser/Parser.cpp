@@ -15,7 +15,7 @@ const string Parser::HOUR_FIRST_DIGIT = "012";
 const string Parser::HOUR_SECOND_DIGIT = "01234567890";
 const string Parser::MINUTE_FIRST_DIGIT = "012345";
 const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
-const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
+//const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
 
 
 void Parser::parseInput (string userInput) {
@@ -50,33 +50,37 @@ string Parser::extractCommandWord (string userInput) {
 	return commandWord;
 }
 
-//Assume a task will always have a description
-//a task will end with a description
-//order is date, time, desc
+//a task will end with a description if there is one
+//all 3 attributes can stand alone
 void Parser::ParseAdd (string userInput, string commandWord) {
 	Parser returnInput;
-	TimeMacro timeMacroBeg;
+	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
 	TimeMicro timeMicroEnd;
 	string inputToBeParsed = userInput;
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
-	timeMacroBeg = parseDate (inputToBeParsed);
-	if (isDate (inputToBeParsed)) {
-        inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+
+	for (int i = 0; i < 2; i++) {
+        timeMacro = parseDate (inputToBeParsed);
+	    parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+	    if (isDate (inputToBeParsed)) {
+            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+	    }
+	    if (isTimePeriod (inputToBeParsed)) {
+		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
+	    }
+	    if (isStartingTime (inputToBeParsed)) {
+		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+	     }
 	}
-	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-	if (isTimePeriod (inputToBeParsed)) {
-		desc = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-	}
-	if (isStartingTime (inputToBeParsed)) {
-		desc = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-	}
-	returnInput = Parser (commandWord, timeMacroBeg, timeMicroBeg, timeMicroEnd, desc);
+	desc = inputToBeParsed;
+	
+	returnInput = Parser (commandWord, timeMacro, timeMicroBeg, timeMicroEnd, desc);
 }
 
-//assume desc put as the last one
-//must have description
+//a task will end with a description if there is one
+//all 3 attributes can stand alone
 void Parser::ParseEdit (string userInput, string commandWord) {
 	Parser returnInput;
 	TimeMacro timeMacro;
@@ -88,33 +92,23 @@ void Parser::ParseEdit (string userInput, string commandWord) {
 	int taskNo = atoi (index.c_str());
 
 	inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
-	int end = 0;
-	string attribute;
-	end = inputToBeParsed.find_first_of (' ');
-	while (end != string::npos) {
-		attribute = inputToBeParsed.substr (0, end);
-		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_ATTRIBUTE + 1);
-		if (attribute == "date") {
-			timeMacro = parseDate (inputToBeParsed);
-			inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_DATE + 1);
-		}
-		else if (attribute == "time") {
-			parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-			if (isStartingTime (inputToBeParsed)) {
-                inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_STARTING_TIME + 1);
-			}
-			else if (isTimePeriod (inputToBeParsed)) {
-				inputToBeParsed = inputToBeParsed.substr (0, LENGTH_OF_TIME_PERIOD + 1);
-			}
-		}
-		else if (attribute == "desc") {
-            string desc = inputToBeParsed.substr (LENGTH_OF_ATTRIBUTE + 1);
-			inputToBeParsed = "";
-		}
-		end = inputToBeParsed.find_first_of (' ');
-	}
 
-		returnInput = Parser (commandWord, timeMacro, timeMicroBeg, timeMicroEnd, desc);
+	for (int i = 0; i < 2; i++) {
+        timeMacro = parseDate (inputToBeParsed);
+	    parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+	    if (isDate (inputToBeParsed)) {
+            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+	    }
+	    if (isTimePeriod (inputToBeParsed)) {
+		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
+	    }
+	    if (isStartingTime (inputToBeParsed)) {
+		    inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+	     }
+	}
+	desc = inputToBeParsed;
+
+	returnInput = Parser (commandWord, timeMacro, timeMicroBeg, timeMicroEnd, desc);
 }
 
 void Parser::ParseSearch (string userInput, string commandWord) {

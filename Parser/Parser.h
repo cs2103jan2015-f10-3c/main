@@ -65,7 +65,7 @@ private:
 	static const string HOUR_SECOND_DIGIT;
 	static const string MINUTE_FIRST_DIGIT;
 	static const string MINUTE_SECOND_DIGIT;
-	static const unsigned int LENGTH_OF_ATTRIBUTE;
+	//static const unsigned int LENGTH_OF_ATTRIBUTE;
 
 public: 
 	//default constructor
