@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <vector>
 #include <sstream>
-#include <time.h>
+#include <ctime>
+#include <chrono>
 #include "Commons.h"
 #include "DataProcessor.h"
 #include "Parser.h"
