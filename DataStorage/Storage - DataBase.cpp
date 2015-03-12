@@ -15,6 +15,10 @@ std::vector<Data> DataBase::getDataList() {
 	return dataList;
 }
 
+void DataBase::clearDataList(){
+	dataList.clear();
+}
+
 // !!test done by processing
 //for add command to update the dataList
 //it allocates uniqueCode into Data

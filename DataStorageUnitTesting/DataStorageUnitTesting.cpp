@@ -80,6 +80,11 @@ namespace DataStorageUnitTesting
 			Assert::AreEqual(lampu,iter2->getDesc());
 
 		}
+
+		TEST_METHOD(getDataReturnIterTest){
+			DataBase::addData(
+
+		}
 	};
 
 	TEST_CLASS(DisplayStorageUnitTesting)
