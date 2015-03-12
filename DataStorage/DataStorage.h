@@ -9,16 +9,16 @@
 #include <iterator>
 #include <queue>
 
+
 class DataBase {
-private:
+public:
 	//Private Attribute
 	static std::vector<Data> dataList;
 	static int uniqueNo;
 
 	//Private method
-	static void updateTaskNo();
-	static void allocateUniqueCode(Data inData);
 	static void sortDataList();
+	static int allocateUniqueCode();
 	static void allocatePsedoDate();
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
@@ -69,7 +69,8 @@ public:
 	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDisplayList();
 	static void addData(Data inData);
-	
+	static void clearList();
+
 	//Helper method for DataBase
 	static int getUniqueCode(int taskNo);
 	static Data getData(int taskNo);

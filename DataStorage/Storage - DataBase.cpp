@@ -1,10 +1,11 @@
 #include "DataStorage.h"
 
 std::vector<Data> DataBase::dataList;
-int DataBase::uniqueNo;
+
 std::vector<Data>::iterator IterStorage::iterBeg;
 std::vector<Data>::iterator IterStorage::iterEnd;
 
+// !!test done by data processing
 //return the DataBase list 
 //to be accessed by data Processor
 //for command such as search
@@ -12,6 +13,7 @@ std::vector<Data> DataBase::getDataList() {
 	return dataList;
 }
 
+// !!test done by processing
 //for add command to update the dataList
 //it allocates uniqueCode into Data
 //and also automaticallly sort dataList and update taskNo 
@@ -20,10 +22,10 @@ std::vector<Data> DataBase::getDataList() {
 Data DataBase::addData(Data inData){
 
 	History::updateLatestData(inData); //store for undo
-	allocateUniqueCode(inData);
+	int tempNo = allocateUniqueCode();
+	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
-	updateTaskNo();
 
 	return inData;
 }
@@ -36,7 +38,6 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 	searchPeriod(startTime , endTime);
 	History::updateLatestVector(); //update for undo
 	dataList.erase(IterStorage::getIterBeg(),IterStorage::getIterEnd()+1);
-	updateTaskNo();
 
 	//for returning the time frame
 	Data period;
@@ -46,6 +47,7 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 	return period;
 }
 
+
 //method for delete command
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
@@ -53,7 +55,6 @@ Data DataBase::deleteData(int taskNo){
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
 	History::updateLatestData(*getData(uniqueNo)); //store in History
 	dataList.erase(getData(uniqueNo));
-	updateTaskNo();
 
 	return DisplayStorage::getData(taskNo);
 }
@@ -87,31 +88,18 @@ std::vector<Data>::iterator DataBase::getData(int uniqueNo){
 
 
 
-
+// !! unit testing done
 //allocate uniqueCode to each Data
 //For internal working
-void DataBase::allocateUniqueCode(Data inData){
-	uniqueNo++;
-	inData.updateUniqueCode(uniqueNo);
+int DataBase::allocateUniqueCode(){
+	static int UniqueNo = 0;
+	UniqueNo++;
+	return UniqueNo;
 	
 }
 
-//to update all taskNo in dataList vector
-//after sorting or adding
-void DataBase::updateTaskNo(){
-	std::vector<Data>::iterator iter;
-	int TrackNo=1;
 
-	for(iter = dataList.begin(); iter < dataList.end(); iter++){
-		if(iter->getTaskNo() != TrackNo){
-			iter->updateTaskNo(TrackNo);
-		}
-	}
-	TrackNo++;
-
-}
-
-
+// !!test done by processor
 //sorting dataList for maintenance
 //use radix sorting algorithm
 //allocation of psedoDate is done here. to help sorting
@@ -132,6 +120,7 @@ void DataBase::sortDataList(){
 
 }
 
+// !!test done by processor
 //helper method for radix sort
 //organise items into groups using digit indicated by the power
 void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
@@ -146,6 +135,7 @@ void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
 	}
 }
 
+// !!test done by processor
 //helper method for radix sort
 //put Data back into dataList
 void DataBase::radixCollect(std::queue<Data> digitQ[]){
@@ -164,6 +154,7 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 }
 
 
+//!! test done by processing
 //allocate psedoDate for all Data in dataList
 //used for sorting purposes
 //for internal working
