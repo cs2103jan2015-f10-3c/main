@@ -32,7 +32,7 @@ private:
 
 public:
 
-	OperationCenter();
+	OperationCenter() {}
 	static void executeInput (string input);
 
 };

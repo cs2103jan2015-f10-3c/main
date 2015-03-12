@@ -14,8 +14,8 @@ const string OperationCenter::EXIT_COMMAND = "exit";
 const string OperationCenter::EMPTY_RESPONSE = "";
 const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
 
-OperationCenter::OperationCenter(){
-}
+string Feedback::display;
+string Feedback::response;
 
 void OperationCenter::executeInput(string input){
 	time_t t = time (0);   // get time now
