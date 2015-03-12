@@ -1,5 +1,10 @@
 #include "DataStorage.h"
 
+std::vector<Data> DataBase::dataList;
+int DataBase::uniqueNo;
+std::vector<Data>::iterator IterStorage::iterBeg;
+std::vector<Data>::iterator IterStorage::iterEnd;
+
 //return the DataBase list 
 //to be accessed by data Processor
 //for command such as search

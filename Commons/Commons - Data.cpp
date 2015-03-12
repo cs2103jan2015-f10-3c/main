@@ -1,5 +1,9 @@
 #include "Commons.h"
 
+std::string Data::getDesc(){
+	return desc;
+}
+
 bool Data::getCompleteStatus(){
 	return completeStatus;
 }
