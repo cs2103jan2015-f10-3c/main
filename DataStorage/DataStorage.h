@@ -32,7 +32,8 @@ public:
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDataList();
-	
+	static void clearDataList();
+
 	//Helper method for DisplayStorage
 	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
