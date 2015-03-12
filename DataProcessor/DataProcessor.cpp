@@ -2,34 +2,42 @@
 
 using namespace std;
 
+const string DataProcessor::WELCOME_MESSAGE = "Welcome to BlinkList";
+const string DataProcessor::ADD_MESSAGE = "is added";
+const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
+const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
+const string DataProcessor::EDIT_MESSAGE = "is edited";
+
 DataProcessor::DataProcessor(){
 }
 
 string DataProcessor::showWelcomeMessage(){
-	string welcomeMessage;
-	welcomeMessage = "Welcome to BlinkList";
-	return welcomeMessage;
+	return WELCOME_MESSAGE;
 }
 
+//This function reads in the Data object to be added,
+//then return the string reporting the adding which contains the descripiton of the data added
 string DataProcessor::addTask(Data task){
-	DataBase::addData(task); //dataStorage is a DataStorage object initialized in O/C
-								   //addTaskList is DataStorage's API to add task  to the private taskList
+	DataBase::addData(task); 
 	ostringstream out;
-	out << "'" << task.getDesc() << "'" << "is successfully added" <<endl;
+	out << task.getDesc() << ADD_MESSAGE <<endl;
 	string addMessage;
 	addMessage = out.str();
 	return addMessage;
 }
 
+//This function reads in the number of the task to be deleted,
+//then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
-	Data data = DataBase::deleteData(number);
 	ostringstream out;
-	out << "'" << data.getDesc() <<  "' is deleted" << endl;
+	out << DataBase::deleteData(number).getDesc() << DELETE_MESSAGE << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
 }
 
+//This function reads in two TimeMacro objects,
+//then return the string which contains the list of task belonging to the desired time frame
 string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 	string taskString; 
 	taskString = convertTaskListToString(DisplayStorage::getDisplayList(startTime, endTime));
