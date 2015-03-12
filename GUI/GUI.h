@@ -154,11 +154,10 @@ namespace GUI {
 	private: System::Void confirmInputButton_Click(System::Object^  sender, System::EventArgs^  e) {
 				 
 				 string userInput = msclr::interop::marshal_as<string>(inputBox->Text);
-				 std::vector<string> displayString;
 				 inputBox->Clear;
-				 displayString = OperationCenter::executeInput(userInput);
-				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(displayString[0]);
-				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString[1]);
+				 OperationCenter::executeInput(userInput);
+				 outputMessageBox->Text = msclr::interop::marshal_as<String^>(Feedback::getResponse);
+				 displayBox->Text = msclr::interop::marshal_as<String^>(Feedback::getDisplay);
 			}
 	
 	//User presses "Enter" key after typing

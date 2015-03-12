@@ -47,7 +47,7 @@ string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
 string DataProcessor::searchTask(string keyword){
-	vector<Data> currTaskList = DataBase::getDataList(keyword);
+	vector<Data> currTaskList = DataBase::getDataList();
 	vector<Data> returnTaskList;
 	vector<Data>::iterator iter;
 	string taskDescription;
@@ -58,12 +58,11 @@ string DataProcessor::searchTask(string keyword){
 		taskDescription = (*iter).getDesc();
 		found = taskDescription.find(keyword);
 		if(found != string::npos){
-			returnTaskList.push_back(*iter);
+			DisplayStorage::addData(*iter);
 		}
 	}
 
-	//Update current display list to show matched tasks
-	DisplayStorage::updateDisplayList(returnTaskList);
+	returnTaskList = DisplayStorage::getDisplayList();
 
 	//Convert the taskList into a string that is ready for UI to display
 	string returnTaskListString;
@@ -100,7 +99,7 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
 	Data uneditedTask;
-	uneditedTask = DisplayStorage::editData(taskNumber, task);
+	uneditedTask = DataBase::editData(taskNumber, task);
 	string editMessage = getEditMessage(uneditedTask) + EDIT_MESSAGE;
 	return editMessage;
 }
@@ -128,7 +127,9 @@ string convertDataObjectToString(Data task){
 	TimeMacro timeMacroBeg, timeMacroEnd;
 	timeMacroBeg = task.getTimeMacroBeg;
 	timeMacroEnd = task.getTimeMacroEnd;
-	TimeMicro timeMicro = task.getTimeMicro;
+	TimeMicro timeMicroBeg, timeMicroEnd;
+	timeMicroBeg = task.getTimeMicroBeg;
+	timeMacroEnd = task.getTimeMicroEnd;
 
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate != NULL){
@@ -137,7 +138,7 @@ string convertDataObjectToString(Data task){
 				<< timeMacroBeg.getYear;
 
 	}
-	if(timeMacroEnd.getDate != NULL){
+	if(timeMacroEnd.getDate != 0){
 		outData << "-"
 				<< timeMacroEnd.getDate << "/"
 				<< timeMacroEnd.getMonth << "/"
@@ -145,16 +146,19 @@ string convertDataObjectToString(Data task){
 	}else
 	{
 		//If there is a start date and no end date specified
-		if(timeMacroBeg.getDate != NULL){
+		if(timeMacroBeg.getDate != 0){
 				outData << " ";
 		}
 	}
-	//If there is deadline time associated with the task
-	if(timeMicro.getHourBeg != NULL){
-		outData << timeMicro.getHourBeg << ":"
-				<< timeMicro.getMinBeg << "-"
-				<< timeMicro.getHourEnd << ":"
-				<< timeMicro.getMinEnd << " ";
+	//Check if there is deadline time associated with the task
+	if(timeMicroBeg.getHour != -1){
+		outData << timeMicroBeg.getHour << ":"
+				<< timeMicroBeg.getMin;
+
+	}
+	if(timeMicroEnd.getHour != -1){
+		outData << "-" << timeMicroEnd.getHour << ":"
+				<< timeMicroEnd.getMin;
 	}
 	
 	outData << task.getDesc << endl;
