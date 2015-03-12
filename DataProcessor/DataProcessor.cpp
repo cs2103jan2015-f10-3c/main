@@ -168,8 +168,9 @@ string DataProcessor::convertTaskListToString(vector<Data> taskList){
 	string taskListString;
 	ostringstream outList;
 	vector<Data>::iterator iter;
+	vector<Data> copyVecotr = taskList;
 	int numberOfTask = 1;
-	for(iter = taskList.begin(); iter != taskList.end(); iter++){
+	for(iter = copyVecotr.begin(); iter != copyVecotr.end(); iter++){
 		outList << numberOfTask << ". "
 				<< convertDataObjectToString(*iter); 
 		numberOfTask++;

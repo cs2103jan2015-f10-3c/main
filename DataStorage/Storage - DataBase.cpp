@@ -232,7 +232,7 @@ std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 		
 	}
 
-	for(int i = dataList.size()-1; marker == true || i != 0; i--){
+	for(int i = dataList.size()-1; marker == true && i != 0; i--){
 		if(dataList[i].getPsedoDate() <= pEndTime) {
 			marker = false;
 			saveNo.push_back(i);
