@@ -188,6 +188,25 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 void DataBase::allocatePsedoDate(){
 	int i=0;
 
+	
+	int sDate;
+
+	while(i != dataList.size()){
+		
+
+		TimeMacro time = dataList[i].getTimeMacroBeg();
+		int year = time.getYear();
+		int month = time.getMonth();
+		int date = time.getDate();
+	
+		sDate = year*10000 + month*100 + date;
+		dataList[i].updatePsedoDate(sDate);
+
+		i++;
+	}
+
+	/*int i=0;
+
 	std::vector<Data> copyVector;
 	copyVector = dataList;
 	std::vector<Data>::iterator iter;
@@ -203,11 +222,10 @@ void DataBase::allocatePsedoDate(){
 		int date = time.getDate();
 	
 		sDate = year*10000 + month*100 + date;
-		i++;
-	}
 		dataList[i].updatePsedoDate(sDate);
 
-
+		i++;
+	}*/
 }
 
 

@@ -17,13 +17,15 @@ std::vector<Data> DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro 
 	if(!timePeriod.empty()){
 		endT = timePeriod[1];
 		startT = timePeriod[0];
-	}
-
-	for (int i = startT; i <= endT; i++){
+		
+		for (int i = startT; i <= endT; i++){
 		displayList.push_back(DataBase::dataList[i]);
 	}
+		DisplayStorage::updateTaskNo();
+	
+	}
 
-	DisplayStorage::updateTaskNo();
+
 
 	return displayList;
 }
