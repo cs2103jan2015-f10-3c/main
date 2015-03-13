@@ -1,7 +1,7 @@
 #include "DataStorage.h"
 
-std::vector<Data>::iterator IterStorage::iterBeg;
-std::vector<Data>::iterator IterStorage::iterEnd;
+//std::vector<Data>::iterator IterStorage::iterBeg;
+//std::vector<Data>::iterator IterStorage::iterEnd;
 
 
 std::vector<Data> DataBase::dataList;
@@ -41,10 +41,31 @@ Data DataBase::addData(Data inData){
 //contain startTime and endTime in TimeMacroBeg and TimeMacro End
 Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
-	searchPeriod(startTime , endTime);
-	History::updateLatestVector(); //update for undo
-	dataList.erase(IterStorage::getIterBeg(),IterStorage::getIterEnd()+1);
+	std::vector<int> timePeriod;
+	timePeriod = searchPeriod(startTime , endTime);
+	//History::updateLatestVector(); //update for undo
+	
+	int endT;
+	endT = timePeriod.back();
+	int startT;
+	startT = timePeriod.front();
+	std::vector<Data> temp;
+	int i=0;
+		
+		while(i<startT){
+			temp.push_back(dataList[i]);
+			i++;
+		}
+		while(i >= startT && i <= endT){
+			dataList.pop_back();
+			i++;
+		}
+		while(i > endT && i < dataList.size()){
+			temp.push_back(dataList[i]);
+			i++;
+		}
 
+		dataList=temp;
 	//for returning the time frame
 	Data period;
 	period.updateTimeMacroBeg(startTime);
@@ -131,12 +152,12 @@ void DataBase::sortDataList(){
 //organise items into groups using digit indicated by the power
 void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
 	int digit;
-	std::vector<Data>::iterator iter;
-	
-	for(iter = dataList.begin(); iter < dataList.end(); iter++){
-		int sDate = iter->getPsedoDate();
+	//std::vector<Data>::iterator iter;
+	for(int i = 0; i != dataList.size(); i++){
+	//for(iter = dataList.begin(); iter < dataList.end(); iter++){
+		int sDate = dataList[i].getPsedoDate();
 		digit = (sDate / power ) % 10; //extract digit
-		digitQ[digit].push(*iter);
+		digitQ[digit].push(dataList[i]);
 
 	}
 }
@@ -145,16 +166,16 @@ void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
 //helper method for radix sort
 //put Data back into dataList
 void DataBase::radixCollect(std::queue<Data> digitQ[]){
-	std::vector<Data>::iterator iter;
-	iter = dataList.begin();
+	//std::vector<Data>::iterator iter;
+	//iter = dataList.begin();
 	int digit;
-
+	int i=0;
 	for(digit = 0 ; digit < 10; digit++){
 		while (!digitQ[digit].empty()) {
-			*iter = digitQ[digit].front();
+			dataList[i] = digitQ[digit].front();
 			digitQ[digit].pop();
 	
-			iter++;
+			i++;
 		}
 	}
 }
@@ -165,20 +186,27 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 //used for sorting purposes
 //for internal working
 void DataBase::allocatePsedoDate(){
+	int i=0;
 
+	std::vector<Data> copyVector;
+	copyVector = dataList;
 	std::vector<Data>::iterator iter;
-	for(iter = dataList.begin(); iter < dataList.end(); iter++){
+	iter = copyVector.begin();
+	int sDate;
+
+	while(i != dataList.size()){
+		iter++;
+
 		TimeMacro time = iter->getTimeMacroBeg();
-		
 		int year = time.getYear();
 		int month = time.getMonth();
 		int date = time.getDate();
-
-		int sDate = year*10000 + month*100 + date;
 	
-		iter->updatePsedoDate(sDate);
-
+		sDate = year*10000 + month*100 + date;
+		i++;
 	}
+		dataList[i].updatePsedoDate(sDate);
+
 
 }
 
@@ -187,27 +215,32 @@ void DataBase::allocatePsedoDate(){
 //helper method for search Data from a specific period
 //to be pass to DisplayStorage
 //updates IterStorage to contain the relevant iteration
-void DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
+std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	allocatePsedoDate();
-	std::vector<Data>::iterator iter;
+	//std::vector<Data>::iterator iter;
+	std::vector<int> saveNo;
 
 	int pStartTime = startTime.getYear()*10000 + startTime.getMonth()*100 + startTime.getDate();
 	int pEndTime = endTime.getYear()*10000 + endTime.getMonth()*100 + endTime.getDate();
 
 	bool marker = false;
-
-	for(iter = dataList.begin(); marker == false || iter < dataList.end(); iter++){
-		if(iter->getPsedoDate() >= pStartTime){
+	int time;
+	Data copyTask;
+	for(int i = 0; marker == false && i != dataList.size(); i++){
+		copyTask = dataList[i];
+		time = copyTask.getPsedoDate();
+		if(time >= pStartTime){
 			marker = true;
-			//IterStorage::updateIterBeg(iter);
+			saveNo.push_back(i);
 		}
 		
 	}
 
-	for(iter = dataList.end()-1; marker == true || iter <= dataList.begin(); iter--){
-		if(iter->getPsedoDate() <= pEndTime) {
+	for(int i = dataList.size()-1; marker == true || i != 0; i--){
+		if(dataList[i].getPsedoDate() <= pEndTime) {
 			marker = false;
-			//IterStorage::updateIterEnd(iter);
+			saveNo.push_back(i);
 		}
 	}
+	return saveNo;
 }

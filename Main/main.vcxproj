@@ -44,11 +44,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Parser;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EntryPointSymbol>main</EntryPointSymbol>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>

@@ -35,7 +35,7 @@ public:
 	static void clearDataList();
 
 	//Helper method for DisplayStorage
-	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<int> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
 };
 
@@ -78,6 +78,8 @@ public:
 
 };
 
+
+/*
 //helper class for searching/clearing/etc methods
 //Store two iteration
 //Used by class DataBase and DisplayStorage
@@ -101,6 +103,6 @@ public:
 	}
 	
 };
-
+*/
 
 #endif
