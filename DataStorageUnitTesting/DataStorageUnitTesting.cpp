@@ -68,7 +68,9 @@ namespace DataStorageUnitTesting
 			DataBase::addData(data2);
 			DataBase::addData(data3);
 			DataBase::addData(data4);
-			
+			//std::vector<int> saveNo;
+			//int startT = saveNo[0];
+			//int endT = saveNo[1];
 			DataBase::searchPeriod(time1,time2);
 
 			//std::vector<Data>::iterator iter1 = IterStorage::getIterBeg();
@@ -76,8 +78,8 @@ namespace DataStorageUnitTesting
 			std::string hex = "LOL";
 			std::string lampu = "killingmeslowly";
 
-			//Assert::AreEqual(hex,iter1->getDesc());
-			//Assert::AreEqual(lampu,iter2->getDesc());
+			//Assert::AreEqual(hex,DataBase::dataList[startT].getDesc());
+			//Assert::AreEqual(lampu,DataBase::dataList[endT].getDesc());
 
 		}
 

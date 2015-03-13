@@ -98,7 +98,7 @@ public:
 	string convertDateToDayOfTheWeek (int date, int month, int year);
 	bool isStartingTime (string inputToBeParsed);
 	bool isTimePeriod (string inputToBeParsed);
-	bool searchSubstring (string string, char substring);
+	bool searchSubstring (string timeString, char substring);
 	void getTodayDate (TimeMacro& timeMacro);
 	void getTomorrowDate (TimeMacro& timeMacro);
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);

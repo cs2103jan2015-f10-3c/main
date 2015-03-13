@@ -99,7 +99,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 	timeMicroEnd = task.getTimeMicroEnd();
 
 	//If there is deadline date associated with the task
-	if(timeMacroBeg.getDate() != NULL){
+	if(timeMacroBeg.getDate() != 0){
 		outData << timeMacroBeg.getDate() << "/"
 				<< timeMacroBeg.getMonth() << "/"
 				<< timeMacroBeg.getYear();
@@ -168,8 +168,9 @@ string DataProcessor::convertTaskListToString(vector<Data> taskList){
 	string taskListString;
 	ostringstream outList;
 	vector<Data>::iterator iter;
+	vector<Data> copyVecotr = taskList;
 	int numberOfTask = 1;
-	for(iter = taskList.begin(); iter != taskList.end(); iter++){
+	for(iter = copyVecotr.begin(); iter != copyVecotr.end(); iter++){
 		outList << numberOfTask << ". "
 				<< convertDataObjectToString(*iter); 
 		numberOfTask++;
