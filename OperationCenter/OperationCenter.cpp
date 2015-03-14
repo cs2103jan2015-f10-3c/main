@@ -40,6 +40,9 @@ void OperationCenter::executeInput(string input){
 	}else if(command == "display") {
 		returnResponse = EMPTY_RESPONSE;
 		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
+		if(returnDisplay == ""){
+			returnDisplay = "You have no task within the specified period";
+		}
 	}else if(command == "delete"){
 		returnResponse = dataProcessor.deleteTask(taskNo);
 	}else if(command == "clear"){
@@ -59,6 +62,9 @@ void OperationCenter::executeInput(string input){
 	
 	if(command != "display" && command != "search"){
 		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
+		if(returnDisplay == ""){
+			returnDisplay = "You have no task for today";
+		}
 	}
 
 	if(returnDisplay == ""){
