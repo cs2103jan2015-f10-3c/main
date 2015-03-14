@@ -81,7 +81,7 @@ public:
 	bool completeStatus; 
 	int taskNo;
 	int uniqueCode;
-	int psedoDate;
+	long long psedoDate;
 
 	//main attribute for Data
 	std::string desc;
@@ -116,7 +116,7 @@ public:
 	bool getCompleteStatus();
 	int getTaskNo();
 	int getUniqueCode();
-	int getPsedoDate();
+	long long getPsedoDate();
 
 	std::string getDesc();
 	TimeMacro getTimeMacroBeg();
@@ -132,7 +132,7 @@ public:
 	void updateTaskNo(int no);
 	void updateUniqueCode(int no);
 	void updateCompleteStatus(bool status);
-	void updatePsedoDate(int sDate);
+	void updatePsedoDate(long long sDate);
 
 	void updateDesc(std::string inDesc);
 	void updateTimeMacroBeg(TimeMacro inMacroBeg);

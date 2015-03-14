@@ -132,7 +132,6 @@ int DataBase::allocateUniqueCode(){
 //allocation of psedoDate is done here. to help sorting
 //for internal working
 void DataBase::sortDataList(){
-	std::vector<Data>::iterator iter;
 	allocatePsedoDate();
 
 	int i;
@@ -155,7 +154,7 @@ void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
 	//std::vector<Data>::iterator iter;
 	for(int i = 0; i != dataList.size(); i++){
 	//for(iter = dataList.begin(); iter < dataList.end(); iter++){
-		int sDate = dataList[i].getPsedoDate();
+		long long sDate = dataList[i].getPsedoDate();
 		digit = (sDate / power ) % 10; //extract digit
 		digitQ[digit].push(dataList[i]);
 
@@ -187,15 +186,35 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 //for internal working
 void DataBase::allocatePsedoDate(){
 	int i=0;
-	int sDate;
+	long long sDate;
 	while(i != dataList.size()){
 
 		TimeMacro time = dataList[i].getTimeMacroBeg();
 		int year = time.getYear();
 		int month = time.getMonth();
 		int date = time.getDate();
-	
-		sDate = year*10000 + month*100 + date;
+		
+		TimeMicro time1 = dataList[i].getTimeMicroBeg();
+		int hour = time1.getHour();
+		int min = time1.getHour();
+
+		if(hour == -1){
+			hour = 0;
+		}
+
+		if(min == -1){
+			min = 0;
+		}
+		sDate = 100000000;
+		sDate = year*sDate;
+		long long tempMonth;
+		tempMonth = 1000000;
+		tempMonth = month*tempMonth;
+		sDate = tempMonth + sDate;
+		long long tempDate;
+		tempDate = 10000;
+		tempDate = date*tempDate;
+		sDate = sDate + tempDate + hour*100 + min;
 		dataList[i].updatePsedoDate(sDate);
 		
 		i++;
