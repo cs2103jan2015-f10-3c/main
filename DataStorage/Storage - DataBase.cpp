@@ -25,7 +25,7 @@ void DataBase::clearDataList(){
 //and also automaticallly sort dataList and update taskNo 
 //the added Data inside dataList will be ready for printing
 //return the data that was added in the form of Data
-Data DataBase::addData(Data inData){
+void DataBase::addData(Data& inData){
 
 	History::updateLatestData(inData); //store for undo
 	int tempNo = allocateUniqueCode();
@@ -33,7 +33,6 @@ Data DataBase::addData(Data inData){
 	dataList.push_back(inData);
 	sortDataList();
 
-	return inData;
 }
 
 //for clear command
@@ -41,7 +40,7 @@ Data DataBase::addData(Data inData){
 //contain startTime and endTime in TimeMacroBeg and TimeMacro End
 Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
-	std::vector<int> timePeriod;
+	std::vector<long long> timePeriod;
 	timePeriod = searchPeriod(startTime , endTime);
 	//History::updateLatestVector(); //update for undo
 	
@@ -80,9 +79,16 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
-	History::updateLatestData(*getData(uniqueNo)); //store in History
-	dataList.erase(getData(uniqueNo));
-
+	History::updateLatestData(getData(uniqueNo)); //store in History
+	//dataList.erase(getData(uniqueNo));
+	int uniqueCode = (getData(uniqueNo)).getUniqueCode();
+	std::vector<Data> listTofacilitateDeletion;
+	for(int i = 0; i != dataList.size(); i++){
+		if(uniqueCode != dataList[i].getUniqueCode()){
+				listTofacilitateDeletion.push_back(dataList[i]);
+		}
+	}
+	dataList = listTofacilitateDeletion;
 	return DisplayStorage::getData(taskNo);
 }
 
@@ -100,13 +106,21 @@ Data DataBase::editData(int taskNo, Data updatedData){
 //helper method for deleteData and editData
 //input int uniqueCode
 //return iterator to be modified/deleted
-std::vector<Data>::iterator DataBase::getData(int uniqueNo){
-	std::vector<Data>::iterator iter;
+Data DataBase::getData(int uniqueNo){
+	/*std::vector<Data>::iterator iter;
 	for(iter=dataList.begin(); iter < dataList.end(); iter++){
 		if(iter->getUniqueCode()==uniqueNo){
 			return iter;
 		}
+	}*/
+	Data desiredTask;
+	for(int i = 0; i != dataList.size(); i++){
+		if(dataList[i].getUniqueCode() == uniqueNo){
+			desiredTask = dataList[i];
+		}
 	}
+	return desiredTask;
+
 	// !! figure out how to return error here
 }
 
@@ -132,7 +146,6 @@ int DataBase::allocateUniqueCode(){
 //allocation of psedoDate is done here. to help sorting
 //for internal working
 void DataBase::sortDataList(){
-	std::vector<Data>::iterator iter;
 	allocatePsedoDate();
 
 	int i;
@@ -155,7 +168,7 @@ void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
 	//std::vector<Data>::iterator iter;
 	for(int i = 0; i != dataList.size(); i++){
 	//for(iter = dataList.begin(); iter < dataList.end(); iter++){
-		int sDate = dataList[i].getPsedoDate();
+		long long sDate = dataList[i].getPsedoDate();
 		digit = (sDate / power ) % 10; //extract digit
 		digitQ[digit].push(dataList[i]);
 
@@ -187,15 +200,37 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 //for internal working
 void DataBase::allocatePsedoDate(){
 	int i=0;
-	int sDate;
+	long long sDate;
 	while(i != dataList.size()){
 
 		TimeMacro time = dataList[i].getTimeMacroBeg();
 		int year = time.getYear();
 		int month = time.getMonth();
 		int date = time.getDate();
-	
-		sDate = year*10000 + month*100 + date;
+		
+		TimeMicro time1 = dataList[i].getTimeMicroBeg();
+		int hour = time1.getHour();
+		int min = time1.getMin();
+
+		if(hour == -1){
+			hour = 0;
+		}
+
+		if(min == -1){
+			min = 0;
+		}
+		sDate = 100000000;
+		sDate = year*sDate;
+		long long tempMonth;
+		tempMonth = 1000000;
+		tempMonth = month*tempMonth;
+		sDate = tempMonth + sDate;
+		long long tempDate;
+		tempDate = 10000;
+		tempDate = date*tempDate;
+		sDate = sDate + tempDate + hour*100 + min;
+
+
 		dataList[i].updatePsedoDate(sDate);
 		
 		i++;
@@ -211,21 +246,41 @@ void DataBase::allocatePsedoDate(){
 //helper method for search Data from a specific period
 //to be pass to DisplayStorage
 //updates IterStorage to contain the relevant iteration
-std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
+std::vector<long long> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	allocatePsedoDate();
-	//std::vector<Data>::iterator iter;
-	std::vector<int> saveNo;
+	std::vector<long long> saveNo;
 
-	int pStartTime = startTime.getYear()*10000 + startTime.getMonth()*100 + startTime.getDate();
-	int pEndTime = endTime.getYear()*10000 + endTime.getMonth()*100 + endTime.getDate();
+	long long pStartTime;
+	pStartTime= 100000000;
+	pStartTime= startTime.getYear()*pStartTime;
+	long long tempMonth;
+	tempMonth = 1000000;
+	tempMonth = tempMonth * startTime.getMonth();
+	pStartTime = pStartTime + tempMonth;
+	long long tempDate = 10000;
+	tempDate = tempDate * startTime.getDate();
+
+	pStartTime = pStartTime + tempDate;
+
+	long long pEndTime;
+	pEndTime= 100000000;
+	pEndTime= endTime.getYear()*pEndTime;
+	long long tempMonth1;
+	tempMonth1 = 1000000;
+	tempMonth1 = tempMonth1 * endTime.getMonth();
+	pEndTime = pEndTime + tempMonth1;
+	long long tempDate1 = 10000;
+	tempDate1 = tempDate1 * endTime.getDate();
+	pEndTime = pEndTime + tempDate1;
+
 
 	bool marker = false;
-	int time;
+	long long time;
 	Data copyTask;
 	for(int i = 0; marker == false && i != dataList.size(); i++){
 		copyTask = dataList[i];
 		time = copyTask.getPsedoDate();
-		if(time >= pStartTime){
+		if(time >= pStartTime && time <= pEndTime + 2359){
 			marker = true;
 			saveNo.push_back(i);
 		}
@@ -233,7 +288,7 @@ std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	}
 
 	for(int i = dataList.size()-1; marker == true && i != 0; i--){
-		if(dataList[i].getPsedoDate() <= pEndTime) {
+		if(dataList[i].getPsedoDate() <= pEndTime+2359 ) {
 			marker = false;
 			saveNo.push_back(i);
 		}

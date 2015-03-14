@@ -139,9 +139,11 @@ void Parser::parseDisplay (string userInput, string commandWord) {
 
 	if (period == "today") {
 		getTodayDate (timeMacroBeg);
+		getTodayDate (timeMacroEnd);
 	}
 	else if (period == "tomorrow") {
 		getTomorrowDate (timeMacroBeg);
+		getTomorrowDate (timeMacroEnd);
 	}
 	else if (period == "this month") {
 		getThisMonth (timeMacroBeg, timeMacroEnd);
@@ -181,7 +183,7 @@ void Parser::parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMic
 	}
 	if (isTimePeriod (inputToBeParsed)) {
 		string hourEnd = inputToBeParsed.substr (6, 2);
-		string minuteEnd = inputToBeParsed.substr (8, 2);
+		string minuteEnd = inputToBeParsed.substr (9, 2);
 		int hourEndInt = atoi (hourEnd.c_str());
 		int minuteEndInt = atoi (minuteEnd.c_str());
 		timeMicroEnd.updateHour (hourEndInt);
@@ -358,11 +360,11 @@ void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
 
 	timeMacroBeg.updateYear (now.tm_year);
 	timeMacroBeg.updateMonth (now.tm_mon);
-	timeMacroBeg.updateDate (0);
+	timeMacroBeg.updateDate (1);
 
 	timeMacroEnd.updateYear (now.tm_year);
 	timeMacroEnd.updateMonth (now.tm_mon);
-	timeMacroEnd.updateDate (34);
+	timeMacroEnd.updateDate (31);
 }
 
 bool Parser::isLeapYear (int year) {

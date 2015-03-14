@@ -25,7 +25,7 @@ string DataProcessor::addTask(Data task){
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
-	out << DataBase::deleteData(number).getDesc() << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToString (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -103,23 +103,28 @@ string DataProcessor::convertDataObjectToString(Data task){
 
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
-		outData << " on " << timeMacroBeg.getDate() << "/"
-				<< timeMacroBeg.getMonth() << "/"
+		outData << " on " 
+			<< timeMacroBeg.getDay() << ", "
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
 				<< timeMacroBeg.getYear();
 
 	}
-	if(timeMacroEnd.getDate() != 0){
-		outData << "-"
-				<< timeMacroEnd.getDate() << "/"
-				<< timeMacroEnd.getMonth() << "/"
-				<< timeMacroEnd.getYear();
-	}else
-	{
-		//If there is a start date and no end date specified
-		if(timeMacroBeg.getDate() != 0){
+	//if(timeMacroEnd.getDate() != 0){
+	//	outData << "-"
+	//			<< timeMacroEnd.getDate() << ""
+	//			<< timeMacroEnd.getMonth() << "/"
+	//			<< timeMacroEnd.getYear();
+	//}else
+	//{
+	//	//If there is a start date and no end date specified
+	//	
+	//}
+	
+	if(timeMacroBeg.getDate() != 0){
 				outData << " ";
-		}
 	}
+
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
 		outData << "at ";
@@ -135,11 +140,11 @@ string DataProcessor::convertDataObjectToString(Data task){
 	}
 	if(timeMicroEnd.getHour() != -1){
 		outData << "-";
-		if (timeMicroBeg.getHour() < 10) {
+		if (timeMicroEnd.getHour() < 10) {
 			outData << "0";
 		}
 		outData << timeMicroEnd.getHour() << ":";
-		if (timeMicroBeg.getMin() < 10) {
+		if (timeMicroEnd.getMin() < 10) {
 			outData << "0";
 		}
 		outData << timeMicroEnd.getMin();
@@ -180,13 +185,10 @@ string DataProcessor::searchTask(string keyword){
 //This function reads in a vector of Data object and subsequently converts
 //them into a string that contains all datas in the vector
 //The string will be ready for display by UI
-string DataProcessor::convertTaskListToString(vector<Data> & taskList){
+string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	string taskListString;
 	ostringstream outList;
-	vector<Data>::iterator iter;
-	//vector<Data> & copyVecotr = taskList;
 	int numberOfTask = 1;
-	//for(iter = taskList.begin(); iter != taskList.end(); iter++){
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
 			<< convertDataObjectToString(taskList[i]) << endl;
