@@ -135,11 +135,11 @@ string DataProcessor::convertDataObjectToString(Data task){
 	}
 	if(timeMicroEnd.getHour() != -1){
 		outData << "-";
-		if (timeMicroBeg.getHour() < 10) {
+		if (timeMicroEnd.getHour() < 10) {
 			outData << "0";
 		}
 		outData << timeMicroEnd.getHour() << ":";
-		if (timeMicroBeg.getMin() < 10) {
+		if (timeMicroEnd.getMin() < 10) {
 			outData << "0";
 		}
 		outData << timeMicroEnd.getMin();

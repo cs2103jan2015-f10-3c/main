@@ -63,10 +63,11 @@ void DisplayStorage::addData(Data inData){
 //input is int TaskNo of the displayList
 //return the uniqueCode to be processed by DataStorage
 int DisplayStorage::getUniqueCode(int taskNo){
-	std::vector<Data>::iterator iter = displayList.begin();
-	advance(iter, taskNo-1);
+	//std::vector<Data>::iterator iter = displayList.begin();
+	//advance(iter, taskNo-1);
+	Data desiredTask = displayList[taskNo-1];
 
-	return iter->getUniqueCode();
+	return desiredTask.getUniqueCode();
 }
 
 // !!unit testing done
@@ -74,10 +75,12 @@ int DisplayStorage::getUniqueCode(int taskNo){
 //input is int taskNo
 //return Data
 Data DisplayStorage::getData(int taskNo){
-	std::vector<Data>::iterator iter = displayList.begin();
-	advance(iter, taskNo-1);
-
-	return *iter;
+	//std::vector<Data>::iterator iter = displayList.begin();
+	//advance(iter, taskNo-1);
+	Data desiredTask;
+	desiredTask = displayList[taskNo-1];
+	return desiredTask;
+	//return *iter;
 }
 
 // !!unit testing done

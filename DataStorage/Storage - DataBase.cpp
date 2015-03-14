@@ -25,7 +25,7 @@ void DataBase::clearDataList(){
 //and also automaticallly sort dataList and update taskNo 
 //the added Data inside dataList will be ready for printing
 //return the data that was added in the form of Data
-Data DataBase::addData(Data inData){
+void DataBase::addData(Data& inData){
 
 	History::updateLatestData(inData); //store for undo
 	int tempNo = allocateUniqueCode();
@@ -33,7 +33,6 @@ Data DataBase::addData(Data inData){
 	dataList.push_back(inData);
 	sortDataList();
 
-	return inData;
 }
 
 //for clear command
@@ -80,9 +79,16 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
-	History::updateLatestData(*getData(uniqueNo)); //store in History
-	dataList.erase(getData(uniqueNo));
-
+	History::updateLatestData(getData(uniqueNo)); //store in History
+	//dataList.erase(getData(uniqueNo));
+	int uniqueCode = (getData(uniqueNo)).getUniqueCode();
+	std::vector<Data> listTofacilitateDeletion;
+	for(int i = 0; i != dataList.size(); i++){
+		if(uniqueCode != dataList[i].getUniqueCode()){
+				listTofacilitateDeletion.push_back(dataList[i]);
+		}
+	}
+	dataList = listTofacilitateDeletion;
 	return DisplayStorage::getData(taskNo);
 }
 
@@ -100,13 +106,21 @@ Data DataBase::editData(int taskNo, Data updatedData){
 //helper method for deleteData and editData
 //input int uniqueCode
 //return iterator to be modified/deleted
-std::vector<Data>::iterator DataBase::getData(int uniqueNo){
-	std::vector<Data>::iterator iter;
+Data DataBase::getData(int uniqueNo){
+	/*std::vector<Data>::iterator iter;
 	for(iter=dataList.begin(); iter < dataList.end(); iter++){
 		if(iter->getUniqueCode()==uniqueNo){
 			return iter;
 		}
+	}*/
+	Data desiredTask;
+	for(int i = 0; i != dataList.size(); i++){
+		if(dataList[i].getUniqueCode() == uniqueNo){
+			desiredTask = dataList[i];
+		}
 	}
+	return desiredTask;
+
 	// !! figure out how to return error here
 }
 
@@ -225,7 +239,7 @@ std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	for(int i = 0; marker == false && i != dataList.size(); i++){
 		copyTask = dataList[i];
 		time = copyTask.getPsedoDate();
-		if(time >= pStartTime){
+		if(time >= pStartTime && time <= pEndTime){
 			marker = true;
 			saveNo.push_back(i);
 		}

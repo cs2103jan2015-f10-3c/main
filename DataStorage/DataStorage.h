@@ -22,12 +22,12 @@ public:
 	static void allocatePsedoDate();
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
-	static std::vector<Data>::iterator getData(int uniqueNo);
+	static Data getData(int uniqueNo);
 
 
 public: 
 	//API for Data Processing
-	static Data addData(Data inData);	
+	static void addData(Data& inData);	
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);

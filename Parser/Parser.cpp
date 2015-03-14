@@ -181,7 +181,7 @@ void Parser::parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMic
 	}
 	if (isTimePeriod (inputToBeParsed)) {
 		string hourEnd = inputToBeParsed.substr (6, 2);
-		string minuteEnd = inputToBeParsed.substr (8, 2);
+		string minuteEnd = inputToBeParsed.substr (9, 2);
 		int hourEndInt = atoi (hourEnd.c_str());
 		int minuteEndInt = atoi (minuteEnd.c_str());
 		timeMicroEnd.updateHour (hourEndInt);

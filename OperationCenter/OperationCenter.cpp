@@ -50,7 +50,7 @@ void OperationCenter::executeInput(string input){
 		returnDisplay = dataProcessor.searchTask(task.getDesc());
 		returnResponse = EMPTY_RESPONSE;
 	}else if(command == "edit"){
-		returnResponse = dataProcessor.editTask(task.getTaskNo(), task);
+		returnResponse = dataProcessor.editTask(taskNo, task);
 	}else if(command == "undo"){
 		returnResponse = dataProcessor.executeUndo();
 	}else{
@@ -59,7 +59,11 @@ void OperationCenter::executeInput(string input){
 	
 	if(command != "display" && command != "search"){
 		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
+		if(returnDisplay == ""){
+			returnDisplay = ":) You have no task for today";
+		}
 	}
+
 
 	Feedback::updateDisplay(returnDisplay);
 	Feedback::updateResponse(returnResponse);
