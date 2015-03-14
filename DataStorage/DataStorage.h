@@ -35,7 +35,7 @@ public:
 	static void clearDataList();
 
 	//Helper method for DisplayStorage
-	static std::vector<int> searchPeriod(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
 };
 

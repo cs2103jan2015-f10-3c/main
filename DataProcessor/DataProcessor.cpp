@@ -25,7 +25,7 @@ string DataProcessor::addTask(Data task){
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
-	out << DataBase::deleteData(number).getDesc() << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToString (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -180,13 +180,10 @@ string DataProcessor::searchTask(string keyword){
 //This function reads in a vector of Data object and subsequently converts
 //them into a string that contains all datas in the vector
 //The string will be ready for display by UI
-string DataProcessor::convertTaskListToString(vector<Data> & taskList){
+string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	string taskListString;
 	ostringstream outList;
-	vector<Data>::iterator iter;
-	//vector<Data> & copyVecotr = taskList;
 	int numberOfTask = 1;
-	//for(iter = taskList.begin(); iter != taskList.end(); iter++){
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
 			<< convertDataObjectToString(taskList[i]) << endl;
