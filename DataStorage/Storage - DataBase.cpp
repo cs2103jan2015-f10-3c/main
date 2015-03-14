@@ -41,7 +41,7 @@ Data DataBase::addData(Data inData){
 //contain startTime and endTime in TimeMacroBeg and TimeMacro End
 Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
-	std::vector<int> timePeriod;
+	std::vector<long long> timePeriod;
 	timePeriod = searchPeriod(startTime , endTime);
 	//History::updateLatestVector(); //update for undo
 	
@@ -196,7 +196,7 @@ void DataBase::allocatePsedoDate(){
 		
 		TimeMicro time1 = dataList[i].getTimeMicroBeg();
 		int hour = time1.getHour();
-		int min = time1.getHour();
+		int min = time1.getMin();
 
 		if(hour == -1){
 			hour = 0;
@@ -230,21 +230,36 @@ void DataBase::allocatePsedoDate(){
 //helper method for search Data from a specific period
 //to be pass to DisplayStorage
 //updates IterStorage to contain the relevant iteration
-std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
+std::vector<long long> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	allocatePsedoDate();
-	//std::vector<Data>::iterator iter;
-	std::vector<int> saveNo;
+	std::vector<long long> saveNo;
 
-	int pStartTime = startTime.getYear()*10000 + startTime.getMonth()*100 + startTime.getDate();
-	int pEndTime = endTime.getYear()*10000 + endTime.getMonth()*100 + endTime.getDate();
+	long long pStartTime;
+	pStartTime= 100000000;
+	pStartTime= startTime.getYear()*pStartTime;
+	long long tempMonth;
+	tempMonth = 1000000;
+	tempMonth = tempMonth * startTime.getMonth();
+	pStartTime = pStartTime + tempMonth;
+	pStartTime = pStartTime + startTime.getDate();
+
+	long long pEndTime;
+	pEndTime= 100000000;
+	pEndTime= endTime.getYear()*pEndTime;
+	long long tempMonth1;
+	tempMonth1 = 1000000;
+	tempMonth1 = tempMonth1 * endTime.getMonth();
+	pEndTime = pEndTime + tempMonth1;
+	pEndTime = pEndTime + endTime.getDate();
+
 
 	bool marker = false;
-	int time;
+	long long time;
 	Data copyTask;
 	for(int i = 0; marker == false && i != dataList.size(); i++){
 		copyTask = dataList[i];
 		time = copyTask.getPsedoDate();
-		if(time >= pStartTime){
+		if(time >= pStartTime && time <= pEndTime + 2359){
 			marker = true;
 			saveNo.push_back(i);
 		}
@@ -252,7 +267,7 @@ std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	}
 
 	for(int i = dataList.size()-1; marker == true && i != 0; i--){
-		if(dataList[i].getPsedoDate() <= pEndTime) {
+		if(dataList[i].getPsedoDate() <= pEndTime+2359 ) {
 			marker = false;
 			saveNo.push_back(i);
 		}
