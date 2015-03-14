@@ -67,7 +67,7 @@ private:
 
 public:
 	//API for Data Processing
-	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<Data> & getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDisplayList();
 	static void addData(Data inData);
 	static void clearList();
