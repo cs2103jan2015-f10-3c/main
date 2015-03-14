@@ -243,11 +243,11 @@ bool Parser::isTimePeriod (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
 		if (isStartingTime (inputToBeParsed) &&
 			inputToBeParsed[5] == '-' &&
-			searchSubstring (HOUR_FIRST_DIGIT, inputToBeParsed[6]) &&
-			searchSubstring (HOUR_SECOND_DIGIT, inputToBeParsed[7]) &&
+			searchSubstring ("012", inputToBeParsed[6]) &&
+			searchSubstring ("01234", inputToBeParsed[7]) &&
 			inputToBeParsed[8] == ':' &&
-			searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[9]) &&
-			searchSubstring (MINUTE_SECOND_DIGIT, inputToBeParsed[10])) {
+			searchSubstring ("012345", inputToBeParsed[9]) &&
+			searchSubstring ("0123456789", inputToBeParsed[10])) {
 				return true;
 		}
 		else {
