@@ -34,7 +34,7 @@ bool TimeMacro::updateDate(int inDate){
 }
 
 bool TimeMacro::updateMonth(int inMonth){
-	if (inMonth >0 && inMonth < 12){
+	if (inMonth >0 && inMonth <= 12){
 		month = inMonth;
 		return true;
 	} else return false;
