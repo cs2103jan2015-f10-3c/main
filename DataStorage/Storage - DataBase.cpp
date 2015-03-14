@@ -225,7 +225,7 @@ std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	for(int i = 0; marker == false && i != dataList.size(); i++){
 		copyTask = dataList[i];
 		time = copyTask.getPsedoDate();
-		if(time >= pStartTime){
+		if(time >= pStartTime && time <= pEndTime){
 			marker = true;
 			saveNo.push_back(i);
 		}

@@ -61,6 +61,10 @@ void OperationCenter::executeInput(string input){
 		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
 	}
 
+	if(returnDisplay == ""){
+		returnDisplay = "You have no task for today";
+	}
+
 	Feedback::updateDisplay(returnDisplay);
 	Feedback::updateResponse(returnResponse);
 

@@ -24,7 +24,7 @@ std::vector<Data> & DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacr
 		}
 		
 
-		for (int i = startT; i <= endT; i++){
+ 		for (int i = startT; i <= endT; i++){
 			displayList.push_back(DataBase::dataList[i]);
 		}
 
