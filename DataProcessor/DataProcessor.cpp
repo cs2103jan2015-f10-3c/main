@@ -122,8 +122,9 @@ string DataProcessor::convertDataObjectToString(Data task){
 	}
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
+		outData << "at ";
 		if (timeMicroBeg.getHour() < 10) {
-			outData << "at 0";
+			outData << "0";
 		}
 		outData << timeMicroBeg.getHour() << ":";
 		if (timeMicroBeg.getMin() < 10) {
@@ -188,7 +189,7 @@ string DataProcessor::convertTaskListToString(vector<Data> & taskList){
 	//for(iter = taskList.begin(); iter != taskList.end(); iter++){
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
-			<< convertDataObjectToString(taskList[i]); 
+			<< convertDataObjectToString(taskList[i]) << endl;
 		numberOfTask++;
 	}
 
