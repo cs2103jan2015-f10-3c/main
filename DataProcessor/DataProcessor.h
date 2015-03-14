@@ -30,7 +30,7 @@ public:
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
 
-	string convertTaskListToString(vector<Data> taskList);
+	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
 	//new function
 	string getClearMessage(TimeMacro startTime, TimeMacro endTime);

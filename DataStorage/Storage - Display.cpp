@@ -6,7 +6,7 @@ std::vector<Data> DisplayStorage::displayList;
 //requires the time frame
 //return the displayList
 //for display command
-std::vector<Data> DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
+std::vector<Data> & DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
 	displayList.clear(); //clear the vector everytime it starts
 	std::vector<int> timePeriod;
 

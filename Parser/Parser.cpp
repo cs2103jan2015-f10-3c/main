@@ -23,7 +23,7 @@ void Parser::parseInput (string userInput) {
 
 	commandWord = extractCommandWord (userInput); //not sure
 	if (commandWord == "add") {
-		cout << "parseAdd function triggered.";
+		//cout << "parseAdd function triggered.";
 		parseAdd (userInput, commandWord);
 	}
 	else if (commandWord == "edit") {
@@ -60,7 +60,7 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	string inputToBeParsed = userInput;
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
-		cout << "inputToBeParsed = " << inputToBeParsed << endl;
+		//cout << "inputToBeParsed = " << inputToBeParsed << endl;
 
 		parseDate (inputToBeParsed, timeMacro);
 	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
@@ -153,7 +153,7 @@ void Parser::parseDisplay (string userInput, string commandWord) {
 
 void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 	if (isDate (inputToBeParsesd)) {
-		cout << "inputToBeParsed is date" << endl;
+		//cout << "inputToBeParsed is date" << endl;
 		string date = inputToBeParsesd.substr (0, 2);
 		string month = inputToBeParsesd.substr (3, 2);
 		string year = inputToBeParsesd.substr (6, 4);
@@ -166,7 +166,7 @@ void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 		timeMacro.updateMonth (monthInt);
 		timeMacro.updateYear (yearInt);
 	}else{
-		cout << "inputToBeParsed is not recognised as date." << endl;
+		//cout << "inputToBeParsed is not recognised as date." << endl;
 	}
 }
 
@@ -207,16 +207,16 @@ bool Parser::isDate (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[7]) &&
 			searchSubstring ("0123456789", inputToBeParsed[8]) &&
 			searchSubstring ("0123456789", inputToBeParsed[9])) {
-				cout << "is date." << endl;
+				//cout << "is date." << endl;
 				return true;
 		}
 		else {
-			cout << "is not date, fail 1." << endl;
+			//cout << "is not date, fail 1." << endl;
 			return false;
 		}
 	}
 	else {
-		cout << "is not date, fail 2." << endl;
+		//cout << "is not date, fail 2." << endl;
 		return false;
 	}
 }
@@ -260,11 +260,11 @@ bool Parser::isTimePeriod (string inputToBeParsed) {
 }
 
 bool Parser::searchSubstring (string timeString, char substring) {
-	cout << "searchSubstring triggered." << endl;
-	cout << "finding " << substring << " in " << timeString << endl;
+	//cout << "searchSubstring triggered." << endl;
+	//cout << "finding " << substring << " in " << timeString << endl;
 	unsigned int index = 0;
 	for (index = 0; index < timeString.size(); index ++) {
-		cout << substring << "||" << timeString[index] << endl;
+		//cout << substring << "||" << timeString[index] << endl;
 		if (substring == timeString[index]) {
 			return true;
 		}
