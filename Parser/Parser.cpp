@@ -23,6 +23,7 @@ void Parser::parseInput (string userInput) {
 
 	commandWord = extractCommandWord (userInput); //not sure
 	if (commandWord == "add") {
+		//cout << "parseAdd function triggered.";
 		parseAdd (userInput, commandWord);
 	}
 	else if (commandWord == "edit") {
@@ -59,6 +60,7 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	string inputToBeParsed = userInput;
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
+		//cout << "inputToBeParsed = " << inputToBeParsed << endl;
 
 		parseDate (inputToBeParsed, timeMacro);
 	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
@@ -151,6 +153,7 @@ void Parser::parseDisplay (string userInput, string commandWord) {
 
 void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 	if (isDate (inputToBeParsesd)) {
+		//cout << "inputToBeParsed is date" << endl;
 		string date = inputToBeParsesd.substr (0, 2);
 		string month = inputToBeParsesd.substr (3, 2);
 		string year = inputToBeParsesd.substr (6, 4);
@@ -162,6 +165,8 @@ void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 		timeMacro.updateDay (day);
 		timeMacro.updateMonth (monthInt);
 		timeMacro.updateYear (yearInt);
+	}else{
+		//cout << "inputToBeParsed is not recognised as date." << endl;
 	}
 }
 
@@ -192,34 +197,37 @@ string Parser::parseTaskNo (string inputToBeParsed) {
 
 bool Parser::isDate (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE) {
-		if (searchSubstring (DATE_FIRST_DIGIT, inputToBeParsed[0]) &&
-			searchSubstring (DATE_SECOND_DIGIT, inputToBeParsed[1]) &&
+		if (searchSubstring ("0123", inputToBeParsed[0]) &&
+			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == '/' &&
-			searchSubstring (MONTH_FIRST_DIGIT, inputToBeParsed[3]) &&
-			searchSubstring (MONTH_SECOND_DIGIT, inputToBeParsed[4]) &&
+			searchSubstring ("01", inputToBeParsed[3]) &&
+			searchSubstring ("0123456789", inputToBeParsed[4]) &&
 			inputToBeParsed[5] == '/' &&
-			searchSubstring (YEAR_FIRST_DIGIT, inputToBeParsed[6]) &&
-			searchSubstring (YEAR_SECOND_DIGIT, inputToBeParsed[7]) &&
-			searchSubstring (YEAR_THIRD_DIGIT, inputToBeParsed[8]) &&
-			searchSubstring (YEAR_FOURTH_DIGIT, inputToBeParsed[9])) {
+			searchSubstring ("2", inputToBeParsed[6]) &&
+			searchSubstring ("0123456789", inputToBeParsed[7]) &&
+			searchSubstring ("0123456789", inputToBeParsed[8]) &&
+			searchSubstring ("0123456789", inputToBeParsed[9])) {
+				//cout << "is date." << endl;
 				return true;
 		}
 		else {
+			//cout << "is not date, fail 1." << endl;
 			return false;
 		}
 	}
 	else {
+		//cout << "is not date, fail 2." << endl;
 		return false;
 	}
 }
 
 bool Parser::isStartingTime (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_STARTING_TIME) {
-		if (searchSubstring (HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
-			searchSubstring (HOUR_SECOND_DIGIT, inputToBeParsed[1]) &&
+		if (searchSubstring ("012", inputToBeParsed[0]) &&
+			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == ':' &&
-			searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
-			searchSubstring (MINUTE_SECOND_DIGIT, inputToBeParsed[4])) {
+			searchSubstring ("012345", inputToBeParsed[3]) &&
+			searchSubstring ("0123456789", inputToBeParsed[4])) {
 				return true;
 		}
 		else {
@@ -251,10 +259,13 @@ bool Parser::isTimePeriod (string inputToBeParsed) {
 	}
 }
 
-bool Parser::searchSubstring (string string, char substring) {
+bool Parser::searchSubstring (string timeString, char substring) {
+	//cout << "searchSubstring triggered." << endl;
+	//cout << "finding " << substring << " in " << timeString << endl;
 	unsigned int index = 0;
-	for (index = 0; index < string.size(); index ++) {
-		if (substring == string[index]) {
+	for (index = 0; index < timeString.size(); index ++) {
+		//cout << substring << "||" << timeString[index] << endl;
+		if (substring == timeString[index]) {
 			return true;
 		}
 	}

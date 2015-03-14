@@ -15,7 +15,7 @@ DataProcessor::DataProcessor(){
 string DataProcessor::addTask(Data task){
 	DataBase::addData(task); 
 	ostringstream out;
-	out << task.getDesc() << ADD_MESSAGE <<endl;
+	out << convertDataObjectToString (task) << " is added" <<endl;
 	string addMessage;
 	addMessage = out.str();
 	return addMessage;
@@ -25,7 +25,7 @@ string DataProcessor::addTask(Data task){
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
-	out << DataBase::deleteData(number).getDesc() << DELETE_MESSAGE << endl;
+	out << DataBase::deleteData(number).getDesc() << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -54,7 +54,7 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 	DataBase::clearData(startTime, endTime);
 	//string clearMessage = getClearMessage(startTime, endTime);
 	//return clearMessage;
-	return CLEAR_MESSAGE;
+	return " all contents are cleared";
 }
 
 //This function produces the string that contains the clear feature message
@@ -75,7 +75,7 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 string DataProcessor::editTask(int taskNumber, Data task){
 	Data uneditedTask;
 	uneditedTask = DataBase::editData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask) + EDIT_MESSAGE;
+	string editMessage = getEditMessage(uneditedTask) + " is edited";
 	return editMessage;
 }
 
@@ -98,9 +98,12 @@ string DataProcessor::convertDataObjectToString(Data task){
 	timeMicroBeg = task.getTimeMicroBeg();
 	timeMicroEnd = task.getTimeMicroEnd();
 
+	outData << task.getDesc();
+
+
 	//If there is deadline date associated with the task
-	if(timeMacroBeg.getDate() != NULL){
-		outData << timeMacroBeg.getDate() << "/"
+	if(timeMacroBeg.getDate() != 0){
+		outData << " on " << timeMacroBeg.getDate() << "/"
 				<< timeMacroBeg.getMonth() << "/"
 				<< timeMacroBeg.getYear();
 
@@ -119,16 +122,28 @@ string DataProcessor::convertDataObjectToString(Data task){
 	}
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
-		outData << timeMicroBeg.getHour() << ":"
-				<< timeMicroBeg.getMin();
+		if (timeMicroBeg.getHour() < 10) {
+			outData << "at 0";
+		}
+		outData << timeMicroBeg.getHour() << ":";
+		if (timeMicroBeg.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getMin();
 
 	}
 	if(timeMicroEnd.getHour() != -1){
-		outData << "-" << timeMicroEnd.getHour() << ":"
-				<< timeMicroEnd.getMin();
+		outData << "-";
+		if (timeMicroBeg.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getHour() << ":";
+		if (timeMicroBeg.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getMin();
 	}
 	
-	outData << task.getDesc() << endl;
 	taskString = outData.str();
 	return taskString;
 
@@ -164,14 +179,16 @@ string DataProcessor::searchTask(string keyword){
 //This function reads in a vector of Data object and subsequently converts
 //them into a string that contains all datas in the vector
 //The string will be ready for display by UI
-string DataProcessor::convertTaskListToString(vector<Data> taskList){
+string DataProcessor::convertTaskListToString(vector<Data> & taskList){
 	string taskListString;
 	ostringstream outList;
 	vector<Data>::iterator iter;
+	//vector<Data> & copyVecotr = taskList;
 	int numberOfTask = 1;
-	for(iter = taskList.begin(); iter != taskList.end(); iter++){
+	//for(iter = taskList.begin(); iter != taskList.end(); iter++){
+	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
-				<< convertDataObjectToString(*iter); 
+			<< convertDataObjectToString(taskList[i]); 
 		numberOfTask++;
 	}
 

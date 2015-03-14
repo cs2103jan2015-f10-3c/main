@@ -187,12 +187,8 @@ void DataBase::radixCollect(std::queue<Data> digitQ[]){
 //for internal working
 void DataBase::allocatePsedoDate(){
 	int i=0;
-
-	
 	int sDate;
-
 	while(i != dataList.size()){
-		
 
 		TimeMacro time = dataList[i].getTimeMacroBeg();
 		int year = time.getYear();
@@ -201,31 +197,13 @@ void DataBase::allocatePsedoDate(){
 	
 		sDate = year*10000 + month*100 + date;
 		dataList[i].updatePsedoDate(sDate);
-
+		
 		i++;
+
 	}
 
-	/*int i=0;
 
-	std::vector<Data> copyVector;
-	copyVector = dataList;
-	std::vector<Data>::iterator iter;
-	iter = copyVector.begin();
-	int sDate;
 
-	while(i != dataList.size()){
-		iter++;
-
-		TimeMacro time = iter->getTimeMacroBeg();
-		int year = time.getYear();
-		int month = time.getMonth();
-		int date = time.getDate();
-	
-		sDate = year*10000 + month*100 + date;
-		dataList[i].updatePsedoDate(sDate);
-
-		i++;
-	}*/
 }
 
 
@@ -254,7 +232,7 @@ std::vector<int> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 		
 	}
 
-	for(int i = dataList.size()-1; marker == true || i != 0; i--){
+	for(int i = dataList.size()-1; marker == true && i != 0; i--){
 		if(dataList[i].getPsedoDate() <= pEndTime) {
 			marker = false;
 			saveNo.push_back(i);
