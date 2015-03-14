@@ -103,23 +103,28 @@ string DataProcessor::convertDataObjectToString(Data task){
 
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
-		outData << " on " << timeMacroBeg.getDate() << "/"
-				<< timeMacroBeg.getMonth() << "/"
+		outData << " on " 
+			<< timeMacroBeg.getDay() << ", "
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
 				<< timeMacroBeg.getYear();
 
 	}
-	if(timeMacroEnd.getDate() != 0){
-		outData << "-"
-				<< timeMacroEnd.getDate() << "/"
-				<< timeMacroEnd.getMonth() << "/"
-				<< timeMacroEnd.getYear();
-	}else
-	{
-		//If there is a start date and no end date specified
-		if(timeMacroBeg.getDate() != 0){
+	//if(timeMacroEnd.getDate() != 0){
+	//	outData << "-"
+	//			<< timeMacroEnd.getDate() << ""
+	//			<< timeMacroEnd.getMonth() << "/"
+	//			<< timeMacroEnd.getYear();
+	//}else
+	//{
+	//	//If there is a start date and no end date specified
+	//	
+	//}
+	
+	if(timeMacroBeg.getDate() != 0){
 				outData << " ";
-		}
 	}
+
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
 		outData << "at ";

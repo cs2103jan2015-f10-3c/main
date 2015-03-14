@@ -39,7 +39,10 @@ void OperationCenter::executeInput(string input){
 		returnResponse = dataProcessor.addTask(task);
 	}else if(command == "display") {
 		returnResponse = EMPTY_RESPONSE;
-		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
+		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
+		if(returnDisplay == ""){
+			returnDisplay = "You have no task within the specified time period";
+		}
 	}else if(command == "delete"){
 		returnResponse = dataProcessor.deleteTask(taskNo);
 	}else if(command == "clear"){
