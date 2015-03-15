@@ -246,7 +246,7 @@ bool Parser::isTimePeriod (string inputToBeParsed) {
 		if (isStartingTime (inputToBeParsed) &&
 			inputToBeParsed[5] == '-' &&
 			searchSubstring ("012", inputToBeParsed[6]) &&
-			searchSubstring ("01234", inputToBeParsed[7]) &&
+			searchSubstring ("0123456789", inputToBeParsed[7]) &&
 			inputToBeParsed[8] == ':' &&
 			searchSubstring ("012345", inputToBeParsed[9]) &&
 			searchSubstring ("0123456789", inputToBeParsed[10])) {
