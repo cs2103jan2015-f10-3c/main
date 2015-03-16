@@ -90,7 +90,6 @@ namespace GUI {
 			// 
 			resources->ApplyResources(this->inputBox, L"inputBox");
 			this->inputBox->Name = L"inputBox";
-			this->inputBox->UseWaitCursor = true;
 			this->inputBox->Enter += gcnew System::EventHandler(this, &GUI::inputBox_Enter);
 			this->inputBox->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &GUI::inputBox_KeyUp);
 			this->inputBox->Leave += gcnew System::EventHandler(this, &GUI::inputBox_Leave);
@@ -100,7 +99,6 @@ namespace GUI {
 			resources->ApplyResources(this->confirmInputButton, L"confirmInputButton");
 			this->confirmInputButton->Name = L"confirmInputButton";
 			this->confirmInputButton->UseVisualStyleBackColor = true;
-			this->confirmInputButton->UseWaitCursor = true;
 			this->confirmInputButton->Click += gcnew System::EventHandler(this, &GUI::confirmInputButton_Click);
 			// 
 			// outputMessageBox
@@ -108,14 +106,12 @@ namespace GUI {
 			resources->ApplyResources(this->outputMessageBox, L"outputMessageBox");
 			this->outputMessageBox->Name = L"outputMessageBox";
 			this->outputMessageBox->ReadOnly = true;
-			this->outputMessageBox->UseWaitCursor = true;
 			// 
 			// displayBox
 			// 
 			resources->ApplyResources(this->displayBox, L"displayBox");
 			this->displayBox->Name = L"displayBox";
 			this->displayBox->ReadOnly = true;
-			this->displayBox->UseWaitCursor = true;
 			// 
 			// GUI
 			// 
@@ -125,11 +121,11 @@ namespace GUI {
 			this->Controls->Add(this->outputMessageBox);
 			this->Controls->Add(this->confirmInputButton);
 			this->Controls->Add(this->inputBox);
+			this->Cursor = System::Windows::Forms::Cursors::Arrow;
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::FixedSingle;
 			this->HelpButton = true;
 			this->MaximizeBox = false;
 			this->Name = L"GUI";
-			this->UseWaitCursor = true;
 			this->Load += gcnew System::EventHandler(this, &GUI::GUI_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -142,12 +138,14 @@ namespace GUI {
 				 //Show welcome message
 				 //string welcomeMessage = OperationCenter::welcomeUser();
 				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
-				 outputMessageBox->Text = "Hello Jim, Welcome to your Private Assistant!";
+				 outputMessageBox->Text = "Hello Jim, Welcome to your BlinkList!";
 				 OperationCenter::executeInput("show today");
 				 string displayString = Feedback::getDisplay();
-				 string responseString = Feedback::getResponse();
+				 //string responseString = Feedback::getResponse();
 				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString);
-				 outputMessageBox->Text =  msclr::interop::marshal_as<String^>(responseString);
+				 //outputMessageBox->Text =  msclr::interop::marshal_as<String^>(responseString);
+				 
+
 			 }
 	private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
 			 }
