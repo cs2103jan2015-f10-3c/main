@@ -1,4 +1,5 @@
 #include "Commons.h"
+#include <assert.h>
 
 std::string TimeMacro::getDay(){
 	return day;
@@ -17,7 +18,7 @@ int TimeMacro::getYear(){
 }
 
 void TimeMacro::updateDay(std::string inDay){
-	_ASSERT (inDay == "Monday" || inDay == "Tuesday" || 
+	assert (inDay == "Monday" || inDay == "Tuesday" || 
 		inDay == "Wednesday" || inDay == "Thursday" || 
 		inDay == "Friday" || inDay == "Saturday" || 
 		inDay == "Sunday");
@@ -25,16 +26,16 @@ void TimeMacro::updateDay(std::string inDay){
 }
 
 void TimeMacro::updateDate(int inDate){
-	_ASSERT (inDate > 0 && inDate < 32);
+	assert (inDate > 0 && inDate < 32);
 		date = inDate;
 }
 
 void TimeMacro::updateMonth(int inMonth){
-	_ASSERT (inMonth >0 && inMonth <= 12);
+	assert (inMonth >0 && inMonth <= 12);
 		month = inMonth;
 }
 
 void TimeMacro::updateYear(int inYear){
-	_ASSERT (inYear > 1900 && inYear < 2100);
+	assert (inYear > 1900 && inYear < 2100);
 		year = inYear;
 }
