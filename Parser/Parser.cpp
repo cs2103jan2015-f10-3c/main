@@ -18,12 +18,31 @@ const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
 //const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
 
 
+//This method is called by Operation Center.
+//It takes in user's input message
+//and updates error message if the user's command word is incorrect.
 void Parser::parseInput (string userInput) {
 	string commandWord;
 
-	commandWord = extractCommandWord (userInput); //not sure
+	commandWord = extractCommandWord (userInput);
+
+	try {
+	checkCommandWord (commandWord, userInput);
+	}
+
+	catch (const char* errorMessge) {
+		updateErrorMessage ("Please enter the correct command");
+		//cout << getErrorMessage () << endl;
+	}
+}
+
+
+//This method is to recognise different user's command word
+//and call for different actions accordingly.
+//If the user enters an incorrect command word,
+//it will throw an exception.
+void Parser::checkCommandWord (string commandWord, string userInput) {
 	if (commandWord == "add") {
-		//cout << "parseAdd function triggered.";
 		parseAdd (userInput, commandWord);
 	}
 	else if (commandWord == "edit") {
@@ -40,6 +59,9 @@ void Parser::parseInput (string userInput) {
 	}
 	else if (commandWord == "display") {
 		parseDisplay (userInput, commandWord);
+	}
+	else {
+		throw "non-existing command";
 	}
 }
 
@@ -60,18 +82,17 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	string inputToBeParsed = userInput;
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
-		//cout << "inputToBeParsed = " << inputToBeParsed << endl;
 
-		parseDate (inputToBeParsed, timeMacro);
+	parseDate (inputToBeParsed, timeMacro);
 	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 	if (isTimePeriod (inputToBeParsed)) {
-			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-	    }
-	    else if (isStartingTime (inputToBeParsed)) {
-            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-        }
-		desc = inputToBeParsed;
+		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
+	}
+	else if (isStartingTime (inputToBeParsed)) {
+		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+	}
+	desc = inputToBeParsed;
 
 	
 	updateCommand (commandWord);

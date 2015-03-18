@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <exception>
 #include "Commons.h"
 
 using namespace std;
@@ -12,6 +13,7 @@ private:
 	string _command;
 	Data _myData;
 	int _taskNo;
+	string _errorMessage;
 
 	void updateCommand (string commandWord) {
 		_command = commandWord;
@@ -41,6 +43,10 @@ private:
 
 	void updateDesc (string desc) {
 		_myData.updateDesc (desc);
+	}
+
+	void updateErrorMessage (string errorMessage) {
+		_errorMessage = errorMessage;
 	}
 	
 
@@ -82,9 +88,14 @@ public:
 		return _myData;
 	}
 
+	string getErrorMessage () {
+		return _errorMessage;
+	}
+
 
 	void parseInput (string userInput);
 	string extractCommandWord (string userInput);
+	void checkCommandWord (string commandWord, string userInput);
 	void parseAdd (string userInput, string commandWord);
 	void parseEdit (string userInput, string commandWord);
 	void parseSearch (string userInput, string commandWord);
@@ -104,5 +115,8 @@ public:
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);
 	bool isLeapYear (int year);
 	
+
+	//exception specifications
+
 };
 #endif
