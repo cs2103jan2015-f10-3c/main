@@ -10,6 +10,7 @@
 #include <sstream>
 #include <ctime>
 #include <chrono>
+#include <assert.h>
 #include "Commons.h"
 #include "DataProcessor.h"
 #include "Parser.h"

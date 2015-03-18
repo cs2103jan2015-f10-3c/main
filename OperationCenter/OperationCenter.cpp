@@ -35,31 +35,40 @@ void OperationCenter::executeInput(string input){
 	string returnDisplay;
 	
 	
-	if(command == ADD_COMMAND) {
+	if(command == "add") {
 		returnResponse = dataProcessor.addTask(task);
-	}else if(command == DISPLAY_COMMAND) {
+	}else if(command == "display") {
 		returnResponse = EMPTY_RESPONSE;
-		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
-	}else if(command == DELETE_COMMAND){
+		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
+		if(returnDisplay == ""){
+			returnDisplay = "You have no task within the specified time period";
+		}
+	}else if(command == "delete"){
+		assert(taskNo>0);
 		returnResponse = dataProcessor.deleteTask(taskNo);
-	}else if(command == CLEAR_COMMAND){
+	}else if(command == "clear"){
 		returnResponse = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
-	}else if(command == SORT_COMMAND){
+	}else if(command == "sort"){
 		returnResponse = "under construction";
-	}else if(command == SEARCH_COMMAND){
+	}else if(command == "search"){
 		returnDisplay = dataProcessor.searchTask(task.getDesc());
 		returnResponse = EMPTY_RESPONSE;
-	}else if(command == EDIT_COMMAND){
-		returnResponse = dataProcessor.editTask(task.getTaskNo(), task);
-	}else if(command == UNDO_COMMAND){
+	}else if(command == "edit"){
+		assert(taskNo>0);
+		returnResponse = dataProcessor.editTask(taskNo, task);
+	}else if(command == "undo"){
 		returnResponse = dataProcessor.executeUndo();
 	}else{
 		returnResponse = IVALID_COMMAND_MESSAGE;
 	}
 	
-	if(command != DISPLAY_COMMAND && command != SEARCH_COMMAND){
+	if(command != "display" && command != "search"){
 		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
+		if(returnDisplay == ""){
+			returnDisplay = ":) You have no task for today";
+		}
 	}
+
 
 	Feedback::updateDisplay(returnDisplay);
 	Feedback::updateResponse(returnResponse);
