@@ -551,5 +551,27 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
 		}
 
+		TEST_METHOD(testParseDone1)
+		{
+			Parser parser;
+			string input = "done 5";
+			string commandWord = "done";
+			parser.parseDone (input, commandWord);
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 5);
+			Assert::AreEqual ((parser.getData ()).getCompleteStatus (), true);
+		}
+
+		TEST_METHOD(testParseDone2)
+		{
+			Parser parser;
+			string input = "done 139";
+			string commandWord = "done";
+			parser.parseDone (input, commandWord);
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 139);
+			Assert::AreEqual ((parser.getData ()).getCompleteStatus (), true);
+		}
+
 	};
 }

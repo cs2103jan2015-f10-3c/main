@@ -48,6 +48,10 @@ private:
 	void updateErrorMessage (string errorMessage) {
 		_errorMessage = errorMessage;
 	}
+
+	void updateStatus (bool status) {
+		_myData.updateCompleteStatus (status);
+	}
 	
 
 	static const unsigned int LENGTH_OF_DATE;
@@ -102,6 +106,7 @@ public:
 	void parseUndo (string commandWord);
 	void parseDelete (string userInput, string commandWord);
 	void parseDisplay (string userInput, string commandWord);
+	void parseDone (string userInput, string commandWord);
     void parseDate (string inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
 	string parseTaskNo (string inputToBeParsed);

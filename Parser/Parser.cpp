@@ -60,6 +60,9 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	else if (commandWord == "display") {
 		parseDisplay (userInput, commandWord);
 	}
+	else if (commandWord == "done") {
+		parseDone (userInput, commandWord);
+	}
 	else {
 		throw "non-existing command";
 	}
@@ -205,6 +208,16 @@ void Parser::parseDisplay (string userInput, string commandWord) {
 	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 }
 
+
+//This method is to parse user's input if the command word is "done".
+//The command word "done" will be followed by a task number.
+void Parser::parseDone (string userInput, string commandWord) {
+	string index = userInput.substr (commandWord.size() + 1);
+	int taskNo = atoi (index.c_str());
+	updateCommand (commandWord);
+	updateTaskNo (taskNo);
+	updateStatus (true);
+}
 
 //This method is to parse date after the start of the string is recoganised as a date.
 //It recoganise the date format "dd/mm/yyyy" and parse it accordingly.
