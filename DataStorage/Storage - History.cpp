@@ -26,6 +26,7 @@ void History::updateLatestData(Data inData){
 	latestData = inData;
 }
 
+/*
 void History::updateLatestVector(){
 	latestVector.clear(); //clear the container
 
@@ -34,4 +35,4 @@ void History::updateLatestVector(){
 	for(iter = IterStorage::getIterBeg(); iter <= IterStorage::getIterEnd(); iter++){
 		latestVector.push_back(*iter);
 	}
-}
+}*/

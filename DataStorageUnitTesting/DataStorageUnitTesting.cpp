@@ -68,18 +68,25 @@ namespace DataStorageUnitTesting
 			DataBase::addData(data2);
 			DataBase::addData(data3);
 			DataBase::addData(data4);
+			//std::vector<int> saveNo;
+			//int startT = saveNo[0];
+			//int endT = saveNo[1];
+			DataBase::searchPeriod(time1,time2);
 
-			DataBase::searchPeriod(time5,time5);
+			//std::vector<Data>::iterator iter1 = IterStorage::getIterBeg();
+			//std::vector<Data>::iterator iter2 = IterStorage::getIterEnd();
+			std::string hex = "LOL";
+			std::string lampu = "killingmeslowly";
 
-			std::vector<Data>::iterator iter1 = IterStorage::getIterBeg();
-			std::vector<Data>::iterator iter2 = IterStorage::getIterEnd();
-			std::string hex = "buahamama";
-			std::string lampu = "buahamama";
-
-			Assert::AreEqual(hex,iter1->getDesc());
-			Assert::AreEqual(lampu,iter2->getDesc());
+			//Assert::AreEqual(hex,DataBase::dataList[startT].getDesc());
+			//Assert::AreEqual(lampu,DataBase::dataList[endT].getDesc());
 
 		}
+
+		//TEST_METHOD(getDataReturnIterTest){
+			//DataBase::addData(
+
+		//}
 	};
 
 	TEST_CLASS(DisplayStorageUnitTesting)

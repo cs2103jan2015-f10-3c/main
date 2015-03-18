@@ -16,7 +16,7 @@ int Data::getUniqueCode(){
 	return uniqueCode;
 }
 
-int Data::getPsedoDate(){
+long long Data::getPsedoDate(){
 	return psedoDate;
 }
 
@@ -48,7 +48,7 @@ void Data::updateCompleteStatus(bool status){
 	completeStatus = status;
 }
 
-void Data::updatePsedoDate(int sDate){
+void Data::updatePsedoDate(long long sDate){
 	psedoDate = sDate;
 }
 

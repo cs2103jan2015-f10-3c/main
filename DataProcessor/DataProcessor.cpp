@@ -2,10 +2,10 @@
 
 using namespace std;
 
-const string DataProcessor::ADD_MESSAGE = " is added";
-const string DataProcessor::DELETE_MESSAGE = " is deleted from BlinkList";
-const string DataProcessor::CLEAR_MESSAGE = " all contents are cleared";
-const string DataProcessor::EDIT_MESSAGE = " is edited";
+const string DataProcessor::ADD_MESSAGE = "is added";
+const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
+const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
+const string DataProcessor::EDIT_MESSAGE = "is edited";
 
 
 //This function reads in the Data object to be added,
@@ -13,7 +13,7 @@ const string DataProcessor::EDIT_MESSAGE = " is edited";
 string DataProcessor::addTask(Data task){
 	DataBase::addData(task); 
 	ostringstream out;
-	out << task.getDesc() << ADD_MESSAGE <<endl;
+	out << convertDataObjectToString (task) << " is added" <<endl;
 	string addMessage;
 	addMessage = out.str();
 	return addMessage;
@@ -23,7 +23,7 @@ string DataProcessor::addTask(Data task){
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
-	out << DataBase::deleteData(number).getDesc() << DELETE_MESSAGE << endl;
+	out << convertDataObjectToString (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -52,7 +52,7 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 	DataBase::clearData(startTime, endTime);
 	//string clearMessage = getClearMessage(startTime, endTime);
 	//return clearMessage;
-	return CLEAR_MESSAGE;
+	return " all contents are cleared";
 }
 
 //This function produces the string that contains the clear feature message
@@ -73,7 +73,7 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 string DataProcessor::editTask(int taskNumber, Data task){
 	Data uneditedTask;
 	uneditedTask = DataBase::editData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask) + EDIT_MESSAGE;
+	string editMessage = getEditMessage(uneditedTask) + " is edited";
 	return editMessage;
 }
 
@@ -89,44 +89,65 @@ string DataProcessor::executeUndo(){
 string DataProcessor::convertDataObjectToString(Data task){
 	string taskString;
 	ostringstream outData;
-	TimeMacro timeMacroBeg;//, timeMacroEnd;
+	TimeMacro timeMacroBeg, timeMacroEnd;
 	timeMacroBeg = task.getTimeMacroBeg();
-	//timeMacroEnd = task.getTimeMacroEnd();
+	timeMacroEnd = task.getTimeMacroEnd();
 	TimeMicro timeMicroBeg, timeMicroEnd;
 	timeMicroBeg = task.getTimeMicroBeg();
 	timeMicroEnd = task.getTimeMicroEnd();
 
+	outData << task.getDesc();
+
+
 	//If there is deadline date associated with the task
-	if(timeMacroBeg.getDate() != NULL){
-		outData << timeMacroBeg.getDate() << "/"
-				<< timeMacroBeg.getMonth() << "/"
-				<< timeMacroBeg.getYear() << " ";
+	if(timeMacroBeg.getDate() != 0){
+		outData << " on " 
+			<< timeMacroBeg.getDay() << ", "
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
+				<< timeMacroBeg.getYear();
 
 	}
-	/*if(timeMacroEnd.getDate() != 0){
-		outData << "-"
-				<< timeMacroEnd.getDate() << "/"
-				<< timeMacroEnd.getMonth() << "/"
-				<< timeMacroEnd.getYear();
-	}else
-	{
-		//If there is a start date and no end date specified
-		if(timeMacroBeg.getDate() != 0){
+	//if(timeMacroEnd.getDate() != 0){
+	//	outData << "-"
+	//			<< timeMacroEnd.getDate() << ""
+	//			<< timeMacroEnd.getMonth() << "/"
+	//			<< timeMacroEnd.getYear();
+	//}else
+	//{
+	//	//If there is a start date and no end date specified
+	//	
+	//}
+	
+	if(timeMacroBeg.getDate() != 0){
 				outData << " ";
-		}
-	}*/
+	}
+
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
-		outData << timeMicroBeg.getHour() << ":"
-				<< timeMicroBeg.getMin();
+		outData << "at ";
+		if (timeMicroBeg.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getHour() << ":";
+		if (timeMicroBeg.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getMin();
 
 	}
 	if(timeMicroEnd.getHour() != -1){
-		outData << "-" << timeMicroEnd.getHour() << ":"
-				<< timeMicroEnd.getMin();
+		outData << "-";
+		if (timeMicroEnd.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getHour() << ":";
+		if (timeMicroEnd.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getMin();
 	}
 	
-	outData << " " << task.getDesc();
 	taskString = outData.str();
 	return taskString;
 
@@ -162,14 +183,13 @@ string DataProcessor::searchTask(string keyword){
 //This function reads in a vector of Data object and subsequently converts
 //them into a string that contains all datas in the vector
 //The string will be ready for display by UI
-string DataProcessor::convertTaskListToString(vector<Data> taskList){
+string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	string taskListString;
 	ostringstream outList;
-	vector<Data>::iterator iter;
 	int numberOfTask = 1;
-	for(iter = taskList.begin(); iter != taskList.end(); iter++){
+	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
-				<< convertDataObjectToString(*iter) << endl; 
+			<< convertDataObjectToString(taskList[i]) << endl;
 		numberOfTask++;
 	}
 
@@ -183,7 +203,7 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 	string editMessage;
 	uneditedTaskString = convertDataObjectToString(uneditedTask);
 	ostringstream out;
-	out << uneditedTaskString;
+	out << uneditedTaskString << " ";
 	editMessage = out.str(); 
 	
 	return editMessage;

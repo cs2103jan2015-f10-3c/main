@@ -22,19 +22,20 @@ public:
 	static void allocatePsedoDate();
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
-	static std::vector<Data>::iterator getData(int uniqueNo);
+	static Data getData(int uniqueNo);
 
 
 public: 
 	//API for Data Processing
-	static Data addData(Data inData);	
+	static void addData(Data& inData);	
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDataList();
-	
+	static void clearDataList();
+
 	//Helper method for DisplayStorage
-	static void searchPeriod(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
 };
 
@@ -66,7 +67,7 @@ private:
 
 public:
 	//API for Data Processing
-	static std::vector<Data> getDisplayList(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<Data> & getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDisplayList();
 	static void addData(Data inData);
 	static void clearList();
@@ -77,6 +78,8 @@ public:
 
 };
 
+
+/*
 //helper class for searching/clearing/etc methods
 //Store two iteration
 //Used by class DataBase and DisplayStorage
@@ -100,6 +103,6 @@ public:
 	}
 	
 };
-
+*/
 
 #endif

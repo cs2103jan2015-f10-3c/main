@@ -44,11 +44,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Parser;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataProcessor;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Parser;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Parser;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataProcessor;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;C:\Users\Yang\Desktop\Projects\main\DataStorage;C:\Users\Yang\Desktop\Projects\main\Parser;C:\Users\Yang\Desktop\Projects\main\DataProcessor;C:\Users\Yang\Desktop\Projects\main\Commons;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Parser;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <Bscmake>
+      <PreserveSbr>true</PreserveSbr>
+    </Bscmake>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -76,9 +80,6 @@
     </ProjectReference>
     <ProjectReference Include="..\DataProcessor\DataProcessor.vcxproj">
       <Project>{00748712-4a07-4125-b153-8dffcf6c0827}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\DataStorage\DataStorage.vcxproj">
-      <Project>{21daf16e-0aeb-4767-8b3e-9c7322507362}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Parser\Parser.vcxproj">
       <Project>{65d3adbf-2459-49aa-aa29-df3438fef66a}</Project>
