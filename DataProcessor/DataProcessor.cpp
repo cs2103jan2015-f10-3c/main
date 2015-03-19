@@ -1,3 +1,5 @@
+#include <assert.h>
+#include <exception>
 #include "DataProcessor.h"
 
 using namespace std;
@@ -73,10 +75,14 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 //the updated information about the task.
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
+	if(taskNumber <= 0){
+		throw std::exception("Invalid Tasknumber Entered");
+	}
 	Data uneditedTask;
 	uneditedTask = DataBase::editData(taskNumber, task);
 	string editMessage = getEditMessage(uneditedTask) + " is edited";
 	return editMessage;
+
 }
 
 
@@ -89,6 +95,7 @@ string DataProcessor::executeUndo(){
 //This function reads in a Data object and convert it into a string
 //that contains all the information of that data and ready to be displayed
 string DataProcessor::convertDataObjectToString(Data task){
+	assert ( task.getDesc() != "\0");
 	string taskString;
 	ostringstream outData;
 	TimeMacro timeMacroBeg, timeMacroEnd;
@@ -158,6 +165,9 @@ string DataProcessor::convertDataObjectToString(Data task){
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
 string DataProcessor::searchTask(string keyword){
+	if(keyword.size() == 0){
+		throw std::exception("Empty Keyword Entered");
+	}
 	vector<Data> currTaskList = DataBase::getDataList();
 	vector<Data> returnTaskList;
 	vector<Data>::iterator iter;
@@ -194,6 +204,7 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 			<< convertDataObjectToString(taskList[i]) << endl;
 		numberOfTask++;
 	}
+	assert (numberOfTask >= 1);
 
 	taskListString = outList.str();
 	return taskListString;
@@ -201,6 +212,7 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 }
 
 string DataProcessor::getEditMessage(Data uneditedTask){
+	assert (uneditedTask.getDesc() != "\0");
 	string uneditedTaskString;
 	string editMessage;
 	uneditedTaskString = convertDataObjectToString(uneditedTask);
