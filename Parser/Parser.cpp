@@ -16,6 +16,7 @@ const string Parser::HOUR_SECOND_DIGIT = "01234567890";
 const string Parser::MINUTE_FIRST_DIGIT = "012345";
 const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
 //const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
+const string Parser::ERROR_MESSAGE_COMMAND = "Please enter the correct command";
 
 
 //This method is called by Operation Center.
@@ -128,29 +129,37 @@ void Parser::parseEdit (string userInput, string commandWord) {
 	TimeMicro timeMicroBeg;
 	TimeMicro timeMicroEnd;
 	string desc;
+	int taskNo;
 	string inputToBeParsed = userInput.substr (commandWord.size() + 1);
 	string index = parseTaskNo (inputToBeParsed);
-	int taskNo = atoi (index.c_str());
-	
-	inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 
-	parseDate (inputToBeParsed, timeMacro);
-	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
-	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-	if (isTimePeriod (inputToBeParsed)) {
+	try {
+		taskNo = convertStringToInteger (index);
+		inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
+
+		parseDate (inputToBeParsed, timeMacro);
+		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+		parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+		if (isTimePeriod (inputToBeParsed)) {
 			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-	    }
-	    else if (isStartingTime (inputToBeParsed)) {
-            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-        }
+		}
+		else if (isStartingTime (inputToBeParsed)) {
+			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+		}
 		desc = inputToBeParsed;
 
 
-	updateCommand (commandWord);
-	updateTaskNo (taskNo);
-	updateTimeMacro (timeMacro);
-	updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
-    updateDesc (desc);
+		updateCommand (commandWord);
+		updateTaskNo (taskNo);
+		updateTimeMacro (timeMacro);
+		updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+		updateDesc (desc);
+	}
+
+	catch (const char* errorMessge) {
+		updateErrorMessage ("Please enter correct task number after command word");
+		cout << getErrorMessage () << endl;
+	}
 }
 
 //This method is to parse user's input if the command word is "search".
@@ -174,10 +183,21 @@ void Parser::parseUndo (string commandWord) {
 //This method is to parse user's input if the command word is "delete".
 //The command word "delete" will be followed by a task number.
 void Parser::parseDelete (string userInput, string commandWord) {
-	string index = userInput.substr (commandWord.size() + 1);
-	int taskNo = atoi (index.c_str());
-	updateCommand (commandWord);
-	updateTaskNo (taskNo);
+	string inputToBeParserd = userInput.substr (commandWord.size() + 1);
+	string index = parseTaskNo (inputToBeParserd);
+
+	try {
+		int taskNo = convertStringToInteger (index);
+		updateCommand (commandWord);
+		updateTaskNo (taskNo);
+	}
+	//int taskNo = atoi (index.c_str());
+	
+	catch (const char* errorMessge) {
+		updateErrorMessage ("Please enter correct task number after command word");
+		cout << getErrorMessage () << endl;
+	}
+
 }
 
 
@@ -278,6 +298,31 @@ string Parser::parseTaskNo (string inputToBeParsed) {
 	return index;
 }
 
+
+//This method is to check whether an input string is an interger string
+//It will return false if at least one character is not integer character
+bool Parser::isInteger (string index) {
+	for (int i = 0; i < index.size (); i++) {
+		if (!isdigit (index[i])) {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+//This method is to convert an input string to an integer.
+//An exception will be thrown if the string is not an integer string.
+int Parser::convertStringToInteger (string index) {
+	if (!isInteger (index)) {
+		throw "not interger";
+	}
+	else {
+		int taskNo = atoi (index.c_str());
+		return taskNo;
+	}
+	
+}
 
 //This method is to check if the start of the string is a date.
 //The string firstly needs to be longer than the date format.

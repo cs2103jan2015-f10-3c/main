@@ -70,6 +70,7 @@ private:
 	static const string MINUTE_FIRST_DIGIT;
 	static const string MINUTE_SECOND_DIGIT;
 	//static const unsigned int LENGTH_OF_ATTRIBUTE;
+	static const string ERROR_MESSAGE_COMMAND;
 
 public: 
 	//default constructor
@@ -110,6 +111,8 @@ public:
     void parseDate (string inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
 	string parseTaskNo (string inputToBeParsed);
+	bool isInteger (string index);
+	int convertStringToInteger (string index);
 	bool isDate (string inputToBeParsed);
 	string convertDateToDayOfTheWeek (int date, int month, int year);
 	bool isStartingTime (string inputToBeParsed);
