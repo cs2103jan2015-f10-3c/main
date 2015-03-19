@@ -53,7 +53,11 @@ string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 //Post-condition: tasks under the desired period will be cleared
 //from the current taskList
 string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
+	ofstream outData;
+	outData.open("log.txt");
+	outData << "start clearing Data";
 	DataBase::clearData(startTime, endTime);
+	outData << "all data cleared";
 	//string clearMessage = getClearMessage(startTime, endTime);
 	//return clearMessage;
 	return " all contents are cleared";
@@ -75,12 +79,17 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 //the updated information about the task.
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
+	ofstream outData;
+	outData.open("log.txt");
 	if(taskNumber <= 0){
+		outData << "handling exception:invalid tasknumber";
 		throw std::exception("Invalid Tasknumber Entered");
 	}
 	Data uneditedTask;
+	outData << "start editing data";
 	uneditedTask = DataBase::editData(taskNumber, task);
 	string editMessage = getEditMessage(uneditedTask) + " is edited";
+	outData << "edit data is done";
 	return editMessage;
 
 }
@@ -165,7 +174,10 @@ string DataProcessor::convertDataObjectToString(Data task){
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
 string DataProcessor::searchTask(string keyword){
+	ofstream outData;
+	outData.open("log.txt");
 	if(keyword.size() == 0){
+		outData << "handling exception: empty keyword entere";
 		throw std::exception("Empty Keyword Entered");
 	}
 	vector<Data> currTaskList = DataBase::getDataList();
@@ -173,7 +185,7 @@ string DataProcessor::searchTask(string keyword){
 	vector<Data>::iterator iter;
 	string taskDescription;
 	size_t found;
-	
+	outData << "start searching for matched tasks";
 	//For every matched task, store it in returnTaskList
 	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
 		taskDescription = (*iter).getDesc();
@@ -182,7 +194,7 @@ string DataProcessor::searchTask(string keyword){
 			DisplayStorage::addData(*iter);
 		}
 	}
-
+	outData << "update current displayList to display matched tasks";
 	returnTaskList = DisplayStorage::getDisplayList();
 
 	//Convert the taskList into a string that is ready for UI to display
