@@ -16,33 +16,25 @@ int TimeMacro::getYear(){
 	return year;
 }
 
-bool TimeMacro::updateDay(std::string inDay){
-	if (inDay == "Monday" || inDay == "Tuesday" || 
+void TimeMacro::updateDay(std::string inDay){
+	_ASSERT (inDay == "Monday" || inDay == "Tuesday" || 
 		inDay == "Wednesday" || inDay == "Thursday" || 
 		inDay == "Friday" || inDay == "Saturday" || 
-		inDay == "Sunday"){
+		inDay == "Sunday");
 			day = inDay;
-			return true;
-	} else return false;
 }
 
-bool TimeMacro::updateDate(int inDate){
-	if (inDate > 0 && inDate < 32){
+void TimeMacro::updateDate(int inDate){
+	_ASSERT (inDate > 0 && inDate < 32);
 		date = inDate;
-		return true;
-	} else return false;
 }
 
-bool TimeMacro::updateMonth(int inMonth){
-	if (inMonth >0 && inMonth <= 12){
+void TimeMacro::updateMonth(int inMonth){
+	_ASSERT (inMonth >0 && inMonth <= 12);
 		month = inMonth;
-		return true;
-	} else return false;
 }
 
-bool TimeMacro::updateYear(int inYear){
-	if (inYear > 1900 && inYear < 2100){
+void TimeMacro::updateYear(int inYear){
+	_ASSERT (inYear > 1900 && inYear < 2100);
 		year = inYear;
-		return true;
-	} else return false;
 }
