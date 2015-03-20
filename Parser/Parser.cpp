@@ -28,7 +28,7 @@ void Parser::parseInput (string userInput) {
 	commandWord = extractCommandWord (userInput);
 
 	try {
-	checkCommandWord (commandWord, userInput);
+		checkCommandWord (commandWord, userInput);
 	}
 
 	catch (const char* errorMessge) {
