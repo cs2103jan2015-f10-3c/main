@@ -78,7 +78,6 @@ public:
 class Data {
 public:
 	//private attribute of internal working
-	bool completeStatus; 
 	int taskNo;
 	int uniqueCode;
 	long long psedoDate;
@@ -89,6 +88,7 @@ public:
 	TimeMacro macroTimeEnd;
 	TimeMicro microTimeBeg;
 	TimeMicro microTimeEnd;
+	bool completeStatus; 
 
 
 public:

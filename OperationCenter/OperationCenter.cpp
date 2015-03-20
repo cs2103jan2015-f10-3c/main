@@ -72,3 +72,7 @@ void OperationCenter::executeInput(string input){
 	Feedback::updateResponse(returnResponse);
 
 }
+
+void OperationCenter::saveData(){
+	DataProcessor::saveData();
+}

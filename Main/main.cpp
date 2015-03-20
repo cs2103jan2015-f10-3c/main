@@ -15,8 +15,7 @@ int main(){
 		getline(cin, userInput);
 	}
 
+	OperationCenter::saveData();
 
-
-	//system("pause");
 	return 0;
 }
