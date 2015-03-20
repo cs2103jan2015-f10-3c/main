@@ -9,48 +9,49 @@ namespace testParser
 	{
 	public:
 		
+		//To test whether can extract "add" command
 		TEST_METHOD(testExtractCommand1)
 		{
 			Parser parser;
 			string testString = "add 08/03/2015 go for tutorial";
 			string expected = "add";
 			Assert::AreEqual (parser.extractCommandWord (testString), expected);
-			// TODO: Your test code here
 		}
 
+		//To test whether can extract "undo" command
 		TEST_METHOD(testExtractCommand2)
 		{
 			Parser parser;
 			string testString = "undo";
 			string expected = "undo";
 			Assert::AreEqual (parser.extractCommandWord (testString), expected);
-			// TODO: Your test code here
 		}
 
+		//To test for a leap year
 		TEST_METHOD(testLeapYear1)
 		{
 			Parser parser;
 			int year = 2004;
 			Assert::IsTrue (parser.isLeapYear (year));
-			// TODO: Your test code here
 		}
 
+		//To test for a non-leap year
 		TEST_METHOD(testLeapYear2)
 		{
 			Parser parser;
 			int year = 2015;
 			Assert::IsFalse (parser.isLeapYear (year));
-			// TODO: Your test code here
 		}
 
+		//To test for a leap year which can be divided by 400
 		TEST_METHOD(testLeapYear3)
 		{
 			Parser parser;
 			int year = 2000;
 			Assert::IsTrue (parser.isLeapYear (year));
-			// TODO: Your test code here
 		}
 
+		//To test whether can update and get today's date correctly
 		TEST_METHOD(testTodayDate)
 		{
 			Parser parser;
@@ -63,6 +64,7 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
 		}
 
+		//To test whether a date can be converted to day of the week correctly
 		TEST_METHOD(testConvertDateToDay1)
 		{
 			Parser parser;
@@ -71,6 +73,7 @@ namespace testParser
 			Assert::AreEqual (parser.convertDateToDayOfTheWeek (12, 3, 2015), dayOfTheWeek);
 		}
 
+		//To test whether a date can be converted to day of the week correctly
 		TEST_METHOD(testConvertDateToDay2)
 		{
 			Parser parser;
@@ -79,18 +82,24 @@ namespace testParser
 			Assert::AreEqual (parser.convertDateToDayOfTheWeek (18, 3, 2015), dayOfTheWeek);
 		}
 
+		//To test if a character can be found in a given string
+		//In this case, the character is present in the string
 		TEST_METHOD(testSearchSubstring1)
 		{
 			Parser parser;
 			Assert::IsTrue (parser.searchSubstring ("abcdefg", 'a'));
 		}
 
+		//To test if a character can be found in a given string
+		//In this case, the character is absent from the string
 		TEST_METHOD(testSearchSubstring2)
 		{
 			Parser parser;
 			Assert::IsFalse (parser.searchSubstring ("abcdefg", 'm'));
 		}
 
+		//To test whether a string is a time period
+		//In this case, the string is a time period
 		TEST_METHOD(testIsTimePeriod1)
 		{
 			Parser parser;
@@ -98,6 +107,8 @@ namespace testParser
 			Assert::IsTrue (parser.isTimePeriod (testString));
 		}
 
+		//To test whether a string is a time period
+		//In this case, the string is not a time period but a starting time
 		TEST_METHOD(testIsTimePeriod2)
 		{
 			Parser parser;
@@ -105,6 +116,8 @@ namespace testParser
 			Assert::IsFalse (parser.isTimePeriod (testString));
 		}
 
+		//To test whether a string is a time period
+		//In this case, the string is not a time period but a task description
 		TEST_METHOD(testIsTimePeriod3)
 		{
 			Parser parser;
@@ -112,6 +125,8 @@ namespace testParser
 			Assert::IsFalse (parser.isTimePeriod (testString));
 		}
 
+		//To test whether a string is a time period
+		//In this case, the string is a time period followed by a task description
 		TEST_METHOD(testIsTimePeriod4)
 		{
 			Parser parser;
@@ -119,6 +134,8 @@ namespace testParser
 			Assert::IsTrue (parser.isTimePeriod (testString));
 		}
 
+		//To test whether a string is a starting time
+		//In this case, the string is a starting time which is also a time period
 		TEST_METHOD(testIsStartingTime1)
 		{
 			Parser parser;
@@ -126,6 +143,8 @@ namespace testParser
 			Assert::IsTrue (parser.isStartingTime (testString));
 		}
 
+		//To test whether a string is a starting time
+		//In this case, the string is a starting time followed by a task description
 		TEST_METHOD(testIsStartingTime2)
 		{
 			Parser parser;
@@ -133,6 +152,8 @@ namespace testParser
 			Assert::IsTrue (parser.isStartingTime (testString));
 		}
 
+		//To test whether a string is a starting time
+		//In this case, the string is not a starting time but a date
 		TEST_METHOD(testIsStartingTime3)
 		{
 			Parser parser;
@@ -140,6 +161,8 @@ namespace testParser
 			Assert::IsFalse (parser.isStartingTime (testString));
 		}
 
+		//To test whether a string is a date
+		//In this case, the string is a date followed by a task description
 		TEST_METHOD(testIsDate1)
 		{
 			Parser parser;
@@ -147,6 +170,9 @@ namespace testParser
 			Assert::IsTrue (parser.isDate (testString));
 		}
 
+		//To test whether a string is a date
+		//In this case, the string is not a date
+		//because it does not follow the date format
 		TEST_METHOD(testIsDate2)
 		{
 			Parser parser;
@@ -154,6 +180,9 @@ namespace testParser
 			Assert::IsFalse (parser.isDate (testString));
 		}
 
+		//To test whether a string is a task number
+		//In this case, the string is a task number (one digit)
+		//followed by a task description
 		TEST_METHOD(testParseTaskNo1)
 		{
 			Parser parser;
@@ -162,6 +191,9 @@ namespace testParser
 			Assert::AreEqual (parser.parseTaskNo (testString), expected);
 		}
 
+		//To test whether a string is a task number
+		//In this case, the string is a task number (two digits)
+		//followed by a task description
 		TEST_METHOD(testParseTaskNo2)
 		{
 			Parser parser;
@@ -170,6 +202,7 @@ namespace testParser
 			Assert::AreEqual (parser.parseTaskNo (testString), expected);
 		}
 
+		//To test whether can parse a time period
 		TEST_METHOD(testParseTime1)
 		{
 			Parser parser;
@@ -183,6 +216,7 @@ namespace testParser
 			Assert::AreEqual (timeMicroEnd.getMin(), 0);
 		}
 
+		//To test whether can parse a time period followed by a task description
 		TEST_METHOD(testParseTime2)
 		{
 			Parser parser;
@@ -196,6 +230,7 @@ namespace testParser
 			Assert::AreEqual (timeMicroEnd.getMin(), 0);
 		}
 
+		//To test whether can parse a starting time followed by a task description
 		TEST_METHOD(testParseTime3)
 		{
 			Parser parser;
@@ -209,6 +244,7 @@ namespace testParser
 			Assert::AreEqual (timeMicroEnd.getMin(), -1);
 		}
 
+		//To test whether can update and get the "undo" command
 		TEST_METHOD(testParseUndo)
 		{
 			Parser parser;
@@ -218,6 +254,8 @@ namespace testParser
 			Assert::AreEqual (parser.getCommand (), commandWord);
 		}
 
+		//To test whether can parse for the "delete" feature
+		//In this case, the task number has one digit
 		TEST_METHOD(testParseDelete1)
 		{
 			Parser parser;
@@ -228,6 +266,8 @@ namespace testParser
 			Assert::AreEqual (parser.getTaskNo (), 3);
 		}
 
+		//To test whether can parse for the "delete" feature
+		//In this case, the task number has three digits
 		TEST_METHOD(testParseDelete2)
 		{
 			Parser parser;
@@ -238,6 +278,9 @@ namespace testParser
 			Assert::AreEqual (parser.getTaskNo (), 388);
 		}
 
+		//To test whether can update and get
+		//date, month, year, day
+		//followed by a starting time and a task description
 		TEST_METHOD(testParseDate1)
 		{
 			Parser parser;
@@ -251,6 +294,9 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay (), expectedDay);
 		}
 
+		//To test whether can update and get
+		//date, month, year, day
+		//followed by a task description
 		TEST_METHOD(testParseDate2)
 		{
 			Parser parser;
@@ -264,6 +310,9 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay (), expectedDay);
 		}
 
+		//To test whether can update and get
+		//date, month, year, day
+		//followed by nothing
 		TEST_METHOD(testParseDate3)
 		{
 			Parser parser;
@@ -277,6 +326,8 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay (), expectedDay);
 		}
 
+		//To test whether can ignore it when parsing date
+		//when the input string is empty
 		TEST_METHOD(testParseDate4)
 		{
 			Parser parser;
@@ -290,6 +341,8 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay (), expectedDay);
 		}
 
+		//To test whether can ignore it when parsing date
+		//when the input string is a time period
 		TEST_METHOD(testParseDate5)
 		{
 			Parser parser;
@@ -303,6 +356,7 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay (), expectedDay);
 		}
 
+		//To test whether can update and get tomorrow's date correctly
 		TEST_METHOD(testTomorrowDate)
 		{
 			Parser parser;
@@ -315,20 +369,22 @@ namespace testParser
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
 		}
 
+		//To test whether can update and get this month's date range correctly
 		TEST_METHOD(testThisMonth)
 		{
 			Parser parser;
 			TimeMacro timeMacroBeg;
 			TimeMacro timeMacroEnd;
 			parser.getThisMonth (timeMacroBeg, timeMacroEnd);
-			Assert::AreEqual (timeMacroBeg.getDate(), 0);
+			Assert::AreEqual (timeMacroBeg.getDate(), 1);
 			Assert::AreEqual (timeMacroBeg.getMonth(), 3);
 			Assert::AreEqual (timeMacroBeg.getYear(), 2015);
-			Assert::AreEqual (timeMacroEnd.getDate(), 0);
+			Assert::AreEqual (timeMacroEnd.getDate(), 31);
 			Assert::AreEqual (timeMacroEnd.getMonth(), 3);
 			Assert::AreEqual (timeMacroEnd.getYear(), 2015);
 		}
 
+		//To test whether can parse "display this month"
 		TEST_METHOD(testParseDisplay1)
 		{
 			Parser parser;
@@ -345,6 +401,7 @@ namespace testParser
 			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getYear (), 2015);
 		}
 
+		//To test whether can parse "display today"
 		TEST_METHOD(testParseDisplay2)
 		{
 			Parser parser;
@@ -360,6 +417,7 @@ namespace testParser
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
 		}
 
+		//To test whether can parse "display tomorrow"
 		TEST_METHOD(testParseDisplay3)
 		{
 			Parser parser;
@@ -375,6 +433,7 @@ namespace testParser
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
 		}
 
+		//To test whether can parse a string to search for a single keyword
 		TEST_METHOD(testParseSearch1)
 		{
 			Parser parser;
@@ -387,6 +446,7 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expectedDesc);
 		}
 
+		//To test whether can parse a string to search for a string
 		TEST_METHOD(testParseSearch2)
 		{
 			Parser parser;
@@ -399,6 +459,9 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expectedDesc);
 		}
 
+		//To test whether can parse for "edit" feature
+		//In this case, the task number has a single digit
+		//and there is a starting time
 		TEST_METHOD(testParseEdit1)
 		{
 			Parser parser;
@@ -421,6 +484,9 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
 		}
 
+		//To test whether can parse for "edit" feature
+		//In this case, the task number has two digits
+		//and there is a time period
 		TEST_METHOD(testParseEdit2)
 		{
 			Parser parser;
@@ -442,6 +508,8 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
 		}
 
+		//To test whether can parse for "add" feature
+		//In this case,there is a starting time
 		TEST_METHOD(testParseAdd1)
 		{
 			Parser parser;
@@ -464,6 +532,8 @@ namespace testParser
 		}
 
 
+		//To test whether can parse for "add" feature
+		//In this case,there is a time period
 		TEST_METHOD(testParseAdd2)
 		{
 			Parser parser;
@@ -485,6 +555,7 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
 		}
 
+		//To test whether can parse for "add" feature
 		TEST_METHOD(testParseInput1)
 		{
 			Parser parser;
@@ -507,6 +578,7 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
 		}
 
+		//To test whether can parse for "edit" feature
 		TEST_METHOD(testParseInput2)
 		{
 			Parser parser;
@@ -529,6 +601,7 @@ namespace testParser
 			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
 		}
 
+		//To test whether can parse for "delete" feature
 		TEST_METHOD(testParseInput3)
 		{
 			Parser parser;
@@ -549,6 +622,32 @@ namespace testParser
 			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getHour (), -1);
 			Assert::AreEqual (((parser.getData ()).getTimeMicroEnd ()).getMin (), -1);
 			Assert::AreEqual ((parser.getData ()).getDesc (), expecedDesc);
+		}
+
+		//To test whether can parse for "mark it as done" feature
+		//In this case, the task number has one digit
+		TEST_METHOD(testParseDone1)
+		{
+			Parser parser;
+			string input = "done 5";
+			string commandWord = "done";
+			parser.parseDone (input, commandWord);
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 5);
+			Assert::AreEqual ((parser.getData ()).getCompleteStatus (), true);
+		}
+
+		//To test whether can parse for "mark it as done" feature
+		//In this case, the task number has two digits
+		TEST_METHOD(testParseDone2)
+		{
+			Parser parser;
+			string input = "done 139";
+			string commandWord = "done";
+			parser.parseDone (input, commandWord);
+			Assert::AreEqual (parser.getCommand (), commandWord);
+			Assert::AreEqual (parser.getTaskNo (), 139);
+			Assert::AreEqual ((parser.getData ()).getCompleteStatus (), true);
 		}
 
 	};

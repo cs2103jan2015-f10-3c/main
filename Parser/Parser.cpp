@@ -16,12 +16,33 @@ const string Parser::HOUR_SECOND_DIGIT = "01234567890";
 const string Parser::MINUTE_FIRST_DIGIT = "012345";
 const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
 //const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
+const string Parser::ERROR_MESSAGE_COMMAND = "Please enter the correct command";
 
 
+//This method is called by Operation Center.
+//It takes in user's input message
+//and updates error message if the user's command word is incorrect.
 void Parser::parseInput (string userInput) {
 	string commandWord;
 
-	commandWord = extractCommandWord (userInput); //not sure
+	commandWord = extractCommandWord (userInput);
+
+	try {
+		checkCommandWord (commandWord, userInput);
+	}
+
+	catch (const char* errorMessge) {
+		updateErrorMessage ("Please enter the correct command");
+		//cout << getErrorMessage () << endl;
+	}
+}
+
+
+//This method is to recognise different user's command word
+//and call for different actions accordingly.
+//If the user enters an incorrect command word,
+//it will throw an exception.
+void Parser::checkCommandWord (string commandWord, string userInput) {
 	if (commandWord == "add") {
 		parseAdd (userInput, commandWord);
 	}
@@ -40,8 +61,21 @@ void Parser::parseInput (string userInput) {
 	else if (commandWord == "display") {
 		parseDisplay (userInput, commandWord);
 	}
+	else if (commandWord == "done") {
+		parseDone (userInput, commandWord);
+	}
+	else {
+		throw "non-existing command";
+	}
 }
 
+
+//This method is to extract command word from user's input.
+//Since the command word is only one word,
+//it will extract the first word from the user's input.
+//It assumes each word is separated by a whitespace in user's input.
+//If the user input only consists one word,
+//this single word will be extracted.
 string Parser::extractCommandWord (string userInput) {
 	int end = 0;
 	string commandWord;
@@ -50,6 +84,10 @@ string Parser::extractCommandWord (string userInput) {
 	return commandWord;
 }
 
+
+//This method is to parse user's input if the command word is "add".
+//There are at most 3 things to be parsed:
+//timeMacro, timeMicro and task description.
 //a task will end with a description if there is one
 //all 3 attributes can stand alone
 void Parser::parseAdd (string userInput, string commandWord) {
@@ -64,12 +102,12 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 	if (isTimePeriod (inputToBeParsed)) {
-			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-	    }
-	    else if (isStartingTime (inputToBeParsed)) {
-            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-        }
-		desc = inputToBeParsed;
+		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
+	}
+	else if (isStartingTime (inputToBeParsed)) {
+		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+	}
+	desc = inputToBeParsed;
 
 	
 	updateCommand (commandWord);
@@ -78,6 +116,11 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	updateDesc (desc);
 }
 
+
+//This method is to parse user's input if the command word is "edit".
+//There are at most 4 things to be parsed:
+//task number, timeMacro, timeMicro and task description.
+//The command word "edit" must be followed by a task number.
 //a task will end with a description if there is one
 //all 3 attributes can stand alone
 //The task no must be followed by something to edit
@@ -86,31 +129,42 @@ void Parser::parseEdit (string userInput, string commandWord) {
 	TimeMicro timeMicroBeg;
 	TimeMicro timeMicroEnd;
 	string desc;
+	int taskNo;
 	string inputToBeParsed = userInput.substr (commandWord.size() + 1);
 	string index = parseTaskNo (inputToBeParsed);
-	int taskNo = atoi (index.c_str());
-	
-	inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 
-	parseDate (inputToBeParsed, timeMacro);
-	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
-	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-	if (isTimePeriod (inputToBeParsed)) {
+	try {
+		taskNo = convertStringToInteger (index);
+		inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
+
+		parseDate (inputToBeParsed, timeMacro);
+		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+		parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+		if (isTimePeriod (inputToBeParsed)) {
 			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-	    }
-	    else if (isStartingTime (inputToBeParsed)) {
-            inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-        }
+		}
+		else if (isStartingTime (inputToBeParsed)) {
+			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
+		}
 		desc = inputToBeParsed;
 
 
-	updateCommand (commandWord);
-	updateTaskNo (taskNo);
-	updateTimeMacro (timeMacro);
-	updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
-    updateDesc (desc);
+		updateCommand (commandWord);
+		updateTaskNo (taskNo);
+		updateTimeMacro (timeMacro);
+		updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+		updateDesc (desc);
+	}
+
+	catch (const char* errorMessge) {
+		updateErrorMessage ("Please enter correct task number after command word");
+		cout << getErrorMessage () << endl;
+	}
 }
 
+//This method is to parse user's input if the command word is "search".
+//The whole string after the command word "search" will be parsed
+//and recognised as the key word.
 void Parser::parseSearch (string userInput, string commandWord) {
 	string desc = userInput.substr (commandWord.size() + 1);
 
@@ -118,17 +172,40 @@ void Parser::parseSearch (string userInput, string commandWord) {
 	updateDesc (desc);
 }
 
+
+////This method is to parse user's input if the command word is "undo".
+//Only the command word "undo" will be parsed.
 void Parser::parseUndo (string commandWord) {
     updateCommand (commandWord);
 }
 
+
+//This method is to parse user's input if the command word is "delete".
+//The command word "delete" will be followed by a task number.
 void Parser::parseDelete (string userInput, string commandWord) {
-	string index = userInput.substr (commandWord.size() + 1);
-	int taskNo = atoi (index.c_str());
-	updateCommand (commandWord);
-	updateTaskNo (taskNo);
+	string inputToBeParserd = userInput.substr (commandWord.size() + 1);
+	string index = parseTaskNo (inputToBeParserd);
+
+	try {
+		int taskNo = convertStringToInteger (index);
+		updateCommand (commandWord);
+		updateTaskNo (taskNo);
+	}
+	//int taskNo = atoi (index.c_str());
+	
+	catch (const char* errorMessge) {
+		updateErrorMessage ("Please enter correct task number after command word");
+		cout << getErrorMessage () << endl;
+	}
+
 }
 
+
+//This method is to parse user's input if the command word is "display".
+//The command word display is to be followed by a period.
+//So far, this method is able to parse the period when the period is
+//"today", "tomorrow" and "this month".
+//The starting and ending date/month/year/day will be updated.
 void Parser::parseDisplay (string userInput, string commandWord) {
 	TimeMacro timeMacroBeg;
 	TimeMacro timeMacroEnd;
@@ -151,6 +228,20 @@ void Parser::parseDisplay (string userInput, string commandWord) {
 	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 }
 
+
+//This method is to parse user's input if the command word is "done".
+//The command word "done" will be followed by a task number.
+void Parser::parseDone (string userInput, string commandWord) {
+	string index = userInput.substr (commandWord.size() + 1);
+	int taskNo = atoi (index.c_str());
+	updateCommand (commandWord);
+	updateTaskNo (taskNo);
+	updateStatus (true);
+}
+
+//This method is to parse date after the start of the string is recoganised as a date.
+//It recoganise the date format "dd/mm/yyyy" and parse it accordingly.
+//Date/month/year/day will be updated.
 void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 	if (isDate (inputToBeParsesd)) {
 		string date = inputToBeParsesd.substr (0, 2);
@@ -167,6 +258,14 @@ void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 	}
 }
 
+
+//This method is to parse date after the start of the string 
+//is recoganised as a time or a time period.
+//It recoganise the time format "hh:mm" and parse it accordingly.
+//If the string starts with a time,
+//only starting hour and minute will be updated.
+//If the string starts with a time period,
+//both starting and ending hour and minute will be updated.
 void Parser::parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
 	if (isTimePeriod (inputToBeParsed) || isStartingTime (inputToBeParsed)) {
         string hourBeg = inputToBeParsed.substr (0, 2);
@@ -186,12 +285,49 @@ void Parser::parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMic
 	}
 }
 
+
+//This method is to parse the task numnber.
+//It assumes the task number will be separated with the following string
+//with a whitespace,
+//or the task number is the end of the string.
+//The task number which is originally a string
+//will be converted to an integer.
 string Parser::parseTaskNo (string inputToBeParsed) {
 	int lengthOfTaskNo = inputToBeParsed.find_first_of (' ');
 	string index = inputToBeParsed.substr (0, lengthOfTaskNo);
 	return index;
 }
 
+
+//This method is to check whether an input string is an interger string
+//It will return false if at least one character is not integer character
+bool Parser::isInteger (string index) {
+	for (int i = 0; i < index.size (); i++) {
+		if (!isdigit (index[i])) {
+			return false;
+		}
+	}
+	return true;
+}
+
+
+//This method is to convert an input string to an integer.
+//An exception will be thrown if the string is not an integer string.
+int Parser::convertStringToInteger (string index) {
+	if (!isInteger (index)) {
+		throw "not interger";
+	}
+	else {
+		int taskNo = atoi (index.c_str());
+		return taskNo;
+	}
+	
+}
+
+//This method is to check if the start of the string is a date.
+//The string firstly needs to be longer than the date format.
+//Then it must follow the format "dd/mm/yyyy"
+//in order to be recognised as a date.
 bool Parser::isDate (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE) {
 		if (searchSubstring ("0123", inputToBeParsed[0]) &&
@@ -204,20 +340,23 @@ bool Parser::isDate (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[7]) &&
 			searchSubstring ("0123456789", inputToBeParsed[8]) &&
 			searchSubstring ("0123456789", inputToBeParsed[9])) {
-			
 				return true;
 		}
 		else {
-
 			return false;
 		}
 	}
 	else {
-
 		return false;
 	}
 }
 
+
+//This method is to check if the start of the string is a starting time
+//(which may be followed by an ending time).
+//The string firstly needs to be longer than the time format.
+//Then it must follow the format "hh:mm"
+//in order to be recognised as a starting time.
 bool Parser::isStartingTime (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_STARTING_TIME) {
 		if (searchSubstring ("012", inputToBeParsed[0]) &&
@@ -236,6 +375,13 @@ bool Parser::isStartingTime (string inputToBeParsed) {
 	}
 }
 
+
+//This method is to check if the start of the string is a time period.
+//The string firstly needs to be longer than the time period format.
+//Then it must follow the format "hh:mm-hh:mm"
+//in order to be recognised as a time period.
+//Please note that the format for time period overlaps and includes
+//the format for starting time.
 bool Parser::isTimePeriod (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
 		if (isStartingTime (inputToBeParsed) &&
@@ -256,11 +402,11 @@ bool Parser::isTimePeriod (string inputToBeParsed) {
 	}
 }
 
-bool Parser::searchSubstring (string timeString, char substring) {
 
+//This method is to check if a specific character is in a string.
+bool Parser::searchSubstring (string timeString, char substring) {
 	unsigned int index = 0;
 	for (index = 0; index < timeString.size(); index ++) {
-
 		if (substring == timeString[index]) {
 			return true;
 		}
@@ -268,6 +414,10 @@ bool Parser::searchSubstring (string timeString, char substring) {
 	return false;
 }
 
+
+//This method takes in date, month and year
+//and convert them to day of the week.
+//Day of the week in the Data object will be updated.
 string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
   time_t rawtime;
   struct tm timeinfo;
@@ -286,6 +436,10 @@ string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
   return (weekday[timeinfo.tm_wday]);
 }
 
+
+//This method is to get today's date, month, year and day
+//and store them in a TimeMacro object
+//which will be passed to its caller.
 void Parser::getTodayDate (TimeMacro& timeMacro) {
     time_t t = time (0);   // get time now
     struct tm now;
@@ -300,6 +454,10 @@ void Parser::getTodayDate (TimeMacro& timeMacro) {
 	timeMacro.updateDay (dayOfTheWeek);
 }
 
+
+//This method is to get tomorrow's date, month, year and day
+//and store them in a TimeMacro object
+//which will be passed to its caller.
 void Parser::getTomorrowDate (TimeMacro& timeMacro) {
     time_t t = time (0);   // get time now
     struct tm now;
@@ -345,8 +503,15 @@ void Parser::getTomorrowDate (TimeMacro& timeMacro) {
 	timeMacro.updateDay (dayOfTheWeek);
 }
 
+
+//This method is to get the starting date and ending date
+//of this month.
+//The starting and ending date, month and year
+//will be stored in two TimeMacro objects
+//which will be passed to its caller.
+//Please no
 void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
-	time_t t = time (0);   // get time now
+	time_t t = time (0);
     struct tm now;
 	localtime_s (&now, &t);
     now.tm_year = now.tm_year + 1900;
@@ -360,7 +525,12 @@ void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
 	timeMacroEnd.updateMonth (now.tm_mon);
 	timeMacroEnd.updateDate (31);
 }
+//One potential bug:
+//the date period must be the start and end of this month
+//there may be bug when the ending date of month changes
 
+
+//This method is to check if a certain year is a leap year or not
 bool Parser::isLeapYear (int year) {
 	if (year % 4 != 0) {
 		return false;
