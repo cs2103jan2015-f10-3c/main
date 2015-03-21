@@ -3,9 +3,12 @@
 
 int main(){
 
+	OperationCenter::loadData();
+
 	cout << "Welcome to BlinkList!" << endl;
 	string userInput;
 	getline(cin, userInput);
+
 	while(userInput != "exit"){
 		OperationCenter::executeInput(userInput);
 		cout << OperationCenter::getResponse() << endl;
@@ -14,8 +17,7 @@ int main(){
 		getline(cin, userInput);
 	}
 
+	OperationCenter::saveData();
 
-
-	//system("pause");
 	return 0;
 }

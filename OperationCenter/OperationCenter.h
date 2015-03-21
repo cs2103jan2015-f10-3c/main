@@ -10,7 +10,6 @@
 #include <sstream>
 #include <ctime>
 #include <chrono>
-#include <assert.h>
 #include "Commons.h"
 #include "DataProcessor.h"
 #include "Parser.h"
@@ -35,9 +34,8 @@ public:
 
 	OperationCenter() {}
 	static void executeInput (string input);
-	static string getResponse();
-	static string getDisplay();
-
+	static void saveData();
+	static void loadData();
 };
 
 class Feedback{

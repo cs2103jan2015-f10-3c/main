@@ -30,6 +30,8 @@ public:
 	string executeUndo();
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
+	static void saveData();
+	static void loadData();
 
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
