@@ -390,30 +390,26 @@ void Parser::parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMi
 		timeMicroBeg.updateHour (hourBegInt);
 		timeMicroBeg.updateMin (minuteBegInt);
 
+	}
+	
+	if (!isTimePeriod (inputToBeParsed)) {
 		if (inputToBeParsed.size() > 6) {
 			inputToBeParsed = inputToBeParsed.substr (6);
 		}
 		else {
 			inputToBeParsed = "";
 		}
-
 	}
-
-	//orginal input is "12:00-14:00 dinner"
-	//inputToBeParsed ar here will be "14:00 dinner"
-	//bug
-	//then it will be be regoznised as a time period
-
-	if (isTimePeriod (inputToBeParsed)) {
-		string hourEnd = inputToBeParsed.substr (0, 2);
-		string minuteEnd = inputToBeParsed.substr (3, 2);
+	else {
+		string hourEnd = inputToBeParsed.substr (6, 2);
+		string minuteEnd = inputToBeParsed.substr (9, 2);
 		int hourEndInt = atoi (hourEnd.c_str());
 		int minuteEndInt = atoi (minuteEnd.c_str());
 		timeMicroEnd.updateHour (hourEndInt);
 		timeMicroEnd.updateMin (minuteEndInt);
 
-		if (inputToBeParsed.size() > 6) {
-			inputToBeParsed = inputToBeParsed.substr (6);
+		if (inputToBeParsed.size() > 12) {
+			inputToBeParsed = inputToBeParsed.substr (12);
 		}
 		else {
 			inputToBeParsed = "";
