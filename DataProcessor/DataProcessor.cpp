@@ -43,6 +43,10 @@ void DataProcessor::saveData(){
 	DataBase::saveData();
 }
 
+void DataProcessor::loadData(){
+	DataBase::loadData();
+}
+
 
 
 //Start of Yang Xiaozhou's part of DataProcessor

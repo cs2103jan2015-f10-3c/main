@@ -76,3 +76,7 @@ void OperationCenter::executeInput(string input){
 void OperationCenter::saveData(){
 	DataProcessor::saveData();
 }
+
+void OperationCenter::loadData(){
+	DataProcessor::loadData();
+}

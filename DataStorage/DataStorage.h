@@ -8,6 +8,7 @@
 #include <iterator>
 #include <queue>
 #include <fstream>
+#include <sstream>
 #include "Commons.h"
 
 
@@ -26,6 +27,12 @@ private:
 	static void radixCollect(std::queue<Data> digitQ[]);
 	static Data getData(int uniqueNo);
 	static void writeHeading (std::string fileName, std::ofstream& out);
+	static void parseLoad(std::string strData, int& i);
+	static std::string tokenizerSlash(std::string& str);
+	static std::string tokenizerSpace(std::string& str);
+	static TimeMacro macroParser(std::string tempMacro);
+	static TimeMicro microParser(std::string tempMicro);
+
 
 public: 
 	//API for Data Processing
@@ -36,6 +43,7 @@ public:
 	static std::vector<Data> getDataList();
 	static void clearDataList();
 	static void saveData();
+	static void loadData();
 
 	//Helper method for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);

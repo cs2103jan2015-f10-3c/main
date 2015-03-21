@@ -3,6 +3,8 @@
 
 int main(){
 
+	OperationCenter::loadData();
+
 	cout << "Welcome to BlinkList!" << endl;
 	string userInput;
 	getline(cin, userInput);
