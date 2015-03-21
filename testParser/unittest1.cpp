@@ -163,21 +163,21 @@ namespace testParser
 
 		//To test whether a string is a date
 		//In this case, the string is a date followed by a task description
-		TEST_METHOD(testIsDate1)
+		TEST_METHOD(testisDateNumber1)
 		{
 			Parser parser;
 			string testString = "12/03/2015 dinner tonight";
-			Assert::IsTrue (parser.isDate (testString));
+			Assert::IsTrue (parser.isDateNumber (testString));
 		}
 
 		//To test whether a string is a date
 		//In this case, the string is not a date
 		//because it does not follow the date format
-		TEST_METHOD(testIsDate2)
+		TEST_METHOD(testisDateNumber2)
 		{
 			Parser parser;
 			string testString = "12/3/2015 dinner tonight";
-			Assert::IsFalse (parser.isDate (testString));
+			Assert::IsFalse (parser.isDateNumber (testString));
 		}
 
 		//To test whether a string is a task number
@@ -281,13 +281,13 @@ namespace testParser
 		//To test whether can update and get
 		//date, month, year, day
 		//followed by a starting time and a task description
-		TEST_METHOD(testParseDate1)
+		TEST_METHOD(testparseDateNumber1)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
 			string testString = "12/03/2015 09:00 breakfast";
 			string expectedDay = "Thursday";
-			parser.parseDate (testString, timeMacro);
+			parser.parseDateNumber (testString, timeMacro);
 			Assert::AreEqual (timeMacro.getDate (), 12);
 			Assert::AreEqual (timeMacro.getMonth (), 3);
 			Assert::AreEqual (timeMacro.getYear (), 2015);
@@ -297,13 +297,13 @@ namespace testParser
 		//To test whether can update and get
 		//date, month, year, day
 		//followed by a task description
-		TEST_METHOD(testParseDate2)
+		TEST_METHOD(testparseDateNumber2)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
 			string testString = "18/03/2015 breakfast";
 			string expectedDay = "Wednesday";
-			parser.parseDate (testString, timeMacro);
+			parser.parseDateNumber (testString, timeMacro);
 			Assert::AreEqual (timeMacro.getDate (), 18);
 			Assert::AreEqual (timeMacro.getMonth (), 3);
 			Assert::AreEqual (timeMacro.getYear (), 2015);
@@ -313,13 +313,13 @@ namespace testParser
 		//To test whether can update and get
 		//date, month, year, day
 		//followed by nothing
-		TEST_METHOD(testParseDate3)
+		TEST_METHOD(testparseDateNumber3)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
 			string testString = "20/03/2015";
 			string expectedDay = "Friday";
-			parser.parseDate (testString, timeMacro);
+			parser.parseDateNumber (testString, timeMacro);
 			Assert::AreEqual (timeMacro.getDate (), 20);
 			Assert::AreEqual (timeMacro.getMonth (), 3);
 			Assert::AreEqual (timeMacro.getYear (), 2015);
@@ -328,13 +328,13 @@ namespace testParser
 
 		//To test whether can ignore it when parsing date
 		//when the input string is empty
-		TEST_METHOD(testParseDate4)
+		TEST_METHOD(testparseDateNumber4)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
 			string testString = "";
 			string expectedDay = "undefined";
-			parser.parseDate (testString, timeMacro);
+			parser.parseDateNumber (testString, timeMacro);
 			Assert::AreEqual (timeMacro.getDate (), 0);
 			Assert::AreEqual (timeMacro.getMonth (), 0);
 			Assert::AreEqual (timeMacro.getYear (), 0);
@@ -343,13 +343,13 @@ namespace testParser
 
 		//To test whether can ignore it when parsing date
 		//when the input string is a time period
-		TEST_METHOD(testParseDate5)
+		TEST_METHOD(testparseDateNumber5)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
 			string testString = "09:00-10:00";
 			string expectedDay = "undefined";
-			parser.parseDate (testString, timeMacro);
+			parser.parseDateNumber (testString, timeMacro);
 			Assert::AreEqual (timeMacro.getDate (), 0);
 			Assert::AreEqual (timeMacro.getMonth (), 0);
 			Assert::AreEqual (timeMacro.getYear (), 0);
