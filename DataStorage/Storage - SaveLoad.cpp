@@ -1,22 +1,29 @@
 #include "DataStorage.h"
 
+////////////////
+//loading method
+////////////////
+
 void DataBase::loadData(){
 	std::ifstream in("test.txt");
+	//if file exists
 	if (in){
+		
+		//throw away Heading
 		std::string temp;
 		getline(in,temp);
 
 		std::string strData;
-		int i=0;
+		int i=0; //iterator for vector
 		while(getline(in,strData)){
 			parseLoad(strData, i);
-
 		}	
 	}
 }
 
+//helper method for loadDate to parse input
 void DataBase::parseLoad(std::string strData, int& i){
-	std::stringstream streamConverter;
+	std::stringstream streamConverter; //to help convert string to int
 
 	std::string tempMacroTBeg;
 	std::string tempMacroTEnd;
@@ -27,6 +34,7 @@ void DataBase::parseLoad(std::string strData, int& i){
 	std::string desc;
 	std::string temp;
 
+	//get uniqueCode and convert to int
 	temp = tokenizerSpace(strData);
 	streamConverter << temp;
 	streamConverter >> uniqueCode;
@@ -55,11 +63,13 @@ void DataBase::parseLoad(std::string strData, int& i){
 	TimeMicro inMicroTEnd = microParser(tempMicroTEnd);
 	data.updateTimeMicroEnd(inMicroTEnd);
 
+
 	dataList.push_back(data);
 
 	i++;
 }
 
+//helper method to parseLoad to parse string and convert to TimeMacro
 TimeMacro DataBase::macroParser(std::string tempMacro){
 	TimeMacro temp;
 	std::string inDay;
@@ -79,6 +89,7 @@ TimeMacro DataBase::macroParser(std::string tempMacro){
 	return temp;
 }
 
+//helper method to parseLoad to parse string to TimeMicro
 TimeMicro DataBase::microParser(std::string tempMicro){
 	TimeMicro temp;
 	int inHour;
@@ -92,17 +103,19 @@ TimeMicro DataBase::microParser(std::string tempMicro){
 	return temp;
 }
 
-
+//helper method for MicroParser and Macro Parser to get individual token
 std::string DataBase::tokenizerSlash(std::string& str){
 	size_t start = 0;
 	size_t end = str.find_first_of("/");
-	std::string firstToken = str.substr(start, end - start);
+	std::string firstToken = str.substr(start, end - start); //get the first token
 
+	//delete the first token from remaining string
 	str.erase(0,end+1);
 
 	return firstToken;
 }
 
+//helper method for loadParser to get individual token
 std::string DataBase::tokenizerSpace(std::string& str){
 	size_t start = str.find_first_not_of('\t');
 	
@@ -113,38 +126,36 @@ std::string DataBase::tokenizerSpace(std::string& str){
 	}
 
 	size_t end = str.find_first_of('\t');
-	std::string firstToken = str.substr(start, end - start);
+	std::string firstToken = str.substr(start, end - start); //get the first token
 
+	//delete the first token from the remaining string
 	str.erase(0,end+1);
 
 	return firstToken;
 }
 
+///////////////
+//saving method
+///////////////
+
+
+//savind data into file
 void DataBase::saveData(){
 	std::string fileName = "test.txt";
 	std::ofstream out;
 	out.open(fileName.c_str());
  		 	
-	writeHeading(fileName, out);
+	writeHeading(fileName, out); //write Heading for readability
 
-
+	
 	for(int i=0; i != dataList.size(); i++){
-		std::string tMacroBeg = dataList[i].getTimeMacroBeg().getDay() + '/'
-			+ std::to_string(dataList[i].getTimeMacroBeg().getDate()) + '/'
-			+ std::to_string(dataList[i].getTimeMacroBeg().getMonth()) + '/'
-			+ std::to_string(dataList[i].getTimeMacroBeg().getYear());
+		std::string tMacroBeg = convertTimeMacroToString("Begin", i);
+		std::string tMacroEnd = convertTimeMacroToString("End", i);
 
-		std::string tMacroEnd = dataList[i].getTimeMacroEnd().getDay() + '/'
-			+ std::to_string(dataList[i].getTimeMacroEnd().getDate()) + '/'
-			+ std::to_string(dataList[i].getTimeMacroEnd().getMonth()) + '/'
-			+ std::to_string(dataList[i].getTimeMacroEnd().getYear());
+		std::string tMicroBeg = convertTimeMicroToString("Begin", i);
+		std::string tMicroEnd = convertTimeMicroToString("End", i);
 
-		std::string tMicroBeg = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + '/'
-			+ std::to_string(dataList[i].getTimeMicroBeg().getMin());
-
-		std::string tMicroEnd = std::to_string(dataList[i].getTimeMicroEnd().getHour()) + '/'
-			+ std::to_string(dataList[i].getTimeMicroEnd().getMin());
-
+		//convert boolean into string
 		std::string isDone;
 		if(dataList[i].getCompleteStatus() == true){
 			isDone = "true";
@@ -152,6 +163,7 @@ void DataBase::saveData(){
 			isDone = "false";
 		}
 
+		//save into file
 		out <<dataList[i].getUniqueCode()
 			<< '\t' << tMacroBeg
 			<< '\t' << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
@@ -160,6 +172,49 @@ void DataBase::saveData(){
 	}	
 }
 
+//helper method to convert TimeMacro into String
+std::string DataBase::convertTimeMacroToString(std::string type, int i){
+	std::string tMacro;
+
+	_ASSERTE (type == "Begin" || type == "End");
+
+	if(type == "Begin"){
+		tMacro = dataList[i].getTimeMacroBeg().getDay() + '/'
+		+ std::to_string(dataList[i].getTimeMacroBeg().getDate()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroBeg().getMonth()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroBeg().getYear());
+	}
+
+	if(type == "End"){
+		tMacro = dataList[i].getTimeMacroEnd().getDay() + '/'
+		+ std::to_string(dataList[i].getTimeMacroEnd().getDate()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroEnd().getMonth()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroEnd().getYear());
+	}
+
+	return tMacro;
+}
+
+//helper method to convert TimeMicro into String
+std::string DataBase::convertTimeMicroToString(std::string type, int i){
+	std::string tMicro;
+
+	_ASSERTE (type == "Begin" || type == "End");
+
+	if(type == "Begin"){
+		tMicro = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + '/'
+		+ std::to_string(dataList[i].getTimeMicroBeg().getMin());
+	}
+
+	if(type == "End"){
+		tMicro = std::to_string(dataList[i].getTimeMicroEnd().getHour()) + '/'
+		+ std::to_string(dataList[i].getTimeMicroEnd().getMin());
+	}
+
+	return tMicro;
+}
+
+//write heading for output file
 void DataBase::writeHeading (std::string fileName, std::ofstream& out){
 	out <<"uCode" 
 		<< '\t' << "macroTBeg" << "\t\t" << "macroTEnd" << "\t\t" 
