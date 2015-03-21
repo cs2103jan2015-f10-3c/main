@@ -2,7 +2,7 @@
 #include <exception>
 #include "DataProcessor.h"
 
-using namespace std;
+//using namespace std;
 
 const string DataProcessor::ADD_MESSAGE = "is added";
 const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
@@ -104,8 +104,8 @@ string DataProcessor::editTask(int taskNumber, Data task){
 
 
 string DataProcessor::executeUndo(){
-	string dummy;
-	return dummy;
+
+	return ;
 }
 
 //This function reads in a Data object and convert it into a string
@@ -189,16 +189,16 @@ string DataProcessor::searchTask(string keyword){
 	}
 	vector<Data> currTaskList = DataBase::getDataList();
 	vector<Data> returnTaskList;
-	vector<Data>::iterator iter;
+	//vector<Data>::iterator iter;
 	string taskDescription;
 	size_t found;
 	outData << "start searching for matched tasks";
 	//For every matched task, store it in returnTaskList
-	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
-		taskDescription = (*iter).getDesc();
+	for(int i = 0; i != currTaskList.size(); i++){
+		taskDescription = currTaskList[i].getDesc();
 		found = taskDescription.find(keyword);
 		if(found != string::npos){
-			DisplayStorage::addData(*iter);
+			DisplayStorage::addData(currTaskList[i]);
 		}
 	}
 	outData << "update current displayList to display matched tasks";
@@ -240,4 +240,17 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 	editMessage = out.str(); 
 	
 	return editMessage;
+}
+
+//this function reads in the task number 
+//and update the status of the corresponding
+//task
+string DataProcessor::markDone(int taskNo){
+	ostringstream outData;
+	Data targetData;
+	targetData = DisplayStorage::getData(taskNo);
+	targetData.updateCompleteStatus(true);
+	DataBase::editData(taskNo, targetData);
+	outData << convertDataObjectToString(targetData) << " is done";
+	return outData.str();
 }

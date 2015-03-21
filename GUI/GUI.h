@@ -138,6 +138,7 @@ namespace GUI {
 				 //Show welcome message
 				 //string welcomeMessage = OperationCenter::welcomeUser();
 				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
+				 OperationCenter::loadData();
 				 outputMessageBox->Text = "Hello Jim, Welcome to your BlinkList!";
 				 OperationCenter::executeInput("show today");
 				 string displayString = Feedback::getDisplay();
@@ -155,6 +156,10 @@ namespace GUI {
 				 
 				 string userInput = msclr::interop::marshal_as<string>(inputBox->Text);
 				 inputBox->Clear();
+				 if( userInput == "exit"){
+					 OperationCenter::saveData();
+					 exit(0);
+				 }
 				 OperationCenter::executeInput(userInput);
 				 string displayString = Feedback::getDisplay();
 				 string responseString = Feedback::getResponse();
