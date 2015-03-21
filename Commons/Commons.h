@@ -42,10 +42,10 @@ public:
 	//update methods
 	//return true for succesful operation
 	//return false for failed operation
-	bool updateDay(std::string inDay);
-	bool updateDate(int inDate);
-	bool updateMonth(int inMonth);
-	bool updateYear (int inYear);
+	void updateDay(std::string inDay);
+	void updateDate(int inDate);
+	void updateMonth(int inMonth);
+	void updateYear (int inYear);
 
 };
 
@@ -70,15 +70,14 @@ public:
 	//update methods
 	//return true for succesful operation
 	//return false for failed operation
-	bool updateHour(int inHour);
-	bool updateMin(int inMin);
+	void updateHour(int inHour);
+	void updateMin(int inMin);
 };
 
 
 class Data {
 public:
 	//private attribute of internal working
-	bool completeStatus; 
 	int taskNo;
 	int uniqueCode;
 	long long psedoDate;
@@ -89,27 +88,29 @@ public:
 	TimeMacro macroTimeEnd;
 	TimeMicro microTimeBeg;
 	TimeMicro microTimeEnd;
+	bool completeStatus; 
 
 
 public:
 
 	//constructors
 	//constructor for custom Data
-	Data () {} 
+	Data () :
+	completeStatus(false) {} 
 	// constructor for activities that start and end at different days
 	Data (TimeMacro inMacroBeg, TimeMacro inMacroEnd, TimeMicro inMicroBeg, 
 		TimeMicro inMicroEnd, std::string inDesc) : 
 		macroTimeBeg(inMacroBeg), macroTimeEnd(inMacroEnd), microTimeBeg(inMicroBeg), 
-		microTimeEnd(inMicroEnd), desc(inDesc) {} 
+		microTimeEnd(inMicroEnd), desc(inDesc), completeStatus(false) {} 
 	//constructor for activities that start and end at the same time
 	Data (TimeMacro inMacro, TimeMicro inMicroBeg, TimeMicro inMicroEnd, std::string inDesc) :
-		macroTimeBeg(inMacro), microTimeBeg(inMicroBeg), microTimeEnd(inMicroEnd), desc(inDesc) {}
+		macroTimeBeg(inMacro), microTimeBeg(inMicroBeg), microTimeEnd(inMicroEnd), desc(inDesc), completeStatus(false) {}
 	//constructor for activities that only have a deadline
 	Data (TimeMacro inMacro, std::string inDesc) :
-		macroTimeBeg(inMacro), desc(inDesc) {}
+		macroTimeBeg(inMacro), desc(inDesc), completeStatus(false) {}
 	//constructor for floating task
 	Data (std::string inDesc) : 
-		desc(inDesc) {}
+		desc(inDesc), completeStatus(false) {}
 	
 
 	//getter methods

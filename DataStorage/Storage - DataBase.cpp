@@ -1,9 +1,5 @@
 #include "DataStorage.h"
 
-//std::vector<Data>::iterator IterStorage::iterBeg;
-//std::vector<Data>::iterator IterStorage::iterEnd;
-
-
 std::vector<Data> DataBase::dataList;
 
 
@@ -107,12 +103,6 @@ Data DataBase::editData(int taskNo, Data updatedData){
 //input int uniqueCode
 //return iterator to be modified/deleted
 Data DataBase::getData(int uniqueNo){
-	/*std::vector<Data>::iterator iter;
-	for(iter=dataList.begin(); iter < dataList.end(); iter++){
-		if(iter->getUniqueCode()==uniqueNo){
-			return iter;
-		}
-	}*/
 	Data desiredTask;
 	for(int i = 0; i != dataList.size(); i++){
 		if(dataList[i].getUniqueCode() == uniqueNo){

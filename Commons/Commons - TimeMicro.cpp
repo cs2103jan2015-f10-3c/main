@@ -8,17 +8,14 @@ int TimeMicro::getMin(){
 	return minute;
 }
 
-bool TimeMicro::updateHour(int inHour){
-	if(inHour >= 0 && inHour <= 24){
+void TimeMicro::updateHour(int inHour){
+	_ASSERT (inHour >= 0 && inHour <= 24 || inHour == -1);
 		hour = inHour;
-		return true;
-	} else return false;
+		
 }
 
-bool TimeMicro::updateMin(int inMin){
-	if(inMin >= 0 && inMin <= 59){
+void TimeMicro::updateMin(int inMin){
+	_ASSERT (inMin >= 0 && inMin <= 59 || inMin == -1);
 		minute = inMin;
-		return true;
-	} return false;
 }
 

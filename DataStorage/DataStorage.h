@@ -5,16 +5,19 @@
 #include <cstdio>
 #include <string>
 #include <vector>
-#include "Commons.h"
 #include <iterator>
 #include <queue>
+#include <fstream>
+#include <sstream>
+#include "Commons.h"
 
 
 class DataBase {
-public:
+private:
+	friend class DisplayStorage;
+
 	//Private Attribute
 	static std::vector<Data> dataList;
-	static int uniqueNo;
 
 	//Private method
 	static void sortDataList();
@@ -23,6 +26,12 @@ public:
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
 	static Data getData(int uniqueNo);
+	static void writeHeading (std::string fileName, std::ofstream& out);
+	static void parseLoad(std::string strData, int& i);
+	static std::string tokenizerSlash(std::string& str);
+	static std::string tokenizerSpace(std::string& str);
+	static TimeMacro macroParser(std::string tempMacro);
+	static TimeMicro microParser(std::string tempMicro);
 
 
 public: 
@@ -33,6 +42,8 @@ public:
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDataList();
 	static void clearDataList();
+	static void saveData();
+	static void loadData();
 
 	//Helper method for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
@@ -67,7 +78,7 @@ private:
 
 public:
 	//API for Data Processing
-	static std::vector<Data> & getDisplayList(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDisplayList();
 	static void addData(Data inData);
 	static void clearList();
@@ -79,30 +90,6 @@ public:
 };
 
 
-/*
-//helper class for searching/clearing/etc methods
-//Store two iteration
-//Used by class DataBase and DisplayStorage
-class IterStorage {
-private:
-	static std::vector<Data>::iterator iterBeg;
-	static std::vector<Data>::iterator iterEnd;
 
-public:
-	static void updateIterBeg(std::vector<Data>::iterator iBeg) {
-		iterBeg = iBeg; 
-	}
-	static void updateIterEnd(std::vector<Data>::iterator iEnd) {
-		iterEnd = iEnd;
-	}
-	static std::vector<Data>::iterator getIterBeg() {
-		return iterBeg;
-	}
-	static std::vector<Data>::iterator getIterEnd() {
-		return iterEnd;
-	}
-	
-};
-*/
 
 #endif

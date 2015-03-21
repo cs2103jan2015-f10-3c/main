@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <time.h>
+#include <exception>
 #include "Commons.h"
 
 using namespace std;
@@ -12,6 +13,7 @@ private:
 	string _command;
 	Data _myData;
 	int _taskNo;
+	string _errorMessage;
 
 	void updateCommand (string commandWord) {
 		_command = commandWord;
@@ -42,6 +44,14 @@ private:
 	void updateDesc (string desc) {
 		_myData.updateDesc (desc);
 	}
+
+	void updateErrorMessage (string errorMessage) {
+		_errorMessage = errorMessage;
+	}
+
+	void updateStatus (bool status) {
+		_myData.updateCompleteStatus (status);
+	}
 	
 
 	static const unsigned int LENGTH_OF_DATE;
@@ -60,6 +70,7 @@ private:
 	static const string MINUTE_FIRST_DIGIT;
 	static const string MINUTE_SECOND_DIGIT;
 	//static const unsigned int LENGTH_OF_ATTRIBUTE;
+	static const string ERROR_MESSAGE_COMMAND;
 
 public: 
 	//default constructor
@@ -82,18 +93,26 @@ public:
 		return _myData;
 	}
 
+	string getErrorMessage () {
+		return _errorMessage;
+	}
+
 
 	void parseInput (string userInput);
 	string extractCommandWord (string userInput);
+	void checkCommandWord (string commandWord, string userInput);
 	void parseAdd (string userInput, string commandWord);
 	void parseEdit (string userInput, string commandWord);
 	void parseSearch (string userInput, string commandWord);
 	void parseUndo (string commandWord);
 	void parseDelete (string userInput, string commandWord);
 	void parseDisplay (string userInput, string commandWord);
+	void parseDone (string userInput, string commandWord);
     void parseDate (string inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
 	string parseTaskNo (string inputToBeParsed);
+	bool isInteger (string index);
+	int convertStringToInteger (string index);
 	bool isDate (string inputToBeParsed);
 	string convertDateToDayOfTheWeek (int date, int month, int year);
 	bool isStartingTime (string inputToBeParsed);
@@ -104,5 +123,8 @@ public:
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);
 	bool isLeapYear (int year);
 	
+
+	//exception specifications
+
 };
 #endif
