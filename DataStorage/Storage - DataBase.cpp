@@ -18,13 +18,8 @@ void DataBase::clearDataList(){
 //and also automaticallly sort dataList
 void DataBase::addData(Data& inData){
 
-<<<<<<< HEAD
-	
-	int tempNo = allocateUniqueCode();
-=======
-	History::updateLatestData(inData); //store for undo
+
 	int tempNo = allocateUniqueCode(uniqueCodeStore);
->>>>>>> master
 	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
@@ -65,12 +60,8 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 			i++;
 		}
 
-<<<<<<< HEAD
 		dataList = temp;
-=======
-		dataList=temp;
 
->>>>>>> CS_Project/master
 	//for returning the time frame
 	Data period;
 	period.updateTimeMacroBeg(startTime);
@@ -84,21 +75,17 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
-<<<<<<< HEAD
-	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
-	History::updateLatestCommand("delete");
-	History::updateLatestData(getData(uniqueNo)); //store in History
-	//dataList.erase(getData(uniqueNo));
-	int uniqueCode = (getData(uniqueNo)).getUniqueCode();
-=======
-	int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
-	//History::updateLatestData(getData(uniqueCode)); //store in History
 
->>>>>>> master
+	History::updateLatestCommand("delete");
+		int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
+
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
 		if(uniqueCode != dataList[i].getUniqueCode()){
 				listTofacilitateDeletion.push_back(dataList[i]);
+		}else
+		{
+			History::updateLatestData(dataList[i]); //store in History
 		}
 	}
 	dataList = listTofacilitateDeletion;
