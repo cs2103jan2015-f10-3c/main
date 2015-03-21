@@ -1,6 +1,7 @@
 #include "Parser.h"
 
-const unsigned int Parser::LENGTH_OF_DATE = 10;  //"dd/mm/yyyy"
+const unsigned int Parser::LENGTH_OF_DATE_FULL = 5;  //"dd/mm"
+const unsigned int Parser::LENGTH_OF_DATE_ABBRE = 3;  //"d/m"
 const string Parser::DATE_FIRST_DIGIT = "0123";
 const string Parser::DATE_SECOND_DIGIT = "0123456789";
 const string Parser::MONTH_FIRST_DIGIT = "01";
@@ -33,7 +34,7 @@ void Parser::parseInput (string userInput) {
 
 	catch (const char* errorMessge) {
 		updateErrorMessage ("Please enter the correct command");
-		//cout << getErrorMessage () << endl;
+		cout << getErrorMessage () << endl;
 	}
 }
 
@@ -99,7 +100,7 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
 
 	parseDate (inputToBeParsed, timeMacro);
-	inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+	inputToBeParsed = inputToBeParsed.substr (inputToBeParsed.find_first_of (" ") + 1);
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 	if (isTimePeriod (inputToBeParsed)) {
 		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
@@ -138,7 +139,7 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 
 		parseDate (inputToBeParsed, timeMacro);
-		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_DATE + 1);
+		inputToBeParsed = inputToBeParsed.substr (inputToBeParsed.find_first_of (" ") + 1);
 		parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 		if (isTimePeriod (inputToBeParsed)) {
 			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
@@ -240,16 +241,46 @@ void Parser::parseDone (string userInput, string commandWord) {
 }
 
 //This method is to parse date after the start of the string is recoganised as a date.
-//It recoganise the date format "dd/mm/yyyy" and parse it accordingly.
+//The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",
+//"dd/mm", "d/mm", "dd/m", "d/m".
+//If the year is not specified, it assumes it is this year.
 //Date/month/year/day will be updated.
 void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
+	int start = 0;
+	int end = 0;
+	string date;
+	string month;
+	string year;
+	int dateInt;
+	int monthInt;
+	int yearInt;
+
 	if (isDate (inputToBeParsesd)) {
-		string date = inputToBeParsesd.substr (0, 2);
-		string month = inputToBeParsesd.substr (3, 2);
-		string year = inputToBeParsesd.substr (6, 4);
-		int dateInt = atoi (date.c_str());
-		int monthInt = atoi (month.c_str());
-		int yearInt = atoi (year.c_str());
+		end = inputToBeParsesd.find_first_of ("/");
+		date = inputToBeParsesd.substr (0, end);
+
+		start = end + 1;
+		inputToBeParsesd = inputToBeParsesd.substr (start);
+
+		if (isYear (inputToBeParsesd)) {
+			end = inputToBeParsesd.find_first_of ("/");
+			month = inputToBeParsesd.substr (0, end);
+			start = end + 1;
+			year = inputToBeParsesd.substr (start, 4);
+			yearInt = atoi (year.c_str());
+		}
+		else {
+			end = inputToBeParsesd.find_first_of (" ");
+			month = inputToBeParsesd.substr (0, end);
+			time_t t = time (0);
+			struct tm now;
+			localtime_s (&now, &t);
+			now.tm_year = now.tm_year + 1900;
+			yearInt = now.tm_year;
+		}
+
+		dateInt = atoi (date.c_str());
+		monthInt = atoi (month.c_str());
 		string day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
 		timeMacro.updateDate (dateInt);
 		timeMacro.updateDay (day);
@@ -325,32 +356,64 @@ int Parser::convertStringToInteger (string index) {
 }
 
 //This method is to check if the start of the string is a date.
+//This method only checks for date and month.
+//The formats of date and month can be
+//"dd/mm", "dd/m", "d/mm", "d/m".
 //The string firstly needs to be longer than the date format.
-//Then it must follow the format "dd/mm/yyyy"
-//in order to be recognised as a date.
 bool Parser::isDate (string inputToBeParsed) {
-	if (inputToBeParsed.size() >= LENGTH_OF_DATE) {
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL) {
 		if (searchSubstring ("0123", inputToBeParsed[0]) &&
 			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == '/' &&
 			searchSubstring ("01", inputToBeParsed[3]) &&
-			searchSubstring ("0123456789", inputToBeParsed[4]) &&
-			inputToBeParsed[5] == '/' &&
-			searchSubstring ("2", inputToBeParsed[6]) &&
-			searchSubstring ("0123456789", inputToBeParsed[7]) &&
-			searchSubstring ("0123456789", inputToBeParsed[8]) &&
-			searchSubstring ("0123456789", inputToBeParsed[9])) {
+			searchSubstring ("0123456789", inputToBeParsed[4])) {
 				return true;
 		}
-		else {
-			return false;
+	}
+
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE) {
+		if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+			inputToBeParsed[1] == '/' &&
+			searchSubstring ("123456789", inputToBeParsed[2])) {
+				return true;
+		}
+		else if (searchSubstring ("0123", inputToBeParsed[0]) &&
+			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+			inputToBeParsed[2] == '/' &&
+			searchSubstring ("123456789", inputToBeParsed[3])) {
+				return true;
+		}
+		else if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+			inputToBeParsed[1] == '/' &&
+			searchSubstring ("01", inputToBeParsed[2]) &&
+			searchSubstring ("0123456789", inputToBeParsed[3])) {
+				return true;
 		}
 	}
-	else {
-		return false;
-	}
+
+	return false;
 }
 
+
+//This method checks if the date format includes a year.
+//If the date and month are followed by "/yyyy",
+//it returns true;
+//else, it returns false
+bool Parser::isYear (string inputToBeParsed) {
+	int end;
+	end = inputToBeParsed.find_first_of ("/");
+	if (end == 1 || end == 2) {
+		inputToBeParsed = inputToBeParsed.substr (end + 1);
+		if (searchSubstring ("2", inputToBeParsed[0]) &&
+			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+			searchSubstring ("0123456789", inputToBeParsed[2]) &&
+			searchSubstring ("0123456789", inputToBeParsed[3])) {
+				return true;
+		}
+	}
+
+	return false;
+}
 
 //This method is to check if the start of the string is a starting time
 //(which may be followed by an ending time).

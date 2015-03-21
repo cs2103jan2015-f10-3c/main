@@ -54,7 +54,8 @@ private:
 	}
 	
 
-	static const unsigned int LENGTH_OF_DATE;
+	static const unsigned int LENGTH_OF_DATE_FULL;
+	static const unsigned int LENGTH_OF_DATE_ABBRE;
     static const string DATE_FIRST_DIGIT;
     static const string DATE_SECOND_DIGIT;
     static const string MONTH_FIRST_DIGIT;
@@ -114,6 +115,7 @@ public:
 	bool isInteger (string index);
 	int convertStringToInteger (string index);
 	bool isDate (string inputToBeParsed);
+	bool isYear (string inputToBeParsed);
 	string convertDateToDayOfTheWeek (int date, int month, int year);
 	bool isStartingTime (string inputToBeParsed);
 	bool isTimePeriod (string inputToBeParsed);

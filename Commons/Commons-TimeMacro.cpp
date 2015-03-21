@@ -30,11 +30,11 @@ void TimeMacro::updateDate(int inDate){
 }
 
 void TimeMacro::updateMonth(int inMonth){
-	_ASSERT (inMonth >0 && inMonth <= 12);
+	//_ASSERT (inMonth >0 && inMonth <= 12);
 		month = inMonth;
 }
 
 void TimeMacro::updateYear(int inYear){
-	_ASSERT (inYear > 1900 && inYear < 2100);
+	//_ASSERT (inYear > 1900 && inYear < 2100);
 		year = inYear;
 }
