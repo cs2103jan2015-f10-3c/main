@@ -1,15 +1,8 @@
 #include "DataStorage.h"
 
-//std::vector<Data>::iterator IterStorage::iterBeg;
-//std::vector<Data>::iterator IterStorage::iterEnd;
-
-
 std::vector<Data> DataBase::dataList;
 
-
-// !!test done by data processing
 //return the DataBase list 
-//to be accessed by data Processor
 //for command such as search
 std::vector<Data> DataBase::getDataList() {
 	return dataList;
@@ -19,12 +12,9 @@ void DataBase::clearDataList(){
 	dataList.clear();
 }
 
-// !!test done by processing
 //for add command to update the dataList
 //it allocates uniqueCode into Data
-//and also automaticallly sort dataList and update taskNo 
-//the added Data inside dataList will be ready for printing
-//return the data that was added in the form of Data
+//and also automaticallly sort dataList
 void DataBase::addData(Data& inData){
 
 	History::updateLatestData(inData); //store for undo
@@ -55,16 +45,19 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 			temp.push_back(dataList[i]);
 			i++;
 		}
+
 		while(i >= startT && i <= endT){
 			dataList.pop_back();
 			i++;
 		}
+
 		while(i > endT && i < dataList.size()){
 			temp.push_back(dataList[i]);
 			i++;
 		}
 
 		dataList=temp;
+
 	//for returning the time frame
 	Data period;
 	period.updateTimeMacroBeg(startTime);
@@ -105,14 +98,8 @@ Data DataBase::editData(int taskNo, Data updatedData){
 
 //helper method for deleteData and editData
 //input int uniqueCode
-//return iterator to be modified/deleted
+//return Data to be modified/deleted
 Data DataBase::getData(int uniqueNo){
-	/*std::vector<Data>::iterator iter;
-	for(iter=dataList.begin(); iter < dataList.end(); iter++){
-		if(iter->getUniqueCode()==uniqueNo){
-			return iter;
-		}
-	}*/
 	Data desiredTask;
 	for(int i = 0; i != dataList.size(); i++){
 		if(dataList[i].getUniqueCode() == uniqueNo){
@@ -165,9 +152,8 @@ void DataBase::sortDataList(){
 //organise items into groups using digit indicated by the power
 void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
 	int digit;
-	//std::vector<Data>::iterator iter;
+
 	for(int i = 0; i != dataList.size(); i++){
-	//for(iter = dataList.begin(); iter < dataList.end(); iter++){
 		long long sDate = dataList[i].getPsedoDate();
 		digit = (sDate / power ) % 10; //extract digit
 		digitQ[digit].push(dataList[i]);
@@ -179,8 +165,6 @@ void DataBase::radixDistribute(std::queue<Data> digitQ[], int power){
 //helper method for radix sort
 //put Data back into dataList
 void DataBase::radixCollect(std::queue<Data> digitQ[]){
-	//std::vector<Data>::iterator iter;
-	//iter = dataList.begin();
 	int digit;
 	int i=0;
 	for(digit = 0 ; digit < 10; digit++){
@@ -203,22 +187,28 @@ void DataBase::allocatePsedoDate(){
 	long long sDate;
 	while(i != dataList.size()){
 
+		//extract YYYY/MM/DD
 		TimeMacro time = dataList[i].getTimeMacroBeg();
 		int year = time.getYear();
 		int month = time.getMonth();
 		int date = time.getDate();
 		
+		//extract HH/MM
 		TimeMicro time1 = dataList[i].getTimeMicroBeg();
 		int hour = time1.getHour();
 		int min = time1.getMin();
 
+		//qualify default hour
 		if(hour == -1){
 			hour = 0;
 		}
-
+		
+		//qualify default min
 		if(min == -1){
 			min = 0;
 		}
+
+		//store psedoDate in long long type
 		sDate = 100000000;
 		sDate = year*sDate;
 		long long tempMonth;
@@ -245,11 +235,12 @@ void DataBase::allocatePsedoDate(){
 
 //helper method for search Data from a specific period
 //to be pass to DisplayStorage
-//updates IterStorage to contain the relevant iteration
+//return vector<long long> with two psedoDates inside 
 std::vector<long long> DataBase::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	allocatePsedoDate();
 	std::vector<long long> saveNo;
 
+	//allocate startTime into psedoDate format
 	long long pStartTime;
 	pStartTime= 100000000;
 	pStartTime= startTime.getYear()*pStartTime;
@@ -259,9 +250,9 @@ std::vector<long long> DataBase::searchPeriod(TimeMacro startTime, TimeMacro end
 	pStartTime = pStartTime + tempMonth;
 	long long tempDate = 10000;
 	tempDate = tempDate * startTime.getDate();
-
 	pStartTime = pStartTime + tempDate;
 
+	//allocate endTime into psedoDate format
 	long long pEndTime;
 	pEndTime= 100000000;
 	pEndTime= endTime.getYear()*pEndTime;
@@ -273,7 +264,7 @@ std::vector<long long> DataBase::searchPeriod(TimeMacro startTime, TimeMacro end
 	tempDate1 = tempDate1 * endTime.getDate();
 	pEndTime = pEndTime + tempDate1;
 
-
+	//find first relevant date
 	bool marker = false;
 	long long time;
 	Data copyTask;
@@ -287,11 +278,13 @@ std::vector<long long> DataBase::searchPeriod(TimeMacro startTime, TimeMacro end
 		
 	}
 
+	//find last relevant date
 	for(int i = dataList.size()-1; marker == true && i != 0; i--){
 		if(dataList[i].getPsedoDate() <= pEndTime+2359 ) {
 			marker = false;
 			saveNo.push_back(i);
 		}
 	}
+
 	return saveNo;
 }

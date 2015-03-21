@@ -39,6 +39,13 @@ string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 	return taskString;
 }
 
+void DataProcessor::saveData(){
+	DataBase::saveData();
+}
+
+void DataProcessor::loadData(){
+	DataBase::loadData();
+}
 
 
 
