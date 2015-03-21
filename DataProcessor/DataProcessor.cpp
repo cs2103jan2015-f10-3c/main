@@ -105,11 +105,29 @@ string DataProcessor::editTask(int taskNumber, Data task){
 
 string DataProcessor::executeUndo(){
 	Data latestData;
+	string latestCommand;
+	vector<Data> latestVector;
+	latestVector = History::getLatestVector();
+	latestCommand = History::getLatestCommand();
 	latestData = History::getLatestData();
 	int uniqueCode;
 	uniqueCode = latestData.getUniqueCode();
-	DataBase::undoData(uniqueCode);
-	string undoMessage = "undo completed";
+	if (latestCommand == "add"){
+		DataBase::undoData(uniqueCode);
+	}
+	else if (latestCommand == "delete"){
+		DataBase::addData(latestData);
+	}
+	else if (latestCommand == "edit"){
+		//wait for Angie to update editData;
+	}
+	else if (latestCommand == "clear"){
+		DataBase::clearDataList();
+		for(int i = 0; i != latestVector.size(); i++){
+			DataBase::addData(latestVector[i]);
+		}
+	}
+	string undoMessage = "Undo completed";
 	return undoMessage;
 }
 

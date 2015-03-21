@@ -28,6 +28,7 @@ void DataBase::addData(Data& inData){
 	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
+	History::updateLatestCommand("add");
 	History::updateLatestData(inData); //store for undo
 
 }
@@ -39,7 +40,8 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
 	std::vector<long long> timePeriod;
 	timePeriod = searchPeriod(startTime , endTime);
-	//History::updateLatestVector(); //update for undo
+	History::updateLatestCommand("clear");
+	History::updateLatestVector(); //update for undo
 	
 	int endT;
 	endT = timePeriod.back();
@@ -61,7 +63,7 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 			i++;
 		}
 
-		dataList=temp;
+		dataList = temp;
 	//for returning the time frame
 	Data period;
 	period.updateTimeMacroBeg(startTime);
@@ -76,6 +78,7 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	History::updateLatestCommand("delete");
 	History::updateLatestData(getData(uniqueNo)); //store in History
 	//dataList.erase(getData(uniqueNo));
 	int uniqueCode = (getData(uniqueNo)).getUniqueCode();
@@ -106,6 +109,7 @@ void DataBase::undoData(int uniqueNo){
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data DataBase::editData(int taskNo, Data updatedData){
+	History::updateLatestCommand("edit");
 	History::updateLatestData(updatedData); // store for undo
 	deleteData(taskNo);
 	addData(updatedData);
