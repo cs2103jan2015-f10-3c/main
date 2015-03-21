@@ -119,7 +119,7 @@ string DataProcessor::executeUndo(){
 		DataBase::addData(latestData);
 	}
 	else if (latestCommand == "edit"){
-		//wait for Angie to update editData;
+		
 	}
 	else if (latestCommand == "clear"){
 		DataBase::clearDataList();
