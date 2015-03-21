@@ -191,7 +191,7 @@ void DataBase::saveData(){
 		//save into file
 		out <<dataList[i].getUniqueCode()
 			<< '\t' << tMacroBeg
-			<< '\t' << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
+			<< "\t\t" << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
 			<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
 			<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
 			<< dataList[i].getDesc() << '\n';

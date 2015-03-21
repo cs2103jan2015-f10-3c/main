@@ -90,8 +90,38 @@ Data DataBase::deleteData(int taskNo){
 //return Data that was edited
 Data DataBase::editData(int taskNo, Data updatedData){
 	History::updateLatestData(updatedData); // store for undo
+	
+	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	Data dataToEdit = getData(uniqueNo);
+
+	if (!updatedData.getDesc().empty()){
+		dataToEdit.updateDesc(updatedData.getDesc());
+	}
+
+	if (updatedData.getTimeMacroBeg().getDate() != 0 
+		&& updatedData.getTimeMacroBeg().getMonth() != 0
+		&& updatedData.getTimeMacroBeg().getYear() != 0) {
+			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
+	}
+
+	if (updatedData.getTimeMacroEnd().getDate() != 0 
+		&& updatedData.getTimeMacroEnd().getMonth() != 0
+		&& updatedData.getTimeMacroEnd().getYear() != 0) {
+			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
+	}
+
+	if (updatedData.getTimeMicroBeg().getHour() != -1
+		&& updatedData.getTimeMicroBeg().getHour() != -1) {
+			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
+	}
+
+	if (updatedData.getTimeMicroEnd().getHour() != -1
+		&& updatedData.getTimeMicroEnd().getHour() != -1) {
+			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
+	}
+
 	deleteData(taskNo);
-	addData(updatedData);
+	addData(dataToEdit);
 
 	return DisplayStorage::getData(taskNo);
 }
