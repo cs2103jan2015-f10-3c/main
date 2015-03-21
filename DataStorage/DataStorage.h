@@ -15,6 +15,8 @@
 class DataBase {
 private:
 	friend class DisplayStorage;
+	friend class DataBaseUnitTesting;
+	friend class DataProcessing;
 
 	//Private Attribute
 	static std::vector<Data> dataList;
@@ -26,12 +28,16 @@ private:
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
 	static Data getData(int uniqueNo);
+
 	static void writeHeading (std::string fileName, std::ofstream& out);
 	static void parseLoad(std::string strData, int& i);
 	static std::string tokenizerSlash(std::string& str);
 	static std::string tokenizerSpace(std::string& str);
 	static TimeMacro macroParser(std::string tempMacro);
 	static TimeMicro microParser(std::string tempMicro);
+	static std::string convertTimeMacroToString(std::string type, int i);
+	static std::string convertTimeMicroToString(std::string type, int i);
+
 
 
 public: 
