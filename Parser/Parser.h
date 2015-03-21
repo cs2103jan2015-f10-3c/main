@@ -54,8 +54,10 @@ private:
 	}
 	
 
-	static const unsigned int LENGTH_OF_DATE_FULL;
-	static const unsigned int LENGTH_OF_DATE_ABBRE;
+	static const unsigned int LENGTH_OF_DATE_FULL_NUMBER;
+	static const unsigned int LENGTH_OF_DATE_ABBRE_NUMBER;
+	static const unsigned int LENGTH_OF_DATE_FULL_ALPHABET;
+	static const unsigned int LENGTH_OF_DATE_ABBRE_ALPHABET;
     static const string DATE_FIRST_DIGIT;
     static const string DATE_SECOND_DIGIT;
     static const string MONTH_FIRST_DIGIT;
@@ -109,17 +111,22 @@ public:
 	void parseDelete (string userInput, string commandWord);
 	void parseDisplay (string userInput, string commandWord);
 	void parseDone (string userInput, string commandWord);
-    void parseDate (string inputToBeParsesd, TimeMacro& timeMacro);
+    void parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro);
+	void parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
 	string parseTaskNo (string inputToBeParsed);
 	bool isInteger (string index);
 	int convertStringToInteger (string index);
-	bool isDate (string inputToBeParsed);
-	bool isYear (string inputToBeParsed);
+	bool isDateNumber (string inputToBeParsed);
+	bool isYearNumber (string inputToBeParsed);
+	bool isDateAlphabet (string inputToBeParsed);
+	bool isYearAlphabet (string inputToBeParsed);
 	string convertDateToDayOfTheWeek (int date, int month, int year);
 	bool isStartingTime (string inputToBeParsed);
 	bool isTimePeriod (string inputToBeParsed);
 	bool searchSubstring (string timeString, char substring);
+	bool isStringEqual (string inputString, vector<string> compString);
+	int convertAlphabetMonthToInteger (string month);
 	void getTodayDate (TimeMacro& timeMacro);
 	void getTomorrowDate (TimeMacro& timeMacro);
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);

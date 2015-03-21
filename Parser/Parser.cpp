@@ -1,7 +1,9 @@
 #include "Parser.h"
 
-const unsigned int Parser::LENGTH_OF_DATE_FULL = 5;  //"dd/mm"
-const unsigned int Parser::LENGTH_OF_DATE_ABBRE = 3;  //"d/m"
+const unsigned int Parser::LENGTH_OF_DATE_FULL_NUMBER = 5;  //"dd/mm"
+const unsigned int Parser::LENGTH_OF_DATE_ABBRE_NUMBER = 3;  //"d/m"
+const unsigned int Parser::LENGTH_OF_DATE_FULL_ALPHABET = 6;  //"dd MMM"
+const unsigned int Parser::LENGTH_OF_DATE_ABBRE_ALPHABET = 5;  //"d MMM"
 const string Parser::DATE_FIRST_DIGIT = "0123";
 const string Parser::DATE_SECOND_DIGIT = "0123456789";
 const string Parser::MONTH_FIRST_DIGIT = "01";
@@ -99,8 +101,8 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	string desc;
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
 
-	parseDate (inputToBeParsed, timeMacro);
-	inputToBeParsed = inputToBeParsed.substr (inputToBeParsed.find_first_of (" ") + 1);
+	parseDateNumber (inputToBeParsed, timeMacro);
+    parseDateAlphabet (inputToBeParsed, timeMacro);
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 	if (isTimePeriod (inputToBeParsed)) {
 		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
@@ -138,7 +140,7 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		taskNo = convertStringToInteger (index);
 		inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 
-		parseDate (inputToBeParsed, timeMacro);
+		parseDateNumber (inputToBeParsed, timeMacro);
 		inputToBeParsed = inputToBeParsed.substr (inputToBeParsed.find_first_of (" ") + 1);
 		parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 		if (isTimePeriod (inputToBeParsed)) {
@@ -245,7 +247,7 @@ void Parser::parseDone (string userInput, string commandWord) {
 //"dd/mm", "d/mm", "dd/m", "d/m".
 //If the year is not specified, it assumes it is this year.
 //Date/month/year/day will be updated.
-void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
+void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 	int start = 0;
 	int end = 0;
 	string date;
@@ -255,23 +257,25 @@ void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 	int monthInt;
 	int yearInt;
 
-	if (isDate (inputToBeParsesd)) {
+	if (isDateNumber (inputToBeParsesd)) {
 		end = inputToBeParsesd.find_first_of ("/");
 		date = inputToBeParsesd.substr (0, end);
 
 		start = end + 1;
 		inputToBeParsesd = inputToBeParsesd.substr (start);
 
-		if (isYear (inputToBeParsesd)) {
+		if (isYearNumber (inputToBeParsesd)) {
 			end = inputToBeParsesd.find_first_of ("/");
 			month = inputToBeParsesd.substr (0, end);
 			start = end + 1;
 			year = inputToBeParsesd.substr (start, 4);
 			yearInt = atoi (year.c_str());
+			inputToBeParsesd = inputToBeParsesd.substr (start + 4);
 		}
 		else {
 			end = inputToBeParsesd.find_first_of (" ");
 			month = inputToBeParsesd.substr (0, end);
+			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
 			time_t t = time (0);
 			struct tm now;
 			localtime_s (&now, &t);
@@ -289,6 +293,56 @@ void Parser::parseDate (string inputToBeParsesd, TimeMacro& timeMacro) {
 	}
 }
 
+
+void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) {
+	int start = 0;
+	int end = 0;
+	string date;
+	string year;
+	int dateInt;
+	int monthInt;
+	int yearInt;
+
+	if (isDateAlphabet (inputToBeParsesd)) {
+		end = inputToBeParsesd.find_first_of (" ");
+		date = inputToBeParsesd.substr (0, end);
+
+		start = end + 1;
+		inputToBeParsesd = inputToBeParsesd.substr (start);
+		monthInt = convertAlphabetMonthToInteger (inputToBeParsesd.substr (0, 3));
+		inputToBeParsesd = inputToBeParsesd.substr (3);
+
+		if (isYearAlphabet (inputToBeParsesd)) {
+			year = inputToBeParsesd.substr (1, 4);
+			yearInt = atoi (year.c_str());
+			if (inputToBeParsesd.size() > 6) {
+				inputToBeParsesd = inputToBeParsesd.substr (6); //there is still content after the year
+			}
+			else {
+				inputToBeParsesd = "";
+			}
+			
+		}
+		else {
+			if (inputToBeParsesd != "") {
+				inputToBeParsesd = inputToBeParsesd.substr (1);
+			}
+			
+			time_t t = time (0);
+			struct tm now;
+			localtime_s (&now, &t);
+			now.tm_year = now.tm_year + 1900;
+			yearInt = now.tm_year;
+		}
+
+		dateInt = atoi (date.c_str());
+		string day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
+		timeMacro.updateDate (dateInt);
+		timeMacro.updateDay (day);
+		timeMacro.updateMonth (monthInt);
+		timeMacro.updateYear (yearInt);
+	}
+}
 
 //This method is to parse date after the start of the string 
 //is recoganised as a time or a time period.
@@ -333,7 +387,7 @@ string Parser::parseTaskNo (string inputToBeParsed) {
 //This method is to check whether an input string is an interger string
 //It will return false if at least one character is not integer character
 bool Parser::isInteger (string index) {
-	for (int i = 0; i < index.size (); i++) {
+	for (int i = 0; i != index.size (); i++) {
 		if (!isdigit (index[i])) {
 			return false;
 		}
@@ -360,8 +414,8 @@ int Parser::convertStringToInteger (string index) {
 //The formats of date and month can be
 //"dd/mm", "dd/m", "d/mm", "d/m".
 //The string firstly needs to be longer than the date format.
-bool Parser::isDate (string inputToBeParsed) {
-	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL) {
+bool Parser::isDateNumber (string inputToBeParsed) {
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL_NUMBER) {
 		if (searchSubstring ("0123", inputToBeParsed[0]) &&
 			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == '/' &&
@@ -371,7 +425,7 @@ bool Parser::isDate (string inputToBeParsed) {
 		}
 	}
 
-	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE) {
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE_NUMBER) {
 		if (searchSubstring ("123456789", inputToBeParsed[0]) &&
 			inputToBeParsed[1] == '/' &&
 			searchSubstring ("123456789", inputToBeParsed[2])) {
@@ -399,21 +453,84 @@ bool Parser::isDate (string inputToBeParsed) {
 //If the date and month are followed by "/yyyy",
 //it returns true;
 //else, it returns false
-bool Parser::isYear (string inputToBeParsed) {
+bool Parser::isYearNumber (string inputToBeParsed) {
 	int end;
 	end = inputToBeParsed.find_first_of ("/");
 	if (end == 1 || end == 2) {
 		inputToBeParsed = inputToBeParsed.substr (end + 1);
-		if (searchSubstring ("2", inputToBeParsed[0]) &&
-			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+		if (inputToBeParsed[0] == '/' &&
+			searchSubstring ("2", inputToBeParsed[1]) &&
 			searchSubstring ("0123456789", inputToBeParsed[2]) &&
-			searchSubstring ("0123456789", inputToBeParsed[3])) {
+			searchSubstring ("0123456789", inputToBeParsed[3]) &&
+			searchSubstring ("0123456789", inputToBeParsed[4])) {
 				return true;
 		}
 	}
 
 	return false;
 }
+
+
+bool Parser::isDateAlphabet (string inputToBeParsed) {
+	vector<string> month;
+	month.push_back ("Jan");
+	month.push_back ("Feb");
+	month.push_back ("Mar");
+	month.push_back ("Apr");
+	month.push_back ("May");
+	month.push_back ("Jun");
+	month.push_back ("Jul");
+	month.push_back ("Aug");
+	month.push_back ("Sep");
+	month.push_back ("Oct");
+	month.push_back ("Nov");
+	month.push_back ("Dec");
+	month.push_back ("jan");
+	month.push_back ("feb");
+	month.push_back ("mar");
+	month.push_back ("apr");
+	month.push_back ("may");
+	month.push_back ("jun");
+	month.push_back ("jul");
+	month.push_back ("aug");
+	month.push_back ("sep");
+	month.push_back ("oct");
+	month.push_back ("nov");
+	month.push_back ("dec");
+
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL_ALPHABET) {
+		if (searchSubstring ("0123", inputToBeParsed[0]) &&
+			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+			inputToBeParsed[2] == ' ' &&
+			isStringEqual (inputToBeParsed.substr (3, 3), month)) {
+				return true;
+		}
+	}
+
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE_ALPHABET) {
+		if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+			inputToBeParsed[1] == ' ' &&
+			isStringEqual (inputToBeParsed.substr(2, 3), month)) {
+				return true;
+		}
+	}
+
+	return false;
+}
+
+
+bool Parser::isYearAlphabet (string inputToBeParsed) {
+		if (inputToBeParsed[0] == ' ' &&
+			searchSubstring ("2", inputToBeParsed[1]) &&
+			searchSubstring ("0123456789", inputToBeParsed[2]) &&
+			searchSubstring ("0123456789", inputToBeParsed[3]) &&
+			searchSubstring ("0123456789", inputToBeParsed[4])) {
+				return true;
+		}
+	
+	return false;
+}
+
 
 //This method is to check if the start of the string is a starting time
 //(which may be followed by an ending time).
@@ -477,6 +594,56 @@ bool Parser::searchSubstring (string timeString, char substring) {
 	return false;
 }
 
+
+bool Parser::isStringEqual (string inputString, vector<string> compString) {
+	for (int i = 0; i != compString.size(); i++) {
+		if (inputString == compString [i]) {
+			return true;
+		}
+	}
+	return false;
+}
+
+int Parser::convertAlphabetMonthToInteger (string month) {
+	int monthInt;
+	if (month == "Jan" || month == "jan") {
+		monthInt = 1;
+	}
+	else if (month == "Feb" || month == "feb") {
+		monthInt = 2;
+	}
+	else if (month == "Mar" || month == "mar") {
+		monthInt = 3;
+	}
+	else if (month == "Apr" || month == "apr") {
+		monthInt = 4;
+	}
+	else if (month == "May" || month == "may") {
+		monthInt = 5;
+	}
+	else if (month == "Jun" || month == "jun") {
+		monthInt = 6;
+	}
+	else if (month == "Jul" || month == "jul") {
+		monthInt = 7;
+	}
+	else if (month == "Aug" || month == "aug") {
+		monthInt = 8;
+	}
+	else if (month == "Sep" || month == "sep") {
+		monthInt = 9;
+	}
+	else if (month == "Oct" || month == "oct") {
+		monthInt = 10;
+	}
+	else if (month == "Nov" || month == "nov") {
+		monthInt = 11;
+	}
+	else if (month == "Dec" || month == "dec") {
+		monthInt = 12;
+	}
+	return monthInt;
+}
 
 //This method takes in date, month and year
 //and convert them to day of the week.
