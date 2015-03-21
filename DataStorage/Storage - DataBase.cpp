@@ -23,11 +23,12 @@ void DataBase::clearDataList(){
 //return the data that was added in the form of Data
 void DataBase::addData(Data& inData){
 
-	History::updateLatestData(inData); //store for undo
+	
 	int tempNo = allocateUniqueCode();
 	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
+	History::updateLatestData(inData); //store for undo
 
 }
 
@@ -88,6 +89,19 @@ Data DataBase::deleteData(int taskNo){
 	return DisplayStorage::getData(taskNo);
 }
 
+
+//method for deleting the latest Data added
+//helper for undo function
+void DataBase::undoData(int uniqueNo){
+	
+	std::vector<Data> listTofacilitateDeletion;
+	for(int i = 0; i != dataList.size(); i++){
+		if(uniqueNo != dataList[i].getUniqueCode()){
+				listTofacilitateDeletion.push_back(dataList[i]);
+		}
+	}
+	dataList = listTofacilitateDeletion;
+}
 //method for edit command
 //input the taskno of the displayList and the updatedData
 //return Data that was edited

@@ -104,8 +104,13 @@ string DataProcessor::editTask(int taskNumber, Data task){
 
 
 string DataProcessor::executeUndo(){
-	deleteTask(
-	return ;
+	Data latestData;
+	latestData = History::getLatestData();
+	int uniqueCode;
+	uniqueCode = latestData.getUniqueCode();
+	DataBase::undoData(uniqueCode);
+	string undoMessage = "undo completed";
+	return undoMessage;
 }
 
 //This function reads in a Data object and convert it into a string
