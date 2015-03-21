@@ -5,7 +5,7 @@ int DataBase::uniqueCodeStore;
 
 //return the DataBase list 
 //for command such as search
-std::vector<Data> DataBase::getDataList() {
+std::vector<Data> & DataBase::getDataList() {
 	return dataList;
 }
 
@@ -143,6 +143,7 @@ Data DataBase::editData(int taskNo, Data updatedData){
 
 	deleteData(taskNo);
 	addData(dataToEdit);
+	History::updateLatestVector();
 
 	return DisplayStorage::getData(taskNo);
 }

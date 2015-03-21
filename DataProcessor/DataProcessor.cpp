@@ -119,7 +119,10 @@ string DataProcessor::executeUndo(){
 		DataBase::addData(latestData);
 	}
 	else if (latestCommand == "edit"){
-		
+		DataBase::clearDataList();
+		for(int i = 0; i != latestVector.size(); i++){
+			DataBase::addData(latestVector[i]);
+		}
 	}
 	else if (latestCommand == "clear"){
 		DataBase::clearDataList();

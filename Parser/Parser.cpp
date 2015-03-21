@@ -398,6 +398,12 @@ void Parser::parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMi
 		}
 
 	}
+
+	//orginal input is "12:00-14:00 dinner"
+	//inputToBeParsed ar here will be "14:00 dinner"
+	//bug
+	//then it will be be regoznised as a time period
+
 	if (isTimePeriod (inputToBeParsed)) {
 		string hourEnd = inputToBeParsed.substr (0, 2);
 		string minuteEnd = inputToBeParsed.substr (3, 2);

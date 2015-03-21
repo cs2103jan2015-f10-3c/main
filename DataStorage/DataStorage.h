@@ -47,7 +47,7 @@ public:
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data> getDataList();
+	static std::vector<Data> & getDataList();
 	static void clearDataList();
 	static void saveData();
 	static void loadData();
@@ -71,7 +71,7 @@ public:
 	//API for Data Processing
 	static std::string getLatestCommand();
 	static Data getLatestData();
-	static std::vector<Data> getLatestVector();
+	static std::vector<Data> & getLatestVector();
 	static void updateLatestCommand(std::string inCommand);
 	static void updateLatestData(Data inData);
 	static void updateLatestVector();
