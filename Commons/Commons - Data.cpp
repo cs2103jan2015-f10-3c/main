@@ -1,5 +1,10 @@
 #include "Commons.h"
 
+////////////////////////////////
+//getter methods implementations
+////////////////////////////////
+
+
 std::string Data::getDesc(){
 	return desc;
 }
@@ -36,6 +41,23 @@ TimeMicro Data::getTimeMicroEnd(){
 	return microTimeEnd;
 }
 
+std::string Data::getPriority(){
+	return priority;
+}
+
+TimeMacro Data::getAlarmMacro(){
+	return alarmMacro;
+}
+
+TimeMicro Data::getAlarmMicro(){
+	return alarmMicro;
+}
+
+
+////////////////////////////////
+//setter methods implementations
+////////////////////////////////
+
 void Data::updateTaskNo(int no){
 	taskNo = no;
 }
@@ -70,4 +92,18 @@ void Data::updateTimeMicroEnd(TimeMicro inMicroEnd){
 
 void Data::updateTimeMicroBeg(TimeMicro inMicroBeg){
 	microTimeBeg = inMicroBeg;
+}
+
+void Data::updatePriority(std::string inPriority){
+	_ASSERTE ( inPriority == "Low" || inPriority == "Medium" ||
+				inPriority == "High" || inPriority == "None" );
+	priority = inPriority;
+}
+
+void Data::updateAlarmMacro(TimeMacro inAlarm){
+	alarmMacro = inAlarm;
+}
+
+void Data::updateAlarmMicro(TimeMicro inAlarm){
+	alarmMicro = inAlarm;
 }
