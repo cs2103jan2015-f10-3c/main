@@ -71,10 +71,9 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
-	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
-	History::updateLatestData(getData(uniqueNo)); //store in History
-	//dataList.erase(getData(uniqueNo));
-	int uniqueCode = (getData(uniqueNo)).getUniqueCode();
+	int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
+	//History::updateLatestData(getData(uniqueCode)); //store in History
+
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
 		if(uniqueCode != dataList[i].getUniqueCode()){
