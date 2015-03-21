@@ -1,6 +1,7 @@
 #include "DataStorage.h"
 
 std::vector<Data> DataBase::dataList;
+int DataBase::uniqueCodeStore;
 
 //return the DataBase list 
 //for command such as search
@@ -18,7 +19,7 @@ void DataBase::clearDataList(){
 void DataBase::addData(Data& inData){
 
 	History::updateLatestData(inData); //store for undo
-	int tempNo = allocateUniqueCode();
+	int tempNo = allocateUniqueCode(uniqueCodeStore);
 	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
@@ -118,10 +119,9 @@ Data DataBase::getData(int uniqueNo){
 // !! unit testing done
 //allocate uniqueCode to each Data
 //For internal working
-int DataBase::allocateUniqueCode(){
-	static int UniqueNo = 0;
-	UniqueNo++;
-	return UniqueNo;
+int DataBase::allocateUniqueCode(int& uniqueNo){
+	uniqueNo++;
+	return uniqueNo;
 	
 }
 

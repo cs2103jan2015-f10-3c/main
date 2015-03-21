@@ -8,16 +8,26 @@ void DataBase::loadData(){
 	std::ifstream in("test.txt");
 	//if file exists
 	if (in){
-		
+
+		std::string strUnique;
+		getline(in,strUnique);
+		std::stringstream streamUnique;
+		streamUnique << strUnique;
+		streamUnique >> uniqueCodeStore;
+
 		//throw away Heading
 		std::string temp;
 		getline(in,temp);
 
 		std::string strData;
 		int i=0; //iterator for vector
+		
 		while(getline(in,strData)){
 			parseLoad(strData, i);
-		}	
+			} 
+
+		} else {
+			uniqueCodeStore = 0;
 	}
 }
 
@@ -155,6 +165,8 @@ void DataBase::saveData(){
 	std::string fileName = "test.txt";
 	std::ofstream out;
 	out.open(fileName.c_str());
+
+	out << uniqueCodeStore <<'\n';
  		 	
 	writeHeading(fileName, out); //write Heading for readability
 
