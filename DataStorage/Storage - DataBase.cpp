@@ -2,10 +2,7 @@
 
 std::vector<Data> DataBase::dataList;
 
-
-// !!test done by data processing
 //return the DataBase list 
-//to be accessed by data Processor
 //for command such as search
 std::vector<Data> DataBase::getDataList() {
 	return dataList;

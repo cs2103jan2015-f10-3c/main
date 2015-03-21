@@ -15,6 +15,8 @@
 class DataBase {
 private:
 	friend class DisplayStorage;
+	friend class DataBaseUnitTesting;
+	friend class DataProcessing;
 
 	//Private Attribute
 	static std::vector<Data> dataList;
