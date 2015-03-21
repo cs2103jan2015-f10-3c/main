@@ -110,6 +110,8 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	else if (isStartingTime (inputToBeParsed)) {
 		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
 	}
+	parseDateNumber (inputToBeParsed, timeMacro);
+    parseDateAlphabet (inputToBeParsed, timeMacro);
 	desc = inputToBeParsed;
 
 	
@@ -294,6 +296,11 @@ void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 }
 
 
+//This method is to parse date after the start of the string is recoganised as a date.
+//The formats it recognises are date (integer) followed by month (abbreviation),
+//followed by year (integer). eg. 21 Mar 2015
+//If the year is not specified, it assumes it is this year.
+//Date/month/year/day will be updated.
 void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) {
 	int start = 0;
 	int end = 0;
@@ -471,6 +478,12 @@ bool Parser::isYearNumber (string inputToBeParsed) {
 }
 
 
+//This method is to check if the start of the string is a date.
+//This method only checks for date and month.
+//The formats of date and month is date (integer) 
+//followed by month (abbreviation, the first alphabet can be both capital or small)
+//eg. 21 Mar or 21 mar.
+//The string firstly needs to be longer than the date format.
 bool Parser::isDateAlphabet (string inputToBeParsed) {
 	vector<string> month;
 	month.push_back ("Jan");
@@ -519,6 +532,10 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 }
 
 
+//This method checks if the date format includes a year.
+//If the date and month are followed by " yyyy",
+//it returns true;
+//else, it returns false
 bool Parser::isYearAlphabet (string inputToBeParsed) {
 		if (inputToBeParsed[0] == ' ' &&
 			searchSubstring ("2", inputToBeParsed[1]) &&
