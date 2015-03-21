@@ -20,10 +20,11 @@ private:
 
 	//Private Attribute
 	static std::vector<Data> dataList;
+	static int uniqueCodeStore;
 
 	//Private method
 	static void sortDataList();
-	static int allocateUniqueCode();
+	static int allocateUniqueCode(int& uniqueCodeStore);
 	static void allocatePsedoDate();
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);

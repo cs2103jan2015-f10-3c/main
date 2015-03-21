@@ -1,6 +1,7 @@
 #include "DataStorage.h"
 
 std::vector<Data> DataBase::dataList;
+int DataBase::uniqueCodeStore;
 
 //return the DataBase list 
 //for command such as search
@@ -17,8 +18,13 @@ void DataBase::clearDataList(){
 //and also automaticallly sort dataList
 void DataBase::addData(Data& inData){
 
+<<<<<<< HEAD
 	
 	int tempNo = allocateUniqueCode();
+=======
+	History::updateLatestData(inData); //store for undo
+	int tempNo = allocateUniqueCode(uniqueCodeStore);
+>>>>>>> master
 	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
@@ -78,11 +84,17 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
+<<<<<<< HEAD
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
 	History::updateLatestCommand("delete");
 	History::updateLatestData(getData(uniqueNo)); //store in History
 	//dataList.erase(getData(uniqueNo));
 	int uniqueCode = (getData(uniqueNo)).getUniqueCode();
+=======
+	int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
+	//History::updateLatestData(getData(uniqueCode)); //store in History
+
+>>>>>>> master
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
 		if(uniqueCode != dataList[i].getUniqueCode()){
@@ -112,8 +124,38 @@ void DataBase::undoData(int uniqueNo){
 Data DataBase::editData(int taskNo, Data updatedData){
 	History::updateLatestCommand("edit");
 	History::updateLatestData(updatedData); // store for undo
+	
+	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	Data dataToEdit = getData(uniqueNo);
+
+	if (!updatedData.getDesc().empty()){
+		dataToEdit.updateDesc(updatedData.getDesc());
+	}
+
+	if (updatedData.getTimeMacroBeg().getDate() != 0 
+		&& updatedData.getTimeMacroBeg().getMonth() != 0
+		&& updatedData.getTimeMacroBeg().getYear() != 0) {
+			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
+	}
+
+	if (updatedData.getTimeMacroEnd().getDate() != 0 
+		&& updatedData.getTimeMacroEnd().getMonth() != 0
+		&& updatedData.getTimeMacroEnd().getYear() != 0) {
+			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
+	}
+
+	if (updatedData.getTimeMicroBeg().getHour() != -1
+		&& updatedData.getTimeMicroBeg().getHour() != -1) {
+			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
+	}
+
+	if (updatedData.getTimeMicroEnd().getHour() != -1
+		&& updatedData.getTimeMicroEnd().getHour() != -1) {
+			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
+	}
+
 	deleteData(taskNo);
-	addData(updatedData);
+	addData(dataToEdit);
 
 	return DisplayStorage::getData(taskNo);
 }
@@ -141,10 +183,9 @@ Data DataBase::getData(int uniqueNo){
 // !! unit testing done
 //allocate uniqueCode to each Data
 //For internal working
-int DataBase::allocateUniqueCode(){
-	static int UniqueNo = 0;
-	UniqueNo++;
-	return UniqueNo;
+int DataBase::allocateUniqueCode(int& uniqueNo){
+	uniqueNo++;
+	return uniqueNo;
 	
 }
 
