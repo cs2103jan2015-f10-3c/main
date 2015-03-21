@@ -135,16 +135,12 @@ namespace GUI {
 
 	//Actions happen whenever the user loads the application
 	private: System::Void GUI_Load(System::Object^  sender, System::EventArgs^  e) {
-				 //Show welcome message
-				 //string welcomeMessage = OperationCenter::welcomeUser();
-				 //outputMessageBox->Text = msclr::interop::marshal_as<String^>(welcomeMessage);
+				 
 				 OperationCenter::loadData();
 				 outputMessageBox->Text = "Hello Jim, Welcome to your BlinkList!";
 				 OperationCenter::executeInput("show today");
 				 string displayString = Feedback::getDisplay();
-				 //string responseString = Feedback::getResponse();
 				 displayBox->Text = msclr::interop::marshal_as<String^>(displayString);
-				 //outputMessageBox->Text =  msclr::interop::marshal_as<String^>(responseString);
 				 
 
 			 }
@@ -157,7 +153,6 @@ namespace GUI {
 				 string userInput = msclr::interop::marshal_as<string>(inputBox->Text);
 				 inputBox->Clear();
 				 if( userInput == "exit"){
-					 OperationCenter::saveData();
 					 exit(0);
 				 }
 				 OperationCenter::executeInput(userInput);

@@ -104,7 +104,7 @@ string DataProcessor::editTask(int taskNumber, Data task){
 
 
 string DataProcessor::executeUndo(){
-
+	deleteTask(
 	return ;
 }
 
