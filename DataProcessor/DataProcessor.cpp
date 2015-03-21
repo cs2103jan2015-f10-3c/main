@@ -1,6 +1,8 @@
+#include <assert.h>
+#include <exception>
 #include "DataProcessor.h"
 
-using namespace std;
+//using namespace std;
 
 const string DataProcessor::ADD_MESSAGE = "is added";
 const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
@@ -58,7 +60,11 @@ void DataProcessor::loadData(){
 //Post-condition: tasks under the desired period will be cleared
 //from the current taskList
 string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
+	ofstream outData;
+	outData.open("log.txt");
+	outData << "start clearing Data";
 	DataBase::clearData(startTime, endTime);
+	outData << "all data cleared";
 	//string clearMessage = getClearMessage(startTime, endTime);
 	//return clearMessage;
 	return " all contents are cleared";
@@ -80,22 +86,58 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 //the updated information about the task.
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
+	ofstream outData;
+	outData.open("log.txt");
+	if(taskNumber <= 0){
+		outData << "handling exception:invalid tasknumber";
+		throw std::exception("Invalid Tasknumber Entered");
+	}
 	Data uneditedTask;
+	outData << "start editing data";
 	uneditedTask = DataBase::editData(taskNumber, task);
 	string editMessage = getEditMessage(uneditedTask) + " is edited";
+	outData << "edit data is done";
 	return editMessage;
+
 }
 
 
 
 string DataProcessor::executeUndo(){
-	string dummy;
-	return dummy;
+	Data latestData;
+	string latestCommand;
+	vector<Data> latestVector;
+	latestVector = History::getLatestVector();
+	latestCommand = History::getLatestCommand();
+	latestData = History::getLatestData();
+	int uniqueCode;
+	uniqueCode = latestData.getUniqueCode();
+	if (latestCommand == "add"){
+		DataBase::undoData(uniqueCode);
+	}
+	else if (latestCommand == "delete"){
+		DataBase::addData(latestData);
+	}
+	else if (latestCommand == "edit"){
+		DataBase::clearDataList();
+		for(int i = 0; i != latestVector.size(); i++){
+			DataBase::addData(latestVector[i]);
+		}
+	}
+	else if (latestCommand == "clear"){
+		DataBase::clearDataList();
+		for(int i = 0; i != latestVector.size(); i++){
+			DataBase::addData(latestVector[i]);
+		}
+	}
+	string undoMessage = "Undo completed";
+	return undoMessage;
 }
 
 //This function reads in a Data object and convert it into a string
 //that contains all the information of that data and ready to be displayed
 string DataProcessor::convertDataObjectToString(Data task){
+	assert ( task.getDesc() != "\0");
 	string taskString;
 	ostringstream outData;
 	TimeMacro timeMacroBeg, timeMacroEnd;
@@ -165,21 +207,27 @@ string DataProcessor::convertDataObjectToString(Data task){
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
 string DataProcessor::searchTask(string keyword){
+	ofstream outData;
+	outData.open("log.txt");
+	if(keyword.size() == 0){
+		outData << "handling exception: empty keyword entere";
+		throw std::exception("Empty Keyword Entered");
+	}
 	vector<Data> currTaskList = DataBase::getDataList();
 	vector<Data> returnTaskList;
-	vector<Data>::iterator iter;
+	//vector<Data>::iterator iter;
 	string taskDescription;
 	size_t found;
-	
+	outData << "start searching for matched tasks";
 	//For every matched task, store it in returnTaskList
-	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
-		taskDescription = (*iter).getDesc();
+	for(int i = 0; i != currTaskList.size(); i++){
+		taskDescription = currTaskList[i].getDesc();
 		found = taskDescription.find(keyword);
 		if(found != string::npos){
-			DisplayStorage::addData(*iter);
+			DisplayStorage::addData(currTaskList[i]);
 		}
 	}
-
+	outData << "update current displayList to display matched tasks";
 	returnTaskList = DisplayStorage::getDisplayList();
 
 	//Convert the taskList into a string that is ready for UI to display
@@ -201,6 +249,7 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 			<< convertDataObjectToString(taskList[i]) << endl;
 		numberOfTask++;
 	}
+	assert (numberOfTask >= 1);
 
 	taskListString = outList.str();
 	return taskListString;
@@ -208,6 +257,7 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 }
 
 string DataProcessor::getEditMessage(Data uneditedTask){
+	assert (uneditedTask.getDesc() != "\0");
 	string uneditedTaskString;
 	string editMessage;
 	uneditedTaskString = convertDataObjectToString(uneditedTask);
@@ -216,4 +266,17 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 	editMessage = out.str(); 
 	
 	return editMessage;
+}
+
+//this function reads in the task number 
+//and update the status of the corresponding
+//task
+string DataProcessor::markDone(int taskNo){
+	ostringstream outData;
+	Data targetData;
+	targetData = DisplayStorage::getData(taskNo);
+	targetData.updateCompleteStatus(true);
+	DataBase::editData(taskNo, targetData);
+	outData << convertDataObjectToString(targetData) << " is done";
+	return outData.str();
 }

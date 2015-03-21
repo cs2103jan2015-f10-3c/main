@@ -47,10 +47,13 @@ public:
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data> getDataList();
+	static std::vector<Data> & getDataList();
 	static void clearDataList();
 	static void saveData();
 	static void loadData();
+
+	//method for undoADD
+	static void undoData(int uniqueNo);
 
 	//Helper method for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
@@ -68,7 +71,7 @@ public:
 	//API for Data Processing
 	static std::string getLatestCommand();
 	static Data getLatestData();
-	static std::vector<Data> getLatestVector();
+	static std::vector<Data> & getLatestVector();
 	static void updateLatestCommand(std::string inCommand);
 	static void updateLatestData(Data inData);
 	static void updateLatestVector();
