@@ -4,7 +4,7 @@ std::vector<Data> DataBase::dataList;
 
 //return the DataBase list 
 //for command such as search
-std::vector<Data> DataBase::getDataList() {
+std::vector<Data>& DataBase::getDataList() {
 	return dataList;
 }
 

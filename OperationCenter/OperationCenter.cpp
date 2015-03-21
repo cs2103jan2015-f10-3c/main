@@ -30,6 +30,8 @@ void OperationCenter::executeInput(string input){
     struct tm now;
 	localtime_s (&now, &t);
 
+	TimeMacro floatingTaskTime;
+
 	TimeMacro currentTime(now.tm_mday, now.tm_mon + 1, now.tm_year + 1900);
 	Parser parser;
 	DataProcessor dataProcessor;
@@ -64,6 +66,8 @@ void OperationCenter::executeInput(string input){
 	}else if(command == "edit"){
 		assert(taskNo>0);
 		returnResponse = dataProcessor.editTask(taskNo, task);
+	}else if(command == "done"){
+	//	returnResponse = dataProcessor.markDone(taskNo);
 	}else if(command == "undo"){
 		returnResponse = dataProcessor.executeUndo();
 	}else{
@@ -71,7 +75,10 @@ void OperationCenter::executeInput(string input){
 	}
 	
 	if(command != "display" && command != "search"){
-		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
+		ostringstream out;
+		out << "Today's task:" <<endl
+			<< dataProcessor.displayTask(currentTime, currentTime);
+		returnDisplay = out.str();
 		if(returnDisplay == ""){
 			returnDisplay = ":) You have no task for today";
 		}
@@ -81,6 +88,7 @@ void OperationCenter::executeInput(string input){
 	Feedback::updateDisplay(returnDisplay);
 	Feedback::updateResponse(returnResponse);
 
+	saveData();
 }
 
 void OperationCenter::saveData(){

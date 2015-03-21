@@ -34,6 +34,8 @@ public:
 
 	OperationCenter() {}
 	static void executeInput (string input);
+	static string getResponse();
+	static string getDisplay();
 	static void saveData();
 	static void loadData();
 };

@@ -164,18 +164,18 @@ string DataProcessor::convertDataObjectToString(Data task){
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
 string DataProcessor::searchTask(string keyword){
-	vector<Data> currTaskList = DataBase::getDataList();
+	vector<Data>& currTaskList = DataBase::getDataList();
 	vector<Data> returnTaskList;
-	vector<Data>::iterator iter;
+	//vector<Data>::iterator iter;
 	string taskDescription;
 	size_t found;
 	
 	//For every matched task, store it in returnTaskList
-	for(iter = currTaskList.begin(); iter != currTaskList.end(); iter++){
-		taskDescription = (*iter).getDesc();
+	for(int i = 0; i != currTaskList.size(); i++){
+		taskDescription = currTaskList[i].getDesc();
 		found = taskDescription.find(keyword);
 		if(found != string::npos){
-			DisplayStorage::addData(*iter);
+			DisplayStorage::addData(currTaskList[i]);
 		}
 	}
 

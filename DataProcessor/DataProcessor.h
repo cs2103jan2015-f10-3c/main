@@ -8,6 +8,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <iterator>
 #include <assert.h>
 #include "Commons.h"
 #include "DataStorage.h"
@@ -15,6 +16,7 @@
 using namespace std;
 class DataProcessor{
 private:
+
 	static const string ADD_MESSAGE;
 	static const string DELETE_MESSAGE;
 	static const string CLEAR_MESSAGE;

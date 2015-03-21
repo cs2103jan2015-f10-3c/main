@@ -16,7 +16,7 @@ class DataBase {
 private:
 	friend class DisplayStorage;
 	friend class DataBaseUnitTesting;
-	friend class DataProcessing;
+	friend class DataProcessor;
 
 	//Private Attribute
 	static std::vector<Data> dataList;
@@ -46,7 +46,7 @@ public:
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data> getDataList();
+	static std::vector<Data>& getDataList();
 	static void clearDataList();
 	static void saveData();
 	static void loadData();
@@ -85,7 +85,7 @@ private:
 public:
 	//API for Data Processing
 	static std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data> getDisplayList();
+	static std::vector<Data>& getDisplayList();
 	static void addData(Data inData);
 	static void clearList();
 
