@@ -91,8 +91,8 @@ string Parser::extractCommandWord (string userInput) {
 //This method is to parse user's input if the command word is "add".
 //There are at most 3 things to be parsed:
 //timeMacro, timeMicro and task description.
-//a task will end with a description if there is one
-//all 3 attributes can stand alone
+//a task must have a description and end with a description
+//date and time may be omitted and they can switch order if there are any
 void Parser::parseAdd (string userInput, string commandWord) {
 	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
@@ -104,12 +104,12 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	parseDateNumber (inputToBeParsed, timeMacro);
     parseDateAlphabet (inputToBeParsed, timeMacro);
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-	if (isTimePeriod (inputToBeParsed)) {
+	/*if (isTimePeriod (inputToBeParsed)) {
 		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
 	}
 	else if (isStartingTime (inputToBeParsed)) {
 		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-	}
+	}*/
 	parseDateNumber (inputToBeParsed, timeMacro);
     parseDateAlphabet (inputToBeParsed, timeMacro);
 	desc = inputToBeParsed;
@@ -127,7 +127,7 @@ void Parser::parseAdd (string userInput, string commandWord) {
 //task number, timeMacro, timeMicro and task description.
 //The command word "edit" must be followed by a task number.
 //a task will end with a description if there is one
-//all 3 attributes can stand alone
+//date, time and description can also stand alone
 //The task no must be followed by something to edit
 void Parser::parseEdit (string userInput, string commandWord) {
 	TimeMacro timeMacro;
@@ -142,8 +142,10 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		taskNo = convertStringToInteger (index);
 		inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 
+
 		parseDateNumber (inputToBeParsed, timeMacro);
-		inputToBeParsed = inputToBeParsed.substr (inputToBeParsed.find_first_of (" ") + 1);
+		parseDateAlphabet (inputToBeParsed, timeMacro);
+
 		parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 		if (isTimePeriod (inputToBeParsed)) {
 			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
@@ -151,8 +153,14 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		else if (isStartingTime (inputToBeParsed)) {
 			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
 		}
-		desc = inputToBeParsed;
 
+		parseDateNumber (inputToBeParsed, timeMacro);
+		parseDateAlphabet (inputToBeParsed, timeMacro);
+
+		if (inputToBeParsed != "") {
+			desc = inputToBeParsed;
+		}
+		
 
 		updateCommand (commandWord);
 		updateTaskNo (taskNo);
@@ -269,15 +277,30 @@ void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 		if (isYearNumber (inputToBeParsesd)) {
 			end = inputToBeParsesd.find_first_of ("/");
 			month = inputToBeParsesd.substr (0, end);
-			start = end + 1;
-			year = inputToBeParsesd.substr (start, 4);
+			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+			//start = end + 1;
+			year = inputToBeParsesd.substr (0, 4);
 			yearInt = atoi (year.c_str());
-			inputToBeParsesd = inputToBeParsesd.substr (start + 4);
+
+			if (inputToBeParsesd.size() > 5) {
+				inputToBeParsesd = inputToBeParsesd.substr (start + 4);
+			}
+			else {
+				inputToBeParsesd = "";
+			}
 		}
+
 		else {
 			end = inputToBeParsesd.find_first_of (" ");
 			month = inputToBeParsesd.substr (0, end);
-			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+			
+			if (end != string::npos) {
+				inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+			}
+			else {
+				inputToBeParsesd = "";
+			}
+			
 			time_t t = time (0);
 			struct tm now;
 			localtime_s (&now, &t);
@@ -331,7 +354,7 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 			
 		}
 		else {
-			if (inputToBeParsesd != "") {
+			if (inputToBeParsesd.size() > 2) {
 				inputToBeParsesd = inputToBeParsesd.substr (1);
 			}
 			
@@ -358,7 +381,7 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 //only starting hour and minute will be updated.
 //If the string starts with a time period,
 //both starting and ending hour and minute will be updated.
-void Parser::parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
+void Parser::parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
 	if (isTimePeriod (inputToBeParsed) || isStartingTime (inputToBeParsed)) {
         string hourBeg = inputToBeParsed.substr (0, 2);
 		string minuteBeg = inputToBeParsed.substr (3, 2);
@@ -366,14 +389,29 @@ void Parser::parseTime (string inputToBeParsed, TimeMicro& timeMicroBeg, TimeMic
 		int minuteBegInt = atoi (minuteBeg.c_str());
 		timeMicroBeg.updateHour (hourBegInt);
 		timeMicroBeg.updateMin (minuteBegInt);
+
+		if (inputToBeParsed.size() > 6) {
+			inputToBeParsed = inputToBeParsed.substr (6);
+		}
+		else {
+			inputToBeParsed = "";
+		}
+
 	}
 	if (isTimePeriod (inputToBeParsed)) {
-		string hourEnd = inputToBeParsed.substr (6, 2);
-		string minuteEnd = inputToBeParsed.substr (9, 2);
+		string hourEnd = inputToBeParsed.substr (0, 2);
+		string minuteEnd = inputToBeParsed.substr (3, 2);
 		int hourEndInt = atoi (hourEnd.c_str());
 		int minuteEndInt = atoi (minuteEnd.c_str());
 		timeMicroEnd.updateHour (hourEndInt);
 		timeMicroEnd.updateMin (minuteEndInt);
+
+		if (inputToBeParsed.size() > 6) {
+			inputToBeParsed = inputToBeParsed.substr (6);
+		}
+		else {
+			inputToBeParsed = "";
+		}
 	}
 }
 
