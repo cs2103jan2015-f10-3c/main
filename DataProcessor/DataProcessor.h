@@ -8,6 +8,7 @@
 #include <string>
 #include <algorithm>
 #include <vector>
+#include <assert.h>
 #include "Commons.h"
 #include "DataStorage.h"
 

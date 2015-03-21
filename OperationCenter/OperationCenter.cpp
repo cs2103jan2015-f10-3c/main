@@ -17,6 +17,14 @@ const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
 string Feedback::display;
 string Feedback::response;
 
+string OperationCenter::getResponse(){
+	return Feedback::getResponse();
+}
+
+string OperationCenter::getDisplay(){
+	return Feedback::getDisplay();
+}
+
 void OperationCenter::executeInput(string input){
 	time_t t = time (0);   // get time now
     struct tm now;

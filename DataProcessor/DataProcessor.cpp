@@ -22,6 +22,7 @@ string DataProcessor::addTask(Data task){
 //This function reads in the number of the task to be deleted,
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
+	assert(number > 0);
 	ostringstream out;
 	out << convertDataObjectToString (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
