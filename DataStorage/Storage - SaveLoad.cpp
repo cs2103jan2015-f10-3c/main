@@ -32,6 +32,9 @@ void DataBase::parseLoad(std::string strData, int& i){
 	std::string tempCompleteStatus;
 	int uniqueCode;
 	std::string desc;
+	std::string priority;
+	std::string tempAlarmMacro;
+	std::string tempAlarmMicro;
 	std::string temp;
 
 	//get uniqueCode and convert to int
@@ -44,6 +47,9 @@ void DataBase::parseLoad(std::string strData, int& i){
 	tempMicroTBeg = tokenizerSpace(strData);
 	tempMicroTEnd = tokenizerSpace(strData);
 	tempCompleteStatus = tokenizerSpace(strData);
+	priority = tokenizerSpace(strData);
+	tempAlarmMacro = tokenizerSpace(strData);
+	tempAlarmMicro = tokenizerSpace(strData);
 	desc = tokenizerSpace(strData);
 
 	Data data;
@@ -57,12 +63,17 @@ void DataBase::parseLoad(std::string strData, int& i){
 	TimeMacro inMacroTEnd = macroParser(tempMacroTEnd);
 	data.updateTimeMacroEnd(inMacroTEnd);
 
+	TimeMacro inAlarmMacro = macroParser(tempAlarmMacro);
+	data.updateAlarmMacro(inAlarmMacro);
+
 	TimeMicro inMicroTBeg = microParser(tempMicroTBeg);
 	data.updateTimeMicroBeg(inMicroTBeg);
 
 	TimeMicro inMicroTEnd = microParser(tempMicroTEnd);
 	data.updateTimeMicroEnd(inMicroTEnd);
 
+	TimeMicro inAlarmMicro = microParser(tempAlarmMicro);
+	data.updateAlarmMicro(inAlarmMicro);
 
 	dataList.push_back(data);
 
@@ -151,9 +162,11 @@ void DataBase::saveData(){
 	for(int i=0; i != dataList.size(); i++){
 		std::string tMacroBeg = convertTimeMacroToString("Begin", i);
 		std::string tMacroEnd = convertTimeMacroToString("End", i);
+		std::string alarmMacro = convertTimeMacroToString("Alarm", i);
 
 		std::string tMicroBeg = convertTimeMicroToString("Begin", i);
 		std::string tMicroEnd = convertTimeMicroToString("End", i);
+		std::string alarmMicro = convertTimeMicroToString("Alarm", i);
 
 		//convert boolean into string
 		std::string isDone;
@@ -167,7 +180,9 @@ void DataBase::saveData(){
 		out <<dataList[i].getUniqueCode()
 			<< '\t' << tMacroBeg
 			<< '\t' << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
-			<< "\t\t" << isDone << "\t\t" << dataList[i].getDesc() << '\n';
+			<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
+			<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
+			<< dataList[i].getDesc() << '\n';
 
 	}	
 }
@@ -176,7 +191,7 @@ void DataBase::saveData(){
 std::string DataBase::convertTimeMacroToString(std::string type, int i){
 	std::string tMacro;
 
-	_ASSERTE (type == "Begin" || type == "End");
+	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
 
 	if(type == "Begin"){
 		tMacro = dataList[i].getTimeMacroBeg().getDay() + '/'
@@ -192,6 +207,13 @@ std::string DataBase::convertTimeMacroToString(std::string type, int i){
 		+ std::to_string(dataList[i].getTimeMacroEnd().getYear());
 	}
 
+	if(type == "Alarm"){
+		tMacro = dataList[i].getAlarmMacro().getDay() + '/'
+		+ std::to_string(dataList[i].getAlarmMacro().getDate()) + '/'
+		+ std::to_string(dataList[i].getAlarmMacro().getMonth()) + '/'
+		+ std::to_string(dataList[i].getAlarmMacro().getYear());
+	}
+
 	return tMacro;
 }
 
@@ -199,7 +221,7 @@ std::string DataBase::convertTimeMacroToString(std::string type, int i){
 std::string DataBase::convertTimeMicroToString(std::string type, int i){
 	std::string tMicro;
 
-	_ASSERTE (type == "Begin" || type == "End");
+	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
 
 	if(type == "Begin"){
 		tMicro = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + '/'
@@ -211,6 +233,11 @@ std::string DataBase::convertTimeMicroToString(std::string type, int i){
 		+ std::to_string(dataList[i].getTimeMicroEnd().getMin());
 	}
 
+	if(type == "Alarm"){
+		tMicro = std::to_string(dataList[i].getAlarmMicro().getHour()) + '/'
+		+ std::to_string(dataList[i].getAlarmMicro().getMin());
+	}
+
 	return tMicro;
 }
 
@@ -219,5 +246,6 @@ void DataBase::writeHeading (std::string fileName, std::ofstream& out){
 	out <<"uCode" 
 		<< '\t' << "macroTBeg" << "\t\t" << "macroTEnd" << "\t\t" 
 		<< "microTBeg" << "\t" << "microTEnd" << "\t" << "completeStatus" 
-		<< "\t" << "desc" << '\n';
+		<< "\t" << "priority" << '\t' << "alarmMacro" << "\t\t" << "alarmMicro"
+		<< '\t' << "desc" << '\n';
 }
