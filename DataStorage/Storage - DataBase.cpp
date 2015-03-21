@@ -109,9 +109,8 @@ void DataBase::undoData(int uniqueNo){
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data DataBase::editData(int taskNo, Data updatedData){
-	History::updateLatestCommand("edit");
-	History::updateLatestData(updatedData); // store for undo
 	
+	History::updateLatestVector(); //Store for undo
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
 	Data dataToEdit = getData(uniqueNo);
 
@@ -143,7 +142,7 @@ Data DataBase::editData(int taskNo, Data updatedData){
 
 	deleteData(taskNo);
 	addData(dataToEdit);
-	History::updateLatestVector();
+	History::updateLatestCommand("edit"); //Store for undo
 
 	return DisplayStorage::getData(taskNo);
 }
