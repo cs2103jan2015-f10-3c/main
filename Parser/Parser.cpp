@@ -35,7 +35,7 @@ void Parser::parseInput (string userInput) {
 	}
 
 	catch (const char* errorMessge) {
-		updateErrorMessage ("Please enter the correct command");
+		updateErrorMessage (errorMessge);
 		cout << getErrorMessage () << endl;
 	}
 }
@@ -67,8 +67,17 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	else if (commandWord == "done") {
 		parseDone (userInput, commandWord);
 	}
+	else if (commandWord == "show") {
+		try {
+			parseShow (userInput, commandWord);
+		}
+		catch (char* errorMessge) {
+			updateErrorMessage (errorMessge);
+			cout << getErrorMessage () << endl;
+		}
+	}
 	else {
-		throw "non-existing command";
+		throw "Please enter the correct command";
 	}
 }
 
@@ -103,13 +112,9 @@ void Parser::parseAdd (string userInput, string commandWord) {
 
 	parseDateNumber (inputToBeParsed, timeMacro);
     parseDateAlphabet (inputToBeParsed, timeMacro);
+
 	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-	/*if (isTimePeriod (inputToBeParsed)) {
-		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-	}
-	else if (isStartingTime (inputToBeParsed)) {
-		inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-	}*/
+
 	parseDateNumber (inputToBeParsed, timeMacro);
     parseDateAlphabet (inputToBeParsed, timeMacro);
 	desc = inputToBeParsed;
@@ -147,12 +152,6 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		parseDateAlphabet (inputToBeParsed, timeMacro);
 
 		parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-		if (isTimePeriod (inputToBeParsed)) {
-			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_TIME_PERIOD + 1);
-		}
-		else if (isStartingTime (inputToBeParsed)) {
-			inputToBeParsed = inputToBeParsed.substr (LENGTH_OF_STARTING_TIME + 1);
-		}
 
 		parseDateNumber (inputToBeParsed, timeMacro);
 		parseDateAlphabet (inputToBeParsed, timeMacro);
@@ -170,7 +169,7 @@ void Parser::parseEdit (string userInput, string commandWord) {
 	}
 
 	catch (const char* errorMessge) {
-		updateErrorMessage ("Please enter correct task number after command word");
+		updateErrorMessage (errorMessge);
 		cout << getErrorMessage () << endl;
 	}
 }
@@ -204,10 +203,9 @@ void Parser::parseDelete (string userInput, string commandWord) {
 		updateCommand (commandWord);
 		updateTaskNo (taskNo);
 	}
-	//int taskNo = atoi (index.c_str());
 	
 	catch (const char* errorMessge) {
-		updateErrorMessage ("Please enter correct task number after command word");
+		updateErrorMessage (errorMessge);
 		cout << getErrorMessage () << endl;
 	}
 
@@ -252,6 +250,17 @@ void Parser::parseDone (string userInput, string commandWord) {
 	updateStatus (true);
 }
 
+
+void Parser::parseShow (string userInput, string commandWord) {
+	string inputToBeParsed = userInput.substr (commandWord.size () + 1);
+	if (inputToBeParsed != "commands") {
+		throw "Did you mean \"show commands?\"";
+	}
+
+	commandWord = commandWord + " " + userInput;
+	updateCommand (commandWord);
+}
+
 //This method is to parse date after the start of the string is recoganised as a date.
 //The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",
 //"dd/mm", "d/mm", "dd/m", "d/m".
@@ -278,7 +287,6 @@ void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 			end = inputToBeParsesd.find_first_of ("/");
 			month = inputToBeParsesd.substr (0, end);
 			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
-			//start = end + 1;
 			year = inputToBeParsesd.substr (0, 4);
 			yearInt = atoi (year.c_str());
 
@@ -447,7 +455,7 @@ bool Parser::isInteger (string index) {
 //An exception will be thrown if the string is not an integer string.
 int Parser::convertStringToInteger (string index) {
 	if (!isInteger (index)) {
-		throw "not interger";
+		throw "Please enter correct task number after command word";
 	}
 	else {
 		int taskNo = atoi (index.c_str());

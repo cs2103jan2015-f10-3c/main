@@ -111,6 +111,7 @@ public:
 	void parseDelete (string userInput, string commandWord);
 	void parseDisplay (string userInput, string commandWord);
 	void parseDone (string userInput, string commandWord);
+	void parseShow (string userInput, string commandWord);
     void parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
