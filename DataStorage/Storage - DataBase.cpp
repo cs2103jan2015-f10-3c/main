@@ -5,7 +5,7 @@ int DataBase::uniqueCodeStore;
 
 //return the DataBase list 
 //for command such as search
-std::vector<Data> DataBase::getDataList() {
+std::vector<Data> & DataBase::getDataList() {
 	return dataList;
 }
 
@@ -18,11 +18,13 @@ void DataBase::clearDataList(){
 //and also automaticallly sort dataList
 void DataBase::addData(Data& inData){
 
-	History::updateLatestData(inData); //store for undo
+
 	int tempNo = allocateUniqueCode(uniqueCodeStore);
 	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
+	History::updateLatestCommand("add");
+	History::updateLatestData(inData); //store for undo
 
 }
 
@@ -33,7 +35,8 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
 	std::vector<long long> timePeriod;
 	timePeriod = searchPeriod(startTime , endTime);
-	//History::updateLatestVector(); //update for undo
+	History::updateLatestCommand("clear");
+	History::updateLatestVector(); //update for undo
 	
 	int endT;
 	endT = timePeriod.back();
@@ -57,7 +60,7 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 			i++;
 		}
 
-		dataList=temp;
+		dataList = temp;
 
 	//for returning the time frame
 	Data period;
@@ -72,25 +75,42 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
-	int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
-	//History::updateLatestData(getData(uniqueCode)); //store in History
+
+	History::updateLatestCommand("delete");
+		int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
 
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
 		if(uniqueCode != dataList[i].getUniqueCode()){
 				listTofacilitateDeletion.push_back(dataList[i]);
+		}else
+		{
+			History::updateLatestData(dataList[i]); //store in History
 		}
 	}
 	dataList = listTofacilitateDeletion;
 	return DisplayStorage::getData(taskNo);
 }
 
+
+//method for deleting the latest Data added
+//helper for undo function
+void DataBase::undoData(int uniqueNo){
+	
+	std::vector<Data> listTofacilitateDeletion;
+	for(int i = 0; i != dataList.size(); i++){
+		if(uniqueNo != dataList[i].getUniqueCode()){
+				listTofacilitateDeletion.push_back(dataList[i]);
+		}
+	}
+	dataList = listTofacilitateDeletion;
+}
 //method for edit command
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data DataBase::editData(int taskNo, Data updatedData){
-	History::updateLatestData(updatedData); // store for undo
 	
+	History::updateLatestVector(); //Store for undo
 	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
 	Data dataToEdit = getData(uniqueNo);
 
@@ -122,6 +142,7 @@ Data DataBase::editData(int taskNo, Data updatedData){
 
 	deleteData(taskNo);
 	addData(dataToEdit);
+	History::updateLatestCommand("edit"); //Store for undo
 
 	return DisplayStorage::getData(taskNo);
 }

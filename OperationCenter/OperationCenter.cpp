@@ -50,10 +50,20 @@ void OperationCenter::executeInput(string input){
 	}else if(command == "sort"){
 		returnResponse = "under construction";
 	}else if(command == "search"){
-		returnDisplay = dataProcessor.searchTask(task.getDesc());
-		returnResponse = EMPTY_RESPONSE;
+		try{
+			returnDisplay = dataProcessor.searchTask(task.getDesc());
+			returnResponse = EMPTY_RESPONSE;
+		}
+		catch (std::exception e){
+			std::cout << e.what();
+		}
 	}else if(command == "edit"){
-		returnResponse = dataProcessor.editTask(taskNo, task);
+		try{
+			returnResponse = dataProcessor.editTask(taskNo, task);
+		}
+		catch (std::exception e){
+			std::cout << e.what();
+		}
 	}else if(command == "undo"){
 		returnResponse = dataProcessor.executeUndo();
 	}else{

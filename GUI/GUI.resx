@@ -119,10 +119,10 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="inputBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 545</value>
+    <value>51, 636</value>
   </data>
   <data name="inputBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>756, 21</value>
+    <value>843, 23</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="inputBox.TabIndex" type="System.Int32, mscorlib">
@@ -141,10 +141,10 @@
     <value>3</value>
   </data>
   <data name="confirmInputButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>835, 543</value>
+    <value>925, 633</value>
   </data>
   <data name="confirmInputButton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>87, 27</value>
   </data>
   <data name="confirmInputButton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -165,13 +165,13 @@
     <value>2</value>
   </data>
   <data name="outputMessageBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 35</value>
+    <value>51, 41</value>
   </data>
   <data name="outputMessageBox.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
   <data name="outputMessageBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>866, 60</value>
+    <value>961, 69</value>
   </data>
   <data name="outputMessageBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -189,7 +189,7 @@
     <value>1</value>
   </data>
   <data name="displayBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>44, 101</value>
+    <value>51, 118</value>
   </data>
   <data name="displayBox.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -199,7 +199,7 @@
     <value>Vertical</value>
   </data>
   <data name="displayBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>866, 436</value>
+    <value>961, 508</value>
   </data>
   <data name="displayBox.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -220,10 +220,13 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 12</value>
+    <value>7, 14</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>953, 596</value>
+    <value>1058, 698</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>SimSun, 10.5pt</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>BlinkList</value>
