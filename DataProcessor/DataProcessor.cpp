@@ -45,8 +45,8 @@ void DataProcessor::saveData(){
 	DataBase::saveData();
 }
 
-void DataProcessor::loadData(){
-	DataBase::loadData();
+void DataProcessor::loadData(bool& status){
+	DataBase::loadData(status);
 }
 
 
