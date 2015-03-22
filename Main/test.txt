@@ -1,9 +1,10 @@
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	desc
 4	undefined/0/0/0	undefined/0/0/0		-1/-1		-1/-1		false		breakfast
 6	undefined/0/0/0	undefined/0/0/0		-1/-1		-1/-1		false		dinner
+3	undefined/0/0/0	undefined/0/0/0		-1/-1		-1/-1		false		6.59pm 22/3
 5	undefined/0/0/0	undefined/0/0/0		10/0		-1/-1		false		
 3	undefined/0/0/0	undefined/0/0/0		10/0		-1/-1		false		
 3	Wednesday/18/3/2015	undefined/0/0/0		-1/-1		-1/-1		false		
 8	Sunday/22/3/2015	undefined/0/0/0		-1/-1		-1/-1		false		breakfast
+4	Sunday/22/3/2015	undefined/0/0/0		-1/-1		-1/-1		false		6.58pm
 4	Sunday/22/3/2015	undefined/0/0/0		9/0		10/0		false		
-2	Sunday/22/3/2015	undefined/0/0/0		19/0		-1/-1		false		dinner

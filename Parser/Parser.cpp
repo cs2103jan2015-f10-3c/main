@@ -113,7 +113,8 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	parseDateNumber (inputToBeParsed, timeMacro);
     parseDateAlphabet (inputToBeParsed, timeMacro);
 
-	parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+	parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+	parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
 	parseDateNumber (inputToBeParsed, timeMacro);
     parseDateAlphabet (inputToBeParsed, timeMacro);
@@ -151,7 +152,7 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		parseDateNumber (inputToBeParsed, timeMacro);
 		parseDateAlphabet (inputToBeParsed, timeMacro);
 
-		parseTime (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
 		parseDateNumber (inputToBeParsed, timeMacro);
 		parseDateAlphabet (inputToBeParsed, timeMacro);
@@ -251,6 +252,10 @@ void Parser::parseDone (string userInput, string commandWord) {
 }
 
 
+//This method checks whether the word "commands" follows a "show" command.
+//If yes, the command work will become "show commands"
+//and the private attribute will be updated.
+//If not, it throws an exception.
 void Parser::parseShow (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size () + 1);
 	if (inputToBeParsed != "commands") {
@@ -389,8 +394,8 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 //only starting hour and minute will be updated.
 //If the string starts with a time period,
 //both starting and ending hour and minute will be updated.
-void Parser::parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
-	if (isTimePeriod (inputToBeParsed) || isStartingTime (inputToBeParsed)) {
+void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
+	if (isTimePeriodTwentyFour (inputToBeParsed) || isStartingTimeTwentyFour (inputToBeParsed)) {
         string hourBeg = inputToBeParsed.substr (0, 2);
 		string minuteBeg = inputToBeParsed.substr (3, 2);
 		int hourBegInt = atoi (hourBeg.c_str());
@@ -399,7 +404,7 @@ void Parser::parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMi
 		timeMicroBeg.updateMin (minuteBegInt);
 
 
-		if (!isTimePeriod (inputToBeParsed)) {
+		if (!isTimePeriodTwentyFour (inputToBeParsed)) {
 			if (inputToBeParsed.size() > 6) {
 				inputToBeParsed = inputToBeParsed.substr (6);
 			}
@@ -425,6 +430,115 @@ void Parser::parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMi
 	}
 }
 
+
+//This method is to parse date after the start of the string 
+//is recoganised as a time or a time period.
+//The formats it recognises are "hh", "h", "hh.mm", "h.mm"
+//followed by "am" or "pm".
+//If the string starts with a time,
+//only starting hour and minute will be updated.
+//If the string starts with a time period,
+//both starting and ending hour and minute will be updated.
+void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
+	int start = 0;
+	int end = 0;
+	string hourBeg;
+	string hourEnd;
+	string minuteBeg;
+	string minuteEnd;
+	int hourBegInt;
+	int hourEndInt;
+	int minuteBegInt;
+	int minuteEndInt;
+	if (isTimePeriodTwelve (inputToBeParsed) || isStartingTimeTwelve (inputToBeParsed)) {
+		end = inputToBeParsed.find_first_of (".");
+		//case "9.00am"/"19.00am"
+		if (end == 1 || end ==2) {
+			hourBeg = inputToBeParsed.substr (0, end);
+			minuteBeg = inputToBeParsed.substr (end + 1, 2);
+			minuteBegInt = atoi (minuteBeg.c_str());
+			if (inputToBeParsed[end + 3] == 'a') {
+				hourBegInt = atoi (hourBeg.c_str());
+			}
+			else if (inputToBeParsed[end + 3] == 'p') {
+				hourBegInt = atoi (hourBeg.c_str()) +12;
+			}
+		}
+		//case "9am"/"19am"
+		else {
+			end = inputToBeParsed.find_first_of ('a');
+			if (end == 1 || end == 2) {
+				hourBeg = inputToBeParsed.substr (0, end);
+				hourBegInt = atoi (hourBeg.c_str());
+				minuteBegInt = 0;
+			}
+
+			end = inputToBeParsed.find_first_of ('p');
+			if (end == 1 || end == 2) {
+				hourBeg = inputToBeParsed.substr (0, end);
+				hourBegInt = atoi (hourBeg.c_str()) + 12;
+				minuteBegInt = 0;
+			}
+		}
+		timeMicroBeg.updateHour (hourBegInt);
+		timeMicroBeg.updateMin (minuteBegInt);
+
+		if (!isTimePeriodTwelve (inputToBeParsed)) {
+			end = inputToBeParsed.find_first_of (' ');
+			if (end == string::npos) {
+				inputToBeParsed = "";
+			}
+			else {
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
+			}
+		}
+
+		else {
+			end = inputToBeParsed.find_first_of ('-');
+			inputToBeParsed = inputToBeParsed.substr (end + 1);
+
+			end = inputToBeParsed.find_first_of (".");
+			//case "9.00am"/"19.00am"
+			if (end == 1 || end ==2) {
+				hourEnd = inputToBeParsed.substr (0, end);
+				minuteEnd = inputToBeParsed.substr (end + 1, 2);
+				minuteEndInt = atoi (minuteEnd.c_str());
+				if (inputToBeParsed[end + 3] == 'a') {
+					hourEndInt = atoi (hourEnd.c_str());
+				}
+				else if (inputToBeParsed[end + 3] == 'p') {
+					hourEndInt = atoi (hourEnd.c_str()) +12;
+				}
+			}
+			//case "9am"/"19am"
+			else {
+				end = inputToBeParsed.find_first_of ('a');
+				if (end == 1 || end == 2) {
+					hourEnd = inputToBeParsed.substr (0, end);
+					hourEndInt = atoi (hourEnd.c_str());
+					minuteEndInt = 0;
+				}
+
+				end = inputToBeParsed.find_first_of ('p');
+				if (end == 1 || end == 2) {
+					hourEnd = inputToBeParsed.substr (0, end);
+					hourEndInt = atoi (hourEnd.c_str()) + 12;
+					minuteEndInt = 0;
+				}
+			}
+			timeMicroEnd.updateHour (hourEndInt);
+			timeMicroEnd.updateMin (minuteEndInt);
+
+			end = inputToBeParsed.find_first_of (' ');
+			if (end == string::npos) {
+				inputToBeParsed = "";
+			}
+			else {
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
+			}
+		}
+	}     
+}
 
 //This method is to parse the task numnber.
 //It assumes the task number will be separated with the following string
@@ -602,7 +716,7 @@ bool Parser::isYearAlphabet (string inputToBeParsed) {
 //The string firstly needs to be longer than the time format.
 //Then it must follow the format "hh:mm"
 //in order to be recognised as a starting time.
-bool Parser::isStartingTime (string inputToBeParsed) {
+bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_STARTING_TIME) {
 		if (searchSubstring ("012", inputToBeParsed[0]) &&
 			searchSubstring ("0123456789", inputToBeParsed[1]) &&
@@ -625,11 +739,9 @@ bool Parser::isStartingTime (string inputToBeParsed) {
 //The string firstly needs to be longer than the time period format.
 //Then it must follow the format "hh:mm-hh:mm"
 //in order to be recognised as a time period.
-//Please note that the format for time period overlaps and includes
-//the format for starting time.
-bool Parser::isTimePeriod (string inputToBeParsed) {
+bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
-		if (isStartingTime (inputToBeParsed) &&
+		if (isStartingTimeTwentyFour (inputToBeParsed) &&
 			inputToBeParsed[5] == '-' &&
 			searchSubstring ("012", inputToBeParsed[6]) &&
 			searchSubstring ("0123456789", inputToBeParsed[7]) &&
@@ -647,6 +759,127 @@ bool Parser::isTimePeriod (string inputToBeParsed) {
 	}
 }
 
+
+//This method is to check if the start of the string is a starting time
+//(which may be followed by an ending time).
+//The string firstly needs to be longer than the time format.
+//Then it must follow the format "h", "hh", "h.mm", or "hh.mm"
+//followed by "am" or "pm"
+//in order to be recognised as a starting time.
+bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
+	int end = 0;
+	if (inputToBeParsed.size () >= 3) {  //"9am"
+		end = inputToBeParsed.find_first_of (".");
+		if (end != string::npos) {
+			//case "9.00am"
+			if (end == 1) {
+				if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+					searchSubstring ("012345", inputToBeParsed[2]) &&
+					searchSubstring ("0123456789", inputToBeParsed[3]) &&
+					(inputToBeParsed[4] == 'a' ||
+					inputToBeParsed[4] == 'p') &&
+					inputToBeParsed[5] == 'm') {
+						return true;
+				}
+			}
+			else if (end == 2) {
+				//case "09.00am"
+				if (searchSubstring ("01", inputToBeParsed[0]) &&
+					searchSubstring ("0123456789", inputToBeParsed[1]) &&
+					searchSubstring ("012345", inputToBeParsed[3]) &&
+					searchSubstring ("0123456789", inputToBeParsed[4]) &&
+					(inputToBeParsed[5] == 'a' ||
+					inputToBeParsed[5] == 'p') &&
+					inputToBeParsed[6] == 'm') {
+						return true;
+				}
+			}
+		}
+		else {
+			//case "9am"
+			if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+				(inputToBeParsed[1] == 'a' ||
+				inputToBeParsed[1] == 'p') &&
+				inputToBeParsed[2] == 'm') {
+					return true;
+			}
+			//case "19am"
+			else if (searchSubstring ("01", inputToBeParsed[0]) &&
+				searchSubstring ("0123456789", inputToBeParsed[1]) &&
+				(inputToBeParsed[2] == 'a' ||
+				inputToBeParsed[2] == 'p') &&
+				inputToBeParsed[3] == 'm') {
+					return true;
+			}
+		}
+	}
+	return false;
+}
+
+
+//This method is to check if the start of the string is a time period.
+//The string firstly needs to be longer than the time period format.
+//Then it must follow the format "h", "hh", "h.mm", or "hh.mm"
+//followed by "am" or "pm"
+//in order to be recognised as a time period.
+bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
+	int end = 0;
+	if (isStartingTimeTwelve (inputToBeParsed) &&
+		inputToBeParsed.size () >= 7) {  //"9am-9pm"
+			end = inputToBeParsed.find_first_of ("-");
+			if (end == string::npos) {
+				return false;
+			}
+			else {
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
+			}
+
+			end = inputToBeParsed.find_first_of (".");
+			if (end != string::npos) {
+				//case "9.00am"
+				if (end == 1) {
+					if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+						searchSubstring ("012345", inputToBeParsed[2]) &&
+						searchSubstring ("0123456789", inputToBeParsed[3]) &&
+						(inputToBeParsed[4] == 'a' ||
+						inputToBeParsed[4] == 'p') &&
+						inputToBeParsed[5] == 'm') {
+							return true;
+					}
+				}
+				else if (end == 2) {
+					//case "09.00am"
+					if (searchSubstring ("01", inputToBeParsed[0]) &&
+						searchSubstring ("0123456789", inputToBeParsed[1]) &&
+						searchSubstring ("012345", inputToBeParsed[3]) &&
+						searchSubstring ("0123456789", inputToBeParsed[4]) &&
+						(inputToBeParsed[5] == 'a' ||
+						inputToBeParsed[5] == 'p') &&
+						inputToBeParsed[6] == 'm') {
+							return true;
+					}
+				}
+			}
+			else {
+				//case "9am"
+				if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+					(inputToBeParsed[1] == 'a' ||
+					inputToBeParsed[1] == 'p') &&
+					inputToBeParsed[2] == 'm') {
+						return true;
+				}
+				//case "19am"
+				else if (searchSubstring ("01", inputToBeParsed[0]) &&
+					searchSubstring ("0123456789", inputToBeParsed[1]) &&
+					(inputToBeParsed[2] == 'a' ||
+					inputToBeParsed[2] == 'p') &&
+					inputToBeParsed[3] == 'm') {
+						return true;
+				}
+			}
+	}
+	return false;
+}
 
 //This method is to check if a specific character is in a string.
 bool Parser::searchSubstring (string timeString, char substring) {
