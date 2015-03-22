@@ -2,10 +2,17 @@
 #include "OperationCenter.h"
 
 int main(){
-
-	OperationCenter::loadData();
+	bool status = false;
+	OperationCenter::loadData(status);
 
 	cout << "Welcome to BlinkList!" << endl;
+	if(status == true){
+		cout << "Today's Agenda is as follows: \n";
+		OperationCenter::executeInput("display today");
+		cout << Feedback::getDisplay() << endl;
+
+	}
+
 	string userInput;
 	getline(cin, userInput);
 

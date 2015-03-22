@@ -4,7 +4,7 @@
 //loading method
 ////////////////
 
-void DataBase::loadData(){
+void DataBase::loadData(bool& status){
 	std::ifstream in("test.txt");
 	//if file exists
 	if (in){
@@ -25,9 +25,12 @@ void DataBase::loadData(){
 		while(getline(in,strData)){
 			parseLoad(strData, i);
 			} 
+		
+		status = true; //tell command file exist to display
 
 		} else {
 			uniqueCodeStore = 0;
+			status = false;
 	}
 }
 

@@ -52,7 +52,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>C:\Users\Yang\Desktop\Projects\main\OperationCenter;C:\Users\Yang\Desktop\Projects\main\DataStorage;C:\Users\Yang\Desktop\Projects\main\DataProcessor;C:\Users\Yang\Desktop\Projects\main\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor;C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter;C:\Users\Yang\Desktop\Projects\main\OperationCenter;C:\Users\Yang\Desktop\Projects\main\DataStorage;C:\Users\Yang\Desktop\Projects\main\DataProcessor;C:\Users\Yang\Desktop\Projects\main\Commons;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
