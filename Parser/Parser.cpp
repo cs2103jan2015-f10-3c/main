@@ -398,29 +398,29 @@ void Parser::parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMi
 		timeMicroBeg.updateHour (hourBegInt);
 		timeMicroBeg.updateMin (minuteBegInt);
 
-	}
-	
-	if (!isTimePeriod (inputToBeParsed)) {
-		if (inputToBeParsed.size() > 6) {
-			inputToBeParsed = inputToBeParsed.substr (6);
-		}
-		else {
-			inputToBeParsed = "";
-		}
-	}
-	else {
-		string hourEnd = inputToBeParsed.substr (6, 2);
-		string minuteEnd = inputToBeParsed.substr (9, 2);
-		int hourEndInt = atoi (hourEnd.c_str());
-		int minuteEndInt = atoi (minuteEnd.c_str());
-		timeMicroEnd.updateHour (hourEndInt);
-		timeMicroEnd.updateMin (minuteEndInt);
 
-		if (inputToBeParsed.size() > 12) {
-			inputToBeParsed = inputToBeParsed.substr (12);
+		if (!isTimePeriod (inputToBeParsed)) {
+			if (inputToBeParsed.size() > 6) {
+				inputToBeParsed = inputToBeParsed.substr (6);
+			}
+			else {
+				inputToBeParsed = "";
+			}
 		}
 		else {
-			inputToBeParsed = "";
+			string hourEnd = inputToBeParsed.substr (6, 2);
+			string minuteEnd = inputToBeParsed.substr (9, 2);
+			int hourEndInt = atoi (hourEnd.c_str());
+			int minuteEndInt = atoi (minuteEnd.c_str());
+			timeMicroEnd.updateHour (hourEndInt);
+			timeMicroEnd.updateMin (minuteEndInt);
+
+			if (inputToBeParsed.size() > 12) {
+				inputToBeParsed = inputToBeParsed.substr (12);
+			}
+			else {
+				inputToBeParsed = "";
+			}
 		}
 	}
 }
