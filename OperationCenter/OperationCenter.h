@@ -35,7 +35,7 @@ public:
 	OperationCenter() {}
 	static void executeInput (string input);
 	static void saveData();
-	static void loadData();
+	static void loadData(bool& status);
 };
 
 class Feedback{

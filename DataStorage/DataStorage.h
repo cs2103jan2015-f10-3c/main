@@ -50,7 +50,7 @@ public:
 	static std::vector<Data> & getDataList();
 	static void clearDataList();
 	static void saveData();
-	static void loadData();
+	static void loadData(bool& status);
 
 	//method for undoADD
 	static void undoData(int uniqueNo);

@@ -31,7 +31,7 @@ public:
 	string editTask(int taskNumber, Data task);
 	string markDone(int taskNo);
 	static void saveData();
-	static void loadData();
+	static void loadData(bool& status);
 
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);

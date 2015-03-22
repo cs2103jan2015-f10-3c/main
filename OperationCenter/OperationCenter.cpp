@@ -87,6 +87,6 @@ void OperationCenter::saveData(){
 	DataProcessor::saveData();
 }
 
-void OperationCenter::loadData(){
-	DataProcessor::loadData();
+void OperationCenter::loadData(bool& status){
+	DataProcessor::loadData(status);
 }
