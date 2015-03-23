@@ -37,7 +37,7 @@ public:
 	static string getResponse();
 	static string getDisplay();
 	static void saveData();
-	static void loadData();
+	static void loadData(bool& status);
 };
 
 class Feedback{

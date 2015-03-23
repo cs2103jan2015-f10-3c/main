@@ -17,20 +17,10 @@ const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
 string Feedback::display;
 string Feedback::response;
 
-string OperationCenter::getResponse(){
-	return Feedback::getResponse();
-}
-
-string OperationCenter::getDisplay(){
-	return Feedback::getDisplay();
-}
-
 void OperationCenter::executeInput(string input){
 	time_t t = time (0);   // get time now
     struct tm now;
 	localtime_s (&now, &t);
-
-	TimeMacro floatingTaskTime;
 
 	TimeMacro currentTime(now.tm_mday, now.tm_mon + 1, now.tm_year + 1900);
 	Parser parser;
@@ -54,20 +44,26 @@ void OperationCenter::executeInput(string input){
 			returnDisplay = "You have no task within the specified time period";
 		}
 	}else if(command == "delete"){
-		assert(taskNo>0);
 		returnResponse = dataProcessor.deleteTask(taskNo);
 	}else if(command == "clear"){
 		returnResponse = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 	}else if(command == "sort"){
 		returnResponse = "under construction";
 	}else if(command == "search"){
-		returnDisplay = dataProcessor.searchTask(task.getDesc());
-		returnResponse = EMPTY_RESPONSE;
+		try{
+			returnDisplay = dataProcessor.searchTask(task.getDesc());
+			returnResponse = EMPTY_RESPONSE;
+		}
+		catch (std::exception e){
+			std::cout << e.what();
+		}
 	}else if(command == "edit"){
-		assert(taskNo>0);
-		returnResponse = dataProcessor.editTask(taskNo, task);
-	}else if(command == "done"){
-	//	returnResponse = dataProcessor.markDone(taskNo);
+		try{
+			returnResponse = dataProcessor.editTask(taskNo, task);
+		}
+		catch (std::exception e){
+			std::cout << e.what();
+		}
 	}else if(command == "undo"){
 		returnResponse = dataProcessor.executeUndo();
 	}else{
@@ -75,10 +71,7 @@ void OperationCenter::executeInput(string input){
 	}
 	
 	if(command != "display" && command != "search"){
-		ostringstream out;
-		out << "Today's task:" <<endl
-			<< dataProcessor.displayTask(currentTime, currentTime);
-		returnDisplay = out.str();
+		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
 		if(returnDisplay == ""){
 			returnDisplay = ":) You have no task for today";
 		}
@@ -89,12 +82,13 @@ void OperationCenter::executeInput(string input){
 	Feedback::updateResponse(returnResponse);
 
 	saveData();
+
 }
 
 void OperationCenter::saveData(){
 	DataProcessor::saveData();
 }
 
-void OperationCenter::loadData(){
-	DataProcessor::loadData();
+void OperationCenter::loadData(bool& status){
+	DataProcessor::loadData(status);
 }

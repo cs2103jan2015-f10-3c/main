@@ -1,10 +1,11 @@
 #include "DataStorage.h"
 
 std::vector<Data> DataBase::dataList;
+int DataBase::uniqueCodeStore;
 
 //return the DataBase list 
 //for command such as search
-std::vector<Data>& DataBase::getDataList() {
+std::vector<Data> & DataBase::getDataList() {
 	return dataList;
 }
 
@@ -17,11 +18,13 @@ void DataBase::clearDataList(){
 //and also automaticallly sort dataList
 void DataBase::addData(Data& inData){
 
-	History::updateLatestData(inData); //store for undo
-	int tempNo = allocateUniqueCode();
+
+	int tempNo = allocateUniqueCode(uniqueCodeStore);
 	inData.updateUniqueCode(tempNo);
 	dataList.push_back(inData);
 	sortDataList();
+	History::updateLatestCommand("add");
+	History::updateLatestData(inData); //store for undo
 
 }
 
@@ -32,7 +35,8 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 
 	std::vector<long long> timePeriod;
 	timePeriod = searchPeriod(startTime , endTime);
-	//History::updateLatestVector(); //update for undo
+	History::updateLatestCommand("clear");
+	History::updateLatestVector(); //update for undo
 	
 	int endT;
 	endT = timePeriod.back();
@@ -56,7 +60,7 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 			i++;
 		}
 
-		dataList=temp;
+		dataList = temp;
 
 	//for returning the time frame
 	Data period;
@@ -71,27 +75,74 @@ Data DataBase::clearData(TimeMacro startTime, TimeMacro endTime){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data DataBase::deleteData(int taskNo){
-	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
-	History::updateLatestData(getData(uniqueNo)); //store in History
-	//dataList.erase(getData(uniqueNo));
-	int uniqueCode = (getData(uniqueNo)).getUniqueCode();
+
+	History::updateLatestCommand("delete");
+		int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
+
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
 		if(uniqueCode != dataList[i].getUniqueCode()){
 				listTofacilitateDeletion.push_back(dataList[i]);
+		}else
+		{
+			History::updateLatestData(dataList[i]); //store in History
 		}
 	}
 	dataList = listTofacilitateDeletion;
 	return DisplayStorage::getData(taskNo);
 }
 
+
+//method for deleting the latest Data added
+//helper for undo function
+void DataBase::undoData(int uniqueNo){
+	
+	std::vector<Data> listTofacilitateDeletion;
+	for(int i = 0; i != dataList.size(); i++){
+		if(uniqueNo != dataList[i].getUniqueCode()){
+				listTofacilitateDeletion.push_back(dataList[i]);
+		}
+	}
+	dataList = listTofacilitateDeletion;
+}
 //method for edit command
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data DataBase::editData(int taskNo, Data updatedData){
-	History::updateLatestData(updatedData); // store for undo
+	
+	History::updateLatestVector(); //Store for undo
+	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	Data dataToEdit = getData(uniqueNo);
+
+	if (!updatedData.getDesc().empty()){
+		dataToEdit.updateDesc(updatedData.getDesc());
+	}
+
+	if (updatedData.getTimeMacroBeg().getDate() != 0 
+		&& updatedData.getTimeMacroBeg().getMonth() != 0
+		&& updatedData.getTimeMacroBeg().getYear() != 0) {
+			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
+	}
+
+	if (updatedData.getTimeMacroEnd().getDate() != 0 
+		&& updatedData.getTimeMacroEnd().getMonth() != 0
+		&& updatedData.getTimeMacroEnd().getYear() != 0) {
+			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
+	}
+
+	if (updatedData.getTimeMicroBeg().getHour() != -1
+		&& updatedData.getTimeMicroBeg().getHour() != -1) {
+			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
+	}
+
+	if (updatedData.getTimeMicroEnd().getHour() != -1
+		&& updatedData.getTimeMicroEnd().getHour() != -1) {
+			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
+	}
+
 	deleteData(taskNo);
-	addData(updatedData);
+	addData(dataToEdit);
+	History::updateLatestCommand("edit"); //Store for undo
 
 	return DisplayStorage::getData(taskNo);
 }
@@ -119,10 +170,9 @@ Data DataBase::getData(int uniqueNo){
 // !! unit testing done
 //allocate uniqueCode to each Data
 //For internal working
-int DataBase::allocateUniqueCode(){
-	static int UniqueNo = 0;
-	UniqueNo++;
-	return UniqueNo;
+int DataBase::allocateUniqueCode(int& uniqueNo){
+	uniqueNo++;
+	return uniqueNo;
 	
 }
 

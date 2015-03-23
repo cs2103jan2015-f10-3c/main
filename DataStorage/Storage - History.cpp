@@ -13,7 +13,7 @@ Data History::getLatestData(){
 	return latestData;
 }
 
-std::vector<Data> History::getLatestVector(){
+std::vector<Data> & History::getLatestVector(){
 	return latestVector;
 }
 
@@ -26,13 +26,9 @@ void History::updateLatestData(Data inData){
 	latestData = inData;
 }
 
-/*
+
 void History::updateLatestVector(){
 	latestVector.clear(); //clear the container
+	latestVector = DataBase::getDataList();
 
-	std::vector<Data>::iterator iter;
-
-	for(iter = IterStorage::getIterBeg(); iter <= IterStorage::getIterEnd(); iter++){
-		latestVector.push_back(*iter);
-	}
-}*/
+}
