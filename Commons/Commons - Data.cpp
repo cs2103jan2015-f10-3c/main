@@ -1,5 +1,10 @@
 #include "Commons.h"
 
+////////////////////////////////
+//getter methods implementations
+////////////////////////////////
+
+
 std::string Data::getDesc(){
 	return desc;
 }
@@ -16,7 +21,7 @@ int Data::getUniqueCode(){
 	return uniqueCode;
 }
 
-int Data::getPsedoDate(){
+long long Data::getPsedoDate(){
 	return psedoDate;
 }
 
@@ -36,6 +41,23 @@ TimeMicro Data::getTimeMicroEnd(){
 	return microTimeEnd;
 }
 
+std::string Data::getPriority(){
+	return priority;
+}
+
+TimeMacro Data::getAlarmMacro(){
+	return alarmMacro;
+}
+
+TimeMicro Data::getAlarmMicro(){
+	return alarmMicro;
+}
+
+
+////////////////////////////////
+//setter methods implementations
+////////////////////////////////
+
 void Data::updateTaskNo(int no){
 	taskNo = no;
 }
@@ -48,7 +70,7 @@ void Data::updateCompleteStatus(bool status){
 	completeStatus = status;
 }
 
-void Data::updatePsedoDate(int sDate){
+void Data::updatePsedoDate(long long sDate){
 	psedoDate = sDate;
 }
 
@@ -70,4 +92,18 @@ void Data::updateTimeMicroEnd(TimeMicro inMicroEnd){
 
 void Data::updateTimeMicroBeg(TimeMicro inMicroBeg){
 	microTimeBeg = inMicroBeg;
+}
+
+void Data::updatePriority(std::string inPriority){
+	_ASSERTE ( inPriority == "Low" || inPriority == "Medium" ||
+				inPriority == "High" || inPriority == "None" );
+	priority = inPriority;
+}
+
+void Data::updateAlarmMacro(TimeMacro inAlarm){
+	alarmMacro = inAlarm;
+}
+
+void Data::updateAlarmMicro(TimeMicro inAlarm){
+	alarmMicro = inAlarm;
 }

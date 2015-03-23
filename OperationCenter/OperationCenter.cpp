@@ -39,9 +39,9 @@ void OperationCenter::executeInput(string input){
 		returnResponse = dataProcessor.addTask(task);
 	}else if(command == "display") {
 		returnResponse = EMPTY_RESPONSE;
-		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());	
+		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		if(returnDisplay == ""){
-			returnDisplay = "You have no task within the specified period";
+			returnDisplay = "You have no task within the specified time period";
 		}
 	}else if(command == "delete"){
 		returnResponse = dataProcessor.deleteTask(taskNo);
@@ -50,10 +50,20 @@ void OperationCenter::executeInput(string input){
 	}else if(command == "sort"){
 		returnResponse = "under construction";
 	}else if(command == "search"){
-		returnDisplay = dataProcessor.searchTask(task.getDesc());
-		returnResponse = EMPTY_RESPONSE;
+		try{
+			returnDisplay = dataProcessor.searchTask(task.getDesc());
+			returnResponse = EMPTY_RESPONSE;
+		}
+		catch (std::exception e){
+			std::cout << e.what();
+		}
 	}else if(command == "edit"){
-		returnResponse = dataProcessor.editTask(taskNo, task);
+		try{
+			returnResponse = dataProcessor.editTask(taskNo, task);
+		}
+		catch (std::exception e){
+			std::cout << e.what();
+		}
 	}else if(command == "undo"){
 		returnResponse = dataProcessor.executeUndo();
 	}else{
@@ -63,15 +73,20 @@ void OperationCenter::executeInput(string input){
 	if(command != "display" && command != "search"){
 		returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
 		if(returnDisplay == ""){
-			returnDisplay = "You have no task for today";
+			returnDisplay = ":) You have no task for today";
 		}
 	}
 
-	if(returnDisplay == ""){
-		returnDisplay = "You have no task for today";
-	}
 
 	Feedback::updateDisplay(returnDisplay);
 	Feedback::updateResponse(returnResponse);
 
+}
+
+void OperationCenter::saveData(){
+	DataProcessor::saveData();
+}
+
+void OperationCenter::loadData(bool& status){
+	DataProcessor::loadData(status);
 }

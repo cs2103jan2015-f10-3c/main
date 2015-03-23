@@ -29,10 +29,12 @@ public:
 	string executeUndo();
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
+	string markDone(int taskNo);
+	static void saveData();
+	static void loadData(bool& status);
 
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
-	//new function
 	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
 	string getEditMessage(Data uneditedTask);
 

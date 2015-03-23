@@ -5,37 +5,58 @@
 #include <cstdio>
 #include <string>
 #include <vector>
-#include "Commons.h"
 #include <iterator>
 #include <queue>
+#include <fstream>
+#include <sstream>
+#include "Commons.h"
 
 
 class DataBase {
-public:
+private:
+	friend class DisplayStorage;
+	friend class DataBaseUnitTesting;
+	friend class DataProcessing;
+
 	//Private Attribute
 	static std::vector<Data> dataList;
-	static int uniqueNo;
+	static int uniqueCodeStore;
 
 	//Private method
 	static void sortDataList();
-	static int allocateUniqueCode();
+	static int allocateUniqueCode(int& uniqueCodeStore);
 	static void allocatePsedoDate();
 	static void radixDistribute(std::queue<Data> digitQ[], int power);
 	static void radixCollect(std::queue<Data> digitQ[]);
-	static std::vector<Data>::iterator getData(int uniqueNo);
+	static Data getData(int uniqueNo);
+
+	static void writeHeading (std::string fileName, std::ofstream& out);
+	static void parseLoad(std::string strData, int& i);
+	static std::string tokenizerSlash(std::string& str);
+	static std::string tokenizerSpace(std::string& str);
+	static TimeMacro macroParser(std::string tempMacro);
+	static TimeMicro microParser(std::string tempMicro);
+	static std::string convertTimeMacroToString(std::string type, int i);
+	static std::string convertTimeMicroToString(std::string type, int i);
+
 
 
 public: 
 	//API for Data Processing
-	static Data addData(Data inData);	
+	static void addData(Data& inData);	
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data> getDataList();
+	static std::vector<Data> & getDataList();
 	static void clearDataList();
+	static void saveData();
+	static void loadData(bool& status);
+
+	//method for undoADD
+	static void undoData(int uniqueNo);
 
 	//Helper method for DisplayStorage
-	static std::vector<int> searchPeriod(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
 };
 
@@ -50,7 +71,7 @@ public:
 	//API for Data Processing
 	static std::string getLatestCommand();
 	static Data getLatestData();
-	static std::vector<Data> getLatestVector();
+	static std::vector<Data> & getLatestVector();
 	static void updateLatestCommand(std::string inCommand);
 	static void updateLatestData(Data inData);
 	static void updateLatestVector();
@@ -67,7 +88,7 @@ private:
 
 public:
 	//API for Data Processing
-	static std::vector<Data> & getDisplayList(TimeMacro startTime, TimeMacro endTime);
+	static std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
 	static std::vector<Data> getDisplayList();
 	static void addData(Data inData);
 	static void clearList();
@@ -79,30 +100,6 @@ public:
 };
 
 
-/*
-//helper class for searching/clearing/etc methods
-//Store two iteration
-//Used by class DataBase and DisplayStorage
-class IterStorage {
-private:
-	static std::vector<Data>::iterator iterBeg;
-	static std::vector<Data>::iterator iterEnd;
 
-public:
-	static void updateIterBeg(std::vector<Data>::iterator iBeg) {
-		iterBeg = iBeg; 
-	}
-	static void updateIterEnd(std::vector<Data>::iterator iEnd) {
-		iterEnd = iEnd;
-	}
-	static std::vector<Data>::iterator getIterBeg() {
-		return iterBeg;
-	}
-	static std::vector<Data>::iterator getIterEnd() {
-		return iterEnd;
-	}
-	
-};
-*/
 
 #endif

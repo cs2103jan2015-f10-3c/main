@@ -6,9 +6,9 @@ std::vector<Data> DisplayStorage::displayList;
 //requires the time frame
 //return the displayList
 //for display command
-std::vector<Data> & DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
+std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
 	displayList.clear(); //clear the vector everytime it starts
-	std::vector<int> timePeriod;
+	std::vector<long long> timePeriod;
 
 	timePeriod = DataBase::searchPeriod(startTime,endTime);
 	int endT;
@@ -24,7 +24,7 @@ std::vector<Data> & DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacr
 		}
 		
 
- 		for (int i = startT; i <= endT; i++){
+		for (int i = startT; i <= endT; i++){
 			displayList.push_back(DataBase::dataList[i]);
 		}
 
@@ -32,8 +32,6 @@ std::vector<Data> & DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacr
 	}
 
 
-	//std::vector<Data> copyVector = displayList;
-	//return copyVector;
 	return displayList;
 }
 
@@ -65,13 +63,9 @@ void DisplayStorage::addData(Data inData){
 int DisplayStorage::getUniqueCode(int taskNo){
 	//std::vector<Data>::iterator iter = displayList.begin();
 	//advance(iter, taskNo-1);
-	int uniqueCode = displayList[taskNo-1].getUniqueCode();
-	/*for(int i=0; i<taskNo ; i++){
-		if(displayList[i].getUniqueCode() == taskNo-1){
-			break;
-		}
-	}*/
-	return uniqueCode;
+	Data desiredTask = displayList[taskNo-1];
+
+	return desiredTask.getUniqueCode();
 }
 
 // !!unit testing done
@@ -79,10 +73,12 @@ int DisplayStorage::getUniqueCode(int taskNo){
 //input is int taskNo
 //return Data
 Data DisplayStorage::getData(int taskNo){
-	std::vector<Data>::iterator iter = displayList.begin();
-	advance(iter, taskNo-1);
-
-	return *iter;
+	//std::vector<Data>::iterator iter = displayList.begin();
+	//advance(iter, taskNo-1);
+	Data desiredTask;
+	desiredTask = displayList[taskNo-1];
+	return desiredTask;
+	//return *iter;
 }
 
 // !!unit testing done
@@ -90,18 +86,9 @@ Data DisplayStorage::getData(int taskNo){
 //to update all taskNo in displayList vector
 //after sorting or adding
 void DisplayStorage::updateTaskNo(){
-	//std::vector<Data>::iterator iter;
 	
 	int TrackNo=1;
-	
-	/*for(iter = displayList.begin(); iter < displayList.end(); iter++){
-		if(iter->getTaskNo() != TrackNo){
-			iter->updateTaskNo(TrackNo);
-			
-		}
-		TrackNo++;
-	}*/
-	
+		
 	for(int i = 0; i != displayList.size(); i++){
 		if(displayList[i].getTaskNo() != TrackNo){
 			displayList[i].updateTaskNo(TrackNo);
