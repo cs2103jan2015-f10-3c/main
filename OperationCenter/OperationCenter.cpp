@@ -81,6 +81,8 @@ void OperationCenter::executeInput(string input){
 	Feedback::updateDisplay(returnDisplay);
 	Feedback::updateResponse(returnResponse);
 
+	saveData();
+
 }
 
 void OperationCenter::saveData(){

@@ -213,7 +213,8 @@ string DataProcessor::searchTask(string keyword){
 		outData << "handling exception: empty keyword entere";
 		throw std::exception("Empty Keyword Entered");
 	}
-	vector<Data> currTaskList = DataBase::getDataList();
+	DisplayStorage::clearList();
+	vector<Data>& currTaskList = DataBase::getDataList();
 	vector<Data> returnTaskList;
 	//vector<Data>::iterator iter;
 	string taskDescription;
