@@ -135,8 +135,8 @@ namespace GUI {
 
 	//Actions happen whenever the user loads the application
 	private: System::Void GUI_Load(System::Object^  sender, System::EventArgs^  e) {
-				 
-				 OperationCenter::loadData();
+				 bool status = false;
+				 OperationCenter::loadData(status);
 				 outputMessageBox->Text = "Hello Jim, Welcome to your BlinkList!";
 				 OperationCenter::executeInput("show today");
 				 string displayString = Feedback::getDisplay();

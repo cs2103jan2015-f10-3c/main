@@ -1,0 +1,4 @@
+6
+uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
+6	Monday/23/3/2015		undefined/0/0/0		14/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch
+4	Monday/23/3/2015		undefined/0/0/0		18/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
