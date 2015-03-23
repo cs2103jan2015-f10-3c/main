@@ -385,12 +385,12 @@ namespace testParser
 		}
 
 		//To test whether can parse "display this month"
-		TEST_METHOD(testParseDisplay1)
+		TEST_METHOD(testparseShow1)
 		{
 			Parser parser;
 			string userInput = "display this month";
 			string commandWord = "display";
-			parser.parseDisplay (userInput, commandWord);
+			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 0);
@@ -402,13 +402,13 @@ namespace testParser
 		}
 
 		//To test whether can parse "display today"
-		TEST_METHOD(testParseDisplay2)
+		TEST_METHOD(testparseShow2)
 		{
 			Parser parser;
 			string userInput = "display today";
 			string commandWord = "display";
 			string expectedDay = "Friday";
-			parser.parseDisplay (userInput, commandWord);
+			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
@@ -418,13 +418,13 @@ namespace testParser
 		}
 
 		//To test whether can parse "display tomorrow"
-		TEST_METHOD(testParseDisplay3)
+		TEST_METHOD(testparseShow3)
 		{
 			Parser parser;
 			string userInput = "display tomorrow";
 			string commandWord = "display";
 			string expectedDay = "Saturday";
-			parser.parseDisplay (userInput, commandWord);
+			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 14);
