@@ -153,6 +153,7 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		parseDateAlphabet (inputToBeParsed, timeMacro);
 
 		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+		parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
 		parseDateNumber (inputToBeParsed, timeMacro);
 		parseDateAlphabet (inputToBeParsed, timeMacro);
