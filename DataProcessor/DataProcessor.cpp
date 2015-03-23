@@ -145,6 +145,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 	timeMicroBeg = task.getTimeMicroBeg();
 	timeMicroEnd = task.getTimeMicroEnd();
 
+
 	outData << task.getDesc();
 
 
@@ -196,6 +197,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 		}
 		outData << timeMicroEnd.getMin();
 	}
+
 	
 	taskString = outData.str();
 	return taskString;

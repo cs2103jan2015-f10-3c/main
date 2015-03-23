@@ -23,6 +23,9 @@
     <ClCompile Include="OperationCenter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Logic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
