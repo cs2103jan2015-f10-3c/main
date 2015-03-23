@@ -100,65 +100,65 @@ namespace testParser
 
 		//To test whether a string is a time period
 		//In this case, the string is a time period
-		TEST_METHOD(testIsTimePeriod1)
+		TEST_METHOD(testisTimePeriodTwentyFour1)
 		{
 			Parser parser;
 			string testString = "09:00-10:00";
-			Assert::IsTrue (parser.isTimePeriod (testString));
+			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
 		}
 
 		//To test whether a string is a time period
 		//In this case, the string is not a time period but a starting time
-		TEST_METHOD(testIsTimePeriod2)
+		TEST_METHOD(testisTimePeriodTwentyFour2)
 		{
 			Parser parser;
 			string testString = "09:00";
-			Assert::IsFalse (parser.isTimePeriod (testString));
+			Assert::IsFalse (parser.isTimePeriodTwentyFour (testString));
 		}
 
 		//To test whether a string is a time period
 		//In this case, the string is not a time period but a task description
-		TEST_METHOD(testIsTimePeriod3)
+		TEST_METHOD(testisTimePeriodTwentyFour3)
 		{
 			Parser parser;
 			string testString = "dinner tonight";
-			Assert::IsFalse (parser.isTimePeriod (testString));
+			Assert::IsFalse (parser.isTimePeriodTwentyFour (testString));
 		}
 
 		//To test whether a string is a time period
 		//In this case, the string is a time period followed by a task description
-		TEST_METHOD(testIsTimePeriod4)
+		TEST_METHOD(testisTimePeriodTwentyFour4)
 		{
 			Parser parser;
 			string testString = "09:00-10:00 dinner tonight";
-			Assert::IsTrue (parser.isTimePeriod (testString));
+			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
 		}
 
 		//To test whether a string is a starting time
 		//In this case, the string is a starting time which is also a time period
-		TEST_METHOD(testIsStartingTime1)
+		TEST_METHOD(testisStartingTimeTwentyFour1)
 		{
 			Parser parser;
 			string testString = "09:00-10:00 dinner tonight";
-			Assert::IsTrue (parser.isStartingTime (testString));
+			Assert::IsTrue (parser.isStartingTimeTwentyFour (testString));
 		}
 
 		//To test whether a string is a starting time
 		//In this case, the string is a starting time followed by a task description
-		TEST_METHOD(testIsStartingTime2)
+		TEST_METHOD(testisStartingTimeTwentyFour2)
 		{
 			Parser parser;
 			string testString = "09:00 dinner tonight";
-			Assert::IsTrue (parser.isStartingTime (testString));
+			Assert::IsTrue (parser.isStartingTimeTwentyFour (testString));
 		}
 
 		//To test whether a string is a starting time
 		//In this case, the string is not a starting time but a date
-		TEST_METHOD(testIsStartingTime3)
+		TEST_METHOD(testisStartingTimeTwentyFour3)
 		{
 			Parser parser;
 			string testString = "12/03/2015 dinner tonight";
-			Assert::IsFalse (parser.isStartingTime (testString));
+			Assert::IsFalse (parser.isStartingTimeTwentyFour (testString));
 		}
 
 		//To test whether a string is a date
@@ -203,13 +203,13 @@ namespace testParser
 		}
 
 		//To test whether can parse a time period
-		TEST_METHOD(testParseTime1)
+		TEST_METHOD(testparseTimeTwentyFour1)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
 			TimeMicro timeMicroEnd;
 			string testString = "09:00-10:00";
-			parser.parseTime (testString, timeMicroBeg, timeMicroEnd);
+			parser.parseTimeTwentyFour (testString, timeMicroBeg, timeMicroEnd);
 			Assert::AreEqual (timeMicroBeg.getHour(), 9);
 			Assert::AreEqual (timeMicroBeg.getMin(), 0);
 			Assert::AreEqual (timeMicroEnd.getHour(), 10);
@@ -217,13 +217,13 @@ namespace testParser
 		}
 
 		//To test whether can parse a time period followed by a task description
-		TEST_METHOD(testParseTime2)
+		TEST_METHOD(testparseTimeTwentyFour2)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
 			TimeMicro timeMicroEnd;
 			string testString = "09:00-10:00 breakfast";
-			parser.parseTime (testString, timeMicroBeg, timeMicroEnd);
+			parser.parseTimeTwentyFour (testString, timeMicroBeg, timeMicroEnd);
 			Assert::AreEqual (timeMicroBeg.getHour(), 9);
 			Assert::AreEqual (timeMicroBeg.getMin(), 0);
 			Assert::AreEqual (timeMicroEnd.getHour(), 10);
@@ -231,13 +231,13 @@ namespace testParser
 		}
 
 		//To test whether can parse a starting time followed by a task description
-		TEST_METHOD(testParseTime3)
+		TEST_METHOD(testparseTimeTwentyFour3)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
 			TimeMicro timeMicroEnd;
 			string testString = "19:00 breakfast";
-			parser.parseTime (testString, timeMicroBeg, timeMicroEnd);
+			parser.parseTimeTwentyFour (testString, timeMicroBeg, timeMicroEnd);
 			Assert::AreEqual (timeMicroBeg.getHour(), 19);
 			Assert::AreEqual (timeMicroBeg.getMin(), 0);
 			Assert::AreEqual (timeMicroEnd.getHour(), -1);

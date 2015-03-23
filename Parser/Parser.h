@@ -111,9 +111,11 @@ public:
 	void parseDelete (string userInput, string commandWord);
 	void parseDisplay (string userInput, string commandWord);
 	void parseDone (string userInput, string commandWord);
+	void parseShow (string userInput, string commandWord);
     void parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro);
-	void parseTime (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
+	void parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
+	void parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
 	string parseTaskNo (string inputToBeParsed);
 	bool isInteger (string index);
 	int convertStringToInteger (string index);
@@ -122,8 +124,10 @@ public:
 	bool isDateAlphabet (string inputToBeParsed);
 	bool isYearAlphabet (string inputToBeParsed);
 	string convertDateToDayOfTheWeek (int date, int month, int year);
-	bool isStartingTime (string inputToBeParsed);
-	bool isTimePeriod (string inputToBeParsed);
+	bool isStartingTimeTwentyFour (string inputToBeParsed);
+	bool isTimePeriodTwentyFour (string inputToBeParsed);
+	bool isStartingTimeTwelve (string inputToBeParsed);
+	bool isTimePeriodTwelve (string inputToBeParsed);
 	bool searchSubstring (string timeString, char substring);
 	bool isStringEqual (string inputString, vector<string> compString);
 	int convertAlphabetMonthToInteger (string month);
