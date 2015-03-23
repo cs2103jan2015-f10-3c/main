@@ -36,7 +36,7 @@ void Parser::parseInput (string userInput) {
 
 	catch (const char* errorMessge) {
 		updateErrorMessage (errorMessge);
-		cout << getErrorMessage () << endl;
+		//cout << getErrorMessage () << endl;
 	}
 }
 

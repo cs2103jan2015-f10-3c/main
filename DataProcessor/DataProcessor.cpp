@@ -93,7 +93,7 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	Data uneditedTask;
 	outData << "start editing data";
 	uneditedTask = DataBase::editData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask) + " is edited";
+	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
 	outData << "edit data is done";
 	return editMessage;
 
