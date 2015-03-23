@@ -9,7 +9,7 @@ int main(){
 	if(status == true){
 		cout << "Today's Agenda is as follows: \n";
 		OperationCenter::executeInput("display today");
-		cout << Feedback::getDisplay() << endl;
+		cout << OperationCenter::getDisplay() << endl;
 
 	}
 

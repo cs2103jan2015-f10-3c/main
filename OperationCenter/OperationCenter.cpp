@@ -2,22 +2,26 @@
 
 using namespace std;
 
-const string OperationCenter::ADD_COMMAND = "add";
-const string OperationCenter::DELETE_COMMAND = "delete";
-const string OperationCenter::DISPLAY_COMMAND = "display";
-const string OperationCenter::CLEAR_COMMAND = "clear";
-const string OperationCenter::SORT_COMMAND = "sort";
-const string OperationCenter::SEARCH_COMMAND = "search";
-const string OperationCenter::EDIT_COMMAND = "edit";
-const string OperationCenter::UNDO_COMMAND = "undo";
-const string OperationCenter::EXIT_COMMAND = "exit";
-const string OperationCenter::EMPTY_RESPONSE = "";
-const string OperationCenter::IVALID_COMMAND_MESSAGE = "Invalid Command";
+const string Logic::ADD_COMMAND = "add";
+const string Logic::DELETE_COMMAND = "delete";
+const string Logic::DISPLAY_COMMAND = "display";
+const string Logic::CLEAR_COMMAND = "clear";
+const string Logic::SORT_COMMAND = "sort";
+const string Logic::SEARCH_COMMAND = "search";
+const string Logic::EDIT_COMMAND = "edit";
+const string Logic::UNDO_COMMAND = "undo";
+const string Logic::EXIT_COMMAND = "exit";
+const string Logic::EMPTY_RESPONSE = "";
+const string Logic::IVALID_COMMAND_MESSAGE = "Invalid Command";
 
 string Feedback::display;
 string Feedback::response;
 
 void OperationCenter::executeInput(string input){
+	Logic::executeInput(input);
+}
+
+void Logic::executeInput(string input){
 	time_t t = time (0);   // get time now
     struct tm now;
 	localtime_s (&now, &t);
@@ -86,9 +90,25 @@ void OperationCenter::executeInput(string input){
 }
 
 void OperationCenter::saveData(){
-	DataProcessor::saveData();
+	Logic::saveData();
 }
 
 void OperationCenter::loadData(bool& status){
+	Logic::loadData(status);
+}
+
+string OperationCenter::getDisplay(){
+	return Feedback::getDisplay();
+}
+
+string OperationCenter::getResponse(){
+	return Feedback::getResponse();
+}
+
+void Logic::saveData(){
+	DataProcessor::saveData();
+}
+
+void Logic::loadData(bool& status){
 	DataProcessor::loadData(status);
 }

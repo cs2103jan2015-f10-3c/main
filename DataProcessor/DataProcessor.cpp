@@ -9,8 +9,6 @@ const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
 const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
 const string DataProcessor::EDIT_MESSAGE = "is edited";
 
-DataProcessor::DataProcessor(){
-}
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added

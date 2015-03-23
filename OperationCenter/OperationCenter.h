@@ -16,6 +16,19 @@
 
 using namespace std;
 class OperationCenter{
+
+public:
+
+	OperationCenter() {}
+	static void executeInput (string input);
+	static string getResponse();
+	static string getDisplay();
+	static void saveData();
+	static void loadData(bool& status);
+};
+
+class Logic{
+
 private:
 	static const string ADD_COMMAND;
 	static const string DELETE_COMMAND;
@@ -31,13 +44,10 @@ private:
 
 
 public:
-
-	OperationCenter() {}
-	static void executeInput (string input);
-	static string getResponse();
-	static string getDisplay();
+	static void executeInput(string input);
 	static void saveData();
 	static void loadData(bool& status);
+
 };
 
 class Feedback{
