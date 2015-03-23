@@ -5,7 +5,7 @@ int main(){
 	bool status = false;
 	OperationCenter::loadData(status);
 
-	cout << "Welcome to BlinkList!" << endl;
+	cout << "Welcome to BlinkList!" << endl << endl;
 	if(status == true){
 		cout << "Today's Agenda is as follows: \n";
 		OperationCenter::executeInput("display today");
