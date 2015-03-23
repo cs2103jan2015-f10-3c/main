@@ -148,28 +148,32 @@ void Parser::parseEdit (string userInput, string commandWord) {
 
 		index = parseTaskNo (inputToBeParsed);
 		taskNo = convertStringToInteger (index);
-		inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 
+		inputToBeParsed = inputToBeParsed.substr(index.size ());
+		if (inputToBeParsed != "" && inputToBeParsed != " ") {
+			inputToBeParsed = inputToBeParsed.substr(1);
 
-		parseDateNumber (inputToBeParsed, timeMacro);
-		parseDateAlphabet (inputToBeParsed, timeMacro);
+			parseDateNumber (inputToBeParsed, timeMacro);
+			parseDateAlphabet (inputToBeParsed, timeMacro);
 
-		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-		parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+			parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+			parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-		parseDateNumber (inputToBeParsed, timeMacro);
-		parseDateAlphabet (inputToBeParsed, timeMacro);
+			parseDateNumber (inputToBeParsed, timeMacro);
+			parseDateAlphabet (inputToBeParsed, timeMacro);
 
-		if (inputToBeParsed != "") {
 			desc = inputToBeParsed;
-		}
-		
 
-		updateCommand (commandWord);
-		updateTaskNo (taskNo);
-		updateTimeMacro (timeMacro);
-		updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
-		updateDesc (desc);
+			updateCommand (commandWord);
+			updateTaskNo (taskNo);
+			updateTimeMacro (timeMacro);
+			updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+			updateDesc (desc);
+		}
+
+		else {
+			throw "Please enter content you want to edit";
+		}
 	}
 	else {
 		throw "Please enter correct input following the command word";
