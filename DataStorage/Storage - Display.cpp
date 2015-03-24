@@ -25,7 +25,9 @@ std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro
 		
 
 		for (int i = startT; i <= endT; i++){
-			displayList.push_back(DataBase::dataList[i]);
+			if(DataBase::dataList[i].getCompleteStatus()==false){
+				displayList.push_back(DataBase::dataList[i]);
+			}
 		}
 
 		DisplayStorage::updateTaskNo();
@@ -61,8 +63,6 @@ void DisplayStorage::addData(Data inData){
 //input is int TaskNo of the displayList
 //return the uniqueCode to be processed by DataStorage
 int DisplayStorage::getUniqueCode(int taskNo){
-	//std::vector<Data>::iterator iter = displayList.begin();
-	//advance(iter, taskNo-1);
 	Data desiredTask = displayList[taskNo-1];
 
 	return desiredTask.getUniqueCode();
@@ -73,12 +73,9 @@ int DisplayStorage::getUniqueCode(int taskNo){
 //input is int taskNo
 //return Data
 Data DisplayStorage::getData(int taskNo){
-	//std::vector<Data>::iterator iter = displayList.begin();
-	//advance(iter, taskNo-1);
 	Data desiredTask;
 	desiredTask = displayList[taskNo-1];
 	return desiredTask;
-	//return *iter;
 }
 
 // !!unit testing done

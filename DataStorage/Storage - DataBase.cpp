@@ -134,12 +134,12 @@ Data DataBase::editData(int taskNo, Data updatedData){
 	if (updatedData.getTimeMicroBeg().getHour() != -1
 		&& updatedData.getTimeMicroBeg().getHour() != -1) {
 			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
-	}
-
-	if (updatedData.getTimeMicroEnd().getHour() != -1
-		&& updatedData.getTimeMicroEnd().getHour() != -1) {
 			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
 	}
+
+	if (updatedData.getCompleteStatus() != false){
+		dataToEdit.updateCompleteStatus(true);
+	}//exception is for undone
 
 	deleteData(taskNo);
 	addData(dataToEdit);
