@@ -9,8 +9,6 @@ const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
 const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
 const string DataProcessor::EDIT_MESSAGE = "is edited";
 
-DataProcessor::DataProcessor(){
-}
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
@@ -95,7 +93,7 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	Data uneditedTask;
 	outData << "start editing data";
 	uneditedTask = DataBase::editData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask) + " is edited";
+	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
 	outData << "edit data is done";
 	return editMessage;
 
@@ -146,6 +144,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 	TimeMicro timeMicroBeg, timeMicroEnd;
 	timeMicroBeg = task.getTimeMicroBeg();
 	timeMicroEnd = task.getTimeMicroEnd();
+
 
 	outData << task.getDesc();
 
@@ -198,6 +197,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 		}
 		outData << timeMicroEnd.getMin();
 	}
+
 	
 	taskString = outData.str();
 	return taskString;
@@ -213,7 +213,8 @@ string DataProcessor::searchTask(string keyword){
 		outData << "handling exception: empty keyword entere";
 		throw std::exception("Empty Keyword Entered");
 	}
-	vector<Data> currTaskList = DataBase::getDataList();
+	DisplayStorage::clearList();
+	vector<Data>& currTaskList = DataBase::getDataList();
 	vector<Data> returnTaskList;
 	//vector<Data>::iterator iter;
 	string taskDescription;

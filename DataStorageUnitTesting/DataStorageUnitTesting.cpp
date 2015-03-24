@@ -13,12 +13,12 @@ namespace DataStorageUnitTesting
 	{
 	public:
 		
-		TEST_METHOD(UniqueCodeTest)
-		{
-			// TODO: Your test code here
-			Assert::AreEqual(1, DataBase::allocateUniqueCode());
-			Assert::AreEqual(2, DataBase::allocateUniqueCode());
-		}
+		//TEST_METHOD(UniqueCodeTest)
+		//{
+		//	// TODO: Your test code here
+		//	Assert::AreEqual(1, DataBase::allocateUniqueCode());
+		//	Assert::AreEqual(2, DataBase::allocateUniqueCode());
+		//}
 
 		TEST_METHOD(SearchPeriodTest)
 		{

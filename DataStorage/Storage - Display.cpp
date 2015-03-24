@@ -39,7 +39,7 @@ std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro
 //getter method
 //used for displaying withot time frame e.g for keyword search
 //return the displayList
-std::vector<Data> DisplayStorage::getDisplayList(){
+std::vector<Data>& DisplayStorage::getDisplayList(){
 	DisplayStorage::updateTaskNo();
 	return displayList;
 }

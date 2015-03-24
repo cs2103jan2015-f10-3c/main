@@ -5,11 +5,11 @@ int main(){
 	bool status = false;
 	OperationCenter::loadData(status);
 
-	cout << "Welcome to BlinkList!" << endl;
+	cout << "Welcome to BlinkList!" << endl << endl;
 	if(status == true){
 		cout << "Today's Agenda is as follows: \n";
 		OperationCenter::executeInput("display today");
-		cout << Feedback::getDisplay() << endl;
+		cout << OperationCenter::getDisplay() << endl;
 
 	}
 
@@ -18,13 +18,11 @@ int main(){
 
 	while(userInput != "exit"){
 		OperationCenter::executeInput(userInput);
-		cout << Feedback::getResponse() << endl;
-		cout << Feedback::getDisplay() << endl;
+		cout << OperationCenter::getResponse() << endl;
+		cout << OperationCenter::getDisplay() << endl;
 		
 		getline(cin, userInput);
 	}
-
-	OperationCenter::saveData();
 
 	return 0;
 }
