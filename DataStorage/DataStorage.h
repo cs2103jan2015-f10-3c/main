@@ -69,7 +69,7 @@ public:
 	//API for Data Processing
 	static std::string getLatestCommand();
 	static Data getLatestData();
-	static std::vector<Data> & getLatestVector();
+	static std::vector<Data>& getLatestVector();
 	static void updateLatestCommand(std::string inCommand);
 	static void updateLatestData(Data inData);
 	static void updateLatestVector();
@@ -97,7 +97,12 @@ public:
 
 };
 
+class SaveLoad {
+public:
+	static void retrieveCommandList();
 
+
+};
 
 
 #endif

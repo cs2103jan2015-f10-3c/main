@@ -1,5 +1,23 @@
 #include "DataStorage.h"
 
+//////////////////////
+//loading all commands
+//////////////////////
+
+//load command list from all_commands.txt and automatically print out the commands
+void SaveLoad::retrieveCommandList(){
+	std::string commandList;
+	std::ifstream in("all_commands.txt");
+	//if file exists
+	if (in){
+		while (getline(in,commandList)){
+			std::cout << commandList << std::endl;
+		} 
+	} else {
+		std::cout << "Command List could not be found"; 
+	}
+}
+
 ////////////////
 //loading method
 ////////////////
