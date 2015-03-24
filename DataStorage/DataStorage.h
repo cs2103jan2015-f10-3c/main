@@ -51,9 +51,7 @@ public:
 	static void clearDataList();
 	static void saveData();
 	static void loadData(bool& status);
-
-	//method for undoADD
-	static void undoData(int uniqueNo);
+	static void undoAdd(int uniqueNo);
 
 	//Helper method for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
