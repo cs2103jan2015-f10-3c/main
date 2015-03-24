@@ -51,9 +51,7 @@ public:
 	static void clearDataList();
 	static void saveData();
 	static void loadData(bool& status);
-
-	//method for undoADD
-	static void undoData(int uniqueNo);
+	static void undoAdd(int uniqueNo);
 
 	//Helper method for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
@@ -71,7 +69,7 @@ public:
 	//API for Data Processing
 	static std::string getLatestCommand();
 	static Data getLatestData();
-	static std::vector<Data> & getLatestVector();
+	static std::vector<Data>& getLatestVector();
 	static void updateLatestCommand(std::string inCommand);
 	static void updateLatestData(Data inData);
 	static void updateLatestVector();
@@ -99,7 +97,12 @@ public:
 
 };
 
+class SaveLoad {
+public:
+	static void retrieveCommandList();
 
+
+};
 
 
 #endif
