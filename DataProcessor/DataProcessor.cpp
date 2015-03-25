@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <exception>
+#include <iomanip>
 #include "DataProcessor.h"
 
 //using namespace std;
@@ -144,58 +145,48 @@ string DataProcessor::convertDataObjectToString(Data task){
 	TimeMicro timeMicroBeg, timeMicroEnd;
 	timeMicroBeg = task.getTimeMicroBeg();
 	timeMicroEnd = task.getTimeMicroEnd();
+	int descriptionWidth = task.getDesc().length();
+	int dateWidth = 40;
+	string timeMicroString = "   ";
+	outData << setw(descriptionWidth) << left << task.getDesc() << endl;
 
+	
+	/*if(timeMacroBeg.getDate() != 0){
+				outData << " ";
+	}*/
 
-	outData << task.getDesc();
+	//Check if there is deadline time associated with the task
+	if(timeMicroBeg.getHour() != -1){
+		if (timeMicroBeg.getHour() < 10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroBeg.getHour()) + ":";
+		if (timeMicroBeg.getMin() < 10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroBeg.getMin());
 
-
+	}
+	if(timeMicroEnd.getHour() != -1){
+		timeMicroString += "-";
+		if (timeMicroEnd.getHour() < 10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroEnd.getHour()) + ":";
+		if (timeMicroEnd.getMin() < 10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroEnd.getMin());
+	}
+	outData << setw(20) << left << timeMicroString;
+	outData << setfill(' ') << setw(13) << timeMacroBeg.getDay();
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
-		outData << " on " 
-			<< timeMacroBeg.getDay() << ", "
+		outData << setw(dateWidth) << right
 				<< timeMacroBeg.getDate() << "-"
 				<< timeMacroBeg.getMonth() << "-"
 				<< timeMacroBeg.getYear();
 
-	}
-	//if(timeMacroEnd.getDate() != 0){
-	//	outData << "-"
-	//			<< timeMacroEnd.getDate() << ""
-	//			<< timeMacroEnd.getMonth() << "/"
-	//			<< timeMacroEnd.getYear();
-	//}else
-	//{
-	//	//If there is a start date and no end date specified
-	//	
-	//}
-	
-	if(timeMacroBeg.getDate() != 0){
-				outData << " ";
-	}
-
-	//Check if there is deadline time associated with the task
-	if(timeMicroBeg.getHour() != -1){
-		outData << "at ";
-		if (timeMicroBeg.getHour() < 10) {
-			outData << "0";
-		}
-		outData << timeMicroBeg.getHour() << ":";
-		if (timeMicroBeg.getMin() < 10) {
-			outData << "0";
-		}
-		outData << timeMicroBeg.getMin();
-
-	}
-	if(timeMicroEnd.getHour() != -1){
-		outData << "-";
-		if (timeMicroEnd.getHour() < 10) {
-			outData << "0";
-		}
-		outData << timeMicroEnd.getHour() << ":";
-		if (timeMicroEnd.getMin() < 10) {
-			outData << "0";
-		}
-		outData << timeMicroEnd.getMin();
 	}
 
 	
@@ -247,7 +238,8 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	int numberOfTask = 1;
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
-			<< convertDataObjectToString(taskList[i]) << endl;
+				<< convertDataObjectToString(taskList[i])
+				<< setfill('-') << setw(81);
 		numberOfTask++;
 	}
 	assert (numberOfTask >= 1);
