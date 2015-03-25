@@ -112,7 +112,7 @@ string DataProcessor::executeUndo(){
 	int uniqueCode;
 	uniqueCode = latestData.getUniqueCode();
 	if (latestCommand == "add"){
-		DataBase::undoData(uniqueCode);
+		DataBase::undoAdd(uniqueCode);
 	}
 	else if (latestCommand == "delete"){
 		DataBase::addData(latestData);
@@ -129,7 +129,7 @@ string DataProcessor::executeUndo(){
 			DataBase::addData(latestVector[i]);
 		}
 	}
-	string undoMessage = "Undo completed";
+	string undoMessage = "You have undone your operation";
 	return undoMessage;
 }
 
