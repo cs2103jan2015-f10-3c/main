@@ -84,6 +84,7 @@ namespace testParser
 
 		//To test if a character can be found in a given string
 		//In this case, the character is present in the string
+		//This is a boundary case for the first character
 		TEST_METHOD(testSearchSubstring1)
 		{
 			Parser parser;
@@ -96,6 +97,15 @@ namespace testParser
 		{
 			Parser parser;
 			Assert::IsFalse (parser.searchSubstring ("abcdefg", 'm'));
+		}
+
+		//To test if a character can be found in a given string
+		//In this case, the character is present in the string
+		//This is a boundary case for the last character
+		TEST_METHOD(testSearchSubstring3)
+		{
+			Parser parser;
+			Assert::IsTrue (parser.searchSubstring ("abcdefg", 'g'));
 		}
 
 		//To test whether a string is a time period
