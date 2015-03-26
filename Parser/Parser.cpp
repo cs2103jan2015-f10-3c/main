@@ -453,6 +453,7 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 //If the string starts with a time period,
 //both starting and ending hour and minute will be updated.
 void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
+	int end = 0;
 	if (isTimePeriodTwentyFour (inputToBeParsed) || isStartingTimeTwentyFour (inputToBeParsed)) {
         string hourBeg = inputToBeParsed.substr (0, 2);
 		string minuteBeg = inputToBeParsed.substr (3, 2);
@@ -463,13 +464,15 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 
 
 		if (!isTimePeriodTwentyFour (inputToBeParsed)) {
-			if (inputToBeParsed.size() > 6) {
-				inputToBeParsed = inputToBeParsed.substr (6);
+			end = inputToBeParsed.find_first_of (' ');
+			if (end != string::npos) {
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
 			}
 			else {
 				inputToBeParsed = "";
 			}
 		}
+
 		else {
 			string hourEnd = inputToBeParsed.substr (6, 2);
 			string minuteEnd = inputToBeParsed.substr (9, 2);
@@ -478,11 +481,12 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 			timeMicroEnd.updateHour (hourEndInt);
 			timeMicroEnd.updateMin (minuteEndInt);
 
-			if (inputToBeParsed.size() > 12) {
-				inputToBeParsed = inputToBeParsed.substr (12);
+			end = inputToBeParsed.find_first_of (' ');
+			if (end == string::npos) {
+				inputToBeParsed = "";
 			}
 			else {
-				inputToBeParsed = "";
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
 			}
 		}
 	}
