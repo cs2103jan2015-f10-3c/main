@@ -315,7 +315,7 @@ void Parser::parseShow (string userInput, string commandWord) {
 		}
 
 		else {
-			commandWord = commandWord + " " + userInput;
+			commandWord = commandWord + " " + inputToBeParsed;
 			updateCommand (commandWord);
 		}
 	}

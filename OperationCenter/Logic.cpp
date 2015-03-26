@@ -74,6 +74,8 @@ void Logic::executeInput(string input){
 			returnResponse = dataProcessor.executeUndo();
 		}else if(command == "done"){
 			returnResponse = dataProcessor.markDone(taskNo);
+		}else if(command == "show commands"){
+			dataProcessor.showCommands();
 		}else{
 		}
 	
