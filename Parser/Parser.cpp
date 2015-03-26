@@ -310,7 +310,7 @@ void Parser::parseShow (string userInput, string commandWord) {
 				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 			}
 			else {
-				throw "Please enter correct time period, or did you mean \"show commands?\"";
+				throw "Please enter correct time period, or did you mean \"show commands\"?";
 			}
 		}
 
@@ -320,7 +320,7 @@ void Parser::parseShow (string userInput, string commandWord) {
 		}
 	}
 	else {
-		throw "Please enter correct task number after command word";
+		throw "Please enter correct time period after command word";
 	}
 }
 
