@@ -50,6 +50,7 @@ public:
 	static void loadData(bool& status);
 	static string displayIfEmpty(string returnDisplay, TimeMacro current, TimeMacro start, TimeMacro end);
 	static string displayToday(string returnDisplay, TimeMacro current);
+	static TimeMacro setCurrentTime();
 };
 
 class Feedback{

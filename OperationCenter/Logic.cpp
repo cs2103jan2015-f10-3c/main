@@ -13,6 +13,17 @@ void Logic::loadData(bool& status){
 	DataProcessor::loadData(status);
 }
 
+TimeMacro Logic::setCurrentTime(){
+	
+	time_t t = time (0);   // get time now
+    struct tm now;
+	localtime_s (&now, &t);
+
+	TimeMacro currentTime(now.tm_mday, now.tm_mon + 1, now.tm_year + 1900);
+
+	return currentTime;
+}
+
 string Logic::displayIfEmpty(string returnDisplay, TimeMacro current, TimeMacro start, TimeMacro end){
 	if(current.getDate() != start.getDate() || current.getDate() != end.getDate() || current.getMonth() != start.getMonth() || current.getMonth() != end.getMonth() || current.getYear() != start.getYear() || current.getYear() != end.getYear()){
 		returnDisplay = "You have no task within the specified time period\n";
@@ -58,17 +69,19 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			returnResponse = EMPTY_RESPONSE;
 		}
 		catch (std::exception e){
-			std::cout << e.what();
+			//std::cout << e.what();
+			returnResponse = e.what();
 		}
 		if(returnDisplay == ""){
-			returnDisplay = "Oops, there is no matching task in your BlinkList\n";
+			returnResponse = "Oops, there is no matching task in your BlinkList\n";
 		}
 	}else if(command == "edit"){
 		try{
 			returnResponse = dataProcessor.editTask(taskNo, task);
 		}
 		catch (std::exception e){
-			std::cout << e.what();
+			//std::cout << e.what();
+			returnResponse = e.what();
 		}
 	}else if(command == "undo"){
 		returnResponse = dataProcessor.executeUndo();
@@ -84,11 +97,8 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 }
 
 void Logic::executeInput(string input){
-	time_t t = time (0);   // get time now
-    struct tm now;
-	localtime_s (&now, &t);
+	TimeMacro currentTime = setCurrentTime();
 
-	TimeMacro currentTime(now.tm_mday, now.tm_mon + 1, now.tm_year + 1900);
 	Parser parser;
 	
 	parser.parseInput(input);
