@@ -9,7 +9,7 @@ int main(){
 	cout << "Welcome to BlinkList!" << endl << endl;
 	if(status == true){
 		cout << "Today's Agenda is as follows:" << endl << endl;
-		OperationCenter::executeInput("display today");
+		OperationCenter::executeInput("show today");
 		cout << OperationCenter::getDisplay() << endl;
 
 	} else { 

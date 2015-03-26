@@ -34,7 +34,7 @@ void Logic::executeInput(string input){
 	if(errorMessage == ""){
 		if(command == "add") {
 			returnResponse = dataProcessor.addTask(task);
-		}else if(command == "display") {
+		}else if(command == "show") {
 			returnResponse = EMPTY_RESPONSE;
 			returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 			if(currentTime.getDate() != task.getTimeMacroBeg().getDate() || currentTime.getDate() != task.getTimeMacroEnd().getDate() || currentTime.getMonth() != task.getTimeMacroBeg().getMonth() || currentTime.getMonth() != task.getTimeMacroEnd().getMonth() || currentTime.getYear() != task.getTimeMacroBeg().getYear() || currentTime.getYear() != task.getTimeMacroEnd().getYear()){
@@ -77,7 +77,7 @@ void Logic::executeInput(string input){
 		}else{
 		}
 	
-		if(command != "display" && command != "search"){
+		if(command != "show" && command != "search"){
 			ostringstream out;
 			returnDisplay = dataProcessor.displayTask(currentTime, currentTime);
 			if(returnDisplay == ""){
