@@ -13,7 +13,7 @@ Data History::getLatestData(){
 	return latestData;
 }
 
-std::vector<Data> & History::getLatestVector(){
+std::vector<Data>& History::getLatestVector(){
 	return latestVector;
 }
 

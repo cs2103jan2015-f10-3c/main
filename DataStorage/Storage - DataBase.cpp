@@ -95,7 +95,7 @@ Data DataBase::deleteData(int taskNo){
 
 //method for deleting the latest Data added
 //helper for undo function
-void DataBase::undoData(int uniqueNo){
+void DataBase::undoAdd(int uniqueNo){
 	
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
@@ -105,6 +105,7 @@ void DataBase::undoData(int uniqueNo){
 	}
 	dataList = listTofacilitateDeletion;
 }
+
 //method for edit command
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
@@ -133,12 +134,12 @@ Data DataBase::editData(int taskNo, Data updatedData){
 	if (updatedData.getTimeMicroBeg().getHour() != -1
 		&& updatedData.getTimeMicroBeg().getHour() != -1) {
 			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
-	}
-
-	if (updatedData.getTimeMicroEnd().getHour() != -1
-		&& updatedData.getTimeMicroEnd().getHour() != -1) {
 			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
 	}
+
+	if (updatedData.getCompleteStatus() != false){
+		dataToEdit.updateCompleteStatus(true);
+	}//exception is for undone
 
 	deleteData(taskNo);
 	addData(dataToEdit);
