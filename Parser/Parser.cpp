@@ -783,6 +783,12 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[4])) {
 				return true;
 		}
+		else if (searchSubstring ("0123456789", inputToBeParsed[0]) &&
+			inputToBeParsed[1] == ':' &&
+			searchSubstring ("012345", inputToBeParsed[2]) &&
+			searchSubstring ("0123456789", inputToBeParsed[3])) {
+				return true;
+		}
 		else {
 			return false;
 		}
@@ -798,23 +804,44 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 //Then it must follow the format "hh:mm-hh:mm"
 //in order to be recognised as a time period.
 bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
+	int end = 0;
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
-		if (isStartingTimeTwentyFour (inputToBeParsed) &&
-			inputToBeParsed[5] == '-' &&
-			searchSubstring ("012", inputToBeParsed[6]) &&
-			searchSubstring ("0123456789", inputToBeParsed[7]) &&
-			inputToBeParsed[8] == ':' &&
-			searchSubstring ("012345", inputToBeParsed[9]) &&
-			searchSubstring ("0123456789", inputToBeParsed[10])) {
-				return true;
-		}
-		else {
-			return false;
+		if (isStartingTimeTwentyFour (inputToBeParsed)) {
+			end = inputToBeParsed.find_first_of ('-');
+			if (end == 4) {
+				if (searchSubstring ("012", inputToBeParsed[5]) &&
+					searchSubstring ("0123456789", inputToBeParsed[6]) &&
+					inputToBeParsed[7] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[8]) &&
+					searchSubstring ("0123456789", inputToBeParsed[9])) {
+						return true;
+				}
+				else if (searchSubstring ("0123456789", inputToBeParsed[5]) &&
+					inputToBeParsed[6] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[7]) &&
+					searchSubstring ("0123456789", inputToBeParsed[8])) {
+						return true;
+				}
+			}
+
+			else if (end == 5) {
+				if (searchSubstring ("012", inputToBeParsed[6]) &&
+					searchSubstring ("0123456789", inputToBeParsed[7]) &&
+					inputToBeParsed[8] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[9]) &&
+					searchSubstring ("0123456789", inputToBeParsed[10])) {
+						return true;
+				}
+				else if (searchSubstring ("0123456789", inputToBeParsed[6]) &&
+					inputToBeParsed[7] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[8]) &&
+					searchSubstring ("0123456789", inputToBeParsed[9])) {
+						return true;
+				}
+			}
 		}
 	}
-	else {
-		return false;
-	}
+	return false;
 }
 
 
