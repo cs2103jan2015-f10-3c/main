@@ -8,7 +8,7 @@ int main(){
 //Comment @kevin, might be better to store this in O/C
 	cout << "Welcome to BlinkList!" << endl << endl;
 	if(status == true){
-		cout << "Today's Agenda is as follows: \n";
+		cout << "Today's Agenda is as follows:" << endl << endl;
 		OperationCenter::executeInput("display today");
 		cout << OperationCenter::getDisplay() << endl;
 
