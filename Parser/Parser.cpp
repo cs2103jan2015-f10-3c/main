@@ -61,20 +61,11 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	else if (commandWord == "delete") {
 		parseDelete (userInput, commandWord);
 	}
-	else if (commandWord == "display") {
-		parseDisplay (userInput, commandWord);
-	}
 	else if (commandWord == "done") {
 		parseDone (userInput, commandWord);
 	}
 	else if (commandWord == "show") {
-		try {
-			parseShow (userInput, commandWord);
-		}
-		catch (char* errorMessge) {
-			updateErrorMessage (errorMessge);
-			cout << getErrorMessage () << endl;
-		}
+		parseShow (userInput, commandWord);
 	}
 	else {
 		throw "Please enter the correct command";
@@ -108,23 +99,30 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	TimeMicro timeMicroEnd;
 	string inputToBeParsed = userInput;
 	string desc;
-	inputToBeParsed = inputToBeParsed.substr (commandWord.size() + 1);
 
-	parseDateNumber (inputToBeParsed, timeMacro);
-    parseDateAlphabet (inputToBeParsed, timeMacro);
+	inputToBeParsed = inputToBeParsed.substr (commandWord.size());
+	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+		inputToBeParsed = inputToBeParsed.substr (1);
 
-	parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-	parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+		parseDateNumber (inputToBeParsed, timeMacro);
+		parseDateAlphabet (inputToBeParsed, timeMacro);
 
-	parseDateNumber (inputToBeParsed, timeMacro);
-    parseDateAlphabet (inputToBeParsed, timeMacro);
-	desc = inputToBeParsed;
+		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+		parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-	
-	updateCommand (commandWord);
-	updateTimeMacro (timeMacro);
-	updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
-	updateDesc (desc);
+		parseDateNumber (inputToBeParsed, timeMacro);
+		parseDateAlphabet (inputToBeParsed, timeMacro);
+		desc = inputToBeParsed;
+
+
+		updateCommand (commandWord);
+		updateTimeMacro (timeMacro);
+		updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+		updateDesc (desc);
+	}
+	else {
+		throw "Please enter correct input following the command word";
+	}
 }
 
 
@@ -141,38 +139,44 @@ void Parser::parseEdit (string userInput, string commandWord) {
 	TimeMicro timeMicroEnd;
 	string desc;
 	int taskNo;
-	string inputToBeParsed = userInput.substr (commandWord.size() + 1);
-	string index = parseTaskNo (inputToBeParsed);
+	string inputToBeParsed;
+	string index;
 
-	try {
+	inputToBeParsed = userInput.substr (commandWord.size());
+	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+		inputToBeParsed = inputToBeParsed.substr (1);
+
+		index = parseTaskNo (inputToBeParsed);
 		taskNo = convertStringToInteger (index);
-		inputToBeParsed = inputToBeParsed.substr(index.size () + 1);
 
+		inputToBeParsed = inputToBeParsed.substr(index.size ());
+		if (inputToBeParsed != "" && inputToBeParsed != " ") {
+			inputToBeParsed = inputToBeParsed.substr(1);
 
-		parseDateNumber (inputToBeParsed, timeMacro);
-		parseDateAlphabet (inputToBeParsed, timeMacro);
+			parseDateNumber (inputToBeParsed, timeMacro);
+			parseDateAlphabet (inputToBeParsed, timeMacro);
 
-		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
-		parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+			parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
+			parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-		parseDateNumber (inputToBeParsed, timeMacro);
-		parseDateAlphabet (inputToBeParsed, timeMacro);
+			parseDateNumber (inputToBeParsed, timeMacro);
+			parseDateAlphabet (inputToBeParsed, timeMacro);
 
-		if (inputToBeParsed != "") {
 			desc = inputToBeParsed;
+
+			updateCommand (commandWord);
+			updateTaskNo (taskNo);
+			updateTimeMacro (timeMacro);
+			updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
+			updateDesc (desc);
 		}
-		
 
-		updateCommand (commandWord);
-		updateTaskNo (taskNo);
-		updateTimeMacro (timeMacro);
-		updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
-		updateDesc (desc);
+		else {
+			throw "Please enter content you want to edit";
+		}
 	}
-
-	catch (const char* errorMessge) {
-		updateErrorMessage (errorMessge);
-		cout << getErrorMessage () << endl;
+	else {
+		throw "Please enter correct input following the command word";
 	}
 }
 
@@ -180,10 +184,23 @@ void Parser::parseEdit (string userInput, string commandWord) {
 //The whole string after the command word "search" will be parsed
 //and recognised as the key word.
 void Parser::parseSearch (string userInput, string commandWord) {
-	string desc = userInput.substr (commandWord.size() + 1);
+	string desc = userInput.substr (commandWord.size());
+	int end = 0;
+	if (desc != "" && desc != " ") {
+		desc = desc.substr (1);
 
-    updateCommand (commandWord);
-	updateDesc (desc);
+		end = desc.find_first_of (" ");
+		if (end == string::npos) {
+			updateCommand (commandWord);
+			updateDesc (desc);
+		}
+		else {
+			throw "Please only enter one keyword";
+		}
+	}
+	else {
+		throw "Please enter correct input following the command word";
+	}
 }
 
 
@@ -197,20 +214,17 @@ void Parser::parseUndo (string commandWord) {
 //This method is to parse user's input if the command word is "delete".
 //The command word "delete" will be followed by a task number.
 void Parser::parseDelete (string userInput, string commandWord) {
-	string inputToBeParserd = userInput.substr (commandWord.size() + 1);
-	string index = parseTaskNo (inputToBeParserd);
-
-	try {
-		int taskNo = convertStringToInteger (index);
+	int taskNo;
+	string index = userInput.substr (commandWord.size());
+	if (index != "" && index != " ") {
+		index = index.substr (1);
+		taskNo = convertStringToInteger (index);
 		updateCommand (commandWord);
 		updateTaskNo (taskNo);
 	}
-	
-	catch (const char* errorMessge) {
-		updateErrorMessage (errorMessge);
-		cout << getErrorMessage () << endl;
+	else {
+		throw "Please enter correct task number after command word";
 	}
-
 }
 
 
@@ -219,52 +233,95 @@ void Parser::parseDelete (string userInput, string commandWord) {
 //So far, this method is able to parse the period when the period is
 //"today", "tomorrow" and "this month".
 //The starting and ending date/month/year/day will be updated.
-void Parser::parseDisplay (string userInput, string commandWord) {
-	TimeMacro timeMacroBeg;
-	TimeMacro timeMacroEnd;
-
-	string period = userInput.substr (commandWord.size() + 1);
-
-	if (period == "today") {
-		getTodayDate (timeMacroBeg);
-		getTodayDate (timeMacroEnd);
-	}
-	else if (period == "tomorrow") {
-		getTomorrowDate (timeMacroBeg);
-		getTomorrowDate (timeMacroEnd);
-	}
-	else if (period == "this month") {
-		getThisMonth (timeMacroBeg, timeMacroEnd);
-	}
-
-	updateCommand (commandWord);
-	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-}
+//void Parser::parseDisplay (string userInput, string commandWord) {
+//	TimeMacro timeMacroBeg;
+//	TimeMacro timeMacroEnd;
+//
+//	string period = userInput.substr (commandWord.size() + 1);
+//
+//	if (period == "today") {
+//		getTodayDate (timeMacroBeg);
+//		getTodayDate (timeMacroEnd);
+//	}
+//	else if (period == "tomorrow") {
+//		getTomorrowDate (timeMacroBeg);
+//		getTomorrowDate (timeMacroEnd);
+//	}
+//	else if (period == "this month") {
+//		getThisMonth (timeMacroBeg, timeMacroEnd);
+//	}
+//
+//	updateCommand (commandWord);
+//	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+//}
 
 
 //This method is to parse user's input if the command word is "done".
 //The command word "done" will be followed by a task number.
 void Parser::parseDone (string userInput, string commandWord) {
-	string index = userInput.substr (commandWord.size() + 1);
-	int taskNo = atoi (index.c_str());
-	updateCommand (commandWord);
-	updateTaskNo (taskNo);
-	updateStatus (true);
+	int taskNo;
+	string index = userInput.substr (commandWord.size());
+	if (index != "" && index != " ") {
+		index = index.substr (1);
+		taskNo = convertStringToInteger (index);
+		updateCommand (commandWord);
+		updateTaskNo (taskNo);
+		updateStatus (true);
+	}
+	else {
+		throw "Please enter correct task number after command word";
+	}
 }
 
 
-//This method checks whether the word "commands" follows a "show" command.
-//If yes, the command work will become "show commands"
-//and the private attribute will be updated.
-//If not, it throws an exception.
-void Parser::parseShow (string userInput, string commandWord) {
-	string inputToBeParsed = userInput.substr (commandWord.size () + 1);
-	if (inputToBeParsed != "commands") {
-		throw "Did you mean \"show commands?\"";
-	}
 
-	commandWord = commandWord + " " + userInput;
-	updateCommand (commandWord);
+//This method is to parse user's input if the command word is "show".
+//1st case: the command word show is followed by a period.
+//So far, this method is able to parse the period when the period is
+//"today", "tomorrow" and "this month".
+//The starting and ending date/month/year/day will be updated.
+//2nd case: the command word show is followed by the word "commands".
+//Then the command word will become "show commands".
+//If the word following "show" does not fall into these 2 cases,
+//it will throw an exception.
+void Parser::parseShow (string userInput, string commandWord) {
+	string inputToBeParsed = userInput.substr (commandWord.size ());
+	TimeMacro timeMacroBeg;
+	TimeMacro timeMacroEnd;
+
+	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+		inputToBeParsed = inputToBeParsed.substr(1);
+		if (inputToBeParsed != "commands") {
+			if (inputToBeParsed == "today") {
+				getTodayDate (timeMacroBeg);
+				getTodayDate (timeMacroEnd);
+				updateCommand (commandWord);
+				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+			}
+			else if (inputToBeParsed == "tomorrow") {
+				getTomorrowDate (timeMacroBeg);
+				getTomorrowDate (timeMacroEnd);
+				updateCommand (commandWord);
+				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+			}
+			else if (inputToBeParsed == "this month") {
+				getThisMonth (timeMacroBeg, timeMacroEnd);
+				updateCommand (commandWord);
+				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+			}
+			else {
+				throw "Please enter correct time period, or did you mean \"show commands?\"";
+			}
+		}
+
+		else {
+			commandWord = commandWord + " " + userInput;
+			updateCommand (commandWord);
+		}
+	}
+	else {
+		throw "Please enter correct task number after command word";
+	}
 }
 
 //This method is to parse date after the start of the string is recoganised as a date.
