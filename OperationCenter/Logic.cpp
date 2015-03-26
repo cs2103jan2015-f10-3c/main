@@ -37,7 +37,7 @@ void Logic::executeInput(string input){
 		}else if(command == "display") {
 			returnResponse = EMPTY_RESPONSE;
 			returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
-			if(currentTime.getDate() != task.getTimeMacroBeg().getDate() && currentTime.getDate() != task.getTimeMacroEnd().getDate() && currentTime.getMonth() != task.getTimeMacroBeg().getMonth() && currentTime.getMonth() != task.getTimeMacroEnd().getMonth() && currentTime.getYear() != task.getTimeMacroBeg().getYear() && currentTime.getYear() != task.getTimeMacroEnd().getYear()){
+			if(currentTime.getDate() != task.getTimeMacroBeg().getDate() || currentTime.getDate() != task.getTimeMacroEnd().getDate() || currentTime.getMonth() != task.getTimeMacroBeg().getMonth() || currentTime.getMonth() != task.getTimeMacroEnd().getMonth() || currentTime.getYear() != task.getTimeMacroBeg().getYear() || currentTime.getYear() != task.getTimeMacroEnd().getYear()){
 				if(returnDisplay == ""){
 					returnDisplay = "You have no task within the specified time period\n";
 				}
