@@ -87,10 +87,12 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		returnResponse = dataProcessor.executeUndo();
 	}else if(command == "done"){
 		returnResponse = dataProcessor.markDone(taskNo);
+	}else if(command == "show commands"){
+		dataProcessor.showCommands();
 	}else{	
 	}
 
-	if(command != "show" && command != "search"){
+	if(command != "show" && command != "search" && command != "show commands"){
 		returnDisplay = displayToday(returnDisplay, currentTime);
 	}
 
