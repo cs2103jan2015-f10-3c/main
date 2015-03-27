@@ -273,3 +273,10 @@ string DataProcessor::markDone(int taskNo){
 	outData << convertDataObjectToString(targetData) << " is done";
 	return outData.str();
 }
+
+//This function calls up a list of commands 
+//available at BlinkList
+void DataProcessor::showCommands(){
+	SaveLoad::retrieveCommandList();
+
+}

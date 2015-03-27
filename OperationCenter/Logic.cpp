@@ -51,7 +51,7 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	DataProcessor dataProcessor;
 	if(command == "add") {
 		returnResponse = dataProcessor.addTask(task);
-	}else if(command == "display") {
+	}else if(command == "show") {
 		returnResponse = EMPTY_RESPONSE;
 		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		if(returnDisplay == ""){
@@ -90,7 +90,7 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else{	
 	}
 
-	if(command != "display" && command != "search"){
+	if(command != "show" && command != "search"){
 		returnDisplay = displayToday(returnDisplay, currentTime);
 	}
 

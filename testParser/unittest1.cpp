@@ -84,6 +84,7 @@ namespace testParser
 
 		//To test if a character can be found in a given string
 		//In this case, the character is present in the string
+		//This is a boundary case for the first character
 		TEST_METHOD(testSearchSubstring1)
 		{
 			Parser parser;
@@ -96,6 +97,15 @@ namespace testParser
 		{
 			Parser parser;
 			Assert::IsFalse (parser.searchSubstring ("abcdefg", 'm'));
+		}
+
+		//To test if a character can be found in a given string
+		//In this case, the character is present in the string
+		//This is a boundary case for the last character
+		TEST_METHOD(testSearchSubstring3)
+		{
+			Parser parser;
+			Assert::IsTrue (parser.searchSubstring ("abcdefg", 'g'));
 		}
 
 		//To test whether a string is a time period
@@ -385,12 +395,12 @@ namespace testParser
 		}
 
 		//To test whether can parse "display this month"
-		TEST_METHOD(testParseDisplay1)
+		TEST_METHOD(testparseShow1)
 		{
 			Parser parser;
 			string userInput = "display this month";
 			string commandWord = "display";
-			parser.parseDisplay (userInput, commandWord);
+			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 0);
@@ -402,13 +412,13 @@ namespace testParser
 		}
 
 		//To test whether can parse "display today"
-		TEST_METHOD(testParseDisplay2)
+		TEST_METHOD(testparseShow2)
 		{
 			Parser parser;
 			string userInput = "display today";
 			string commandWord = "display";
 			string expectedDay = "Friday";
-			parser.parseDisplay (userInput, commandWord);
+			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
@@ -418,13 +428,13 @@ namespace testParser
 		}
 
 		//To test whether can parse "display tomorrow"
-		TEST_METHOD(testParseDisplay3)
+		TEST_METHOD(testparseShow3)
 		{
 			Parser parser;
 			string userInput = "display tomorrow";
 			string commandWord = "display";
 			string expectedDay = "Saturday";
-			parser.parseDisplay (userInput, commandWord);
+			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 14);
