@@ -287,12 +287,15 @@ void Parser::parseShow (string userInput, string commandWord) {
 		else if (inputToBeParsed == "commands" ||
 			inputToBeParsed == "float" ||
 			inputToBeParsed == "done") {
-				commandWord = commandWord + " " + userInput;
+				commandWord = commandWord + " " + inputToBeParsed;
 				updateCommand (commandWord);
 		}
 		else {
 			throw "Please enter correct time period or task type";
 		}
+	}
+	else {
+		throw "Please enter correct time period or task type";
 	}
 }
 
@@ -435,8 +438,9 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
 	int end = 0;
 	if (isTimePeriodTwentyFour (inputToBeParsed) || isStartingTimeTwentyFour (inputToBeParsed)) {
-        string hourBeg = inputToBeParsed.substr (0, 2);
-		string minuteBeg = inputToBeParsed.substr (3, 2);
+		end = inputToBeParsed.find_first_of (':');
+        string hourBeg = inputToBeParsed.substr (0, end);
+		string minuteBeg = inputToBeParsed.substr (end + 1, 2);
 		int hourBegInt = atoi (hourBeg.c_str());
 		int minuteBegInt = atoi (minuteBeg.c_str());
 		timeMicroBeg.updateHour (hourBegInt);
@@ -454,8 +458,11 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 		}
 
 		else {
-			string hourEnd = inputToBeParsed.substr (6, 2);
-			string minuteEnd = inputToBeParsed.substr (9, 2);
+			end = inputToBeParsed.find_first_of ('-');
+			inputToBeParsed = inputToBeParsed.substr (end + 1);
+			end = inputToBeParsed.find_first_of (':');
+			string hourEnd = inputToBeParsed.substr (0, end);
+			string minuteEnd = inputToBeParsed.substr (end + 1, 2);
 			int hourEndInt = atoi (hourEnd.c_str());
 			int minuteEndInt = atoi (minuteEnd.c_str());
 			timeMicroEnd.updateHour (hourEndInt);
@@ -632,7 +639,19 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 			inputToBeParsed[2] == '/' &&
 			searchSubstring ("01", inputToBeParsed[3]) &&
 			searchSubstring ("0123456789", inputToBeParsed[4])) {
-				return true;
+				if ((inputToBeParsed[0] == '3' &&
+					inputToBeParsed[1] > '1') ||  //date > 31
+					(inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') || //date = 00
+					(inputToBeParsed[3] == '0' &&
+					inputToBeParsed[4] == '0') || //month = 00
+					(inputToBeParsed[3] == '1' &&
+					inputToBeParsed[4] > '2')) { //month > 12
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 	}
 
@@ -646,13 +665,29 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == '/' &&
 			searchSubstring ("123456789", inputToBeParsed[3])) {
-				return true;
+				if ((inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') ||
+					(inputToBeParsed[0] == '3' &&
+					inputToBeParsed[1] > '1')) {
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 		else if (searchSubstring ("123456789", inputToBeParsed[0]) &&
 			inputToBeParsed[1] == '/' &&
 			searchSubstring ("01", inputToBeParsed[2]) &&
 			searchSubstring ("0123456789", inputToBeParsed[3])) {
-				return true;
+				if ((inputToBeParsed[2] == '0' &&
+					inputToBeParsed[3] == '0') ||
+					(inputToBeParsed[2] == '1' &&
+					inputToBeParsed[3] > '2')) {
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 	}
 
@@ -720,7 +755,15 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == ' ' &&
 			isStringEqual (inputToBeParsed.substr (3, 3), month)) {
-				return true;
+				if ((inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') ||
+					(inputToBeParsed[0] == '3' &&
+					inputToBeParsed[1] > '1')) {
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 	}
 
@@ -765,7 +808,13 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 			inputToBeParsed[2] == ':' &&
 			searchSubstring ("012345", inputToBeParsed[3]) &&
 			searchSubstring ("0123456789", inputToBeParsed[4])) {
-				return true;
+				if (inputToBeParsed[0] == '2' &&
+					inputToBeParsed[1] > '3') {
+						throw "Please enter a valid time";
+				}
+				else {
+					return true;
+				}
 		}
 		else if (searchSubstring ("0123456789", inputToBeParsed[0]) &&
 			inputToBeParsed[1] == ':' &&
@@ -792,38 +841,33 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
 		if (isStartingTimeTwentyFour (inputToBeParsed)) {
 			end = inputToBeParsed.find_first_of ('-');
-			if (end == 4) {
-				if (searchSubstring ("012", inputToBeParsed[5]) &&
-					searchSubstring ("0123456789", inputToBeParsed[6]) &&
-					inputToBeParsed[7] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[8]) &&
-					searchSubstring ("0123456789", inputToBeParsed[9])) {
-						return true;
+			if (end != string::npos) {
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				if (searchSubstring ("012", inputToBeParsed[0]) &&
+					searchSubstring ("0123456789", inputToBeParsed[1]) &&
+					inputToBeParsed[2] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[3]) &&
+					searchSubstring ("0123456789", inputToBeParsed[4])) {
+						if (inputToBeParsed[0] == '2' &&
+							inputToBeParsed[1] > '3') {
+								throw "Please enter a valid time";
+						}
+						else {
+							return true;
+						}
+
 				}
-				else if (searchSubstring ("0123456789", inputToBeParsed[5]) &&
-					inputToBeParsed[6] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[7]) &&
-					searchSubstring ("0123456789", inputToBeParsed[8])) {
+				else if (searchSubstring ("0123456789", inputToBeParsed[0]) &&
+					inputToBeParsed[1] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[2]) &&
+					searchSubstring ("0123456789", inputToBeParsed[3])) {
 						return true;
 				}
 			}
 
-			else if (end == 5) {
-				if (searchSubstring ("012", inputToBeParsed[6]) &&
-					searchSubstring ("0123456789", inputToBeParsed[7]) &&
-					inputToBeParsed[8] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[9]) &&
-					searchSubstring ("0123456789", inputToBeParsed[10])) {
-						return true;
-				}
-				else if (searchSubstring ("0123456789", inputToBeParsed[6]) &&
-					inputToBeParsed[7] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[8]) &&
-					searchSubstring ("0123456789", inputToBeParsed[9])) {
-						return true;
-				}
-			}
+
 		}
+
 	}
 	return false;
 }
@@ -838,50 +882,63 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 	int end = 0;
 	if (inputToBeParsed.size () >= 3) {  //"9am"
-		end = inputToBeParsed.find_first_of (".");
-		if (end != string::npos) {
-			//case "9.00am"
-			if (end == 1) {
-				if (searchSubstring ("123456789", inputToBeParsed[0]) &&
-					searchSubstring ("012345", inputToBeParsed[2]) &&
-					searchSubstring ("0123456789", inputToBeParsed[3]) &&
-					(inputToBeParsed[4] == 'a' ||
-					inputToBeParsed[4] == 'p') &&
-					inputToBeParsed[5] == 'm') {
-						return true;
-				}
-			}
-			else if (end == 2) {
-				//case "09.00am"
-				if (searchSubstring ("01", inputToBeParsed[0]) &&
-					searchSubstring ("0123456789", inputToBeParsed[1]) &&
-					searchSubstring ("012345", inputToBeParsed[3]) &&
-					searchSubstring ("0123456789", inputToBeParsed[4]) &&
-					(inputToBeParsed[5] == 'a' ||
-					inputToBeParsed[5] == 'p') &&
-					inputToBeParsed[6] == 'm') {
-						return true;
-				}
+		end = inputToBeParsed.find_first_of (".");	
+			
+		if (end == 1) { //case "9.00am"
+			if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+				searchSubstring ("012345", inputToBeParsed[2]) &&
+				searchSubstring ("0123456789", inputToBeParsed[3]) &&
+				(inputToBeParsed[4] == 'a' ||
+				inputToBeParsed[4] == 'p') &&
+				inputToBeParsed[5] == 'm') {
+					return true;
 			}
 		}
-		else {
-			//case "9am"
-			if (searchSubstring ("123456789", inputToBeParsed[0]) &&
-				(inputToBeParsed[1] == 'a' ||
-				inputToBeParsed[1] == 'p') &&
-				inputToBeParsed[2] == 'm') {
-					return true;
-			}
-			//case "19am"
-			else if (searchSubstring ("01", inputToBeParsed[0]) &&
+		else if (end == 2) {
+			//case "09.00am"
+			if (searchSubstring ("01", inputToBeParsed[0]) &&
 				searchSubstring ("0123456789", inputToBeParsed[1]) &&
-				(inputToBeParsed[2] == 'a' ||
-				inputToBeParsed[2] == 'p') &&
-				inputToBeParsed[3] == 'm') {
-					return true;
+				searchSubstring ("012345", inputToBeParsed[3]) &&
+				searchSubstring ("0123456789", inputToBeParsed[4]) &&
+				(inputToBeParsed[5] == 'a' ||
+				inputToBeParsed[5] == 'p') &&
+				inputToBeParsed[6] == 'm') {
+					if ((inputToBeParsed[0] == '0' &&
+						inputToBeParsed[1] == '0') ||
+						(inputToBeParsed[0] == '1' &&
+						inputToBeParsed[1] > '2')) {
+							throw "Please enter a valid time";
+					}
+					else {
+						return true;
+					}
 			}
+		}
+		//case "9am"
+		else if (searchSubstring ("123456789", inputToBeParsed[0]) &&  
+			(inputToBeParsed[1] == 'a' ||
+			inputToBeParsed[1] == 'p') &&
+			inputToBeParsed[2] == 'm') {
+				return true;
+		}
+		//case "19am"
+		else if (searchSubstring ("01", inputToBeParsed[0]) &&
+			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+			(inputToBeParsed[2] == 'a' ||
+			inputToBeParsed[2] == 'p') &&
+			inputToBeParsed[3] == 'm') {
+				if ((inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') ||
+					(inputToBeParsed[0] == '1' &&
+					inputToBeParsed[1] > '2')) {
+						throw "Please enter a valid time";
+				}
+				else {
+					return true;
+				}
 		}
 	}
+
 	return false;
 }
 
@@ -925,7 +982,15 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 						(inputToBeParsed[5] == 'a' ||
 						inputToBeParsed[5] == 'p') &&
 						inputToBeParsed[6] == 'm') {
-							return true;
+							if ((inputToBeParsed[0] == '0' &&
+								inputToBeParsed[1] == '0') ||
+								(inputToBeParsed[0] == '1' &&
+								inputToBeParsed[1] > '2')) {
+									throw "Please enter a valid time";
+							}
+							else {
+								return true;
+							}
 					}
 				}
 			}
@@ -943,7 +1008,15 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 					(inputToBeParsed[2] == 'a' ||
 					inputToBeParsed[2] == 'p') &&
 					inputToBeParsed[3] == 'm') {
-						return true;
+						if ((inputToBeParsed[0] == '0' &&
+							inputToBeParsed[1] == '0') ||
+							(inputToBeParsed[0] == '1' &&
+							inputToBeParsed[1] > '2')) {
+								throw "Please enter a valid time";
+						}
+						else {
+							return true;
+						}
 				}
 			}
 	}

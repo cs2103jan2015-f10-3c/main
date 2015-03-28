@@ -136,8 +136,5 @@ public:
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);
 	bool isLeapYear (int year);
 	
-
-	//exception specifications
-
 };
 #endif
