@@ -67,6 +67,9 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	else if (commandWord == "show") {
 		parseShow (userInput, commandWord);
 	}
+	else if (commandWord == "clear") {
+		parseClear (userInput, commandWord);
+	}
 	else {
 		throw "Please enter the correct command";
 	}
@@ -204,7 +207,7 @@ void Parser::parseSearch (string userInput, string commandWord) {
 }
 
 
-////This method is to parse user's input if the command word is "undo".
+//This method is to parse user's input if the command word is "undo".
 //Only the command word "undo" will be parsed.
 void Parser::parseUndo (string commandWord) {
     updateCommand (commandWord);
@@ -226,34 +229,6 @@ void Parser::parseDelete (string userInput, string commandWord) {
 		throw "Please enter correct task number after command word";
 	}
 }
-
-
-//This method is to parse user's input if the command word is "display".
-//The command word display is to be followed by a period.
-//So far, this method is able to parse the period when the period is
-//"today", "tomorrow" and "this month".
-//The starting and ending date/month/year/day will be updated.
-//void Parser::parseDisplay (string userInput, string commandWord) {
-//	TimeMacro timeMacroBeg;
-//	TimeMacro timeMacroEnd;
-//
-//	string period = userInput.substr (commandWord.size() + 1);
-//
-//	if (period == "today") {
-//		getTodayDate (timeMacroBeg);
-//		getTodayDate (timeMacroEnd);
-//	}
-//	else if (period == "tomorrow") {
-//		getTomorrowDate (timeMacroBeg);
-//		getTomorrowDate (timeMacroEnd);
-//	}
-//	else if (period == "this month") {
-//		getThisMonth (timeMacroBeg, timeMacroEnd);
-//	}
-//
-//	updateCommand (commandWord);
-//	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-//}
 
 
 //This method is to parse user's input if the command word is "done".
@@ -291,38 +266,43 @@ void Parser::parseShow (string userInput, string commandWord) {
 
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
 		inputToBeParsed = inputToBeParsed.substr(1);
-		if (inputToBeParsed != "commands") {
-			if (inputToBeParsed == "today") {
-				getTodayDate (timeMacroBeg);
-				getTodayDate (timeMacroEnd);
-				updateCommand (commandWord);
-				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-			}
-			else if (inputToBeParsed == "tomorrow") {
-				getTomorrowDate (timeMacroBeg);
-				getTomorrowDate (timeMacroEnd);
-				updateCommand (commandWord);
-				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-			}
-			else if (inputToBeParsed == "this month") {
-				getThisMonth (timeMacroBeg, timeMacroEnd);
-				updateCommand (commandWord);
-				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-			}
-			else {
-				throw "Please enter correct time period, or did you mean \"show commands\"?";
-			}
-		}
 
-		else {
-			commandWord = commandWord + " " + userInput;
+		if (inputToBeParsed == "today") {
+			getTodayDate (timeMacroBeg);
+			getTodayDate (timeMacroEnd);
 			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}
-	}
-	else {
-		throw "Please enter correct time period after command word";
+		else if (inputToBeParsed == "tomorrow") {
+			getTomorrowDate (timeMacroBeg);
+			getTomorrowDate (timeMacroEnd);
+			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}
+		else if (inputToBeParsed == "this month") {
+			getThisMonth (timeMacroBeg, timeMacroEnd);
+			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}
+		else if (inputToBeParsed == "commands" ||
+			inputToBeParsed == "float" ||
+			inputToBeParsed == "done") {
+				commandWord = commandWord + " " + userInput;
+				updateCommand (commandWord);
+		}
+		else {
+			throw "Please enter correct time period or task type";
+		}
 	}
 }
+
+
+//This method is to parse user's input if the command word is "clear".
+//Only the command word "clear" will be parsed.
+void Parser::parseClear (string userInput, string commandWord) {
+	updateCommand (commandWord);
+}
+
 
 //This method is to parse date after the start of the string is recoganised as a date.
 //The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",
