@@ -133,6 +133,8 @@ public:
 	int convertAlphabetMonthToInteger (string month);
 	void getTodayDate (TimeMacro& timeMacro);
 	void getTomorrowDate (TimeMacro& timeMacro);
+	void getMondayDate (TimeMacro& timeMacro);
+	void getSundayDate (TimeMacro& timeMacro);
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);
 	bool isLeapYear (int year);
 	

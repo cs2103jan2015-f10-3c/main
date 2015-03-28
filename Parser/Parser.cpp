@@ -269,13 +269,19 @@ void Parser::parseShow (string userInput, string commandWord) {
 
 		if (inputToBeParsed == "today") {
 			getTodayDate (timeMacroBeg);
-			getTodayDate (timeMacroEnd);
+			timeMacroEnd = timeMacroBeg;
 			updateCommand (commandWord);
 			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}
 		else if (inputToBeParsed == "tomorrow") {
 			getTomorrowDate (timeMacroBeg);
-			getTomorrowDate (timeMacroEnd);
+			timeMacroEnd = timeMacroBeg;
+			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}
+		else if (inputToBeParsed == "this week") {
+			getMondayDate (timeMacroBeg);
+			getSundayDate (timeMacroEnd);
 			updateCommand (commandWord);
 			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}
@@ -1109,7 +1115,7 @@ string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
 
 //This method is to get today's date, month, year and day
 //and store them in a TimeMacro object
-//which will be passed to its caller.
+//which its caller can access.
 void Parser::getTodayDate (TimeMacro& timeMacro) {
     time_t t = time (0);   // get time now
     struct tm now;
@@ -1127,9 +1133,9 @@ void Parser::getTodayDate (TimeMacro& timeMacro) {
 
 //This method is to get tomorrow's date, month, year and day
 //and store them in a TimeMacro object
-//which will be passed to its caller.
+//which its caller can access.
 void Parser::getTomorrowDate (TimeMacro& timeMacro) {
-    time_t t = time (0);   // get time now
+    time_t t = time (0);   
     struct tm now;
 	localtime_s (&now, &t);
     now.tm_year = now.tm_year + 1900;
@@ -1171,6 +1177,139 @@ void Parser::getTomorrowDate (TimeMacro& timeMacro) {
 	timeMacro.updateMonth (now.tm_mon);
 	timeMacro.updateDate (now.tm_mday);
 	timeMacro.updateDay (dayOfTheWeek);
+}
+
+
+//This method is to get this Monday's date, month, year and day
+//and store them in a TimeMacro object
+//which its caller can access.
+void Parser::getMondayDate (TimeMacro &timeMacro) {
+	int day;
+	int date;
+	time_t t = time (0);   
+    struct tm now;
+	localtime_s (&now, &t);
+    now.tm_year = now.tm_year + 1900;
+    now.tm_mon = now.tm_mon + 1;
+
+	if (now.tm_wday == 0) {
+		day = 6;
+	}
+	else {
+		day = now.tm_wday - 1;
+	}
+	date = now.tm_mday - day;
+
+	if (date < 1) {  //if Monday is on previous month
+		if (now.tm_mon == 0) {   //if it is Jan now
+			date += 31;
+			timeMacro.updateMonth (12);
+			timeMacro.updateYear (now.tm_year - 1);
+		}
+		else {
+			timeMacro.updateMonth (now.tm_mon - 1);
+			timeMacro.updateYear (now.tm_year);
+			if (now.tm_mon == 1 ||
+				now.tm_mon == 3 ||
+				now.tm_mon == 5 ||
+				now.tm_mon == 7 ||
+				now.tm_mon ==8 ||
+				now.tm_mon == 10) {  //Feb, Apr, Jun, Aug, Sep, Nov
+				date += 31;
+			}
+			else if (now.tm_mon == 2) {  //Mar
+				if (isLeapYear (now.tm_year)) {
+					date += 29;
+				}
+				else {
+					date += 28;
+				}
+			}
+			else if (now.tm_mon == 4 ||
+				now.tm_mon == 6 ||
+				now.tm_mon == 9 ||
+				now.tm_mon == 11) {  //May, Jul, Oct, Dec
+				date += 30;
+			}
+		}
+	}
+	else {
+		timeMacro.updateMonth (now.tm_mon);
+		timeMacro.updateYear (now.tm_year);
+	}
+
+	timeMacro.updateDate (date);
+	timeMacro.updateDay ("Monday");
+
+}
+
+
+//This method is to get this Sunday's date, month, year and day
+//and store them in a TimeMacro object
+//which its caller can access.
+void Parser::getSundayDate (TimeMacro &timeMacro) {
+	int day;
+	int date;
+	time_t t = time (0);   
+    struct tm now;
+	localtime_s (&now, &t);
+    now.tm_year = now.tm_year + 1900;
+    now.tm_mon = now.tm_mon + 1;
+
+	if (now.tm_wday == 0) {
+		day = 0;
+	}
+	else {
+		day = 7 - now.tm_wday;
+	}
+	date = now.tm_mday + day;
+
+	if (now.tm_mon != 11 || date <=31) { //not end of Dec
+		timeMacro.updateYear (now.tm_year);
+		if ((now.tm_mon == 0 || //Jan, Mar, May, Jul, Aug, Oct
+			now.tm_mon == 2 ||
+			now.tm_mon == 4 ||
+			now.tm_mon == 6 ||
+			now.tm_mon == 7 ||
+			now.tm_mon == 9) && 
+			date > 31) {
+				date -= 31;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+
+		else if ((now.tm_mon == 3 ||  //Apr, Jun, Sep, Nov
+			now.tm_mon == 5 ||
+			now.tm_mon == 8 ||
+			now.tm_mon == 10) &&
+			date > 30) {
+				date -= 30;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+
+		else if (now.tm_mon == 1 &&  //Feb
+			isLeapYear (now.tm_year) && date > 29) {
+				date -= 29;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+		else if (now.tm_mon == 1 &&
+			!isLeapYear (now.tm_year) && date > 28) {
+				date -= 28;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+
+		else {
+			timeMacro.updateMonth (now.tm_mon);
+		}
+	}
+	else {
+		date -= 31;
+		timeMacro.updateYear (now.tm_year + 1);
+		timeMacro.updateMonth (0);
+	}
+
+
+	timeMacro.updateDate (date);
+	timeMacro.updateDay ("Sunday");
 }
 
 
