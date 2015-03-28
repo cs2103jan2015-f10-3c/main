@@ -19,7 +19,7 @@ namespace UnitTesting
 
 		}
 		
-		//default hour kick in (constructor)
+		//Negative test + default hour kick in (constructor)
 		TEST_METHOD(getUpdateHourTest2)
 		{
 			// TODO: Your test code here
@@ -29,7 +29,7 @@ namespace UnitTesting
 
 		}
 
-		//postive test of get and update hour
+		//postive test of get and update Min
 		TEST_METHOD(getUpdateMinTest)
 		{
 			// TODO: Your test code here
@@ -38,7 +38,7 @@ namespace UnitTesting
 			Assert::AreEqual(0,time.getMin());
 		}
 
-		//default min kick in (constructor)
+		//negative test + default min kick in (constructor)
 		TEST_METHOD(getUpdateMinTest2)
 		{
 			// TODO: Your test code here
@@ -52,7 +52,7 @@ namespace UnitTesting
 	TEST_CLASS(TimeMacroTest)
 	{
 	public:
-		
+		//positive test get and update day
 		TEST_METHOD(getUpdateDayTest)
 		{
 			TimeMacro time;
@@ -61,6 +61,7 @@ namespace UnitTesting
 			Assert::AreEqual(day,time.getDay());
 		}
 
+		//negative test + default test of get and update day
 		TEST_METHOD(getUpdateDayTest2)
 		{
 			TimeMacro time;
@@ -69,11 +70,15 @@ namespace UnitTesting
 			Assert::AreEqual(day,time.getDay());
 		}
 
+		//positive test + boundary case of get and update day
 		TEST_METHOD(getUpdateDateTest)
 		{
 			TimeMacro time;
-			time.updateDate(05);
-			Assert::AreEqual(05,time.getDate());
+			time.updateDate(01);
+			Assert::AreEqual(01,time.getDate());
+
+			time.updateDate(30);
+			Assert::AreEqual(30,time.getDate());
 		}
 
 		TEST_METHOD(getUpdateDateTest2)

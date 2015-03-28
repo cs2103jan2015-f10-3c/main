@@ -70,6 +70,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DataStorage.h" />
+    <ClInclude Include="Storing.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Storage - DataBase.cpp" />

@@ -39,7 +39,7 @@ private:
 	static std::string convertTimeMacroToString(std::string type, int i);
 	static std::string convertTimeMicroToString(std::string type, int i);
 
-
+	
 
 public: 
 	//API for Data Processing
@@ -47,11 +47,13 @@ public:
 	static Data deleteData(int taskNo);
 	static Data editData(int taskNo, Data updatedData);
 	static Data clearData(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data> & getDataList();
 	static void clearDataList();
 	static void saveData();
 	static void loadData(bool& status);
 	static void undoAdd(int uniqueNo);
+	static std::vector<Data>& getDataList();
+
+	static std::vector<Data> displaySearch(std::string keyword);
 
 	//Helper method for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
