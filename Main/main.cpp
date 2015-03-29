@@ -4,7 +4,7 @@
 int main(){
 	bool status = false;
 	OperationCenter::loadData(status);
-
+	cout << endl;
 //Comment @kevin, might be better to store this in O/C
 	cout << "Welcome to BlinkList!" << endl << endl;
 	if(status == true){
