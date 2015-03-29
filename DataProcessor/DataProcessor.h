@@ -28,7 +28,7 @@ public:
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);
-	string clearTask(TimeMacro startTime, TimeMacro endTime);
+	string clearTask();
 	string executeUndo();
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
@@ -40,7 +40,7 @@ public:
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
 	string convertDataObjectToLine(Data task);
-	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
+	string getClearMessage();
 	string getEditMessage(Data uneditedTask);
 
 };

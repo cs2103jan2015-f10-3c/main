@@ -58,27 +58,25 @@ void DataProcessor::loadData(bool& status){
 //period that the user wants tasks to be cleared.
 //Post-condition: tasks under the desired period will be cleared
 //from the current taskList
-string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
+string DataProcessor::clearTask(){
 	ofstream outData;
+	//logging
 	outData.open("log.txt");
 	outData << "start clearing Data";
-	DataBase::clearData(startTime, endTime);
+	DataBase::clearData();
 	outData << "all data cleared";
-	//string clearMessage = getClearMessage(startTime, endTime);
-	//return clearMessage;
-	return " all contents are cleared";
+	
+	string clearMessage = getClearMessage();
+	return clearMessage;
 }
 
-//This function produces the string that contains the clear feature message
-//string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
-//	string clearMessage;
-//	ostringstream out;
-//	out << "All tasks between " << startTime.getDay() << " " << startTime.getDate() << "/" 
-//		<< startTime.getMonth() << "/" << startTime.getYear()
-//		<< "-" << endTime.getDay() << " " << endTime.getDate() << "/" << endTime.getMonth << "/"
-//		<< endTime.getYear() << " are cleared from your schedule." ;
-//	return clearMessage = out.str();
-//}
+//This function produces the response message for clearing Data
+string DataProcessor::getClearMessage(){
+	string clearMessage;
+	ostringstream out;
+	out << " All tasks between are cleared from your schedule." ;
+	return clearMessage = out.str();
+}
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
@@ -86,18 +84,27 @@ string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
 	ofstream outData;
+	//logging
 	outData.open("log.txt");
+	//exception
 	if(taskNumber <= 0){
 		outData << "handling exception:invalid tasknumber";
 		throw std::exception("Invalid Tasknumber Entered");
 	}
-	Data uneditedTask;
+	
 	outData << "start editing data";
-	uneditedTask = DataBase::editData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
+	Data uneditedTask = DataBase::editData(taskNumber, task);
+	string editMessage = getEditMessage(uneditedTask) ;
 	outData << "edit data is done";
 	return editMessage;
 
+}
+
+//This function returns the edit message
+string DataProcessor::getEditMessage(Data uneditedTask){
+	assert (uneditedTask.getDesc() != "\0");
+	string uneditedTaskString = convertDataObjectToLine(uneditedTask) + " is edited\n";
+	return uneditedTaskString;
 }
 
 
@@ -249,17 +256,6 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 
 }
 
-string DataProcessor::getEditMessage(Data uneditedTask){
-	assert (uneditedTask.getDesc() != "\0");
-	string uneditedTaskString;
-	string editMessage;
-	uneditedTaskString = convertDataObjectToLine(uneditedTask);
-	ostringstream out;
-	out << uneditedTaskString << " ";
-	editMessage = out.str(); 
-	
-	return editMessage;
-}
 
 //this function reads in the task number 
 //and update the status of the corresponding
