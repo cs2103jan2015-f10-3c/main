@@ -108,59 +108,51 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 }
 
 
-
+//This function executes undo operation
+//return value is the response message to user
 string DataProcessor::executeUndo(){
-	Data latestData;
-	string latestCommand;
-	vector<Data> latestVector;
-	latestVector = History::getLatestVector();
-	latestCommand = History::getLatestCommand();
-	latestData = History::getLatestData();
-	int uniqueCode;
-	uniqueCode = latestData.getUniqueCode();
+	vector<Data> latestVector = History::getLatestVector();
+	string latestCommand = History::getLatestCommand();
+	Data latestData = History::getLatestData();
+	int	uniqueCode = latestData.getUniqueCode();
+
 	if (latestCommand == "add"){
 		DataBase::undoAdd(uniqueCode);
 	}
 	else if (latestCommand == "delete"){
 		DataBase::addData(latestData);
 	}
-	else if (latestCommand == "edit"){
-		DataBase::clearDataList();
-		for(int i = 0; i != latestVector.size(); i++){
-			DataBase::addData(latestVector[i]);
-		}
+	else if (latestCommand == "edit" || latestCommand == "clear"){
+		undoEditOrClear(latestVector);
 	}
-	else if (latestCommand == "clear"){
-		DataBase::clearDataList();
-		for(int i = 0; i != latestVector.size(); i++){
-			DataBase::addData(latestVector[i]);
-		}
-	}
+
 	string undoMessage = "You have undone your operation";
 	return undoMessage;
+}
+
+//This function restores the dataList in DataBase
+//to its latest version 
+//This is a helper method for Undo
+void DataProcessor::undoEditOrClear(vector<Data> latestVector){
+		DataBase::clearDataList();
+		for(int i = 0; i != latestVector.size(); i++){
+			DataBase::addData(latestVector[i]);
+		}
 }
 
 //This function reads in a Data object and convert it into a string
 //that contains all the information of that data and ready to be displayed
 string DataProcessor::convertDataObjectToString(Data task){
 	assert ( task.getDesc() != "\0");
-	string taskString;
 	ostringstream outData;
-	TimeMacro timeMacroBeg, timeMacroEnd;
-	timeMacroBeg = task.getTimeMacroBeg();
-	timeMacroEnd = task.getTimeMacroEnd();
-	TimeMicro timeMicroBeg, timeMicroEnd;
-	timeMicroBeg = task.getTimeMicroBeg();
-	timeMicroEnd = task.getTimeMicroEnd();
+	TimeMacro timeMacroBeg = task.getTimeMacroBeg();
+	TimeMacro timeMacroEnd = task.getTimeMacroEnd();
+	TimeMicro timeMicroBeg = task.getTimeMicroBeg();
+	TimeMicro timeMicroEnd = task.getTimeMicroEnd();
 	int descriptionWidth = task.getDesc().length();
 	int dateWidth = 40;
 	string timeMicroString = "   ";
 	outData << setw(descriptionWidth) << left << task.getDesc() << endl;
-
-	
-	/*if(timeMacroBeg.getDate() != 0){
-				outData << " ";
-	}*/
 
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
@@ -185,21 +177,19 @@ string DataProcessor::convertDataObjectToString(Data task){
 		}
 		timeMicroString += to_string(timeMicroEnd.getMin());
 	}
-	outData << setw(20) << left << timeMicroString;
-	outData << setfill(' ') << setw(13) << timeMacroBeg.getDay();
+	
+	outData << setw(20) << left << timeMicroString
+			<< setfill(' ') << setw(13) << timeMacroBeg.getDay();
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
 		outData << setw(dateWidth) << right
 				<< timeMacroBeg.getDate() << "-"
 				<< timeMacroBeg.getMonth() << "-"
 				<< timeMacroBeg.getYear();
-
 	}
-
 	
-	taskString = outData.str();
+	string taskString = outData.str();
 	return taskString;
-
 }
 
 //This function reads in the desired keyword to be searched in the current
@@ -211,28 +201,10 @@ string DataProcessor::searchTask(string keyword){
 		outData << "handling exception: empty keyword entere";
 		throw std::exception("Empty Keyword Entered");
 	}
-	DisplayStorage::clearList();
-	vector<Data>& currTaskList = DataBase::getDataList();
-	vector<Data> returnTaskList;
-	//vector<Data>::iterator iter;
-	string taskDescription;
-	size_t found;
-	outData << "start searching for matched tasks";
-	//For every matched task, store it in returnTaskList
-	for(int i = 0; i != currTaskList.size(); i++){
-		taskDescription = currTaskList[i].getDesc();
-		found = taskDescription.find(keyword);
-		if(found != string::npos){
-			DisplayStorage::addData(currTaskList[i]);
-		}
-	}
-	outData << "update current displayList to display matched tasks";
-	returnTaskList = DisplayStorage::getDisplayList();
 
-	//Convert the taskList into a string that is ready for UI to display
-	string returnTaskListString;
-	returnTaskListString = convertTaskListToString(returnTaskList);
-	return returnTaskListString;
+	vector<Data> returnTaskList = DataBase::displaySearch(keyword);
+	string matchedTaskListString = convertTaskListToString(returnTaskList);
+	return matchedTaskListString;
 
 }
 
@@ -240,7 +212,6 @@ string DataProcessor::searchTask(string keyword){
 //them into a string that contains all datas in the vector
 //The string will be ready for display by UI
 string DataProcessor::convertTaskListToString(vector<Data>& taskList){
-	string taskListString;
 	ostringstream outList;
 	int numberOfTask = 1;
 	for(int i = 0; i != taskList.size(); i++){
@@ -251,7 +222,7 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	}
 	assert (numberOfTask >= 1);
 
-	taskListString = outList.str();
+	string taskListString = outList.str();
 	return taskListString;
 
 }

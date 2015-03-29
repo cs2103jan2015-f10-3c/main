@@ -33,6 +33,7 @@ public:
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
 	string markDone(int taskNo);
+	void undoEditOrClear(vector<Data> latestVector);
 	static void showCommands();
 	static void saveData();
 	static void loadData(bool& status);
