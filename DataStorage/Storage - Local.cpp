@@ -1,24 +1,9 @@
-#include "DataStorage.h"
+#include "InternalStorage.h"
 
 std::vector<Data> DataBase::dataList;
 int DataBase::uniqueCodeStore;
 
-std::vector<Data> DataBase::displaySearch(std::string keyword){
-	DisplayStorage::clearList();
 
-	std::string taskDescription;
-	size_t found;
-
-	//For every matched task, store it in returnTaskList
-	for(int i = 0; i != dataList.size(); i++){
-		taskDescription = dataList[i].getDesc();
-		found = taskDescription.find(keyword);
-		if(found != std::string::npos){
-			DisplayStorage::addData(dataList[i]);
-		}
-	}	
-	return DisplayStorage::getDisplayList();
-}
 
 //return the DataBase list 
 //for command such as search

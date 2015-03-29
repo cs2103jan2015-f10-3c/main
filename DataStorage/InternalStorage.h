@@ -1,5 +1,5 @@
-#ifndef DATA_STORAGE_H_
-#define DATA_STORAGE_H_
+#ifndef INTERNAL_STORAGE_H_
+#define INTERNAL_STORAGE_H_
 
 #include <iostream>
 #include <cstdio>
@@ -53,8 +53,6 @@ public:
 	static void undoAdd(int uniqueNo);
 	static std::vector<Data>& getDataList();
 
-	static std::vector<Data> displaySearch(std::string keyword);
-
 	//Helper method for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
@@ -89,7 +87,7 @@ private:
 public:
 	//API for Data Processing
 	static std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data>& getDisplayList();
+	static std::vector<Data>& displaySearch(std::string keyword);
 	static void addData(Data inData);
 	static void clearList();
 

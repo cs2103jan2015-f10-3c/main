@@ -207,7 +207,7 @@ string DataProcessor::searchTask(string keyword){
 	
 	vector<Data> returnTaskList;
 	outData << "update current displayList to display matched tasks";
-	returnTaskList = DataBase::displaySearch(keyword);
+	returnTaskList = DisplayStorage::displaySearch(keyword);
 
 	//Convert the taskList into a string that is ready for UI to display
 	string returnTaskListString;
