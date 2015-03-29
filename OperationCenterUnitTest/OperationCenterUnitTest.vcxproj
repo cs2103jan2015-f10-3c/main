@@ -11,9 +11,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{12BF0E2B-10F1-4E6F-B928-7973D2E94B80}</ProjectGuid>
+    <ProjectGuid>{EF69451E-DD3F-45BB-8326-48FF6894FD1D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>testParser</RootNamespace>
+    <RootNamespace>OperationCenterUnitTest</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -52,7 +52,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Parser;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;C:\Users\Yang\Desktop\Projects\main\Parser;C:\Users\Yang\Desktop\Projects\main\Commons;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Parser;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\OperationCenter;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataProcessor;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -90,14 +90,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="unittest1.cpp" />
+    <ClCompile Include="OperationCenterTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Commons\Commons.vcxproj">
-      <Project>{76a15500-02b2-4482-8610-9fbba376f502}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Parser\Parser.vcxproj">
-      <Project>{65d3adbf-2459-49aa-aa29-df3438fef66a}</Project>
+    <ProjectReference Include="..\OperationCenter\OperationCenter.vcxproj">
+      <Project>{075e28d9-9d3a-424d-adfb-7241a1522057}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
