@@ -1,4 +1,4 @@
-#include "DataStorage.h"
+#include "InternalStorage.h"
 
 std::vector<Data> DisplayStorage::displayList;
 
@@ -37,14 +37,26 @@ std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro
 	return displayList;
 }
 
-// !!unit testing done
-//getter method
-//used for displaying withot time frame e.g for keyword search
-//return the displayList
-std::vector<Data>& DisplayStorage::getDisplayList(){
-	DisplayStorage::updateTaskNo();
+std::vector<Data>& DisplayStorage::displaySearch(std::string keyword){
+	clearList();
+
+	std::string taskDescription;
+	size_t found;
+
+	//For every matched task, store it in returnTaskList
+	for(int i = 0; i != DataBase::dataList.size(); i++){
+		taskDescription = DataBase::dataList[i].getDesc();
+		found = taskDescription.find(keyword);
+		if(found != std::string::npos){
+			addData(DataBase::dataList[i]);
+		}
+	}
+
+	updateTaskNo();
+	
 	return displayList;
 }
+
 
 void DisplayStorage::clearList(){
 	displayList.clear();
@@ -84,12 +96,13 @@ Data DisplayStorage::getData(int taskNo){
 //after sorting or adding
 void DisplayStorage::updateTaskNo(){
 	
-	int TrackNo=1;
+	int trackNo=1;
 		
 	for(int i = 0; i != displayList.size(); i++){
-		if(displayList[i].getTaskNo() != TrackNo){
-			displayList[i].updateTaskNo(TrackNo);
+		if(displayList[i].getTaskNo() != trackNo){
+			displayList[i].updateTaskNo(trackNo);
 		}
+		trackNo++;
 	}
-
+	
 }

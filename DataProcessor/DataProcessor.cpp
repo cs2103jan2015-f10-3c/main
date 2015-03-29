@@ -204,23 +204,10 @@ string DataProcessor::searchTask(string keyword){
 		outData << "handling exception: empty keyword entere";
 		throw std::exception("Empty Keyword Entered");
 	}
-	DisplayStorage::clearList();
-	vector<Data>& currTaskList = DataBase::getDataList();
+	
 	vector<Data> returnTaskList;
-	//vector<Data>::iterator iter;
-	string taskDescription;
-	size_t found;
-	outData << "start searching for matched tasks";
-	//For every matched task, store it in returnTaskList
-	for(int i = 0; i != currTaskList.size(); i++){
-		taskDescription = currTaskList[i].getDesc();
-		found = taskDescription.find(keyword);
-		if(found != string::npos){
-			DisplayStorage::addData(currTaskList[i]);
-		}
-	}
 	outData << "update current displayList to display matched tasks";
-	returnTaskList = DisplayStorage::getDisplayList();
+	returnTaskList = DisplayStorage::displaySearch(keyword);
 
 	//Convert the taskList into a string that is ready for UI to display
 	string returnTaskListString;

@@ -1,4 +1,4 @@
-#include "DataStorage.h"
+#include "InternalStorage.h"
 
 std::string History::latestCommand;
 Data History::latestData;
