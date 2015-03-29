@@ -16,7 +16,7 @@ const string DataProcessor::EDIT_MESSAGE = "is edited";
 string DataProcessor::addTask(Data task){
 	DataBase::addData(task); 
 	ostringstream out;
-	out << convertDataObjectToString (task) << " is added" <<endl;
+	out << convertDataObjectToLine (task) << " is added" <<endl;
 	string addMessage;
 	addMessage = out.str();
 	return addMessage;
@@ -26,7 +26,7 @@ string DataProcessor::addTask(Data task){
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
-	out << convertDataObjectToString (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToLine (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -253,7 +253,7 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 	assert (uneditedTask.getDesc() != "\0");
 	string uneditedTaskString;
 	string editMessage;
-	uneditedTaskString = convertDataObjectToString(uneditedTask);
+	uneditedTaskString = convertDataObjectToLine(uneditedTask);
 	ostringstream out;
 	out << uneditedTaskString << " ";
 	editMessage = out.str(); 
@@ -270,7 +270,7 @@ string DataProcessor::markDone(int taskNo){
 	targetData = DisplayStorage::getData(taskNo);
 	targetData.updateCompleteStatus(true);
 	DataBase::editData(taskNo, targetData);
-	outData << convertDataObjectToString(targetData) << " is done";
+	outData << convertDataObjectToLine(targetData) << " is done";
 	return outData.str();
 }
 
@@ -278,5 +278,68 @@ string DataProcessor::markDone(int taskNo){
 //available at BlinkList
 void DataProcessor::showCommands(){
 	SaveLoad::retrieveCommandList();
+
+}
+
+//This function receives a Data object
+//and converts it into a line of string
+//that is ready to be put into response string
+string DataProcessor::convertDataObjectToLine(Data task){
+	assert ( task.getDesc() != "\0");
+	string taskString;
+	ostringstream outData;
+	TimeMacro timeMacroBeg, timeMacroEnd;
+	timeMacroBeg = task.getTimeMacroBeg();
+	timeMacroEnd = task.getTimeMacroEnd();
+	TimeMicro timeMicroBeg, timeMicroEnd;
+	timeMicroBeg = task.getTimeMicroBeg();
+	timeMicroEnd = task.getTimeMicroEnd();
+
+
+	outData << task.getDesc();
+
+
+	//If there is deadline date associated with the task
+	if(timeMacroBeg.getDate() != 0){
+		outData << " on " 
+			<< timeMacroBeg.getDay() << ", "
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
+				<< timeMacroBeg.getYear();
+
+	}
+	
+	if(timeMacroBeg.getDate() != 0){
+				outData << " ";
+	}
+
+	//Check if there is deadline time associated with the task
+	if(timeMicroBeg.getHour() != -1){
+		outData << "at ";
+		if (timeMicroBeg.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getHour() << ":";
+		if (timeMicroBeg.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getMin();
+
+	}
+	if(timeMicroEnd.getHour() != -1){
+		outData << "-";
+		if (timeMicroEnd.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getHour() << ":";
+		if (timeMicroEnd.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getMin();
+	}
+
+	
+	taskString = outData.str();
+	return taskString;
 
 }

@@ -39,6 +39,7 @@ public:
 
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
+	string convertDataObjectToLine(Data task);
 	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
 	string getEditMessage(Data uneditedTask);
 
