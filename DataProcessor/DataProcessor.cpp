@@ -228,13 +228,13 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 }
 
 
-//this function reads in the task number 
+//This function reads in the task number 
 //and update the status of the corresponding
-//task
+//task as done
 string DataProcessor::markDone(int taskNo){
+	assert(taskNo != 0);
 	ostringstream outData;
-	Data targetData;
-	targetData = DisplayStorage::getData(taskNo);
+	Data targetData = DisplayStorage::getData(taskNo);
 	targetData.updateCompleteStatus(true);
 	DataBase::editData(taskNo, targetData);
 	outData << convertDataObjectToLine(targetData) << " is done";
@@ -245,7 +245,6 @@ string DataProcessor::markDone(int taskNo){
 //available at BlinkList
 void DataProcessor::showCommands(){
 	SaveLoad::retrieveCommandList();
-
 }
 
 //This function receives a Data object
@@ -253,31 +252,20 @@ void DataProcessor::showCommands(){
 //that is ready to be put into response string
 string DataProcessor::convertDataObjectToLine(Data task){
 	assert ( task.getDesc() != "\0");
-	string taskString;
 	ostringstream outData;
-	TimeMacro timeMacroBeg, timeMacroEnd;
-	timeMacroBeg = task.getTimeMacroBeg();
-	timeMacroEnd = task.getTimeMacroEnd();
-	TimeMicro timeMicroBeg, timeMicroEnd;
-	timeMicroBeg = task.getTimeMicroBeg();
-	timeMicroEnd = task.getTimeMicroEnd();
-
-
+	TimeMacro timeMacroBeg = task.getTimeMacroBeg();
+	TimeMacro timeMacroEnd = task.getTimeMacroEnd();
+	TimeMicro timeMicroBeg = task.getTimeMicroBeg();
+	TimeMicro timeMicroEnd = task.getTimeMicroEnd();
+	
 	outData << task.getDesc();
-
-
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
 		outData << " on " 
 			<< timeMacroBeg.getDay() << ", "
 				<< timeMacroBeg.getDate() << "-"
 				<< timeMacroBeg.getMonth() << "-"
-				<< timeMacroBeg.getYear();
-
-	}
-	
-	if(timeMacroBeg.getDate() != 0){
-				outData << " ";
+				<< timeMacroBeg.getYear() << " ";
 	}
 
 	//Check if there is deadline time associated with the task
@@ -305,8 +293,7 @@ string DataProcessor::convertDataObjectToLine(Data task){
 		outData << timeMicroEnd.getMin();
 	}
 
-	
-	taskString = outData.str();
+	string taskString = outData.str();
 	return taskString;
 
 }
