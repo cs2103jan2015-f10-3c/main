@@ -52,7 +52,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataProcessor;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Yang\Desktop\Projects\main\OperationCenter;C:\Users\Yang\Desktop\Projects\main\DataStorage;C:\Users\Yang\Desktop\Projects\main\DataProcessor;C:\Users\Yang\Desktop\Projects\main\Commons;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataProcessor;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
