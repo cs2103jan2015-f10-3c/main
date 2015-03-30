@@ -1,38 +1,5 @@
 #include "InternalStoring.h"
 
-//API for Retrieve list from .txt file
-std::stringstream PrewrittenData::retrieveList(ListType type){
-	std::string list;
-	std::stringstream listStream;
-	std::string txtFile;
-
-	switch(type){
-	case command:
-		txtFile = "all_commands.txt";
-		break;
-	case feature:
-		txtFile = "all_features.txt";
-		break;
-	case heading:
-		txtFile = "heading_template.txt";
-		break;
-	}
-
-	std::ifstream in(txtFile);
-	
-	//if file exists
-	if (in){
-		while (getline(in,list)){
-			listStream << list << std::endl;
-		} 
-	} else {
-		listStream << "List could not be found"; 
-	}
-
-	return listStream;
-}
-
-
 //API for loading Data from txt file
 void LocalStorage::loadData(bool& status){
 	std::ifstream in("test.txt");
@@ -300,7 +267,10 @@ std::string LocalStorage::convertTimeMicroToString(std::string type, int i){
 
 //write heading for output file
 void LocalStorage::writeHeading (std::string fileName, std::ofstream& out){
-	out << PrewrittenData::retrieveList(heading);
+	PrewrittenData list;
+	list.retrieveList(heading);
+
+	out << list.getRetrievedList();
 }
 
 //End of Helper method for Saving Data

@@ -78,6 +78,7 @@
     <ClCompile Include="Storing - Local.cpp" />
     <ClCompile Include="Storing - Display.cpp" />
     <ClCompile Include="Storing - History.cpp" />
+    <ClCompile Include="Storing - PrewrittenData.cpp" />
     <ClCompile Include="Storing - SaveLoad.cpp" />
   </ItemGroup>
   <ItemGroup>

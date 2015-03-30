@@ -38,5 +38,8 @@
     <ClCompile Include="Storing - Facade.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Storing - PrewrittenData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

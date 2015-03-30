@@ -105,12 +105,14 @@ public:
 
 class PrewrittenData {
 private:
-
+	std::stringstream retrievedList;
 
 public:
-	//API for facade class
-	static std::stringstream retrieveList(ListType type);
+	PrewrittenData() {}
 
+	//API for facade class
+	void retrieveList(ListType type);
+	std::stringstream getRetrievedList();
 };
 
 
