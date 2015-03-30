@@ -97,6 +97,7 @@ void Data::updateTimeMicroBeg(TimeMicro inMicroBeg){
 void Data::updatePriority(std::string inPriority){
 	_ASSERTE ( inPriority == "Low" || inPriority == "Medium" ||
 				inPriority == "High" || inPriority == "None" );
+
 	priority = inPriority;
 }
 

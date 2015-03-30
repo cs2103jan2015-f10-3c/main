@@ -18,21 +18,24 @@
     <ClInclude Include="Storing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InternalStorage.h">
+    <ClInclude Include="InternalStoring.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Storage - Display.cpp">
+    <ClCompile Include="Storing - Display.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Storage - History.cpp">
+    <ClCompile Include="Storing - History.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Storage - SaveLoad.cpp">
+    <ClCompile Include="Storing - Local.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Storage - Local.cpp">
+    <ClCompile Include="Storing - SaveLoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Storing - Facade.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

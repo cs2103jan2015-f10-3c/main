@@ -14,7 +14,7 @@ const string DataProcessor::EDIT_MESSAGE = "is edited";
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
 string DataProcessor::addTask(Data task){
-	DataBase::addData(task); 
+	Storing::addData(task); 
 	ostringstream out;
 	out << convertDataObjectToString (task) << " is added" <<endl;
 	string addMessage;
@@ -26,7 +26,7 @@ string DataProcessor::addTask(Data task){
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
-	out << convertDataObjectToString (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToString (Storing::deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -41,11 +41,11 @@ string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 }
 
 void DataProcessor::saveData(){
-	DataBase::saveData();
+	Storing::saveData();
 }
 
 void DataProcessor::loadData(bool& status){
-	DataBase::loadData(status);
+	Storing::loadData(status);
 }
 
 
@@ -54,31 +54,7 @@ void DataProcessor::loadData(bool& status){
 
 
 
-//This function reads in two TimeMacro objects which indicate the 
-//period that the user wants tasks to be cleared.
-//Post-condition: tasks under the desired period will be cleared
-//from the current taskList
-string DataProcessor::clearTask(TimeMacro startTime, TimeMacro endTime){
-	ofstream outData;
-	outData.open("log.txt");
-	outData << "start clearing Data";
-	DataBase::clearData(startTime, endTime);
-	outData << "all data cleared";
-	//string clearMessage = getClearMessage(startTime, endTime);
-	//return clearMessage;
-	return " all contents are cleared";
-}
 
-//This function produces the string that contains the clear feature message
-//string DataProcessor::getClearMessage(TimeMacro startTime, TimeMacro endTime){
-//	string clearMessage;
-//	ostringstream out;
-//	out << "All tasks between " << startTime.getDay() << " " << startTime.getDate() << "/" 
-//		<< startTime.getMonth() << "/" << startTime.getYear()
-//		<< "-" << endTime.getDay() << " " << endTime.getDate() << "/" << endTime.getMonth << "/"
-//		<< endTime.getYear() << " are cleared from your schedule." ;
-//	return clearMessage = out.str();
-//}
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
@@ -93,40 +69,44 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	}
 	Data uneditedTask;
 	outData << "start editing data";
-	uneditedTask = DataBase::editData(taskNumber, task);
+	uneditedTask = Storing::changeData(taskNumber, task);
 	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
 	outData << "edit data is done";
 	return editMessage;
 
 }
 
+string DataProcessor::clearTask(){
+	Storing::clearDataList();
+
+	return "response";
+}
 
 
 string DataProcessor::executeUndo(){
 	Data latestData;
 	string latestCommand;
 	vector<Data> latestVector;
-	latestVector = History::getLatestVector();
-	latestCommand = History::getLatestCommand();
-	latestData = History::getLatestData();
-	int uniqueCode;
-	uniqueCode = latestData.getUniqueCode();
+	latestVector = Storing::getLatestVector();
+	latestCommand = Storing::getLatestCommand();
+	latestData = Storing::getLatestData();
+
 	if (latestCommand == "add"){
-		DataBase::undoAdd(uniqueCode);
+		Storing::undoAdd();
 	}
 	else if (latestCommand == "delete"){
-		DataBase::addData(latestData);
+		Storing::addData(latestData);
 	}
 	else if (latestCommand == "edit"){
-		DataBase::clearDataList();
+		Storing::clearDataList();
 		for(int i = 0; i != latestVector.size(); i++){
-			DataBase::addData(latestVector[i]);
+			Storing::addData(latestVector[i]);
 		}
 	}
 	else if (latestCommand == "clear"){
-		DataBase::clearDataList();
+		Storing::clearDataList();
 		for(int i = 0; i != latestVector.size(); i++){
-			DataBase::addData(latestVector[i]);
+			Storing::addData(latestVector[i]);
 		}
 	}
 	string undoMessage = "You have undone your operation";
@@ -207,7 +187,7 @@ string DataProcessor::searchTask(string keyword){
 	
 	vector<Data> returnTaskList;
 	outData << "update current displayList to display matched tasks";
-	returnTaskList = DisplayStorage::displaySearch(keyword);
+	returnTaskList = Storing::displaySearch(keyword);
 
 	//Convert the taskList into a string that is ready for UI to display
 	string returnTaskListString;
@@ -254,9 +234,9 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 string DataProcessor::markDone(int taskNo){
 	ostringstream outData;
 	Data targetData;
-	targetData = DisplayStorage::getData(taskNo);
+	targetData = Storing::getData(taskNo);
 	targetData.updateCompleteStatus(true);
-	DataBase::editData(taskNo, targetData);
+	Storing::changeData(taskNo, targetData);
 	outData << convertDataObjectToString(targetData) << " is done";
 	return outData.str();
 }
@@ -264,6 +244,6 @@ string DataProcessor::markDone(int taskNo){
 //This function calls up a list of commands 
 //available at BlinkList
 void DataProcessor::showCommands(){
-	SaveLoad::retrieveCommandList();
+	Storing::retrieveCommandList();
 
 }
