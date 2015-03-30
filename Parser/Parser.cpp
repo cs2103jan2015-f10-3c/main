@@ -4,21 +4,16 @@ const unsigned int Parser::LENGTH_OF_DATE_FULL_NUMBER = 5;  //"dd/mm"
 const unsigned int Parser::LENGTH_OF_DATE_ABBRE_NUMBER = 3;  //"d/m"
 const unsigned int Parser::LENGTH_OF_DATE_FULL_ALPHABET = 6;  //"dd MMM"
 const unsigned int Parser::LENGTH_OF_DATE_ABBRE_ALPHABET = 5;  //"d MMM"
-const string Parser::DATE_FIRST_DIGIT = "0123";
-const string Parser::DATE_SECOND_DIGIT = "0123456789";
-const string Parser::MONTH_FIRST_DIGIT = "01";
-const string Parser::MONTH_SECOND_DIGIT = "0123456789";
-const string Parser::YEAR_FIRST_DIGIT = "2";
-const string Parser::YEAR_SECOND_DIGIT = "0123456789";
-const string Parser::YEAR_THIRD_DIGIT = "0123456789";
-const string Parser::YEAR_FOURTH_DIGIT = "0123456789";
+const char Parser::DATE_FIRST_DIGIT[] = "0123";
+const char Parser::MONTH_FIRST_DIGIT[] = "01";
+const char Parser::YEAR_FIRST_DIGIT[] = "2";
 const unsigned int Parser::LENGTH_OF_STARTING_TIME = 5;  //"09:00"
 const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 11;  //"09:00-10:30"
-const string Parser::HOUR_FIRST_DIGIT = "012";
-const string Parser::HOUR_SECOND_DIGIT = "01234567890";
-const string Parser::MINUTE_FIRST_DIGIT = "012345";
-const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
-//const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
+const char Parser::TWENTY_FOUR_HOUR_FIRST_DIGIT[] = "012";
+const char Parser::TWELVE_HOUR_FIRST_DIGIT[] = "01";
+const char Parser::MINUTE_FIRST_DIGIT[] = "012345";
+const char Parser::NON_NEGATIVE_DIGIT[] = "0123456789";
+const char Parser::POSITIVE_DIGIT[] = "123456789";
 const char Parser::ERROR_MESSAGE_COMMAND[] = "Please enter the correct command";
 const char Parser::ERROR_MESSAGE_INPUT[] = "Please enter correct input following the command word";
 const char Parser::ERROR_MESSAGE_EDIT[] = "Please enter content you want to edit";
@@ -646,11 +641,11 @@ int Parser::convertStringToInteger (string index) {
 //The string firstly needs to be longer than the date format.
 bool Parser::isDateNumber (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL_NUMBER) {
-		if (searchSubstring ("0123", inputToBeParsed[0]) &&
-			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+		if (searchSubstring (DATE_FIRST_DIGIT, inputToBeParsed[0]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 			inputToBeParsed[2] == '/' &&
-			searchSubstring ("01", inputToBeParsed[3]) &&
-			searchSubstring ("0123456789", inputToBeParsed[4])) {
+			searchSubstring (MONTH_FIRST_DIGIT, inputToBeParsed[3]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
 				if ((inputToBeParsed[0] == '3' &&
 					inputToBeParsed[1] > '1') ||  //date > 31
 					(inputToBeParsed[0] == '0' &&
@@ -668,15 +663,15 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 	}
 
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE_NUMBER) {
-		if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+		if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
 			inputToBeParsed[1] == '/' &&
-			searchSubstring ("123456789", inputToBeParsed[2])) {
+			searchSubstring (POSITIVE_DIGIT, inputToBeParsed[2])) {
 				return true;
 		}
-		else if (searchSubstring ("0123", inputToBeParsed[0]) &&
-			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+		else if (searchSubstring (DATE_FIRST_DIGIT, inputToBeParsed[0]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 			inputToBeParsed[2] == '/' &&
-			searchSubstring ("123456789", inputToBeParsed[3])) {
+			searchSubstring (POSITIVE_DIGIT, inputToBeParsed[3])) {
 				if ((inputToBeParsed[0] == '0' &&
 					inputToBeParsed[1] == '0') ||
 					(inputToBeParsed[0] == '3' &&
@@ -687,10 +682,10 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 					return true;
 				}
 		}
-		else if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+		else if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
 			inputToBeParsed[1] == '/' &&
-			searchSubstring ("01", inputToBeParsed[2]) &&
-			searchSubstring ("0123456789", inputToBeParsed[3])) {
+			searchSubstring (MONTH_FIRST_DIGIT, inputToBeParsed[2]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3])) {
 				if ((inputToBeParsed[2] == '0' &&
 					inputToBeParsed[3] == '0') ||
 					(inputToBeParsed[2] == '1' &&
@@ -717,10 +712,10 @@ bool Parser::isYearNumber (string inputToBeParsed) {
 	if (end == 1 || end == 2) {
 		inputToBeParsed = inputToBeParsed.substr (end + 1);
 		if (inputToBeParsed[0] == '/' &&
-			searchSubstring ("2", inputToBeParsed[1]) &&
-			searchSubstring ("0123456789", inputToBeParsed[2]) &&
-			searchSubstring ("0123456789", inputToBeParsed[3]) &&
-			searchSubstring ("0123456789", inputToBeParsed[4])) {
+			searchSubstring (YEAR_FIRST_DIGIT, inputToBeParsed[1]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[2]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
 				return true;
 		}
 	}
@@ -763,8 +758,8 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 	month.push_back ("dec");
 
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL_ALPHABET) {
-		if (searchSubstring ("0123", inputToBeParsed[0]) &&
-			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+		if (searchSubstring (DATE_FIRST_DIGIT, inputToBeParsed[0]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 			inputToBeParsed[2] == ' ' &&
 			isStringEqual (inputToBeParsed.substr (3, 3), month)) {
 				if ((inputToBeParsed[0] == '0' &&
@@ -780,7 +775,7 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 	}
 
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE_ALPHABET) {
-		if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+		if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
 			inputToBeParsed[1] == ' ' &&
 			isStringEqual (inputToBeParsed.substr(2, 3), month)) {
 				return true;
@@ -797,10 +792,10 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 //else, it returns false
 bool Parser::isYearAlphabet (string inputToBeParsed) {
 		if (inputToBeParsed[0] == ' ' &&
-			searchSubstring ("2", inputToBeParsed[1]) &&
-			searchSubstring ("0123456789", inputToBeParsed[2]) &&
-			searchSubstring ("0123456789", inputToBeParsed[3]) &&
-			searchSubstring ("0123456789", inputToBeParsed[4])) {
+			searchSubstring (YEAR_FIRST_DIGIT, inputToBeParsed[1]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[2]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
 				return true;
 		}
 	
@@ -815,11 +810,11 @@ bool Parser::isYearAlphabet (string inputToBeParsed) {
 //in order to be recognised as a starting time.
 bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_STARTING_TIME) {
-		if (searchSubstring ("012", inputToBeParsed[0]) &&
-			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+		if (searchSubstring (TWENTY_FOUR_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 			inputToBeParsed[2] == ':' &&
-			searchSubstring ("012345", inputToBeParsed[3]) &&
-			searchSubstring ("0123456789", inputToBeParsed[4])) {
+			searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
 				if (inputToBeParsed[0] == '2' &&
 					inputToBeParsed[1] > '3') {
 						throw ERROR_MESSAGE_TIME;
@@ -828,10 +823,10 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 					return true;
 				}
 		}
-		else if (searchSubstring ("0123456789", inputToBeParsed[0]) &&
+		else if (searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[0]) &&
 			inputToBeParsed[1] == ':' &&
-			searchSubstring ("012345", inputToBeParsed[2]) &&
-			searchSubstring ("0123456789", inputToBeParsed[3])) {
+			searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3])) {
 				return true;
 		}
 		else {
@@ -855,11 +850,11 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 			end = inputToBeParsed.find_first_of ('-');
 			if (end != string::npos) {
 				inputToBeParsed = inputToBeParsed.substr (end + 1);
-				if (searchSubstring ("012", inputToBeParsed[0]) &&
-					searchSubstring ("0123456789", inputToBeParsed[1]) &&
+				if (searchSubstring (TWENTY_FOUR_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
+					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 					inputToBeParsed[2] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[3]) &&
-					searchSubstring ("0123456789", inputToBeParsed[4])) {
+					searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
+					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
 						if (inputToBeParsed[0] == '2' &&
 							inputToBeParsed[1] > '3') {
 								throw ERROR_MESSAGE_TIME;
@@ -869,10 +864,10 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 						}
 
 				}
-				else if (searchSubstring ("0123456789", inputToBeParsed[0]) &&
+				else if (searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[0]) &&
 					inputToBeParsed[1] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[2]) &&
-					searchSubstring ("0123456789", inputToBeParsed[3])) {
+					searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
+					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3])) {
 						return true;
 				}
 			}
@@ -897,9 +892,9 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 		end = inputToBeParsed.find_first_of (".");	
 			
 		if (end == 1) { //case "9.00am"
-			if (searchSubstring ("123456789", inputToBeParsed[0]) &&
-				searchSubstring ("012345", inputToBeParsed[2]) &&
-				searchSubstring ("0123456789", inputToBeParsed[3]) &&
+			if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
+				searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
+				searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
 				(inputToBeParsed[4] == 'a' ||
 				inputToBeParsed[4] == 'p') &&
 				inputToBeParsed[5] == 'm') {
@@ -908,10 +903,10 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 		}
 		else if (end == 2) {
 			//case "09.00am"
-			if (searchSubstring ("01", inputToBeParsed[0]) &&
-				searchSubstring ("0123456789", inputToBeParsed[1]) &&
-				searchSubstring ("012345", inputToBeParsed[3]) &&
-				searchSubstring ("0123456789", inputToBeParsed[4]) &&
+			if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
+				searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
+				searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
+				searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4]) &&
 				(inputToBeParsed[5] == 'a' ||
 				inputToBeParsed[5] == 'p') &&
 				inputToBeParsed[6] == 'm') {
@@ -927,15 +922,15 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 			}
 		}
 		//case "9am"
-		else if (searchSubstring ("123456789", inputToBeParsed[0]) &&  
+		else if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&  
 			(inputToBeParsed[1] == 'a' ||
 			inputToBeParsed[1] == 'p') &&
 			inputToBeParsed[2] == 'm') {
 				return true;
 		}
 		//case "19am"
-		else if (searchSubstring ("01", inputToBeParsed[0]) &&
-			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+		else if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 			(inputToBeParsed[2] == 'a' ||
 			inputToBeParsed[2] == 'p') &&
 			inputToBeParsed[3] == 'm') {
@@ -943,7 +938,7 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 					inputToBeParsed[1] == '0') ||
 					(inputToBeParsed[0] == '1' &&
 					inputToBeParsed[1] > '2')) {
-						throw "Please enter a valid time";
+						throw ERROR_MESSAGE_TIME;
 				}
 				else {
 					return true;
@@ -976,9 +971,9 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 			if (end != string::npos) {
 				//case "9.00am"
 				if (end == 1) {
-					if (searchSubstring ("123456789", inputToBeParsed[0]) &&
-						searchSubstring ("012345", inputToBeParsed[2]) &&
-						searchSubstring ("0123456789", inputToBeParsed[3]) &&
+					if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
+						searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
+						searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
 						(inputToBeParsed[4] == 'a' ||
 						inputToBeParsed[4] == 'p') &&
 						inputToBeParsed[5] == 'm') {
@@ -987,10 +982,10 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 				}
 				else if (end == 2) {
 					//case "09.00am"
-					if (searchSubstring ("01", inputToBeParsed[0]) &&
-						searchSubstring ("0123456789", inputToBeParsed[1]) &&
-						searchSubstring ("012345", inputToBeParsed[3]) &&
-						searchSubstring ("0123456789", inputToBeParsed[4]) &&
+					if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
+						searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
+						searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
+						searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4]) &&
 						(inputToBeParsed[5] == 'a' ||
 						inputToBeParsed[5] == 'p') &&
 						inputToBeParsed[6] == 'm') {
@@ -1008,15 +1003,15 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 			}
 			else {
 				//case "9am"
-				if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+				if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
 					(inputToBeParsed[1] == 'a' ||
 					inputToBeParsed[1] == 'p') &&
 					inputToBeParsed[2] == 'm') {
 						return true;
 				}
 				//case "19am"
-				else if (searchSubstring ("01", inputToBeParsed[0]) &&
-					searchSubstring ("0123456789", inputToBeParsed[1]) &&
+				else if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
+					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 					(inputToBeParsed[2] == 'a' ||
 					inputToBeParsed[2] == 'p') &&
 					inputToBeParsed[3] == 'm') {
@@ -1036,7 +1031,7 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 }
 
 //This method is to check if a specific character is in a string.
-bool Parser::searchSubstring (string timeString, char substring) {
+bool Parser::searchSubstring (const string timeString, char substring) {
 	unsigned int index = 0;
 	for (index = 0; index < timeString.size(); index ++) {
 		if (substring == timeString[index]) {
