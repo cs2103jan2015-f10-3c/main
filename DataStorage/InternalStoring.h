@@ -31,6 +31,16 @@ private:
 	static void radixCollect(std::queue<Data> digitQ[]);
 	static Data getData(int uniqueNo);
 
+	//Helper methods for internal working Save and Load
+	static void writeHeading (std::string fileName, std::ofstream& out);
+	static void parseLoad(std::string strData, int& i);
+	static std::string tokenizerSlash(std::string& str);
+	static std::string tokenizerSpace(std::string& str);
+	static TimeMacro macroParser(std::string tempMacro);
+	static TimeMicro microParser(std::string tempMicro);
+	static std::string convertTimeMacroToString(std::string type, int i);
+	static std::string convertTimeMicroToString(std::string type, int i);
+
 
 public: 
 	//API for Facade Class
@@ -40,6 +50,9 @@ public:
 	static void clearDataList();
 	static void undoAdd();
 	static std::vector<Data>& getDataList();
+	
+	static void saveData();
+	static void loadData(bool& status);
 
 	//API for DisplayStorage
 	static std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
@@ -90,23 +103,13 @@ public:
 	static int getUniqueCode(int taskNo);
 };
 
-class SaveLoad {
+class PrewrittenData {
 private:
-	//Helper methods for internal working
-	static void writeHeading (std::string fileName, std::ofstream& out);
-	static void parseLoad(std::string strData, int& i);
-	static std::string tokenizerSlash(std::string& str);
-	static std::string tokenizerSpace(std::string& str);
-	static TimeMacro macroParser(std::string tempMacro);
-	static TimeMicro microParser(std::string tempMicro);
-	static std::string convertTimeMacroToString(std::string type, int i);
-	static std::string convertTimeMicroToString(std::string type, int i);
+
 
 public:
 	//API for facade class
 	static std::stringstream retrieveList(ListType type);
-	static void saveData();
-	static void loadData(bool& status);
 
 };
 

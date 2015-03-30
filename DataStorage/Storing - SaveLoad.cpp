@@ -1,7 +1,7 @@
 #include "InternalStoring.h"
 
 //API for Retrieve list from .txt file
-std::stringstream SaveLoad::retrieveList(ListType type){
+std::stringstream PrewrittenData::retrieveList(ListType type){
 	std::string list;
 	std::stringstream listStream;
 	std::string txtFile;
@@ -34,7 +34,7 @@ std::stringstream SaveLoad::retrieveList(ListType type){
 
 
 //API for loading Data from txt file
-void SaveLoad::loadData(bool& status){
+void LocalStorage::loadData(bool& status){
 	std::ifstream in("test.txt");
 	//if file exists
 	if (in){
@@ -71,7 +71,7 @@ void SaveLoad::loadData(bool& status){
 
 
 //API for saving data into file
-void SaveLoad::saveData(){
+void LocalStorage::saveData(){
 	std::string fileName = "test.txt";
 	std::ofstream out;
 	out.open(fileName.c_str());
@@ -113,7 +113,7 @@ void SaveLoad::saveData(){
 //Start of Helper Methods for Loading Data
 
 //helper method for loadDate to parse input
-void SaveLoad::parseLoad(std::string strData, int& i){
+void LocalStorage::parseLoad(std::string strData, int& i){
 	std::stringstream streamConverter; //to help convert string to int
 
 	std::string tempMacroTBeg;
@@ -172,7 +172,7 @@ void SaveLoad::parseLoad(std::string strData, int& i){
 }
 
 //helper method to parseLoad to parse string and convert to TimeMacro
-TimeMacro SaveLoad::macroParser(std::string tempMacro){
+TimeMacro LocalStorage::macroParser(std::string tempMacro){
 	TimeMacro temp;
 	std::string inDay;
 	int inDate;
@@ -192,7 +192,7 @@ TimeMacro SaveLoad::macroParser(std::string tempMacro){
 }
 
 //helper method to parseLoad to parse string to TimeMicro
-TimeMicro SaveLoad::microParser(std::string tempMicro){
+TimeMicro LocalStorage::microParser(std::string tempMicro){
 	TimeMicro temp;
 	int inHour;
 	int inMin;
@@ -206,7 +206,7 @@ TimeMicro SaveLoad::microParser(std::string tempMicro){
 }
 
 //helper method for MicroParser and Macro Parser to get individual token
-std::string SaveLoad::tokenizerSlash(std::string& str){
+std::string LocalStorage::tokenizerSlash(std::string& str){
 	size_t start = 0;
 	size_t end = str.find_first_of("/");
 	std::string firstToken = str.substr(start, end - start); //get the first token
@@ -218,7 +218,7 @@ std::string SaveLoad::tokenizerSlash(std::string& str){
 }
 
 //helper method for loadParser to get individual token
-std::string SaveLoad::tokenizerSpace(std::string& str){
+std::string LocalStorage::tokenizerSpace(std::string& str){
 	size_t start = str.find_first_not_of('\t');
 	
 	//if there is more than one \t
@@ -245,7 +245,7 @@ std::string SaveLoad::tokenizerSpace(std::string& str){
 //Start of Helper method for saving Data
 
 //helper method to convert TimeMacro into String
-std::string SaveLoad::convertTimeMacroToString(std::string type, int i){
+std::string LocalStorage::convertTimeMacroToString(std::string type, int i){
 	std::string tMacro;
 
 	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
@@ -275,7 +275,7 @@ std::string SaveLoad::convertTimeMacroToString(std::string type, int i){
 }
 
 //helper method to convert TimeMicro into String
-std::string SaveLoad::convertTimeMicroToString(std::string type, int i){
+std::string LocalStorage::convertTimeMicroToString(std::string type, int i){
 	std::string tMicro;
 
 	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
@@ -299,8 +299,8 @@ std::string SaveLoad::convertTimeMicroToString(std::string type, int i){
 }
 
 //write heading for output file
-void SaveLoad::writeHeading (std::string fileName, std::ofstream& out){
-	out << retrieveList(heading);
+void LocalStorage::writeHeading (std::string fileName, std::ofstream& out){
+	out << PrewrittenData::retrieveList(heading);
 }
 
 //End of Helper method for Saving Data
