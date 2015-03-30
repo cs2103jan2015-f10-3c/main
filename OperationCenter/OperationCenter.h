@@ -25,6 +25,7 @@ public:
 	static string getDisplay();
 	static void saveData();
 	static void loadData(bool& status);
+	static string showWelcomeMessage(bool status);
 };
 
 class Logic{
@@ -51,6 +52,7 @@ public:
 	static string displayIfEmpty(string returnDisplay, TimeMacro current, TimeMacro start, TimeMacro end);
 	static string displayToday(string returnDisplay, TimeMacro current);
 	static TimeMacro setCurrentTime();
+	static string showWelcomeMessage(bool status);
 };
 
 class Feedback{

@@ -13,6 +13,21 @@ void Logic::loadData(bool& status){
 	DataProcessor::loadData(status);
 }
 
+string Logic::showWelcomeMessage(bool status){
+	ostringstream out;
+	out << "Welcome to BlinkList!" << endl << endl;
+	if(status == true){
+		out << "Today's Agenda is as follows:" << endl << endl;
+		executeInput("show today");
+		out << Feedback::getDisplay() << endl;
+
+	} else { 
+		out << "There is no saved data" << endl;
+	}
+	string welcomeMessage = out.str();
+	return welcomeMessage;
+}
+
 TimeMacro Logic::setCurrentTime(){
 	
 	time_t t = time (0);   // get time now

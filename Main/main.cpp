@@ -4,20 +4,8 @@
 int main(){
 	bool status = false;
 	OperationCenter::loadData(status);
-
-//Comment @kevin, might be better to store this in O/C
-	cout << "Welcome to BlinkList!" << endl << endl;
-	if(status == true){
-		cout << "Today's Agenda is as follows:" << endl << endl;
-		OperationCenter::executeInput("show today");
-		cout << OperationCenter::getDisplay() << endl;
-
-	} else { 
-		cout << "There is no saved data" << endl;
-	}
-//End of comment @Kevin
 	
-
+	cout<< OperationCenter::showWelcomeMessage(status);
 
 	string userInput;
 	getline(cin, userInput);
