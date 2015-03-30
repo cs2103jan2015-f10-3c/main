@@ -14,7 +14,11 @@ const string DataProcessor::EDIT_MESSAGE = "is edited";
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
 string DataProcessor::addTask(Data task){
-	DataBase::addData(task); 
+	//DataBase::addData(task); 
+	AddData addData(task);
+	DataModifier agent;
+	agent.execute(addData);
+
 	ostringstream out;
 	out << convertDataObjectToLine (task) << " is added" <<endl;
 	string addMessage;
@@ -25,8 +29,11 @@ string DataProcessor::addTask(Data task){
 //This function reads in the number of the task to be deleted,
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
+	DeleteData deleteData;
+	DataModifier agent;
+
 	ostringstream out;
-	out << convertDataObjectToLine (DataBase::deleteData(number)) << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToLine (agent.execute(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -36,16 +43,16 @@ string DataProcessor::deleteTask(int number){
 //then return the string which contains the list of task belonging to the desired time frame
 string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 	string taskString; 
-	taskString = convertTaskListToString(DisplayStorage::getDisplayList(startTime, endTime));
+	taskString = convertTaskListToString(StorageRetrieval::display(startTime,endTime));
 	return taskString;
 }
 
 void DataProcessor::saveData(){
-	DataBase::saveData();
+	StorageRetrieval::saveData();
 }
 
 void DataProcessor::loadData(bool& status){
-	DataBase::loadData(status);
+	StorageRetrieval::loadData(status);
 }
 
 
