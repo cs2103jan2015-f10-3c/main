@@ -73,7 +73,13 @@ private:
 	static const string MINUTE_FIRST_DIGIT;
 	static const string MINUTE_SECOND_DIGIT;
 	//static const unsigned int LENGTH_OF_ATTRIBUTE;
-	static const string ERROR_MESSAGE_COMMAND;
+	static const char ERROR_MESSAGE_COMMAND[100];
+	static const char ERROR_MESSAGE_INPUT[100];
+	static const char ERROR_MESSAGE_EDIT[100];
+	static const char ERROR_MESSAGE_TASK_NO[100];
+	static const char ERROR_MESSAGE_SHOW[100];
+	static const char ERROR_MESSAGE_DATE[100];
+	static const char ERROR_MESSAGE_TIME[100];
 
 public: 
 	//default constructor

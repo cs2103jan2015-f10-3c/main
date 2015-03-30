@@ -19,7 +19,13 @@ const string Parser::HOUR_SECOND_DIGIT = "01234567890";
 const string Parser::MINUTE_FIRST_DIGIT = "012345";
 const string Parser::MINUTE_SECOND_DIGIT = "0123456789";
 //const unsigned int Parser::LENGTH_OF_ATTRIBUTE = 4;
-const string Parser::ERROR_MESSAGE_COMMAND = "Please enter the correct command";
+const char Parser::ERROR_MESSAGE_COMMAND[] = "Please enter the correct command";
+const char Parser::ERROR_MESSAGE_INPUT[] = "Please enter correct input following the command word";
+const char Parser::ERROR_MESSAGE_EDIT[] = "Please enter content you want to edit";
+const char Parser::ERROR_MESSAGE_TASK_NO[] = "Please enter correct task number after command word";
+const char Parser::ERROR_MESSAGE_SHOW[] = "Please enter correct time period or task type";
+const char Parser::ERROR_MESSAGE_DATE[] = "Please enter the correct date";
+const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
 
 
 //This method is called by Operation Center.
@@ -71,7 +77,7 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 		parseClear (userInput, commandWord);
 	}
 	else {
-		throw "Please enter the correct command";
+		throw ERROR_MESSAGE_COMMAND;
 	}
 }
 
@@ -124,7 +130,7 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		updateDesc (desc);
 	}
 	else {
-		throw "Please enter correct input following the command word";
+		throw ERROR_MESSAGE_INPUT;
 	}
 }
 
@@ -175,11 +181,11 @@ void Parser::parseEdit (string userInput, string commandWord) {
 		}
 
 		else {
-			throw "Please enter content you want to edit";
+			throw ERROR_MESSAGE_EDIT;
 		}
 	}
 	else {
-		throw "Please enter correct input following the command word";
+		throw ERROR_MESSAGE_INPUT;
 	}
 }
 
@@ -202,7 +208,7 @@ void Parser::parseSearch (string userInput, string commandWord) {
 		}
 	}
 	else {
-		throw "Please enter correct input following the command word";
+		throw ERROR_MESSAGE_INPUT;
 	}
 }
 
@@ -226,7 +232,7 @@ void Parser::parseDelete (string userInput, string commandWord) {
 		updateTaskNo (taskNo);
 	}
 	else {
-		throw "Please enter correct task number after command word";
+		throw ERROR_MESSAGE_TASK_NO;
 	}
 }
 
@@ -244,7 +250,7 @@ void Parser::parseDone (string userInput, string commandWord) {
 		updateStatus (true);
 	}
 	else {
-		throw "Please enter correct task number after command word";
+		throw ERROR_MESSAGE_TASK_NO;
 	}
 }
 
@@ -297,11 +303,11 @@ void Parser::parseShow (string userInput, string commandWord) {
 				updateCommand (commandWord);
 		}
 		else {
-			throw "Please enter correct time period or task type";
+			throw ERROR_MESSAGE_SHOW;
 		}
 	}
 	else {
-		throw "Please enter correct time period or task type";
+		throw ERROR_MESSAGE_SHOW;
 	}
 }
 
@@ -624,7 +630,7 @@ bool Parser::isInteger (string index) {
 //An exception will be thrown if the string is not an integer string.
 int Parser::convertStringToInteger (string index) {
 	if (!isInteger (index)) {
-		throw "Please enter correct task number after command word";
+		throw ERROR_MESSAGE_TASK_NO;
 	}
 	else {
 		int taskNo = atoi (index.c_str());
@@ -653,7 +659,7 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 					inputToBeParsed[4] == '0') || //month = 00
 					(inputToBeParsed[3] == '1' &&
 					inputToBeParsed[4] > '2')) { //month > 12
-						throw "Please enter a valid date";
+						throw ERROR_MESSAGE_DATE;
 				}
 				else {
 					return true;
@@ -675,7 +681,7 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 					inputToBeParsed[1] == '0') ||
 					(inputToBeParsed[0] == '3' &&
 					inputToBeParsed[1] > '1')) {
-						throw "Please enter a valid date";
+						throw ERROR_MESSAGE_DATE;
 				}
 				else {
 					return true;
@@ -689,7 +695,7 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 					inputToBeParsed[3] == '0') ||
 					(inputToBeParsed[2] == '1' &&
 					inputToBeParsed[3] > '2')) {
-						throw "Please enter a valid date";
+						throw ERROR_MESSAGE_DATE;
 				}
 				else {
 					return true;
@@ -765,7 +771,7 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 					inputToBeParsed[1] == '0') ||
 					(inputToBeParsed[0] == '3' &&
 					inputToBeParsed[1] > '1')) {
-						throw "Please enter a valid date";
+						throw ERROR_MESSAGE_DATE;
 				}
 				else {
 					return true;
@@ -816,7 +822,7 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[4])) {
 				if (inputToBeParsed[0] == '2' &&
 					inputToBeParsed[1] > '3') {
-						throw "Please enter a valid time";
+						throw ERROR_MESSAGE_TIME;
 				}
 				else {
 					return true;
@@ -856,7 +862,7 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 					searchSubstring ("0123456789", inputToBeParsed[4])) {
 						if (inputToBeParsed[0] == '2' &&
 							inputToBeParsed[1] > '3') {
-								throw "Please enter a valid time";
+								throw ERROR_MESSAGE_TIME;
 						}
 						else {
 							return true;
@@ -913,7 +919,7 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 						inputToBeParsed[1] == '0') ||
 						(inputToBeParsed[0] == '1' &&
 						inputToBeParsed[1] > '2')) {
-							throw "Please enter a valid time";
+							throw ERROR_MESSAGE_TIME;
 					}
 					else {
 						return true;
@@ -992,7 +998,7 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 								inputToBeParsed[1] == '0') ||
 								(inputToBeParsed[0] == '1' &&
 								inputToBeParsed[1] > '2')) {
-									throw "Please enter a valid time";
+									throw ERROR_MESSAGE_TIME;
 							}
 							else {
 								return true;
@@ -1018,7 +1024,7 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 							inputToBeParsed[1] == '0') ||
 							(inputToBeParsed[0] == '1' &&
 							inputToBeParsed[1] > '2')) {
-								throw "Please enter a valid time";
+								throw ERROR_MESSAGE_TIME;
 						}
 						else {
 							return true;
