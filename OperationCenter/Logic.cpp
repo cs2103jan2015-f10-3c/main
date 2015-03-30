@@ -60,7 +60,7 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == "delete"){
 		returnResponse = dataProcessor.deleteTask(taskNo);
 	}else if(command == "clear"){
-		returnResponse = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
+		returnResponse = dataProcessor.clearTask();
 	}else if(command == "sort"){
 		returnResponse = "under construction";
 	}else if(command == "search"){

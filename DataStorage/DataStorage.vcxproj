@@ -70,14 +70,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="InternalStorage.h" />
+    <ClInclude Include="InternalStoring.h" />
     <ClInclude Include="Storing.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Storage - Local.cpp" />
-    <ClCompile Include="Storage - Display.cpp" />
-    <ClCompile Include="Storage - History.cpp" />
-    <ClCompile Include="Storage - SaveLoad.cpp" />
+    <ClCompile Include="Storing - Facade.cpp" />
+    <ClCompile Include="Storing - Local.cpp" />
+    <ClCompile Include="Storing - Display.cpp" />
+    <ClCompile Include="Storing - History.cpp" />
+    <ClCompile Include="Storing - PrewrittenData.cpp" />
+    <ClCompile Include="Storing - SaveLoad.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Commons\Commons.vcxproj">
