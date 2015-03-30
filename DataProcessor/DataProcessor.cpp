@@ -14,7 +14,8 @@ const string DataProcessor::EDIT_MESSAGE = "is edited";
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
 string DataProcessor::addTask(Data task){
-	Storing::addData(task); 
+	Storing storing;
+	storing.addData(task); 
 	ostringstream out;
 	out << convertDataObjectToString (task) << " is added" <<endl;
 	string addMessage;
@@ -26,7 +27,8 @@ string DataProcessor::addTask(Data task){
 //then return the string reporting the deletion which contains the description of the data deleted
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
-	out << convertDataObjectToString (Storing::deleteData(number)) << " is deleted from BlinkList" << endl;
+	Storing storing;
+	out << convertDataObjectToString (storing.deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -41,11 +43,13 @@ string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 }
 
 void DataProcessor::saveData(){
-	Storing::saveData();
+	Storing storing;
+	storing.saveData();
 }
 
 void DataProcessor::loadData(bool& status){
-	Storing::loadData(status);
+	Storing storing;
+	storing.loadData(status);
 }
 
 
@@ -62,6 +66,7 @@ void DataProcessor::loadData(bool& status){
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
 	ofstream outData;
+	Storing storing;
 	outData.open("log.txt");
 	if(taskNumber <= 0){
 		outData << "handling exception:invalid tasknumber";
@@ -69,7 +74,7 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	}
 	Data uneditedTask;
 	outData << "start editing data";
-	uneditedTask = Storing::changeData(taskNumber, task);
+	uneditedTask = storing.changeData(taskNumber, task);
 	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
 	outData << "edit data is done";
 	return editMessage;
@@ -77,7 +82,8 @@ string DataProcessor::editTask(int taskNumber, Data task){
 }
 
 string DataProcessor::clearTask(){
-	Storing::clearDataList();
+	Storing storing;
+	storing.clearDataList();
 
 	return "response";
 }
@@ -87,26 +93,28 @@ string DataProcessor::executeUndo(){
 	Data latestData;
 	string latestCommand;
 	vector<Data> latestVector;
-	latestVector = Storing::getLatestVector();
-	latestCommand = Storing::getLatestCommand();
-	latestData = Storing::getLatestData();
+	Storing storing; 
+
+	latestVector = storing.getLatestVector();
+	latestCommand = storing.getLatestCommand();
+	latestData = storing.getLatestData();
 
 	if (latestCommand == "add"){
-		Storing::undoAdd();
+		storing.undoAdd();
 	}
 	else if (latestCommand == "delete"){
-		Storing::addData(latestData);
+		storing.addData(latestData);
 	}
 	else if (latestCommand == "edit"){
-		Storing::clearDataList();
+		storing.clearDataList();
 		for(int i = 0; i != latestVector.size(); i++){
-			Storing::addData(latestVector[i]);
+			storing.addData(latestVector[i]);
 		}
 	}
 	else if (latestCommand == "clear"){
-		Storing::clearDataList();
+		storing.clearDataList();
 		for(int i = 0; i != latestVector.size(); i++){
-			Storing::addData(latestVector[i]);
+			storing.addData(latestVector[i]);
 		}
 	}
 	string undoMessage = "You have undone your operation";
@@ -185,9 +193,10 @@ string DataProcessor::searchTask(string keyword){
 		throw std::exception("Empty Keyword Entered");
 	}
 	
+	Storing storing;
 	vector<Data> returnTaskList;
 	outData << "update current displayList to display matched tasks";
-	returnTaskList = Storing::displaySearch(keyword);
+	returnTaskList = storing.displaySearch(keyword);
 
 	//Convert the taskList into a string that is ready for UI to display
 	string returnTaskListString;
@@ -234,9 +243,11 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 string DataProcessor::markDone(int taskNo){
 	ostringstream outData;
 	Data targetData;
-	targetData = Storing::getData(taskNo);
+	Storing storing;
+
+	targetData = storing.getData(taskNo);
 	targetData.updateCompleteStatus(true);
-	Storing::changeData(taskNo, targetData);
+	storing.changeData(taskNo, targetData);
 	outData << convertDataObjectToString(targetData) << " is done";
 	return outData.str();
 }
@@ -244,6 +255,6 @@ string DataProcessor::markDone(int taskNo){
 //This function calls up a list of commands 
 //available at BlinkList
 void DataProcessor::showCommands(){
-	Storing::retrieveCommandList();
-
+	Storing storing;
+	storing.retrieveCommandList();
 }
