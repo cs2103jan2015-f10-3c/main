@@ -109,9 +109,9 @@ public:
 	void parseSearch (string userInput, string commandWord);
 	void parseUndo (string commandWord);
 	void parseDelete (string userInput, string commandWord);
-	//void parseDisplay (string userInput, string commandWord);
 	void parseDone (string userInput, string commandWord);
 	void parseShow (string userInput, string commandWord);
+	void parseClear (string userInput, string commandWord);
     void parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
@@ -133,11 +133,10 @@ public:
 	int convertAlphabetMonthToInteger (string month);
 	void getTodayDate (TimeMacro& timeMacro);
 	void getTomorrowDate (TimeMacro& timeMacro);
+	void getMondayDate (TimeMacro& timeMacro);
+	void getSundayDate (TimeMacro& timeMacro);
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);
 	bool isLeapYear (int year);
 	
-
-	//exception specifications
-
 };
 #endif
