@@ -11,7 +11,7 @@
 #include <iterator>
 #include <assert.h>
 #include "Commons.h"
-#include "DataStorage.h"
+#include "InternalStorage.h"
 
 using namespace std;
 class DataProcessor{
