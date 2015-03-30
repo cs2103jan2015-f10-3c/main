@@ -21,10 +21,13 @@ private:
 	static const string DELETE_MESSAGE;
 	static const string CLEAR_MESSAGE;
 	static const string EDIT_MESSAGE;
+	Data _latestData;
 
 public:
 
 	DataProcessor(){}
+	void setLatestData(Data data);
+	Data getLatestData();
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);

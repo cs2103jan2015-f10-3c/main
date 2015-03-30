@@ -31,9 +31,11 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	DeleteData deleteData;
 	DataModifier agent;
+	Data latestData = agent.execute(number);
+	setLatestData(latestData);
 
 	ostringstream out;
-	out << convertDataObjectToLine (agent.execute(number)) << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToLine (latestData) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -60,6 +62,14 @@ void DataProcessor::loadData(bool& status){
 //Start of Yang Xiaozhou's part of DataProcessor
 
 
+
+void DataProcessor::setLatestData(Data data){
+	_latestData = data;
+}
+
+Data DataProcessor::getLatestData(){
+	return _latestData;
+}
 
 //This function reads in two TimeMacro objects which indicate the 
 //period that the user wants tasks to be cleared.
@@ -100,8 +110,13 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	}
 	
 	outData << "start editing data";
-	Data uneditedTask = DataBase::editData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask) ;
+	ChangeData changeData(tasknumber,task);
+	DataModifier agent;
+
+	Data latestData = agent.execute(changeData);
+	setLatestData(latestData);
+
+	string editMessage = getEditMessage(latestData) ;
 	outData << "edit data is done";
 	return editMessage;
 
@@ -113,6 +128,10 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 	string uneditedTaskString = convertDataObjectToLine(uneditedTask) + " is edited\n";
 	return uneditedTaskString;
 }
+
+
+//Angie's integration 
+
 
 
 //This function executes undo operation
