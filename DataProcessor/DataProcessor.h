@@ -21,10 +21,14 @@ private:
 	static const string DELETE_MESSAGE;
 	static const string CLEAR_MESSAGE;
 	static const string EDIT_MESSAGE;
+	Data _latestData;
 
 public:
 
 	DataProcessor(){}
+	void setLatestData(Data data);
+	Data getLatestData();
+	
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);
@@ -33,13 +37,17 @@ public:
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
 	string markDone(int taskNo);
+	string showFloat();
+	string showDone();
 	static void showCommands();
 	static void saveData();
 	static void loadData(bool& status);
 	static void clearDisplayList();
+	
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
-	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
+	string convertDataObjectToLine(Data task);
+	string getClearMessage();
 	string getEditMessage(Data uneditedTask);
 
 };
