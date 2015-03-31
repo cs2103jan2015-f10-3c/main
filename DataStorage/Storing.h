@@ -11,8 +11,8 @@ public:
 	void clearDataList();
 	void undoAdd();
 	
-	std::stringstream retrieveCommandList();
-	std::stringstream retrieveFeatureList();
+	void retrieveCommandList();
+	void retrieveFeatureList();
 	void loadData(bool& status);
 	void saveData();
 

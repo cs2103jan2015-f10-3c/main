@@ -13,7 +13,7 @@ void LocalStorage::loadData(bool& status){
 
 		streamUnique << strUnique;
 		streamUnique >> uniqueNo;
-		updateUniqueCodeStore(uniqueNo);
+		uniqueCodeStore = uniqueNo;
 
 
 		//throw away Heading
@@ -33,7 +33,7 @@ void LocalStorage::loadData(bool& status){
 		status = true; //tell command file exist to display
 
 		} else {
-			updateUniqueCodeStore(0);
+			uniqueCodeStore = 0;
 			status = false;
 	}
 }
@@ -46,7 +46,7 @@ void LocalStorage::saveData(){
 	std::ofstream out;
 	out.open(fileName.c_str());
 
-	out << getUniqueCodeStore() <<'\n';
+	out << uniqueCodeStore <<'\n';
  		 	
 	writeHeading(fileName, out); //write Heading for readability
 
@@ -264,9 +264,7 @@ std::string LocalStorage::convertTimeMicroToString(TimeType type, int i){
 //write heading for output file
 void LocalStorage::writeHeading (std::string fileName, std::ofstream& out){
 	PrewrittenData list;
-	list.retrieveList(heading);
-
-	out << list.getRetrievedList();
+	list.retrieveList(heading, out);
 }
 
 //End of Helper method for Saving Data

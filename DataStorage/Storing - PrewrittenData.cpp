@@ -12,6 +12,26 @@ void PrewrittenData::retrieveList(ListType type){
 	case feature:
 		txtFile = "all_features.txt";
 		break;
+	}
+
+	std::ifstream in(txtFile);
+	
+	//if file exists
+	if (in){
+		while (getline(in,list)){
+			std::cout << list << std::endl;
+		} 
+	} else {
+		std::cout << "List could not be found"; 
+	}
+	
+}
+
+void PrewrittenData::retrieveList(ListType type, std::ofstream& out){
+	std::string txtFile;
+	std::string list;
+	
+	switch(type){
 	case heading:
 		txtFile = "heading_template.txt";
 		break;
@@ -22,17 +42,9 @@ void PrewrittenData::retrieveList(ListType type){
 	//if file exists
 	if (in){
 		while (getline(in,list)){
-			retrievedList << list << std::endl;
+			out << list << std::endl;
 		} 
 	} else {
-		retrievedList << "List could not be found"; 
+		out << "List could not be found"; 
 	}
-
-}
-
-std::stringstream PrewrittenData::getRetrievedList(){
-	std::stringstream list;
-	list << retrievedList;
-
-	return list;
 }

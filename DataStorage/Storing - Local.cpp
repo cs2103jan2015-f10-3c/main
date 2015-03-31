@@ -18,22 +18,6 @@ LocalStorage* LocalStorage::getInstance(){
 
 
 
-
-/////////////////////////////
-//API for SaveLoad
-
-int LocalStorage::getUniqueCodeStore(){
-	return uniqueCodeStore;
-}
-
-void LocalStorage::updateUniqueCodeStore(int no){
-	uniqueCodeStore=no;
-}
-
-//End of API Implementation
-//////////////////////////////
-
-
 /////////////////////////
 //API for DisplayStorage
 
@@ -130,8 +114,8 @@ void LocalStorage::addData(Data& inData){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data LocalStorage::deleteData(int taskNo){
-	//History *history = History::getInstance();
-	//history->updateLatestCommand("delete");
+	History *history = History::getInstance();
+	history->updateLatestCommand("delete");
 
 	
 	DisplayStorage *display = DisplayStorage::getInstance();

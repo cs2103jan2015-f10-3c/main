@@ -64,9 +64,6 @@ public:
 	//API for DisplayStorage
 	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 	
-	//API for SaveLoad
-	int getUniqueCodeStore();
-	void updateUniqueCodeStore(int);
 };
 
 //using singleton pattern
@@ -136,7 +133,7 @@ public:
 
 	//API for facade class
 	void retrieveList(ListType type);
-	std::stringstream getRetrievedList();
+	void retrieveList(ListType type, std::ofstream& out);
 };
 
 

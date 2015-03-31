@@ -26,18 +26,15 @@ void Storing::undoAdd(){
 }
 
 
-std::stringstream Storing::retrieveCommandList(){
+void Storing::retrieveCommandList(){
 	PrewrittenData prewrittenData;
 	prewrittenData.retrieveList(command);
 
-	return prewrittenData.getRetrievedList();
 }
 
-std::stringstream Storing::retrieveFeatureList(){
+void Storing::retrieveFeatureList(){
 	PrewrittenData prewrittenData;
 	prewrittenData.retrieveList(feature);
-
-	return prewrittenData.getRetrievedList();
 }
 
 void Storing::loadData(bool& status){
