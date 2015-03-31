@@ -1,12 +1,20 @@
 #include "InternalStoring.h"
 
-/////////////////////////////
-//Definition of Static Method
+///////////////////////////////////////
+//Singleton Definition / Implementation
 
-std::vector<Data> DisplayStorage::displayList;
+DisplayStorage* DisplayStorage::instance = NULL;
+
+DisplayStorage* DisplayStorage::getInstance(){
+	if(instance == NULL){
+		instance = new DisplayStorage;
+	}
+	return instance;
+}
+
 
 //End of Definition
-/////////////////////////////
+///////////////////////////////////////
 
 
 //get display list method for a time frame

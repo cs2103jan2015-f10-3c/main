@@ -70,27 +70,33 @@ std::vector<Data> Storing::getLatestVector(){
 
 
 Data Storing::getData(int taskNo){
-	return DisplayStorage::getData(taskNo);
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getData(taskNo);
 }
 
 std::vector<Data> Storing::display(TimeMacro tBegin, TimeMacro tEnd){
-	return DisplayStorage::getDisplayList(tBegin, tEnd);
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(tBegin, tEnd);
 }
 
 std::vector<Data> Storing::displaySearch(std::string word){
-	return DisplayStorage::getDisplayList(search, word);
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(search, word);
 }
 
 std::vector<Data> Storing::displayDone(){
-	return DisplayStorage::getDisplayList(done,"");
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(done,"");
 }
 
 std::vector<Data> Storing::displayfloat(){
-	return DisplayStorage::getDisplayList(floating,"");
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(floating,"");
 }
 
 void Storing::clearDisplayList(){
-	return DisplayStorage::clearList();
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->clearList();
 }
 
 

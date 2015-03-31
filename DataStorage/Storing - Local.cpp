@@ -119,10 +119,10 @@ void LocalStorage::addData(Data& inData){
 	dataList.push_back(inData);
 	sortDataList();
 
-	History *history = History::getInstance();
-
-	history->updateLatestCommand("add");
-	history->updateLatestData(inData); //store for undo
+//	History *history = History::getInstance();
+//
+////	history->updateLatestCommand("add");
+////	history->updateLatestData(inData); //store for undo
 }
 
 
@@ -130,20 +130,23 @@ void LocalStorage::addData(Data& inData){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data LocalStorage::deleteData(int taskNo){
-	History *history = History::getInstance();
-	history->updateLatestCommand("delete");
-		int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
+	//History *history = History::getInstance();
+	//history->updateLatestCommand("delete");
+
+	
+	DisplayStorage *display = DisplayStorage::getInstance();
+	int uniqueCode = display->getUniqueCode(taskNo);
 
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
 		if(uniqueCode != dataList[i].getUniqueCode()){
 				listTofacilitateDeletion.push_back(dataList[i]);
 		} else {
-			history->updateLatestData(dataList[i]); //store in History
+			//history->updateLatestData(dataList[i]); //store in History
 		}
 	}
 	dataList = listTofacilitateDeletion;
-	return DisplayStorage::getData(taskNo);
+	return display->getData(taskNo);
 }
 
 
@@ -166,9 +169,12 @@ void LocalStorage::undoAdd(){
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data LocalStorage::editData(int taskNo, Data updatedData){
-	History *history = History::getInstance();
-	history->updateLatestVector(); //Store for undo
-	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+	//History *history = History::getInstance();
+	//history->updateLatestVector(); //Store for undo
+
+	
+	DisplayStorage *display = DisplayStorage::getInstance();
+	int uniqueNo = display->getUniqueCode(taskNo);
 	Data dataToEdit = getData(uniqueNo);
 
 	if (!updatedData.getDesc().empty()){
@@ -201,9 +207,9 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	addData(dataToEdit);
 
 
-	history->updateLatestCommand("edit"); //Store for undo
+	//history->updateLatestCommand("edit"); //Store for undo
 
-	return DisplayStorage::getData(taskNo);
+	return display->getData(taskNo);
 }
 
 /////////////////////////////////////

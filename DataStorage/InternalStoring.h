@@ -95,28 +95,36 @@ public:
 
 };
 
+//using singleton pattern
 class DisplayStorage {
 private:
+	//instance and private constructor for singleton pattern
+	static DisplayStorage* instance;
+	DisplayStorage() {}
+
 	//private attribute
-	static std::vector<Data> displayList;
+	std::vector<Data> displayList;
 	
 	//Helper Method for internal working
-	static void updateTaskNo();
-	static void displaySearch(std::vector<Data> tempList, std::string keyword);
-	static void displayFloat(std::vector<Data> tempList);
-	static void displayDone(std::vector<Data> tempList);
-	static void enterDataToList(std::vector<long long> timePeriod);
-	static std::vector<Data> getListFromLocal();
+	void updateTaskNo();
+	void displaySearch(std::vector<Data> tempList, std::string keyword);
+	void displayFloat(std::vector<Data> tempList);
+	void displayDone(std::vector<Data> tempList);
+	void enterDataToList(std::vector<long long> timePeriod);
+	std::vector<Data> getListFromLocal();
 
 public:
+	//getInstance for singleton pattern
+	static DisplayStorage* getInstance();
+
 	//API for facade Class
-	static std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
-	static std::vector<Data>& getDisplayList(DisplayType type, std::string);
-	static void clearList();
-	static Data getData(int taskNo);
+	std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
+	std::vector<Data>& getDisplayList(DisplayType type, std::string);
+	void clearList();
+	Data getData(int taskNo);
 
 	//API for LocalStorage
-	static int getUniqueCode(int taskNo);
+	int getUniqueCode(int taskNo);
 };
 
 class PrewrittenData {
