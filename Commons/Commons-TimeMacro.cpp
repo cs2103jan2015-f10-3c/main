@@ -22,6 +22,7 @@ void TimeMacro::updateDay(std::string inDay){
 		inDay == "Wednesday" || inDay == "Thursday" || 
 		inDay == "Friday" || inDay == "Saturday" || 
 		inDay == "Sunday" || inDay == "undefined");
+
 			day = inDay;
 }
 
