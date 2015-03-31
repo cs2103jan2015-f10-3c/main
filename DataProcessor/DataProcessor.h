@@ -11,7 +11,7 @@
 #include <iterator>
 #include <assert.h>
 #include "Commons.h"
-#include "InternalStorage.h"
+#include "Storing.h"
 
 using namespace std;
 class DataProcessor{
@@ -40,7 +40,7 @@ public:
 	static void showCommands();
 	static void saveData();
 	static void loadData(bool& status);
-
+	static void clearDisplayList();
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
 	string convertDataObjectToLine(Data task);

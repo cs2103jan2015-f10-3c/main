@@ -67,6 +67,9 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	else if (commandWord == "show") {
 		parseShow (userInput, commandWord);
 	}
+	else if (commandWord == "clear") {
+		parseClear (userInput, commandWord);
+	}
 	else {
 		throw "Please enter the correct command";
 	}
@@ -204,7 +207,7 @@ void Parser::parseSearch (string userInput, string commandWord) {
 }
 
 
-////This method is to parse user's input if the command word is "undo".
+//This method is to parse user's input if the command word is "undo".
 //Only the command word "undo" will be parsed.
 void Parser::parseUndo (string commandWord) {
     updateCommand (commandWord);
@@ -226,34 +229,6 @@ void Parser::parseDelete (string userInput, string commandWord) {
 		throw "Please enter correct task number after command word";
 	}
 }
-
-
-//This method is to parse user's input if the command word is "display".
-//The command word display is to be followed by a period.
-//So far, this method is able to parse the period when the period is
-//"today", "tomorrow" and "this month".
-//The starting and ending date/month/year/day will be updated.
-//void Parser::parseDisplay (string userInput, string commandWord) {
-//	TimeMacro timeMacroBeg;
-//	TimeMacro timeMacroEnd;
-//
-//	string period = userInput.substr (commandWord.size() + 1);
-//
-//	if (period == "today") {
-//		getTodayDate (timeMacroBeg);
-//		getTodayDate (timeMacroEnd);
-//	}
-//	else if (period == "tomorrow") {
-//		getTomorrowDate (timeMacroBeg);
-//		getTomorrowDate (timeMacroEnd);
-//	}
-//	else if (period == "this month") {
-//		getThisMonth (timeMacroBeg, timeMacroEnd);
-//	}
-//
-//	updateCommand (commandWord);
-//	updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-//}
 
 
 //This method is to parse user's input if the command word is "done".
@@ -291,38 +266,52 @@ void Parser::parseShow (string userInput, string commandWord) {
 
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
 		inputToBeParsed = inputToBeParsed.substr(1);
-		if (inputToBeParsed != "commands") {
-			if (inputToBeParsed == "today") {
-				getTodayDate (timeMacroBeg);
-				getTodayDate (timeMacroEnd);
-				updateCommand (commandWord);
-				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-			}
-			else if (inputToBeParsed == "tomorrow") {
-				getTomorrowDate (timeMacroBeg);
-				getTomorrowDate (timeMacroEnd);
-				updateCommand (commandWord);
-				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-			}
-			else if (inputToBeParsed == "this month") {
-				getThisMonth (timeMacroBeg, timeMacroEnd);
-				updateCommand (commandWord);
-				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
-			}
-			else {
-				throw "Please enter correct time period, or did you mean \"show commands\"?";
-			}
-		}
 
-		else {
-			commandWord = commandWord + " " + inputToBeParsed;
+		if (inputToBeParsed == "today") {
+			getTodayDate (timeMacroBeg);
+			timeMacroEnd = timeMacroBeg;
 			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}
+		else if (inputToBeParsed == "tomorrow") {
+			getTomorrowDate (timeMacroBeg);
+			timeMacroEnd = timeMacroBeg;
+			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}
+		else if (inputToBeParsed == "this week") {
+			getMondayDate (timeMacroBeg);
+			getSundayDate (timeMacroEnd);
+			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}
+		else if (inputToBeParsed == "this month") {
+			getThisMonth (timeMacroBeg, timeMacroEnd);
+			updateCommand (commandWord);
+			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}
+		else if (inputToBeParsed == "commands" ||
+			inputToBeParsed == "float" ||
+			inputToBeParsed == "done") {
+				commandWord = commandWord + " " + inputToBeParsed;
+				updateCommand (commandWord);
+		}
+		else {
+			throw "Please enter correct time period or task type";
 		}
 	}
 	else {
-		throw "Please enter correct time period after command word";
+		throw "Please enter correct time period or task type";
 	}
 }
+
+
+//This method is to parse user's input if the command word is "clear".
+//Only the command word "clear" will be parsed.
+void Parser::parseClear (string userInput, string commandWord) {
+	updateCommand (commandWord);
+}
+
 
 //This method is to parse date after the start of the string is recoganised as a date.
 //The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",
@@ -455,8 +444,9 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
 	int end = 0;
 	if (isTimePeriodTwentyFour (inputToBeParsed) || isStartingTimeTwentyFour (inputToBeParsed)) {
-        string hourBeg = inputToBeParsed.substr (0, 2);
-		string minuteBeg = inputToBeParsed.substr (3, 2);
+		end = inputToBeParsed.find_first_of (':');
+        string hourBeg = inputToBeParsed.substr (0, end);
+		string minuteBeg = inputToBeParsed.substr (end + 1, 2);
 		int hourBegInt = atoi (hourBeg.c_str());
 		int minuteBegInt = atoi (minuteBeg.c_str());
 		timeMicroBeg.updateHour (hourBegInt);
@@ -474,8 +464,11 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 		}
 
 		else {
-			string hourEnd = inputToBeParsed.substr (6, 2);
-			string minuteEnd = inputToBeParsed.substr (9, 2);
+			end = inputToBeParsed.find_first_of ('-');
+			inputToBeParsed = inputToBeParsed.substr (end + 1);
+			end = inputToBeParsed.find_first_of (':');
+			string hourEnd = inputToBeParsed.substr (0, end);
+			string minuteEnd = inputToBeParsed.substr (end + 1, 2);
 			int hourEndInt = atoi (hourEnd.c_str());
 			int minuteEndInt = atoi (minuteEnd.c_str());
 			timeMicroEnd.updateHour (hourEndInt);
@@ -652,7 +645,19 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 			inputToBeParsed[2] == '/' &&
 			searchSubstring ("01", inputToBeParsed[3]) &&
 			searchSubstring ("0123456789", inputToBeParsed[4])) {
-				return true;
+				if ((inputToBeParsed[0] == '3' &&
+					inputToBeParsed[1] > '1') ||  //date > 31
+					(inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') || //date = 00
+					(inputToBeParsed[3] == '0' &&
+					inputToBeParsed[4] == '0') || //month = 00
+					(inputToBeParsed[3] == '1' &&
+					inputToBeParsed[4] > '2')) { //month > 12
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 	}
 
@@ -666,13 +671,29 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == '/' &&
 			searchSubstring ("123456789", inputToBeParsed[3])) {
-				return true;
+				if ((inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') ||
+					(inputToBeParsed[0] == '3' &&
+					inputToBeParsed[1] > '1')) {
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 		else if (searchSubstring ("123456789", inputToBeParsed[0]) &&
 			inputToBeParsed[1] == '/' &&
 			searchSubstring ("01", inputToBeParsed[2]) &&
 			searchSubstring ("0123456789", inputToBeParsed[3])) {
-				return true;
+				if ((inputToBeParsed[2] == '0' &&
+					inputToBeParsed[3] == '0') ||
+					(inputToBeParsed[2] == '1' &&
+					inputToBeParsed[3] > '2')) {
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 	}
 
@@ -740,7 +761,15 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 			searchSubstring ("0123456789", inputToBeParsed[1]) &&
 			inputToBeParsed[2] == ' ' &&
 			isStringEqual (inputToBeParsed.substr (3, 3), month)) {
-				return true;
+				if ((inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') ||
+					(inputToBeParsed[0] == '3' &&
+					inputToBeParsed[1] > '1')) {
+						throw "Please enter a valid date";
+				}
+				else {
+					return true;
+				}
 		}
 	}
 
@@ -785,7 +814,13 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 			inputToBeParsed[2] == ':' &&
 			searchSubstring ("012345", inputToBeParsed[3]) &&
 			searchSubstring ("0123456789", inputToBeParsed[4])) {
-				return true;
+				if (inputToBeParsed[0] == '2' &&
+					inputToBeParsed[1] > '3') {
+						throw "Please enter a valid time";
+				}
+				else {
+					return true;
+				}
 		}
 		else if (searchSubstring ("0123456789", inputToBeParsed[0]) &&
 			inputToBeParsed[1] == ':' &&
@@ -812,38 +847,33 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
 		if (isStartingTimeTwentyFour (inputToBeParsed)) {
 			end = inputToBeParsed.find_first_of ('-');
-			if (end == 4) {
-				if (searchSubstring ("012", inputToBeParsed[5]) &&
-					searchSubstring ("0123456789", inputToBeParsed[6]) &&
-					inputToBeParsed[7] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[8]) &&
-					searchSubstring ("0123456789", inputToBeParsed[9])) {
-						return true;
+			if (end != string::npos) {
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				if (searchSubstring ("012", inputToBeParsed[0]) &&
+					searchSubstring ("0123456789", inputToBeParsed[1]) &&
+					inputToBeParsed[2] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[3]) &&
+					searchSubstring ("0123456789", inputToBeParsed[4])) {
+						if (inputToBeParsed[0] == '2' &&
+							inputToBeParsed[1] > '3') {
+								throw "Please enter a valid time";
+						}
+						else {
+							return true;
+						}
+
 				}
-				else if (searchSubstring ("0123456789", inputToBeParsed[5]) &&
-					inputToBeParsed[6] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[7]) &&
-					searchSubstring ("0123456789", inputToBeParsed[8])) {
+				else if (searchSubstring ("0123456789", inputToBeParsed[0]) &&
+					inputToBeParsed[1] == ':' &&
+					searchSubstring ("012345", inputToBeParsed[2]) &&
+					searchSubstring ("0123456789", inputToBeParsed[3])) {
 						return true;
 				}
 			}
 
-			else if (end == 5) {
-				if (searchSubstring ("012", inputToBeParsed[6]) &&
-					searchSubstring ("0123456789", inputToBeParsed[7]) &&
-					inputToBeParsed[8] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[9]) &&
-					searchSubstring ("0123456789", inputToBeParsed[10])) {
-						return true;
-				}
-				else if (searchSubstring ("0123456789", inputToBeParsed[6]) &&
-					inputToBeParsed[7] == ':' &&
-					searchSubstring ("012345", inputToBeParsed[8]) &&
-					searchSubstring ("0123456789", inputToBeParsed[9])) {
-						return true;
-				}
-			}
+
 		}
+
 	}
 	return false;
 }
@@ -858,50 +888,63 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 	int end = 0;
 	if (inputToBeParsed.size () >= 3) {  //"9am"
-		end = inputToBeParsed.find_first_of (".");
-		if (end != string::npos) {
-			//case "9.00am"
-			if (end == 1) {
-				if (searchSubstring ("123456789", inputToBeParsed[0]) &&
-					searchSubstring ("012345", inputToBeParsed[2]) &&
-					searchSubstring ("0123456789", inputToBeParsed[3]) &&
-					(inputToBeParsed[4] == 'a' ||
-					inputToBeParsed[4] == 'p') &&
-					inputToBeParsed[5] == 'm') {
-						return true;
-				}
-			}
-			else if (end == 2) {
-				//case "09.00am"
-				if (searchSubstring ("01", inputToBeParsed[0]) &&
-					searchSubstring ("0123456789", inputToBeParsed[1]) &&
-					searchSubstring ("012345", inputToBeParsed[3]) &&
-					searchSubstring ("0123456789", inputToBeParsed[4]) &&
-					(inputToBeParsed[5] == 'a' ||
-					inputToBeParsed[5] == 'p') &&
-					inputToBeParsed[6] == 'm') {
-						return true;
-				}
+		end = inputToBeParsed.find_first_of (".");	
+			
+		if (end == 1) { //case "9.00am"
+			if (searchSubstring ("123456789", inputToBeParsed[0]) &&
+				searchSubstring ("012345", inputToBeParsed[2]) &&
+				searchSubstring ("0123456789", inputToBeParsed[3]) &&
+				(inputToBeParsed[4] == 'a' ||
+				inputToBeParsed[4] == 'p') &&
+				inputToBeParsed[5] == 'm') {
+					return true;
 			}
 		}
-		else {
-			//case "9am"
-			if (searchSubstring ("123456789", inputToBeParsed[0]) &&
-				(inputToBeParsed[1] == 'a' ||
-				inputToBeParsed[1] == 'p') &&
-				inputToBeParsed[2] == 'm') {
-					return true;
-			}
-			//case "19am"
-			else if (searchSubstring ("01", inputToBeParsed[0]) &&
+		else if (end == 2) {
+			//case "09.00am"
+			if (searchSubstring ("01", inputToBeParsed[0]) &&
 				searchSubstring ("0123456789", inputToBeParsed[1]) &&
-				(inputToBeParsed[2] == 'a' ||
-				inputToBeParsed[2] == 'p') &&
-				inputToBeParsed[3] == 'm') {
-					return true;
+				searchSubstring ("012345", inputToBeParsed[3]) &&
+				searchSubstring ("0123456789", inputToBeParsed[4]) &&
+				(inputToBeParsed[5] == 'a' ||
+				inputToBeParsed[5] == 'p') &&
+				inputToBeParsed[6] == 'm') {
+					if ((inputToBeParsed[0] == '0' &&
+						inputToBeParsed[1] == '0') ||
+						(inputToBeParsed[0] == '1' &&
+						inputToBeParsed[1] > '2')) {
+							throw "Please enter a valid time";
+					}
+					else {
+						return true;
+					}
 			}
+		}
+		//case "9am"
+		else if (searchSubstring ("123456789", inputToBeParsed[0]) &&  
+			(inputToBeParsed[1] == 'a' ||
+			inputToBeParsed[1] == 'p') &&
+			inputToBeParsed[2] == 'm') {
+				return true;
+		}
+		//case "19am"
+		else if (searchSubstring ("01", inputToBeParsed[0]) &&
+			searchSubstring ("0123456789", inputToBeParsed[1]) &&
+			(inputToBeParsed[2] == 'a' ||
+			inputToBeParsed[2] == 'p') &&
+			inputToBeParsed[3] == 'm') {
+				if ((inputToBeParsed[0] == '0' &&
+					inputToBeParsed[1] == '0') ||
+					(inputToBeParsed[0] == '1' &&
+					inputToBeParsed[1] > '2')) {
+						throw "Please enter a valid time";
+				}
+				else {
+					return true;
+				}
 		}
 	}
+
 	return false;
 }
 
@@ -945,7 +988,15 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 						(inputToBeParsed[5] == 'a' ||
 						inputToBeParsed[5] == 'p') &&
 						inputToBeParsed[6] == 'm') {
-							return true;
+							if ((inputToBeParsed[0] == '0' &&
+								inputToBeParsed[1] == '0') ||
+								(inputToBeParsed[0] == '1' &&
+								inputToBeParsed[1] > '2')) {
+									throw "Please enter a valid time";
+							}
+							else {
+								return true;
+							}
 					}
 				}
 			}
@@ -963,7 +1014,15 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
 					(inputToBeParsed[2] == 'a' ||
 					inputToBeParsed[2] == 'p') &&
 					inputToBeParsed[3] == 'm') {
-						return true;
+						if ((inputToBeParsed[0] == '0' &&
+							inputToBeParsed[1] == '0') ||
+							(inputToBeParsed[0] == '1' &&
+							inputToBeParsed[1] > '2')) {
+								throw "Please enter a valid time";
+						}
+						else {
+							return true;
+						}
 				}
 			}
 	}
@@ -1056,7 +1115,7 @@ string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
 
 //This method is to get today's date, month, year and day
 //and store them in a TimeMacro object
-//which will be passed to its caller.
+//which its caller can access.
 void Parser::getTodayDate (TimeMacro& timeMacro) {
     time_t t = time (0);   // get time now
     struct tm now;
@@ -1074,9 +1133,9 @@ void Parser::getTodayDate (TimeMacro& timeMacro) {
 
 //This method is to get tomorrow's date, month, year and day
 //and store them in a TimeMacro object
-//which will be passed to its caller.
+//which its caller can access.
 void Parser::getTomorrowDate (TimeMacro& timeMacro) {
-    time_t t = time (0);   // get time now
+    time_t t = time (0);   
     struct tm now;
 	localtime_s (&now, &t);
     now.tm_year = now.tm_year + 1900;
@@ -1118,6 +1177,139 @@ void Parser::getTomorrowDate (TimeMacro& timeMacro) {
 	timeMacro.updateMonth (now.tm_mon);
 	timeMacro.updateDate (now.tm_mday);
 	timeMacro.updateDay (dayOfTheWeek);
+}
+
+
+//This method is to get this Monday's date, month, year and day
+//and store them in a TimeMacro object
+//which its caller can access.
+void Parser::getMondayDate (TimeMacro &timeMacro) {
+	int day;
+	int date;
+	time_t t = time (0);   
+    struct tm now;
+	localtime_s (&now, &t);
+    now.tm_year = now.tm_year + 1900;
+    now.tm_mon = now.tm_mon + 1;
+
+	if (now.tm_wday == 0) {
+		day = 6;
+	}
+	else {
+		day = now.tm_wday - 1;
+	}
+	date = now.tm_mday - day;
+
+	if (date < 1) {  //if Monday is on previous month
+		if (now.tm_mon == 0) {   //if it is Jan now
+			date += 31;
+			timeMacro.updateMonth (12);
+			timeMacro.updateYear (now.tm_year - 1);
+		}
+		else {
+			timeMacro.updateMonth (now.tm_mon - 1);
+			timeMacro.updateYear (now.tm_year);
+			if (now.tm_mon == 1 ||
+				now.tm_mon == 3 ||
+				now.tm_mon == 5 ||
+				now.tm_mon == 7 ||
+				now.tm_mon ==8 ||
+				now.tm_mon == 10) {  //Feb, Apr, Jun, Aug, Sep, Nov
+				date += 31;
+			}
+			else if (now.tm_mon == 2) {  //Mar
+				if (isLeapYear (now.tm_year)) {
+					date += 29;
+				}
+				else {
+					date += 28;
+				}
+			}
+			else if (now.tm_mon == 4 ||
+				now.tm_mon == 6 ||
+				now.tm_mon == 9 ||
+				now.tm_mon == 11) {  //May, Jul, Oct, Dec
+				date += 30;
+			}
+		}
+	}
+	else {
+		timeMacro.updateMonth (now.tm_mon);
+		timeMacro.updateYear (now.tm_year);
+	}
+
+	timeMacro.updateDate (date);
+	timeMacro.updateDay ("Monday");
+
+}
+
+
+//This method is to get this Sunday's date, month, year and day
+//and store them in a TimeMacro object
+//which its caller can access.
+void Parser::getSundayDate (TimeMacro &timeMacro) {
+	int day;
+	int date;
+	time_t t = time (0);   
+    struct tm now;
+	localtime_s (&now, &t);
+    now.tm_year = now.tm_year + 1900;
+    now.tm_mon = now.tm_mon + 1;
+
+	if (now.tm_wday == 0) {
+		day = 0;
+	}
+	else {
+		day = 7 - now.tm_wday;
+	}
+	date = now.tm_mday + day;
+
+	if (now.tm_mon != 11 || date <=31) { //not end of Dec
+		timeMacro.updateYear (now.tm_year);
+		if ((now.tm_mon == 0 || //Jan, Mar, May, Jul, Aug, Oct
+			now.tm_mon == 2 ||
+			now.tm_mon == 4 ||
+			now.tm_mon == 6 ||
+			now.tm_mon == 7 ||
+			now.tm_mon == 9) && 
+			date > 31) {
+				date -= 31;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+
+		else if ((now.tm_mon == 3 ||  //Apr, Jun, Sep, Nov
+			now.tm_mon == 5 ||
+			now.tm_mon == 8 ||
+			now.tm_mon == 10) &&
+			date > 30) {
+				date -= 30;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+
+		else if (now.tm_mon == 1 &&  //Feb
+			isLeapYear (now.tm_year) && date > 29) {
+				date -= 29;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+		else if (now.tm_mon == 1 &&
+			!isLeapYear (now.tm_year) && date > 28) {
+				date -= 28;
+				timeMacro.updateMonth (now.tm_mon + 1);
+		}
+
+		else {
+			timeMacro.updateMonth (now.tm_mon);
+		}
+	}
+	else {
+		date -= 31;
+		timeMacro.updateYear (now.tm_year + 1);
+		timeMacro.updateMonth (0);
+	}
+
+
+	timeMacro.updateDate (date);
+	timeMacro.updateDay ("Sunday");
 }
 
 

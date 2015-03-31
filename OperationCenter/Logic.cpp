@@ -50,8 +50,10 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	
 	DataProcessor dataProcessor;
 	if(command == "add") {
+		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.addTask(task);
 	}else if(command == "show") {
+		dataProcessor.clearDisplayList();
 		returnResponse = EMPTY_RESPONSE;
 		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		if(returnDisplay == ""){
@@ -59,12 +61,15 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		}
 	}else if(command == "delete"){
 		returnResponse = dataProcessor.deleteTask(taskNo);
+		dataProcessor.clearDisplayList();
 	}else if(command == "clear"){
-		returnResponse = dataProcessor.clearTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
+		dataProcessor.clearDisplayList();
+		returnResponse = dataProcessor.clearTask();
 	}else if(command == "sort"){
 		returnResponse = "under construction";
 	}else if(command == "search"){
 		try{
+			dataProcessor.clearDisplayList();
 			returnDisplay = dataProcessor.searchTask(task.getDesc());
 			returnResponse = EMPTY_RESPONSE;
 		}
@@ -78,21 +83,26 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == "edit"){
 		try{
 			returnResponse = dataProcessor.editTask(taskNo, task);
+			dataProcessor.clearDisplayList();
 		}
 		catch (std::exception e){
 			//std::cout << e.what();
 			returnResponse = e.what();
 		}
 	}else if(command == "undo"){
+		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.executeUndo();
 	}else if(command == "done"){
 		returnResponse = dataProcessor.markDone(taskNo);
+		dataProcessor.clearDisplayList();
 	}else if(command == "show commands"){
+		dataProcessor.clearDisplayList();
 		dataProcessor.showCommands();
 	}else{	
 	}
 
 	if(command != "show" && command != "search" && command != "show commands"){
+		dataProcessor.clearDisplayList();
 		returnDisplay = displayToday(returnDisplay, currentTime);
 	}
 

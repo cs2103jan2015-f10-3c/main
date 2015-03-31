@@ -1,25 +1,32 @@
 #pragma once
-#include <InternalStorage.h>
+#include "InternalStoring.h"
 
 class Storing {
 public:
-	static void addData(Data inData);
-	static Data deleteData(int taskNo);
-	static Data changeData(int taskNo, Data& inData);
-	static Data getData(int taskNo);
+	Storing() {}
 
-	static std::stringstream retrieveCommandList();
-	static std::stringstream retrieveFeatureList();
-
-	static std::string getLatestCommand();
-	static Data getLatestData();
-
+	void addData(Data&);
+	Data deleteData(int taskNo);
+	Data changeData(int taskNo, Data& inData);
+	void clearDataList();
+	void undoAdd();
 	
-	//use command patter in the future
-	static std::vector<Data> display(TimeMacro TBegin, TimeMacro TEnd);
-	static std::vector<Data> displaySearch(std::string word);
-	static std::vector<Data> displayDone();
-	static std::vector<Data> displayfloat();
+	std::stringstream retrieveCommandList();
+	std::stringstream retrieveFeatureList();
+	void loadData(bool& status);
+	void saveData();
 
+	std::string getLatestCommand();
+	Data getLatestData();
+	std::vector<Data>& getLatestVector();
+	
+	Data getData(int taskNo);
+	std::vector<Data>& display(TimeMacro tBegin, TimeMacro tEnd);
+	std::vector<Data>& displaySearch(std::string word);
+	std::vector<Data>& displayDone();
+	std::vector<Data>& displayfloat();
+	void clearDisplayList();
 
 };
+
+
