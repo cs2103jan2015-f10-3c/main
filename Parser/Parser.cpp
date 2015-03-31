@@ -123,6 +123,12 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		updateTimeMacro (timeMacro);
 		updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
 		updateDesc (desc);
+
+		if (timeMacro.getDate() == 0 &&
+			timeMicroBeg.getHour() != -1) {
+				getTodayDate (timeMacro);
+		}
+		updateTimeMacro (timeMacro);
 	}
 	else {
 		throw ERROR_MESSAGE_INPUT;
@@ -193,14 +199,8 @@ void Parser::parseSearch (string userInput, string commandWord) {
 	if (desc != "" && desc != " ") {
 		desc = desc.substr (1);
 
-		end = desc.find_first_of (" ");
-		if (end == string::npos) {
-			updateCommand (commandWord);
-			updateDesc (desc);
-		}
-		else {
-			throw "Please only enter one keyword";
-		}
+		updateCommand (commandWord);
+		updateDesc (desc);
 	}
 	else {
 		throw ERROR_MESSAGE_INPUT;
@@ -514,10 +514,20 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 			minuteBeg = inputToBeParsed.substr (end + 1, 2);
 			minuteBegInt = atoi (minuteBeg.c_str());
 			if (inputToBeParsed[end + 3] == 'a') {
-				hourBegInt = atoi (hourBeg.c_str());
+				if (hourBeg == "12") {
+					hourBegInt = 0;
+				}
+				else {
+					hourBegInt = atoi (hourBeg.c_str());
+				}
 			}
 			else if (inputToBeParsed[end + 3] == 'p') {
-				hourBegInt = atoi (hourBeg.c_str()) +12;
+				if (hourBeg == "12") {
+					hourBegInt = atoi (hourBeg.c_str());
+				}
+				else {
+					hourBegInt = atoi (hourBeg.c_str()) +12;
+				}
 			}
 		}
 		//case "9am"/"19am"
@@ -525,14 +535,24 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 			end = inputToBeParsed.find_first_of ('a');
 			if (end == 1 || end == 2) {
 				hourBeg = inputToBeParsed.substr (0, end);
-				hourBegInt = atoi (hourBeg.c_str());
+				if (hourBeg == "12") {
+					hourBegInt = 0;
+				}
+				else {
+					hourBegInt = atoi (hourBeg.c_str());
+				}
 				minuteBegInt = 0;
 			}
 
 			end = inputToBeParsed.find_first_of ('p');
 			if (end == 1 || end == 2) {
 				hourBeg = inputToBeParsed.substr (0, end);
-				hourBegInt = atoi (hourBeg.c_str()) + 12;
+				if (hourBeg == "12") {
+					hourBegInt = atoi (hourBeg.c_str());
+				}
+				else {
+					hourBegInt = atoi (hourBeg.c_str()) +12;
+				}
 				minuteBegInt = 0;
 			}
 		}
@@ -560,10 +580,20 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 				minuteEnd = inputToBeParsed.substr (end + 1, 2);
 				minuteEndInt = atoi (minuteEnd.c_str());
 				if (inputToBeParsed[end + 3] == 'a') {
-					hourEndInt = atoi (hourEnd.c_str());
+					if (hourEnd == "12") {
+						hourEndInt = 0;
+					}
+					else {
+						hourEndInt = atoi (hourEnd.c_str());
+					}
 				}
 				else if (inputToBeParsed[end + 3] == 'p') {
-					hourEndInt = atoi (hourEnd.c_str()) +12;
+					if (hourEnd == "12") {
+						hourEndInt = atoi (hourEnd.c_str());
+					}
+					else {
+						hourEndInt = atoi (hourEnd.c_str()) +12;
+					}
 				}
 			}
 			//case "9am"/"19am"
@@ -571,14 +601,24 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 				end = inputToBeParsed.find_first_of ('a');
 				if (end == 1 || end == 2) {
 					hourEnd = inputToBeParsed.substr (0, end);
-					hourEndInt = atoi (hourEnd.c_str());
+					if (hourEnd == "12") {
+						hourEndInt = 0;
+					}
+					else {
+						hourEndInt = atoi (hourEnd.c_str());
+					}
 					minuteEndInt = 0;
 				}
 
 				end = inputToBeParsed.find_first_of ('p');
 				if (end == 1 || end == 2) {
 					hourEnd = inputToBeParsed.substr (0, end);
-					hourEndInt = atoi (hourEnd.c_str()) + 12;
+					if (hourEnd == "12") {
+						hourEndInt = atoi (hourEnd.c_str());
+					}
+					else {
+						hourEndInt = atoi (hourEnd.c_str()) +12;
+					}
 					minuteEndInt = 0;
 				}
 			}
