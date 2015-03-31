@@ -312,3 +312,21 @@ string DataProcessor::convertDataObjectToLine(Data task){
 	return taskString;
 
 }
+
+//This function gets a list of floating tasks
+//and return it to Operation Center for displaying
+string DataProcessor::showFloat(){
+	Storing storing;
+	vector<Data> floatingTaskList = storing.displayfloat();
+	string floatingTaskListString = convertTaskListToString(floatingTaskList);
+	return floatingTaskListString;
+}
+
+//This function get a list of completed tasks
+//and return it to Operation Center for displaying
+string DataProcessor::showDone(){
+	Storing storing;
+	vector<Data> completedTaskList = storing.displayDone();
+	string completedTaskListString = convertTaskListToString(completedTaskList);
+	return completedTaskListString;
+}

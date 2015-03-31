@@ -28,6 +28,7 @@ public:
 	DataProcessor(){}
 	void setLatestData(Data data);
 	Data getLatestData();
+	
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);
@@ -36,11 +37,13 @@ public:
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
 	string markDone(int taskNo);
-	void undoEditOrClear(vector<Data> latestVector);
+	string showFloat();
+	string showDone();
 	static void showCommands();
 	static void saveData();
 	static void loadData(bool& status);
 	static void clearDisplayList();
+	
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
 	string convertDataObjectToLine(Data task);
