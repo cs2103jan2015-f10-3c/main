@@ -84,6 +84,11 @@ string DataProcessor::editTask(int taskNumber, Data task){
 
 }
 
+void DataProcessor::clearDisplayList(){
+	Storing storing;
+	storing.clearDisplayList();
+}
+
 string DataProcessor::clearTask(){
 	Storing storing;
 	storing.clearDataList();
