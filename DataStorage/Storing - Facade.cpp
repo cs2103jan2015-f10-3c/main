@@ -54,7 +54,7 @@ Data Storing::getLatestData(){
 	return History::getLatestData();
 }
 
-std::vector<Data> Storing::getLatestVector(){
+std::vector<Data>& Storing::getLatestVector(){
 	return History::getLatestVector();
 }
 
@@ -63,25 +63,24 @@ Data Storing::getData(int taskNo){
 	return DisplayStorage::getData(taskNo);
 }
 
-std::vector<Data> Storing::display(TimeMacro tBegin, TimeMacro tEnd){
+std::vector<Data>& Storing::display(TimeMacro tBegin, TimeMacro tEnd){
 	return DisplayStorage::getDisplayList(tBegin, tEnd);
 }
 
-std::vector<Data> Storing::displaySearch(std::string word){
+std::vector<Data>& Storing::displaySearch(std::string word){
 	return DisplayStorage::getDisplayList(search, word);
 }
 
-std::vector<Data> Storing::displayDone(){
+std::vector<Data>& Storing::displayDone(){
 	return DisplayStorage::getDisplayList(done,"");
 }
 
-std::vector<Data> Storing::displayfloat(){
+std::vector<Data>& Storing::displayfloat(){
 	return DisplayStorage::getDisplayList(floating,"");
 }
 
 void Storing::clearDisplayList(){
 	return DisplayStorage::clearList();
 }
-
 
 

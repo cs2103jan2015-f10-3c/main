@@ -38,7 +38,8 @@ string DataProcessor::deleteTask(int number){
 //then return the string which contains the list of task belonging to the desired time frame
 string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
 	string taskString; 
-	taskString = convertTaskListToString(DisplayStorage::getDisplayList(startTime, endTime));
+	Storing storing;
+	taskString = convertTaskListToString(storing.display(startTime, endTime));
 	return taskString;
 }
 
@@ -58,7 +59,11 @@ void DataProcessor::loadData(bool& status){
 
 
 
-
+//This function clears the current display list
+void DataProcessor::clearDisplayList(){
+	Storing storing;
+	storing.clearDisplayList();
+}
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains

@@ -18,13 +18,13 @@ public:
 
 	std::string getLatestCommand();
 	Data getLatestData();
-	std::vector<Data> getLatestVector();
+	std::vector<Data>& getLatestVector();
 	
 	Data getData(int taskNo);
-	std::vector<Data> display(TimeMacro tBegin, TimeMacro tEnd);
-	std::vector<Data> displaySearch(std::string word);
-	std::vector<Data> displayDone();
-	std::vector<Data> displayfloat();
+	std::vector<Data>& display(TimeMacro tBegin, TimeMacro tEnd);
+	std::vector<Data>& displaySearch(std::string word);
+	std::vector<Data>& displayDone();
+	std::vector<Data>& displayfloat();
 	void clearDisplayList();
 
 };
