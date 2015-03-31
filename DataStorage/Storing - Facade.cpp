@@ -38,17 +38,11 @@ void Storing::retrieveFeatureList(){
 }
 
 void Storing::loadData(bool& status, std::string directory){
-	if(directory==""){
-		directory = "save.txt";
-	}
 	LocalStorage *localStorage = LocalStorage::getInstance();
-	return localStorage->loadData(status, directory);
+	localStorage->loadData(status, directory);
 }
 
-void Storing::saveData(std::string directory){
-	if(directory==""){
-		directory = "save.txt";
-	}
+bool Storing::saveData(std::string directory){
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	return localStorage->saveData(directory);
 }

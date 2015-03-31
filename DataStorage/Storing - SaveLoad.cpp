@@ -2,7 +2,9 @@
 const std::string LocalStorage::DEFAULT_SAVE_DIRECTORY = "save.txt";
 
 //API for loading Data from txt file
-void LocalStorage::loadData(bool& status, std::string directory){
+void LocalStorage::loadData(bool& status, std::string& directory){
+	adjustFormat(directory);
+	
 	std::ifstream in(directory);
 	//if file exists
 	if (in){
@@ -40,66 +42,71 @@ void LocalStorage::loadData(bool& status, std::string directory){
 }
 
 //check whether user input directory exists
-std::string LocalStorage::directoryCheck(std::string& inputDirectory){
-	adjustFormat(inputDirectory);
-	
-	std::ofstream out;
-	out.open(inputDirectory.c_str());
-	
+bool LocalStorage::directoryCheck(std::ofstream& out){
 	try{
 		if(!out.is_open()){
-			throw "Input directory is invalid. Hint: directory should be with slash instead of backslash";
+			throw false;
+		} else {
+			throw true;
 		}
 	}
-	catch (const char* errorMessage) {
-		return errorMessage;
+	catch (const bool status) {
+		return status;
 	}
 }
 
 //format the input directory from user
 //so that it can be read by all compiler
 void LocalStorage::adjustFormat(std::string& inputDirectory){
-	inputDirectory += '/' + DEFAULT_SAVE_DIRECTORY;
+	if (inputDirectory != ""){
+		inputDirectory += '/';
+	}
+	inputDirectory += "save.txt";
 }
 
 
 //API for saving data into file
-void LocalStorage::saveData(std::string directory){
-	std::string fileName = directory;
-	std::ofstream out;
-	out.open(fileName.c_str());
+bool LocalStorage::saveData(std::string& directory){
+	adjustFormat(directory);
+	bool status;
 
-	out << uniqueCodeStore <<'\n';
+	std::ofstream out;
+	out.open(directory.c_str());
+	status = directoryCheck(out);
+
+	if(status){
+		out << uniqueCodeStore <<'\n';
  		 	
-	writeHeading(fileName, out); //write Heading for readability
+		writeHeading(directory, out); //write Heading for readability
 
 	
-	for(int i=0; i != LocalStorage::dataList.size(); i++){
-		std::string tMacroBeg = convertTimeMacroToString(begin, i);
-		std::string tMacroEnd = convertTimeMacroToString(end, i);
-		std::string alarmMacro = convertTimeMacroToString(alarm, i);
+		for(int i=0; i != LocalStorage::dataList.size(); i++){
+			std::string tMacroBeg = convertTimeMacroToString(begin, i);
+			std::string tMacroEnd = convertTimeMacroToString(end, i);
+			std::string alarmMacro = convertTimeMacroToString(alarm, i);
 
-		std::string tMicroBeg = convertTimeMicroToString(begin, i);
-		std::string tMicroEnd = convertTimeMicroToString(end, i);
-		std::string alarmMicro = convertTimeMicroToString(alarm, i);
+			std::string tMicroBeg = convertTimeMicroToString(begin, i);
+			std::string tMicroEnd = convertTimeMicroToString(end, i);
+			std::string alarmMicro = convertTimeMicroToString(alarm, i);
 
-		//convert boolean into string
-		std::string isDone;
-		if(dataList[i].getCompleteStatus() == true){
-			isDone = "true";
-		} else {
-			isDone = "false";
+			//convert boolean into string
+			std::string isDone;
+			if(dataList[i].getCompleteStatus() == true){
+				isDone = "true";
+			} else {
+				isDone = "false";
+			}
+
+			//save into file
+			out << dataList[i].getUniqueCode()
+				<< '\t' << tMacroBeg
+				<< "\t\t" << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
+				<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
+				<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
+				<< dataList[i].getDesc() << '\n';
 		}
-
-		//save into file
-		out << dataList[i].getUniqueCode()
-			<< '\t' << tMacroBeg
-			<< "\t\t" << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
-			<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
-			<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
-			<< dataList[i].getDesc() << '\n';
-
 	}	
+	return status;
 }
 
 //////////////////////////////////////////

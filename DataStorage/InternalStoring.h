@@ -45,7 +45,7 @@ private:
 	TimeMicro microParser(std::string tempMicro);
 	std::string convertTimeMacroToString(TimeType type, int i);
 	std::string convertTimeMicroToString(TimeType type, int i);
-	std::string directoryCheck(std::string& inputDirectory);
+	bool directoryCheck(std::ofstream& out);
 	void adjustFormat(std::string& inputDirectory);
 
 
@@ -61,8 +61,8 @@ public:
 	void undoAdd();
 	std::vector<Data>& getDataList();
 	
-	void saveData(std::string directory);
-	void loadData(bool& status, std::string directory);
+	bool saveData(std::string& directory);
+	void loadData(bool& status, std::string& directory);
 
 	//API for DisplayStorage
 	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);

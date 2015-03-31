@@ -14,7 +14,7 @@ public:
 	void retrieveCommandList();
 	void retrieveFeatureList();
 	void loadData(bool& status , std::string directory = "");
-	void saveData(std::string directory = "");
+	bool saveData(std::string directory = "");
 
 	std::string getLatestCommand();
 	Data getLatestData();
