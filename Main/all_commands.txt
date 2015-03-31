@@ -1,78 +1,31 @@
-BlinkList Features
-
+BlinkList Commands
 -------------------------------------------------------------------------
 1. Add
-to add a new task into your BlinkList
+add DD MMM HH:MM Description
 
-Some format we support:
-- add DD/MM/YYYY HH:MM Description
-- add DD/MM/YYYY HH:MM-HH:MM Description
-- add DD/MM HH:MM Description
-- add DD/MM Description
-- add DD MMM Description (e.g: 15 Mar)
-- add Description (Hint: floating task)
-
--------------------------------------------------------------------------
 2. Edit
-to edit task that is inside your BlinkList.
-You need to display the list of task that you want to edit (Hint: see Show)
+edit # DD MMM HH:MM Description
 
-Some format we support:
-- edit # Description
-- edit # DD/MM/YYY
-- edit # DD MMM
-- edit # HH:MM-HH:MM
-- edit # HH:MM (Hint: to retain end time, use HH:MM-HH:MM instead)
-- edit # DD/MM/YYYY HH:MM Description
-- edit # DD MMM Description
-* # refers to the number on your displayed list
-
--------------------------------------------------------------------------
 3. Delete
-to delete data from your BlinkList
+delete #
 
-Format supported:
-- delete #
-* # refers to the number on your displayed list
-
--------------------------------------------------------------------------
 4. Show
-to show you the task list in the display feature
+show today
+show tomorrow
+show this month
 
-Some format we support:
-- show today
-- show tomorrow
-- show this month
-
--------------------------------------------------------------------------
 5. Search
-to search task by a single keyword from all the description
+search Keyword
 
-Format supported:
-- search Keyword
-
--------------------------------------------------------------------------
 6. Undo 
-to undo deletion, modification (edit) or addition of a task. 
-We only support a single undo operation.
+undo
 
-Format supported:
-- undo
-
--------------------------------------------------------------------------
 7. Redo
-to redo an undo operation.
+redo
 
-Format supported:
-- redo
-
--------------------------------------------------------------------------
 8. Done
-to mark a task as done. Marked task wil not be displayed on usual list.
-Completed task can be display through "show done" (Hint: see Show)
+done #
 
-Format Supported:
-- done #
 * # refers to the number on your displayed list
 
 -------------------------------end of all commands-----------------------

@@ -11,10 +11,10 @@ public:
 	void clearDataList();
 	void undoAdd();
 	
-	std::stringstream retrieveCommandList();
-	std::stringstream retrieveFeatureList();
-	void loadData(bool& status);
-	void saveData();
+	void retrieveCommandList();
+	void retrieveFeatureList();
+	void loadData(bool& status , std::string directory = "");
+	bool saveData(std::string directory = "");
 
 	std::string getLatestCommand();
 	Data getLatestData();

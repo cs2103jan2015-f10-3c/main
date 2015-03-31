@@ -1,29 +1,22 @@
 #include "InternalStoring.h"
 
-/////////////////////////////
-//Definition of Static Method
 
-std::vector<Data> LocalStorage::dataList;
-int LocalStorage::uniqueCodeStore;
+///////////////////////////////////////
+//Singleton Definition / Implementation
+
+LocalStorage* LocalStorage::instance = NULL;
+
+LocalStorage* LocalStorage::getInstance(){
+	if(instance == NULL){
+		instance = new LocalStorage;
+	}
+	return instance;
+}
+
 
 //End of Definition
-/////////////////////////////
+///////////////////////////////////////
 
-
-
-/////////////////////////////
-//API for SaveLoad
-
-int LocalStorage::getUniqueCodeStore(){
-	return uniqueCodeStore;
-}
-
-void LocalStorage::updateUniqueCodeStore(int no){
-	uniqueCodeStore=no;
-}
-
-//End of API Implementation
-//////////////////////////////
 
 
 /////////////////////////
@@ -96,6 +89,7 @@ std::vector<Data>& LocalStorage::getDataList() {
 }
 
 void LocalStorage::clearDataList(){
+	History::updateLatestCommand("clear");
 	dataList.clear();
 }
 
@@ -109,6 +103,7 @@ void LocalStorage::addData(Data& inData){
 	dataList.push_back(inData);
 	sortDataList();
 
+
 	History::updateLatestCommand("add");
 	History::updateLatestData(inData); //store for undo
 }
@@ -118,9 +113,11 @@ void LocalStorage::addData(Data& inData){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data LocalStorage::deleteData(int taskNo){
-
 	History::updateLatestCommand("delete");
-		int uniqueCode = DisplayStorage::getUniqueCode(taskNo);
+
+	
+	DisplayStorage *display = DisplayStorage::getInstance();
+	int uniqueCode = display->getUniqueCode(taskNo);
 
 	std::vector<Data> listTofacilitateDeletion;
 	for(int i = 0; i != dataList.size(); i++){
@@ -131,7 +128,7 @@ Data LocalStorage::deleteData(int taskNo){
 		}
 	}
 	dataList = listTofacilitateDeletion;
-	return DisplayStorage::getData(taskNo);
+	return display->getData(taskNo);
 }
 
 
@@ -153,9 +150,11 @@ void LocalStorage::undoAdd(){
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data LocalStorage::editData(int taskNo, Data updatedData){
-	
 	History::updateLatestVector(); //Store for undo
-	int uniqueNo = DisplayStorage::getUniqueCode(taskNo);
+
+	
+	DisplayStorage *display = DisplayStorage::getInstance();
+	int uniqueNo = display->getUniqueCode(taskNo);
 	Data dataToEdit = getData(uniqueNo);
 
 	if (!updatedData.getDesc().empty()){
@@ -175,9 +174,20 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	}
 
 	if (updatedData.getTimeMicroBeg().getHour() != -1
-		&& updatedData.getTimeMicroBeg().getHour() != -1) {
+		&& updatedData.getTimeMicroBeg().getMin() != -1) {
 			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
 			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
+	}
+
+	if (updatedData.getAlarmMacro().getDate() != 0 
+		&& updatedData.getAlarmMacro().getMonth() != 0
+		&& updatedData.getAlarmMacro().getYear() != 0) {
+			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
+	}
+
+	if (updatedData.getAlarmMicro().getHour() != -1
+		&& updatedData.getAlarmMicro().getMin() != -1) {
+			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
 	}
 
 	if (updatedData.getCompleteStatus() != false){
@@ -186,9 +196,11 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 
 	deleteData(taskNo);
 	addData(dataToEdit);
+
+
 	History::updateLatestCommand("edit"); //Store for undo
 
-	return DisplayStorage::getData(taskNo);
+	return display->getData(taskNo);
 }
 
 /////////////////////////////////////

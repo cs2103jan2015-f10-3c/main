@@ -1,46 +1,50 @@
 #include "Storing.h"
 
 void Storing::addData(Data& inData){
-	LocalStorage::addData(inData);
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->addData(inData);
 }
 
 Data Storing::deleteData(int taskNo){
-	return LocalStorage::deleteData(taskNo);
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->deleteData(taskNo);
 }
 
 Data Storing::changeData(int taskNo, Data& inData){
-	return LocalStorage::editData(taskNo, inData);
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->editData(taskNo, inData);
 }
 
 void Storing::clearDataList(){
-	LocalStorage::clearDataList();
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->clearDataList();
 }
 
 void Storing::undoAdd(){
-	LocalStorage::undoAdd();
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->undoAdd();
 }
 
 
-std::stringstream Storing::retrieveCommandList(){
+void Storing::retrieveCommandList(){
 	PrewrittenData prewrittenData;
 	prewrittenData.retrieveList(command);
 
-	return prewrittenData.getRetrievedList();
 }
 
-std::stringstream Storing::retrieveFeatureList(){
+void Storing::retrieveFeatureList(){
 	PrewrittenData prewrittenData;
 	prewrittenData.retrieveList(feature);
-
-	return prewrittenData.getRetrievedList();
 }
 
-void Storing::loadData(bool& status){
-	return LocalStorage::loadData(status);
+void Storing::loadData(bool& status, std::string directory){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->loadData(status, directory);
 }
 
-void Storing::saveData(){
-	return LocalStorage::saveData();
+bool Storing::saveData(std::string directory){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->saveData(directory);
 }
 
 
@@ -60,27 +64,34 @@ std::vector<Data>& Storing::getLatestVector(){
 
 
 Data Storing::getData(int taskNo){
-	return DisplayStorage::getData(taskNo);
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getData(taskNo);
 }
 
 std::vector<Data>& Storing::display(TimeMacro tBegin, TimeMacro tEnd){
-	return DisplayStorage::getDisplayList(tBegin, tEnd);
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(tBegin, tEnd);
 }
 
 std::vector<Data>& Storing::displaySearch(std::string word){
-	return DisplayStorage::getDisplayList(search, word);
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(search, word);
 }
 
 std::vector<Data>& Storing::displayDone(){
-	return DisplayStorage::getDisplayList(done,"");
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(done);
 }
 
 std::vector<Data>& Storing::displayfloat(){
-	return DisplayStorage::getDisplayList(floating,"");
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(floating);
 }
 
 void Storing::clearDisplayList(){
-	return DisplayStorage::clearList();
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->clearList();
 }
+
 
 

@@ -37,8 +37,10 @@ string DataProcessor::deleteTask(int number){
 //This function reads in two TimeMacro objects,
 //then return the string which contains the list of task belonging to the desired time frame
 string DataProcessor::displayTask(TimeMacro startTime, TimeMacro endTime){
-	string taskString; 
+	string taskString;
 	Storing storing;
+	storing.clearDisplayList();
+
 	taskString = convertTaskListToString(storing.display(startTime, endTime));
 	return taskString;
 }
@@ -59,11 +61,7 @@ void DataProcessor::loadData(bool& status){
 
 
 
-//This function clears the current display list
-void DataProcessor::clearDisplayList(){
-	Storing storing;
-	storing.clearDisplayList();
-}
+
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
@@ -84,6 +82,11 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	outData << "edit data is done";
 	return editMessage;
 
+}
+
+void DataProcessor::clearDisplayList(){
+	Storing storing;
+	storing.clearDisplayList();
 }
 
 string DataProcessor::clearTask(){
@@ -196,6 +199,7 @@ string DataProcessor::searchTask(string keyword){
 	}
 	
 	Storing storing;
+	storing.clearDisplayList();
 	vector<Data> returnTaskList;
 	outData << "update current displayList to display matched tasks";
 	returnTaskList = storing.displaySearch(keyword);
