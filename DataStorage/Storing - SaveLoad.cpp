@@ -13,7 +13,7 @@ void LocalStorage::loadData(bool& status){
 
 		streamUnique << strUnique;
 		streamUnique >> uniqueNo;
-		LocalStorage::updateUniqueCodeStore(uniqueNo);
+		updateUniqueCodeStore(uniqueNo);
 
 
 		//throw away Heading
@@ -22,15 +22,18 @@ void LocalStorage::loadData(bool& status){
 
 		std::string strData;
 		int i=0; //iterator for vector
-		
+		Data data;
+
 		while(getline(in,strData)){
-			parseLoad(strData, i);
+			parseLoad(strData, i, data);
+			dataList.push_back(data);
+			i++;
 			} 
 		
 		status = true; //tell command file exist to display
 
 		} else {
-			LocalStorage::updateUniqueCodeStore(0);
+			updateUniqueCodeStore(0);
 			status = false;
 	}
 }
@@ -43,35 +46,35 @@ void LocalStorage::saveData(){
 	std::ofstream out;
 	out.open(fileName.c_str());
 
-	out << LocalStorage::getUniqueCodeStore() <<'\n';
+	out << getUniqueCodeStore() <<'\n';
  		 	
 	writeHeading(fileName, out); //write Heading for readability
 
 	
 	for(int i=0; i != LocalStorage::dataList.size(); i++){
-		std::string tMacroBeg = convertTimeMacroToString("Begin", i);
-		std::string tMacroEnd = convertTimeMacroToString("End", i);
-		std::string alarmMacro = convertTimeMacroToString("Alarm", i);
+		std::string tMacroBeg = convertTimeMacroToString(begin, i);
+		std::string tMacroEnd = convertTimeMacroToString(end, i);
+		std::string alarmMacro = convertTimeMacroToString(alarm, i);
 
-		std::string tMicroBeg = convertTimeMicroToString("Begin", i);
-		std::string tMicroEnd = convertTimeMicroToString("End", i);
-		std::string alarmMicro = convertTimeMicroToString("Alarm", i);
+		std::string tMicroBeg = convertTimeMicroToString(begin, i);
+		std::string tMicroEnd = convertTimeMicroToString(end, i);
+		std::string alarmMicro = convertTimeMicroToString(alarm, i);
 
 		//convert boolean into string
 		std::string isDone;
-		if(LocalStorage::dataList[i].getCompleteStatus() == true){
+		if(dataList[i].getCompleteStatus() == true){
 			isDone = "true";
 		} else {
 			isDone = "false";
 		}
 
 		//save into file
-		out <<LocalStorage::dataList[i].getUniqueCode()
+		out << dataList[i].getUniqueCode()
 			<< '\t' << tMacroBeg
 			<< "\t\t" << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
-			<< "\t\t" << isDone << "\t\t" << LocalStorage::dataList[i].getPriority() 
+			<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
 			<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
-			<< LocalStorage::dataList[i].getDesc() << '\n';
+			<< dataList[i].getDesc() << '\n';
 
 	}	
 }
@@ -80,7 +83,7 @@ void LocalStorage::saveData(){
 //Start of Helper Methods for Loading Data
 
 //helper method for loadDate to parse input
-void LocalStorage::parseLoad(std::string strData, int& i){
+void LocalStorage::parseLoad(std::string strData, int i, Data& data){
 	std::stringstream streamConverter; //to help convert string to int
 
 	std::string tempMacroTBeg;
@@ -109,9 +112,7 @@ void LocalStorage::parseLoad(std::string strData, int& i){
 	tempAlarmMacro = tokenizerSpace(strData);
 	tempAlarmMicro = tokenizerSpace(strData);
 	desc = tokenizerSpace(strData);
-
-	Data data;
-
+	
 	data.updateUniqueCode(uniqueCode); 
 	data.updateDesc(desc);
 
@@ -133,9 +134,6 @@ void LocalStorage::parseLoad(std::string strData, int& i){
 	TimeMicro inAlarmMicro = microParser(tempAlarmMicro);
 	data.updateAlarmMicro(inAlarmMicro);
 
-	LocalStorage::addData(data);
-
-	i++;
 }
 
 //helper method to parseLoad to parse string and convert to TimeMacro
@@ -206,60 +204,58 @@ std::string LocalStorage::tokenizerSpace(std::string& str){
 //End of Helper method for Loading Data
 ///////////////////////////////////////
 
-
-
 /////////////////////////////////////////
 //Start of Helper method for saving Data
 
 //helper method to convert TimeMacro into String
-std::string LocalStorage::convertTimeMacroToString(std::string type, int i){
+std::string LocalStorage::convertTimeMacroToString(TimeType type, int i){
 	std::string tMacro;
+	
+	switch(type){
+	case begin :
+		tMacro = dataList[i].getTimeMacroBeg().getDay() + '/'
+		+ std::to_string(dataList[i].getTimeMacroBeg().getDate()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroBeg().getMonth()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroBeg().getYear());
+		break;
 
-	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
+	case end :
+		tMacro = dataList[i].getTimeMacroEnd().getDay() + '/'
+		+ std::to_string(dataList[i].getTimeMacroEnd().getDate()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroEnd().getMonth()) + '/'
+		+ std::to_string(dataList[i].getTimeMacroEnd().getYear());
+		break;
 
-	if(type == "Begin"){
-		tMacro = LocalStorage::dataList[i].getTimeMacroBeg().getDay() + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMacroBeg().getDate()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMacroBeg().getMonth()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMacroBeg().getYear());
-	}
-
-	if(type == "End"){
-		tMacro = LocalStorage::dataList[i].getTimeMacroEnd().getDay() + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMacroEnd().getDate()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMacroEnd().getMonth()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMacroEnd().getYear());
-	}
-
-	if(type == "Alarm"){
-		tMacro = LocalStorage::dataList[i].getAlarmMacro().getDay() + '/'
-		+ std::to_string(LocalStorage::dataList[i].getAlarmMacro().getDate()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getAlarmMacro().getMonth()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getAlarmMacro().getYear());
+	case alarm :
+		tMacro = dataList[i].getAlarmMacro().getDay() + '/'
+		+ std::to_string(dataList[i].getAlarmMacro().getDate()) + '/'
+		+ std::to_string(dataList[i].getAlarmMacro().getMonth()) + '/'
+		+ std::to_string(dataList[i].getAlarmMacro().getYear());
+		break;
 	}
 
 	return tMacro;
 }
 
 //helper method to convert TimeMicro into String
-std::string LocalStorage::convertTimeMicroToString(std::string type, int i){
+std::string LocalStorage::convertTimeMicroToString(TimeType type, int i){
 	std::string tMicro;
 
-	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
+	switch(type){
+	case begin :
+		tMicro = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + '/'
+		+ std::to_string(dataList[i].getTimeMicroBeg().getMin());
+		break;
 
-	if(type == "Begin"){
-		tMicro = std::to_string(LocalStorage::dataList[i].getTimeMicroBeg().getHour()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMicroBeg().getMin());
-	}
+	case (end) :
+		tMicro = std::to_string(dataList[i].getTimeMicroEnd().getHour()) + '/'
+		+ std::to_string(dataList[i].getTimeMicroEnd().getMin());
+		break;
 
-	if(type == "End"){
-		tMicro = std::to_string(LocalStorage::dataList[i].getTimeMicroEnd().getHour()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getTimeMicroEnd().getMin());
-	}
-
-	if(type == "Alarm"){
-		tMicro = std::to_string(LocalStorage::dataList[i].getAlarmMicro().getHour()) + '/'
-		+ std::to_string(LocalStorage::dataList[i].getAlarmMicro().getMin());
+	case (alarm) :
+		tMicro = std::to_string(dataList[i].getAlarmMicro().getHour()) + '/'
+		+ std::to_string(dataList[i].getAlarmMicro().getMin());
+		break;
 	}
 
 	return tMicro;

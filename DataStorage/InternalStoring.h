@@ -13,6 +13,7 @@
 
 typedef enum ListType {command, feature, heading};
 typedef enum DisplayType {search, done, floating};
+typedef enum TimeType {begin, end, alarm};
 
 //using singleton pattern
 class LocalStorage {
@@ -36,13 +37,13 @@ private:
 
 	//Helper methods for internal working Save and Load
 	void writeHeading (std::string fileName, std::ofstream& out);
-	void parseLoad(std::string strData, int& i);
+	void parseLoad(std::string strData, int i, Data& data);
 	std::string tokenizerSlash(std::string& str);
 	std::string tokenizerSpace(std::string& str);
 	TimeMacro macroParser(std::string tempMacro);
 	TimeMicro microParser(std::string tempMicro);
-	std::string convertTimeMacroToString(std::string type, int i);
-	std::string convertTimeMicroToString(std::string type, int i);
+	std::string convertTimeMacroToString(TimeType type, int i);
+	std::string convertTimeMicroToString(TimeType type, int i);
 
 
 public: 
@@ -68,21 +69,29 @@ public:
 	void updateUniqueCodeStore(int);
 };
 
+//using singleton pattern
 class History {
 private:
+	//instance and private constructor for singleton pattern
+	static History* instance;
+	History() {}
+
 	//private attribute
-	static std::string latestCommand;
-	static Data latestData;
-	static std::vector<Data> latestVector;
+	std::string latestCommand;
+	Data latestData;
+	std::vector<Data> latestVector;
 
 public:
+	//getInstance for singleton pattern
+	static History* getInstance();
+
 	//API for facade class
-	static std::string getLatestCommand();
-	static Data getLatestData();
-	static std::vector<Data>& getLatestVector();
-	static void updateLatestCommand(std::string inCommand);
-	static void updateLatestData(Data inData);
-	static void updateLatestVector();
+	std::string getLatestCommand();
+	Data getLatestData();
+	std::vector<Data>& getLatestVector();
+	void updateLatestCommand(std::string inCommand);
+	void updateLatestData(Data inData);
+	void updateLatestVector();
 
 };
 
