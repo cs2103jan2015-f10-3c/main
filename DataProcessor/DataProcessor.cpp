@@ -17,7 +17,7 @@ string DataProcessor::addTask(Data task){
 	Storing storing;
 	storing.addData(task); 
 	ostringstream out;
-	out << convertDataObjectToString (task) << " is added" <<endl;
+	out << convertDataObjectToLine(task) << " is added" << endl;
 	string addMessage;
 	addMessage = out.str();
 	return addMessage;
@@ -28,7 +28,7 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
-	out << convertDataObjectToString (storing.deleteData(number)) << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToLine(storing.deleteData(number)) << " is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -144,9 +144,6 @@ string DataProcessor::convertDataObjectToString(Data task){
 	outData << setw(descriptionWidth) << left << task.getDesc() << endl;
 
 	
-	/*if(timeMacroBeg.getDate() != 0){
-				outData << " ";
-	}*/
 
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
@@ -220,7 +217,8 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
 				<< convertDataObjectToString(taskList[i])
-				<< setfill('-') << setw(81);
+				<< setfill('=') << setw(81)
+				<< "\n";
 		numberOfTask++;
 	}
 	assert (numberOfTask >= 1);
@@ -253,7 +251,7 @@ string DataProcessor::markDone(int taskNo){
 	targetData = storing.getData(taskNo);
 	targetData.updateCompleteStatus(true);
 	storing.changeData(taskNo, targetData);
-	outData << convertDataObjectToString(targetData) << " is done";
+	outData << convertDataObjectToLine(targetData) << " is done";
 	return outData.str();
 }
 
@@ -262,4 +260,55 @@ string DataProcessor::markDone(int taskNo){
 void DataProcessor::showCommands(){
 	Storing storing;
 	storing.retrieveCommandList();
+}
+
+//This function receives a Data object
+//and converts it into a line of string
+//that is ready to be put into response string
+string DataProcessor::convertDataObjectToLine(Data task){
+	assert ( task.getDesc() != "\0");
+	ostringstream outData;
+	TimeMacro timeMacroBeg = task.getTimeMacroBeg();
+	TimeMacro timeMacroEnd = task.getTimeMacroEnd();
+	TimeMicro timeMicroBeg = task.getTimeMicroBeg();
+	TimeMicro timeMicroEnd = task.getTimeMicroEnd();
+	
+	outData << task.getDesc();
+	//If there is deadline date associated with the task
+	if(timeMacroBeg.getDate() != 0){
+		outData << " on " 
+			<< timeMacroBeg.getDay() << ", "
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
+				<< timeMacroBeg.getYear() << " ";
+	}
+
+	//Check if there is deadline time associated with the task
+	if(timeMicroBeg.getHour() != -1){
+		outData << "at ";
+		if (timeMicroBeg.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getHour() << ":";
+		if (timeMicroBeg.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getMin();
+
+	}
+	if(timeMicroEnd.getHour() != -1){
+		outData << "-";
+		if (timeMicroEnd.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getHour() << ":";
+		if (timeMicroEnd.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getMin();
+	}
+
+	string taskString = outData.str();
+	return taskString;
+
 }
