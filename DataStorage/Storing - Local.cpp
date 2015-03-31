@@ -173,9 +173,20 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	}
 
 	if (updatedData.getTimeMicroBeg().getHour() != -1
-		&& updatedData.getTimeMicroBeg().getHour() != -1) {
+		&& updatedData.getTimeMicroBeg().getMin() != -1) {
 			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
 			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
+	}
+
+	if (updatedData.getAlarmMacro().getDate() != 0 
+		&& updatedData.getAlarmMacro().getMonth() != 0
+		&& updatedData.getAlarmMacro().getYear() != 0) {
+			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
+	}
+
+	if (updatedData.getAlarmMicro().getHour() != -1
+		&& updatedData.getAlarmMicro().getMin() != -1) {
+			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
 	}
 
 	if (updatedData.getCompleteStatus() != false){
