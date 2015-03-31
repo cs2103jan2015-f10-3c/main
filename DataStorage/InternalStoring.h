@@ -66,29 +66,22 @@ public:
 	
 };
 
-//using singleton pattern
 class History {
 private:
-	//instance and private constructor for singleton pattern
-	static History* instance;
-	History() {}
 
 	//private attribute
-	std::string latestCommand;
-	Data latestData;
-	std::vector<Data> latestVector;
+	static std::string latestCommand;
+	static Data latestData;
+	static std::vector<Data> latestVector;
 
 public:
-	//getInstance for singleton pattern
-	static History* getInstance();
-
 	//API for facade class
-	std::string getLatestCommand();
-	Data getLatestData();
-	std::vector<Data>& getLatestVector();
-	void updateLatestCommand(std::string inCommand);
-	void updateLatestData(Data inData);
-	void updateLatestVector();
+	static std::string getLatestCommand();
+	static Data getLatestData();
+	static std::vector<Data>& getLatestVector();
+	static void updateLatestCommand(std::string inCommand);
+	static void updateLatestData(Data inData);
+	static void updateLatestVector();
 
 };
 

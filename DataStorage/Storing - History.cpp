@@ -1,16 +1,11 @@
 #include "InternalStoring.h"
 
 /////////////////////////////////////////////
-//Definition of Methods for singleton pattern
+//Definition of static attributes
 
-History* History::instance = NULL;
-
-History* History::getInstance(){
-	if (instance = NULL){
-		instance = new History;
-	}
-	return instance;
-}
+std::string History::latestCommand;
+Data History::latestData;
+std::vector<Data> History::latestVector;
 
 //End of Definition
 ////////////////////////////////////////////

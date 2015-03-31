@@ -51,18 +51,15 @@ void Storing::saveData(){
 
 
 std::string Storing::getLatestCommand(){
-	History *history = History::getInstance();
-	return history->getLatestCommand();
+	return History::getLatestCommand();
 }
 
 Data Storing::getLatestData(){
-	History *history = History::getInstance();
-	return history->getLatestData();
+	return History::getLatestData();
 }
 
 std::vector<Data> Storing::getLatestVector(){
-	History *history = History::getInstance();
-	return history->getLatestVector();
+	return History::getLatestVector();
 }
 
 

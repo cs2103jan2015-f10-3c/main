@@ -88,8 +88,7 @@ std::vector<Data>& LocalStorage::getDataList() {
 }
 
 void LocalStorage::clearDataList(){
-	History *history = History::getInstance();
-	history->updateLatestCommand("clear");
+	History::updateLatestCommand("clear");
 	dataList.clear();
 }
 
@@ -103,10 +102,9 @@ void LocalStorage::addData(Data& inData){
 	dataList.push_back(inData);
 	sortDataList();
 
-//	History *history = History::getInstance();
-//
-////	history->updateLatestCommand("add");
-////	history->updateLatestData(inData); //store for undo
+
+	History::updateLatestCommand("add");
+	History::updateLatestData(inData); //store for undo
 }
 
 
@@ -114,8 +112,7 @@ void LocalStorage::addData(Data& inData){
 //input the taskno of the display list to be deleted
 //return the Data that was deleted
 Data LocalStorage::deleteData(int taskNo){
-	History *history = History::getInstance();
-	history->updateLatestCommand("delete");
+	History::updateLatestCommand("delete");
 
 	
 	DisplayStorage *display = DisplayStorage::getInstance();
@@ -126,7 +123,7 @@ Data LocalStorage::deleteData(int taskNo){
 		if(uniqueCode != dataList[i].getUniqueCode()){
 				listTofacilitateDeletion.push_back(dataList[i]);
 		} else {
-			//history->updateLatestData(dataList[i]); //store in History
+			History::updateLatestData(dataList[i]); //store in History
 		}
 	}
 	dataList = listTofacilitateDeletion;
@@ -137,8 +134,7 @@ Data LocalStorage::deleteData(int taskNo){
 //API for undo function
 void LocalStorage::undoAdd(){
 	int uniqueCode;
-	History *history = History::getInstance();
-	uniqueCode = history->getLatestData().getUniqueCode();
+	uniqueCode = History::getLatestData().getUniqueCode();
 
 	std::vector<Data> tempList;
 	for(int i = 0; i != dataList.size(); i++){
@@ -153,8 +149,7 @@ void LocalStorage::undoAdd(){
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
 Data LocalStorage::editData(int taskNo, Data updatedData){
-	//History *history = History::getInstance();
-	//history->updateLatestVector(); //Store for undo
+	History::updateLatestVector(); //Store for undo
 
 	
 	DisplayStorage *display = DisplayStorage::getInstance();
@@ -191,7 +186,7 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	addData(dataToEdit);
 
 
-	//history->updateLatestCommand("edit"); //Store for undo
+	History::updateLatestCommand("edit"); //Store for undo
 
 	return display->getData(taskNo);
 }
