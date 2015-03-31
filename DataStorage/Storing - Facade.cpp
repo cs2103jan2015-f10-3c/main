@@ -37,14 +37,20 @@ void Storing::retrieveFeatureList(){
 	prewrittenData.retrieveList(feature);
 }
 
-void Storing::loadData(bool& status){
+void Storing::loadData(bool& status, std::string directory){
+	if(directory==""){
+		directory = "save.txt";
+	}
 	LocalStorage *localStorage = LocalStorage::getInstance();
-	return localStorage->loadData(status);
+	return localStorage->loadData(status, directory);
 }
 
-void Storing::saveData(){
+void Storing::saveData(std::string directory){
+	if(directory==""){
+		directory = "save.txt";
+	}
 	LocalStorage *localStorage = LocalStorage::getInstance();
-	return localStorage->saveData();
+	return localStorage->saveData(directory);
 }
 
 
@@ -80,12 +86,12 @@ std::vector<Data>& Storing::displaySearch(std::string word){
 
 std::vector<Data>& Storing::displayDone(){
 	DisplayStorage *display = DisplayStorage::getInstance();
-	return display->getDisplayList(done,"");
+	return display->getDisplayList(done);
 }
 
 std::vector<Data>& Storing::displayfloat(){
 	DisplayStorage *display = DisplayStorage::getInstance();
-	return display->getDisplayList(floating,"");
+	return display->getDisplayList(floating);
 }
 
 void Storing::clearDisplayList(){

@@ -18,6 +18,7 @@ typedef enum TimeType {begin, end, alarm};
 //using singleton pattern
 class LocalStorage {
 private:
+	static const std::string DEFAULT_SAVE_DIRECTORY;
 
 	//Singleton instance and private constructor
 	static LocalStorage* instance;
@@ -44,6 +45,8 @@ private:
 	TimeMicro microParser(std::string tempMicro);
 	std::string convertTimeMacroToString(TimeType type, int i);
 	std::string convertTimeMicroToString(TimeType type, int i);
+	std::string directoryCheck(std::string& inputDirectory);
+	void adjustFormat(std::string& inputDirectory);
 
 
 public: 
@@ -58,8 +61,8 @@ public:
 	void undoAdd();
 	std::vector<Data>& getDataList();
 	
-	void saveData();
-	void loadData(bool& status);
+	void saveData(std::string directory);
+	void loadData(bool& status, std::string directory);
 
 	//API for DisplayStorage
 	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
@@ -109,7 +112,7 @@ public:
 
 	//API for facade Class
 	std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
-	std::vector<Data>& getDisplayList(DisplayType type, std::string);
+	std::vector<Data>& getDisplayList(DisplayType type, std::string= "");
 	void clearList();
 	Data getData(int taskNo);
 

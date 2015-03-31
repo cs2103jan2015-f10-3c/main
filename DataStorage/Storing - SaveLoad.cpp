@@ -1,8 +1,9 @@
 #include "InternalStoring.h"
+const std::string LocalStorage::DEFAULT_SAVE_DIRECTORY = "save.txt";
 
 //API for loading Data from txt file
-void LocalStorage::loadData(bool& status){
-	std::ifstream in("test.txt");
+void LocalStorage::loadData(bool& status, std::string directory){
+	std::ifstream in(directory);
 	//if file exists
 	if (in){
 
@@ -38,11 +39,33 @@ void LocalStorage::loadData(bool& status){
 	}
 }
 
+//check whether user input directory exists
+std::string LocalStorage::directoryCheck(std::string& inputDirectory){
+	adjustFormat(inputDirectory);
+	
+	std::ofstream out;
+	out.open(inputDirectory.c_str());
+	
+	try{
+		if(!out.is_open()){
+			throw "Input directory is invalid. Hint: directory should be with slash instead of backslash";
+		}
+	}
+	catch (const char* errorMessage) {
+		return errorMessage;
+	}
+}
+
+//format the input directory from user
+//so that it can be read by all compiler
+void LocalStorage::adjustFormat(std::string& inputDirectory){
+	inputDirectory += '/' + DEFAULT_SAVE_DIRECTORY;
+}
 
 
 //API for saving data into file
-void LocalStorage::saveData(){
-	std::string fileName = "test.txt";
+void LocalStorage::saveData(std::string directory){
+	std::string fileName = directory;
 	std::ofstream out;
 	out.open(fileName.c_str());
 

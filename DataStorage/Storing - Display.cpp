@@ -34,7 +34,7 @@ std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro
 
 
 //get display list method for specific purpose (defined in DisplayType)
-std::vector<Data>& DisplayStorage::getDisplayList(DisplayType type, std::string keyword= ""){
+std::vector<Data>& DisplayStorage::getDisplayList(DisplayType type, std::string keyword){
 	std::vector<Data> tempList = getListFromLocal();
 	
 	switch (type){
