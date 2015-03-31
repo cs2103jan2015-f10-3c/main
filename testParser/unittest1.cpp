@@ -145,6 +145,42 @@ namespace testParser
 		}
 
 		//To test whether a string is a starting time
+		//The boundary case is 00:00
+		TEST_METHOD(testisTimePeriodTwentyFour5)
+		{
+			Parser parser;
+			string testString = "00:00";
+			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+		}
+
+		//To test whether a string is a starting time
+		//The boundary case is 29:59
+		TEST_METHOD(testisTimePeriodTwentyFour6)
+		{
+			Parser parser;
+			string testString = "29:59";
+			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+		}
+
+		//To test whether a string is a starting time
+		//The boundary case is 0:00
+		TEST_METHOD(testisTimePeriodTwentyFour7)
+		{
+			Parser parser;
+			string testString = "0:00";
+			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+		}
+
+		//To test whether a string is a starting time
+		//The boundary case is 9:59
+		TEST_METHOD(testisTimePeriodTwentyFour8)
+		{
+			Parser parser;
+			string testString = "9:59";
+			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+		}
+
+		//To test whether a string is a starting time
 		//In this case, the string is a starting time which is also a time period
 		TEST_METHOD(testisStartingTimeTwentyFour1)
 		{

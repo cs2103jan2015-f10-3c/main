@@ -36,7 +36,7 @@ public:
 	static void showCommands();
 	static void saveData();
 	static void loadData(bool& status);
-
+	static void clearDisplayList();
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
 	string getClearMessage(TimeMacro startTime, TimeMacro endTime);
