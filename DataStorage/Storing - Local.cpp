@@ -1,13 +1,21 @@
 #include "InternalStoring.h"
 
-/////////////////////////////
-//Definition of Static Method
+///////////////////////////////////////
+//Singleton Definition / Implementation
 
-std::vector<Data> LocalStorage::dataList;
-int LocalStorage::uniqueCodeStore;
+LocalStorage* LocalStorage::instance = NULL;
+
+LocalStorage* LocalStorage::getInstance(){
+	if(instance == NULL){
+		instance = new LocalStorage;
+	}
+	return instance;
+}
+
 
 //End of Definition
-/////////////////////////////
+///////////////////////////////////////
+
 
 
 

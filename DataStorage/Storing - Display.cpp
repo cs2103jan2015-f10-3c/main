@@ -11,8 +11,10 @@ std::vector<Data> DisplayStorage::displayList;
 
 //get display list method for a time frame
 std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+
 	std::vector<long long> timePeriod;
-	timePeriod = LocalStorage::searchPeriod(startTime,endTime);
+	timePeriod = localStorage->searchPeriod(startTime,endTime);
 	
 	if(!timePeriod.empty()){
 		enterDataToList(timePeriod);
@@ -21,19 +23,23 @@ std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro
 	return displayList;
 }
 
+
+
 //get display list method for specific purpose (defined in DisplayType)
 std::vector<Data>& DisplayStorage::getDisplayList(DisplayType type, std::string keyword= ""){
+	std::vector<Data> tempList = getListFromLocal();
+	
 	switch (type){
 	case search:
-		displaySearch(keyword);		
+		displaySearch(tempList, keyword);		
 		break;
 	
 	case done:
-		displayDone();
+		displayDone(tempList);
 		break;
 
 	case floating:
-		displayFloat();
+		displayFloat(tempList);
 		break;
 	}
 	
@@ -67,6 +73,14 @@ int DisplayStorage::getUniqueCode(int taskNo){
 //////////////////////////////////
 // Start of Internal Helper methods
 
+//helper method to get dataList from LocalStorage
+std::vector<Data> DisplayStorage::getListFromLocal(){
+	LocalStorage *localStorage;
+	localStorage = LocalStorage::getInstance();
+	std::vector<Data> tempList = localStorage->getDataList();
+	return tempList;
+}
+
 
 // !!unit testing done
 //helper method for getDisplayList()
@@ -74,6 +88,9 @@ int DisplayStorage::getUniqueCode(int taskNo){
 void DisplayStorage::enterDataToList(std::vector<long long> timePeriod){
 	int endT;
 	int startT;
+	
+	std::vector<Data> tempList = getListFromLocal();
+
 
 	if(timePeriod.size() == 1){
 		endT = startT = timePeriod[0];
@@ -84,8 +101,8 @@ void DisplayStorage::enterDataToList(std::vector<long long> timePeriod){
 	
 	for (int i = startT; i <= endT; i++){
 		//if task is not done
-		if(LocalStorage::dataList[i].getCompleteStatus()==false){
-			displayList.push_back(LocalStorage::dataList[i]);
+		if(tempList[i].getCompleteStatus()==false){
+			displayList.push_back(tempList[i]);
 		}
 	}
 }
@@ -101,31 +118,31 @@ void DisplayStorage::updateTaskNo(){
 	}
 }
 
-void DisplayStorage::displaySearch(std::string keyword){
+void DisplayStorage::displaySearch(std::vector<Data> tempList, std::string keyword){
 	std::string taskDescription;
 	size_t found;
 
-	for(int i = 0; i != LocalStorage::dataList.size(); i++){
-		taskDescription = LocalStorage::dataList[i].getDesc();
+	for(int i = 0; i != tempList.size(); i++){
+		taskDescription = tempList[i].getDesc();
 		found = taskDescription.find(keyword);
 		if(found != std::string::npos){
-			displayList.push_back(LocalStorage::dataList[i]);
+			displayList.push_back(tempList[i]);
 		}
 	}
 }
 
-void DisplayStorage::displayDone(){
-	for(int i = 0; i != LocalStorage::dataList.size(); i++){
-		if(LocalStorage::dataList[i].getCompleteStatus() == true){
-			displayList.push_back(LocalStorage::dataList[i]);
+void DisplayStorage::displayDone(std::vector<Data> tempList){
+	for(int i = 0; i != tempList.size(); i++){
+		if(tempList[i].getCompleteStatus() == true){
+			displayList.push_back(tempList[i]);
 		}
 	}
 }
 
-void DisplayStorage::displayFloat(){
-	for(int i = 0; i != LocalStorage::dataList.size(); i++){
-		if(LocalStorage::dataList[i].getTimeMacroBeg().getDay() == "undefined"){
-			displayList.push_back(LocalStorage::dataList[i]);
+void DisplayStorage::displayFloat(std::vector<Data> tempList){
+	for(int i = 0; i != tempList.size(); i++){
+		if(tempList[i].getTimeMacroBeg().getDay() == "undefined"){
+			displayList.push_back(tempList[i]);
 		}
 	}
 }

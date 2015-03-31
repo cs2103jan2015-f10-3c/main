@@ -1,23 +1,28 @@
 #include "Storing.h"
 
 void Storing::addData(Data& inData){
-	LocalStorage::addData(inData);
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->addData(inData);
 }
 
 Data Storing::deleteData(int taskNo){
-	return LocalStorage::deleteData(taskNo);
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->deleteData(taskNo);
 }
 
 Data Storing::changeData(int taskNo, Data& inData){
-	return LocalStorage::editData(taskNo, inData);
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->editData(taskNo, inData);
 }
 
 void Storing::clearDataList(){
-	LocalStorage::clearDataList();
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->clearDataList();
 }
 
 void Storing::undoAdd(){
-	LocalStorage::undoAdd();
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->undoAdd();
 }
 
 
@@ -36,11 +41,13 @@ std::stringstream Storing::retrieveFeatureList(){
 }
 
 void Storing::loadData(bool& status){
-	return LocalStorage::loadData(status);
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->loadData(status);
 }
 
 void Storing::saveData(){
-	return LocalStorage::saveData();
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->saveData();
 }
 
 

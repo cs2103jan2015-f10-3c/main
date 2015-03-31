@@ -36,6 +36,9 @@ void History::updateLatestData(Data inData){
 
 void History::updateLatestVector(){
 	latestVector.clear(); //clear the container
-	latestVector = LocalStorage::getDataList();
+	LocalStorage *localStorage;
+	localStorage = LocalStorage::getInstance();
+
+	latestVector = localStorage->getDataList();
 
 }
