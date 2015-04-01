@@ -5,7 +5,7 @@
 
 //using namespace std;
 
-const string DataProcessor::ADD_MESSAGE = "is added";
+const string DataProcessor::ADD_MESSAGE = " is added";
 const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
 const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
 const string DataProcessor::EDIT_MESSAGE = "is edited";
@@ -17,7 +17,7 @@ string DataProcessor::addTask(Data task){
 	Storing storing;
 	storing.addData(task); 
 	ostringstream out;
-	out << convertDataObjectToLine(task) << " is added" << endl;
+	out << convertDataObjectToLine(task) << "is added" << endl;
 	string addMessage;
 	addMessage = out.str();
 	setLatestData(task);
@@ -29,7 +29,7 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
-	out << convertDataObjectToLine(storing.deleteData(number)) << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToLine(storing.deleteData(number)) << "is deleted from BlinkList" << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
