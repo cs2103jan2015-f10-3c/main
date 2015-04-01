@@ -20,6 +20,7 @@ string DataProcessor::addTask(Data task){
 	out << convertDataObjectToLine(task) << " is added" << endl;
 	string addMessage;
 	addMessage = out.str();
+	setLatestData(task);
 	return addMessage;
 }
 
@@ -55,6 +56,14 @@ void DataProcessor::loadData(bool& status){
 	storing.loadData(status);
 }
 
+Data DataProcessor::getLatestData(){
+	return _latestData;
+}
+
+void DataProcessor::setLatestData(Data data){
+	_latestData = data;
+}
+
 
 
 //Start of Yang Xiaozhou's part of DataProcessor
@@ -80,6 +89,7 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	uneditedTask = storing.changeData(taskNumber, task);
 	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
 	outData << "edit data is done";
+	setLatestData(uneditedTask);
 	return editMessage;
 
 }
@@ -271,6 +281,7 @@ void DataProcessor::showCommands(){
 //that is ready to be put into response string
 string DataProcessor::convertDataObjectToLine(Data task){
 	assert ( task.getDesc() != "\0");
+	setLatestData(task);
 	ostringstream outData;
 	TimeMacro timeMacroBeg = task.getTimeMacroBeg();
 	TimeMacro timeMacroEnd = task.getTimeMacroEnd();

@@ -40,6 +40,7 @@ public:
 	static string displayToday(string returnDisplay, TimeMacro current);
 	static TimeMacro setCurrentTime();
 	static string showWelcomeMessage(bool status);
+	static string displaySpecificDay(DataProcessor dataProcessor, TimeMacro current);
 };
 
 #endif

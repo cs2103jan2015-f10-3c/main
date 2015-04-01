@@ -61,12 +61,51 @@ string Logic::displayToday(string returnDisplay, TimeMacro current){
 	return returnDisplay;
 }
 
+//display the list of task for a specific day, depending on the date of the object being
+//added, edited, deleted or done. 
+string Logic::displaySpecificDay(DataProcessor dataProcessor, TimeMacro current){
+	Data latestData = dataProcessor.getLatestData();
+	string returnDisplay;
+	ostringstream out;
+	
+	//check if the date is today
+	if(latestData.getTimeMacroBeg().getDate() == current.getDate() && latestData.getTimeMacroBeg().getMonth() == current.getMonth() && latestData.getTimeMacroBeg().getYear() == current.getYear()){
+		returnDisplay = displayToday(returnDisplay, current);
+		return returnDisplay;
+	}
+
+	returnDisplay = dataProcessor.displayTask(latestData.getTimeMacroBeg(), latestData.getTimeMacroBeg());
+
+	if(returnDisplay == "" && latestData.getTimeMacroBeg().getDate() != 0){
+		out << "Your have no task on " << latestData.getTimeMacroBeg().getDay() << ", "  
+			<< latestData.getTimeMacroBeg().getDate() << "-" 
+			<< latestData.getTimeMacroBeg().getMonth() << "-"
+			<< latestData.getTimeMacroBeg().getYear() << endl;
+	} else if(latestData.getTimeMacroBeg().getDate() != 0){
+		out << "Your agenda for " << latestData.getTimeMacroBeg().getDay() << ", "  
+			<< latestData.getTimeMacroBeg().getDate() << "-" 
+			<< latestData.getTimeMacroBeg().getMonth() << "-"
+			<< latestData.getTimeMacroBeg().getYear() << ":" << endl;
+	} else if(returnDisplay == "" && latestData.getTimeMacroBeg().getDate() == 0){
+		out<< "You have no task with unspecified date"<< endl;
+	} else if(latestData.getTimeMacroBeg().getDate() == 0){
+		out << "Your tasks with unspecified date are as follows: " << endl;
+	}
+
+	out << returnDisplay;
+	returnDisplay = out.str();
+	
+	return returnDisplay;
+}
+
 void Logic::executeCommand(string& returnDisplay, string& returnResponse, string command, Data task, int taskNo, TimeMacro currentTime){
 	
 	DataProcessor dataProcessor;
+
 	if(command == "add") {
 		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.addTask(task);
+		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == "show") {
 		dataProcessor.clearDisplayList();
 		returnResponse = EMPTY_RESPONSE;
@@ -77,6 +116,7 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == "delete"){
 		returnResponse = dataProcessor.deleteTask(taskNo);
 		dataProcessor.clearDisplayList();
+		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == "clear"){
 		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.clearTask();
@@ -99,6 +139,7 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		try{
 			returnResponse = dataProcessor.editTask(taskNo, task);
 			dataProcessor.clearDisplayList();
+			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 		}
 		catch (std::exception e){
 			//std::cout << e.what();
@@ -107,19 +148,21 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == "undo"){
 		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.executeUndo();
+		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == "done"){
 		returnResponse = dataProcessor.markDone(taskNo);
 		dataProcessor.clearDisplayList();
+		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == "show commands"){
 		dataProcessor.clearDisplayList();
 		dataProcessor.showCommands();
 	}else{	
 	}
 
-	if(command != "show" && command != "search" && command != "show commands"){
+	/*if(command != "show" && command != "search" && command != "show commands"){
 		dataProcessor.clearDisplayList();
 		returnDisplay = displayToday(returnDisplay, currentTime);
-	}
+	}*/
 
 }
 
