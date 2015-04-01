@@ -157,7 +157,11 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		dataProcessor.clearDisplayList();
 		dataProcessor.showCommands();
 	}else if(command == "show done"){
+		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showDone();
+	}else if(command == "show float"){
+		dataProcessor.clearDisplayList();
+		returnDisplay = dataProcessor.showFloat();
 	}
 
 	/*if(command != "show" && command != "search" && command != "show commands"){
