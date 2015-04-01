@@ -1,3 +1,17 @@
-1
+19
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
-1	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		pnda
+2	Wednesday/1/4/2015		undefined/0/0/0		15/0		-1/-1		false		None		undefined/0/0/0		-1/-1		do unit testing cs
+3	Wednesday/1/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with alvinna
+5	Thursday/2/4/2015		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		cs meeting
+6	Thursday/2/4/2015		undefined/0/0/0		10/0		-1/-1		false		None		undefined/0/0/0		-1/-1		breakfast with steven
+7	Thursday/2/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		study ie2150
+13	Thursday/2/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		charity concert
+4	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline cs v0.3
+15	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting 2150
+16	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
+12	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting2150 to consolidate
+14	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline internal 2150 report
+18	Monday/13/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		cs v0.5 deadline
+19	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		ie2130 report deadline
+17	Saturday/18/4/2015		undefined/0/0/0		10/0		13/0		false		None		undefined/0/0/0		-1/-1		gem1919 test1
+9	Saturday/25/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		gem1919 test 2
