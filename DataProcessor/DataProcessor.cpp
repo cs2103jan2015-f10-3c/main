@@ -135,6 +135,7 @@ string DataProcessor::executeUndo(){
 			storing.addData(latestVector[i]);
 		}
 	}
+	setLatestData(latestData);
 	string undoMessage = "You have undone your operation";
 	return undoMessage;
 }

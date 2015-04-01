@@ -29,6 +29,7 @@ private:
 	static const string UNDO_COMMAND;
 	static const string EMPTY_RESPONSE;
 	static const string IVALID_COMMAND_MESSAGE;
+	static int undoCount;
 
 
 public:

@@ -4,6 +4,7 @@ using namespace std;
 
 string Feedback::display;
 string Feedback::response;
+int Logic::undoCount;
 
 void Logic::saveData(){
 	DataProcessor::saveData();
@@ -146,9 +147,9 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			returnResponse = e.what();
 		}
 	}else if(command == "undo"){
-		dataProcessor.clearDisplayList();
-		returnResponse = dataProcessor.executeUndo();
-		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+			dataProcessor.clearDisplayList();
+			returnResponse = dataProcessor.executeUndo();
+			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == "done"){
 		returnResponse = dataProcessor.markDone(taskNo);
 		dataProcessor.clearDisplayList();
@@ -187,7 +188,21 @@ void Logic::executeInput(string input){
 	string returnDisplay;
 	
 	if(errorMessage == ""){
-		executeCommand(returnDisplay, returnResponse, command, task, taskNo, currentTime);
+		
+		if(command == "undo"){
+			++undoCount;
+		}
+
+		if(command != "undo"){
+			undoCount = 0;
+		}
+		
+		if(undoCount > 1){
+			returnResponse = "You can only undo once";
+		} else {
+			executeCommand(returnDisplay, returnResponse, command, task, taskNo, currentTime);
+		}
+
 	} else {
 		returnResponse = errorMessage;
 	}
