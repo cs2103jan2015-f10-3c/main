@@ -148,13 +148,19 @@ public:
 //to retrieve data from prewritten .txt files
 class PrewrittenData {
 private:
+	static const char ALL_COMMANDS_FILE[100];
+	static const char ALL_FEATURES_FILE[100];
+	static const char HEADING_TEMPLATE_FILE[100];
 	std::stringstream retrievedList;
+
+	//helper method
+	std::string determineListType(ListType type);
 
 public:
 	PrewrittenData() {}
 
 	//API for facade class
-	void retrieveList(ListType type);
+	std::stringstream& retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
 };
 

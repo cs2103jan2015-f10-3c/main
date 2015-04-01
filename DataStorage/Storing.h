@@ -15,8 +15,8 @@ public:
 	bool saveData(std::string directory = "");
 
 	//methods that call PrewrittenData Class
-	void retrieveCommandList();
-	void retrieveFeatureList();
+	std::stringstream& retrieveCommandList();
+	std::stringstream& retrieveFeatureList();
 
 	//methods that call History Class
 	std::string getLatestCommand();
