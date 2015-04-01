@@ -28,8 +28,8 @@ std::vector<long long> LocalStorage::searchPeriod(TimeMacro startTime, TimeMacro
 	allocatePsedoDate();
 
 	//allocate startTime & endTime into psedoDate format
-	long long pStartTime = allocateTimeToPsedoDate(startTime);
-	long long pEndTime = allocateTimeToPsedoDate(endTime);
+	long long pStartTime = allocateTimeMacroToPsedoDate(startTime);
+	long long pEndTime = allocateTimeMacroToPsedoDate(endTime);
 
 	return searchRelevantDates(pStartTime,pEndTime);
 }
@@ -82,6 +82,8 @@ void LocalStorage::undoAdd(){
 	dataList = deleteDataOfUniqueCode(uniqueCode);
 }
 
+
+
 //method for edit command
 //input the taskno of the displayList and the updatedData
 //return Data that was edited
@@ -92,46 +94,10 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	int uniqueNo = display->getUniqueCode(taskNo);
 	Data dataToEdit = getData(uniqueNo);
 
-	if (!updatedData.getDesc().empty()){
-		dataToEdit.updateDesc(updatedData.getDesc());
-	}
-
-	if (updatedData.getTimeMacroBeg().getDate() != 0 
-		&& updatedData.getTimeMacroBeg().getMonth() != 0
-		&& updatedData.getTimeMacroBeg().getYear() != 0) {
-			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
-	}
-
-	if (updatedData.getTimeMacroEnd().getDate() != 0 
-		&& updatedData.getTimeMacroEnd().getMonth() != 0
-		&& updatedData.getTimeMacroEnd().getYear() != 0) {
-			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
-	}
-
-	if (updatedData.getTimeMicroBeg().getHour() != -1
-		&& updatedData.getTimeMicroBeg().getMin() != -1) {
-			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
-			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
-	}
-
-	if (updatedData.getAlarmMacro().getDate() != 0 
-		&& updatedData.getAlarmMacro().getMonth() != 0
-		&& updatedData.getAlarmMacro().getYear() != 0) {
-			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
-	}
-
-	if (updatedData.getAlarmMicro().getHour() != -1
-		&& updatedData.getAlarmMicro().getMin() != -1) {
-			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
-	}
-
-	if (updatedData.getCompleteStatus() != false){
-		dataToEdit.updateCompleteStatus(true);
-	}//exception is for undone
+	dataToEdit = updateData(dataToEdit, updatedData);
 
 	deleteData(taskNo);
 	addData(dataToEdit);
-
 
 	History::updateLatestCommand("edit"); //Store for undo
 
@@ -162,7 +128,7 @@ std::vector<Data> LocalStorage::deleteDataOfUniqueCode(int uniqueCode){
 //helper method for searchPeriod
 //to change time type
 //from TimeMacro to psedoDate
-long long LocalStorage::allocateTimeToPsedoDate(TimeMacro time){
+long long LocalStorage::allocateTimeMacroToPsedoDate(TimeMacro time){
 	long long pTime;
 	long long tempMonth;
 	long long tempDate = 10000;
@@ -178,15 +144,36 @@ long long LocalStorage::allocateTimeToPsedoDate(TimeMacro time){
 	return pTime;
 }
 
+//allocate TimeMicro in addition of TimeMacro to psedodate
+long long LocalStorage::allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro){
+	//extract HH/MM
+	int hour = tMicro.getHour();
+	int min = tMicro.getMin();
+
+	//qualify default hour
+	if(hour == -1){
+		hour = 0;
+		}
+	
+	//qualify default min
+	if(min == -1){
+		min = 0;
+	}
+
+	time += hour*100 + min;
+
+	return time;
+}
+
 //helper method for searchPeriod
 //to look for relevant dates
 std::vector<long long> LocalStorage::searchRelevantDates(long long pStartTime, long long pEndTime){
 	std::vector<long long> saveNo;
-
-	//find first relevant date
 	bool marker = false;
 	long long time;
 	Data copyTask;
+
+	//find first relevant date
 	for(int i = 0; marker == false && i != dataList.size(); i++){
 		copyTask = dataList[i];
 		time = copyTask.getPsedoDate();
@@ -230,11 +217,11 @@ int LocalStorage::allocateUniqueCode(int& uniqueNo){
 //sorting dataList for maintenance
 //use radix sorting algorithm
 void LocalStorage::sortDataList(){
-	allocatePsedoDate();
-
 	int i;
 	int power = 1;
 	std::queue<Data> digitQueue[10];
+	
+	allocatePsedoDate();
 
 	for (i=0; i<8; i++) {
 		radixDistribute(digitQueue, power);
@@ -244,7 +231,6 @@ void LocalStorage::sortDataList(){
 
 }
 
-// !!test done by processor
 //helper method for radix sort
 //organise items into groups using digit indicated by the power
 void LocalStorage::radixDistribute(std::queue<Data> digitQ[], int power){
@@ -258,12 +244,12 @@ void LocalStorage::radixDistribute(std::queue<Data> digitQ[], int power){
 	}
 }
 
-// !!test done by processor
 //helper method for radix sort
 //put Data back into dataList
 void LocalStorage::radixCollect(std::queue<Data> digitQ[]){
 	int digit;
 	int i=0;
+
 	for(digit = 0 ; digit < 10; digit++){
 		while (!digitQ[digit].empty()) {
 			dataList[i] = digitQ[digit].front();
@@ -274,53 +260,66 @@ void LocalStorage::radixCollect(std::queue<Data> digitQ[]){
 	}
 }
 
-
-//!! test done by processing
 //allocate psedoDate for all Data in dataList
 //for sorting purposes
 void LocalStorage::allocatePsedoDate(){
 	int i=0;
-	long long sDate;
+	long long pDate;
+
 	while(i != dataList.size()){
+		TimeMacro tMacro = dataList[i].getTimeMacroBeg();
+		pDate = allocateTimeMacroToPsedoDate(tMacro);
+				
+		TimeMicro tMicro = dataList[i].getTimeMicroBeg();
+		pDate = allocateTimeMicroToPsedoDate(pDate, tMicro);
 
-		//extract YYYY/MM/DD
-		TimeMacro time = dataList[i].getTimeMacroBeg();
-		int year = time.getYear();
-		int month = time.getMonth();
-		int date = time.getDate();
-		
-		//extract HH/MM
-		TimeMicro time1 = dataList[i].getTimeMicroBeg();
-		int hour = time1.getHour();
-		int min = time1.getMin();
-
-		//qualify default hour
-		if(hour == -1){
-			hour = 0;
-		}
-		
-		//qualify default min
-		if(min == -1){
-			min = 0;
-		}
-
-		//store psedoDate in long long type
-		sDate = 100000000;
-		sDate = year*sDate;
-		long long tempMonth;
-		tempMonth = 1000000;
-		tempMonth = month*tempMonth;
-		sDate = tempMonth + sDate;
-		long long tempDate;
-		tempDate = 10000;
-		tempDate = date*tempDate;
-		sDate = sDate + tempDate + hour*100 + min;
-
-		dataList[i].updatePsedoDate(sDate);
+		dataList[i].updatePsedoDate(pDate);
 		
 		i++;
 	}
 }
 
+//helper method for edit Data
+//go through Data components
+//to change what needed
+Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
+	if (!updatedData.getDesc().empty()){
+		dataToEdit.updateDesc(updatedData.getDesc());
+	}
+
+	if (updatedData.getTimeMacroBeg().getDate() != 0 
+		&& updatedData.getTimeMacroBeg().getMonth() != 0
+		&& updatedData.getTimeMacroBeg().getYear() != 0) {
+			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
+	}
+
+	if (updatedData.getTimeMacroEnd().getDate() != 0 
+		&& updatedData.getTimeMacroEnd().getMonth() != 0
+		&& updatedData.getTimeMacroEnd().getYear() != 0) {
+			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
+	}
+
+	if (updatedData.getTimeMicroBeg().getHour() != -1
+		&& updatedData.getTimeMicroBeg().getMin() != -1) {
+			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
+			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
+	}
+
+	if (updatedData.getAlarmMacro().getDate() != 0 
+		&& updatedData.getAlarmMacro().getMonth() != 0
+		&& updatedData.getAlarmMacro().getYear() != 0) {
+			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
+	}
+
+	if (updatedData.getAlarmMicro().getHour() != -1
+		&& updatedData.getAlarmMicro().getMin() != -1) {
+			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
+	}
+
+	if (updatedData.getCompleteStatus() != false){
+		dataToEdit.updateCompleteStatus(true);
+	}
+	return dataToEdit;
+}
 //End of Helper Methods for internal working
 ////////////////////////////////////////////

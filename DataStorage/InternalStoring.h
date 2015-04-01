@@ -36,7 +36,8 @@ private:
 	
 	//Helper Methods for internal working
 	std::vector<Data> deleteDataOfUniqueCode(int uniqueCode);
-	long long allocateTimeToPsedoDate(TimeMacro time);
+	long long allocateTimeMacroToPsedoDate(TimeMacro time);
+	long long allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro);
 	std::vector<long long> searchRelevantDates(long long pStartTime, long long pEndTime);
 	void sortDataList();
 	int allocateUniqueCode(int& uniqueCodeStore);
@@ -44,6 +45,7 @@ private:
 	void radixDistribute(std::queue<Data> digitQ[], int power);
 	void radixCollect(std::queue<Data> digitQ[]);
 	Data getData(int uniqueNo);
+	Data updateData(Data dataToEdit, Data updatedData);
 
 	//Helper methods for internal working Save and Load
 	void writeHeading (std::string fileName, std::ofstream& out);
