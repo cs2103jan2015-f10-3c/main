@@ -173,6 +173,16 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 
 }
 
+void Logic::updateUndoCount(string command){
+	if(command == "undo"){
+		++undoCount;
+	}
+
+	if(command != "undo"){
+		undoCount = 0;
+	}
+}
+
 void Logic::executeInput(string input){
 	TimeMacro currentTime = setCurrentTime();
 
@@ -187,16 +197,8 @@ void Logic::executeInput(string input){
 	string returnResponse;
 	string returnDisplay;
 	
-	if(errorMessage == ""){
-		
-		if(command == "undo"){
-			++undoCount;
-		}
-
-		if(command != "undo"){
-			undoCount = 0;
-		}
-		
+	if(errorMessage == ""){		
+		updateUndoCount(command);
 		if(undoCount > 1){
 			returnResponse = "You can only undo once";
 		} else {

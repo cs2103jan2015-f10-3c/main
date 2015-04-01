@@ -42,6 +42,7 @@ public:
 	static TimeMacro setCurrentTime();
 	static string showWelcomeMessage(bool status);
 	static string displaySpecificDay(DataProcessor dataProcessor, TimeMacro current);
+	static void updateUndoCount(string command);
 };
 
 #endif

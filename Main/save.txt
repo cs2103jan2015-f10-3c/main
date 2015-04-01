@@ -1,3 +1,19 @@
-1
+27
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
-1	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		pnda
+10	Wednesday/1/4/2015		undefined/0/0/0		23/30		-1/-1		false		None		undefined/0/0/0		-1/-1		sleep
+3	Thursday/2/4/2015		undefined/0/0/0		7/0		-1/-1		false		None		undefined/0/0/0		-1/-1		wake up
+4	Thursday/2/4/2015		undefined/0/0/0		7/30		-1/-1		false		None		undefined/0/0/0		-1/-1		devotion
+5	Thursday/2/4/2015		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		CS meeting
+13	Thursday/2/4/2015		undefined/0/0/0		10/0		11/30		false		None		undefined/0/0/0		-1/-1		GEM2006 Lecture
+7	Thursday/2/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch with Johan
+8	Thursday/2/4/2015		undefined/0/0/0		12/30		-1/-1		false		None		undefined/0/0/0		-1/-1		take a nap
+12	Thursday/2/4/2015		undefined/0/0/0		14/0		16/0		false		None		undefined/0/0/0		-1/-1		IE2130 Lecture
+27	Thursday/2/4/2015		undefined/0/0/0		16/0		16/45		false		None		undefined/0/0/0		-1/-1		IE2100 Tutorial
+15	Thursday/2/4/2015		undefined/0/0/0		17/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
+19	Thursday/2/4/2015		undefined/0/0/0		23/30		-1/-1		false		None		undefined/0/0/0		-1/-1		sleep
+20	Friday/3/4/2015		undefined/0/0/0		7/0		-1/-1		false		None		undefined/0/0/0		-1/-1		wake up
+22	Friday/3/4/2015		undefined/0/0/0		7/30		-1/-1		false		None		undefined/0/0/0		-1/-1		devotion
+21	Friday/3/4/2015		undefined/0/0/0		8/30		-1/-1		false		None		undefined/0/0/0		-1/-1		NUS ISCF Camp Meeting
+23	Friday/3/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch with Camp Committee
+25	Friday/3/4/2015		undefined/0/0/0		16/30		-1/-1		false		None		undefined/0/0/0		-1/-1		Good Friday Service at True Way Presbyterian Church
+26	Friday/3/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with church friends
