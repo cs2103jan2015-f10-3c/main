@@ -27,6 +27,10 @@ void OperationCenter::loadData(bool& status){
 	Logic::loadData(status);
 }
 
+string OperationCenter::showWelcomeMessage(bool status){
+	return Logic::showWelcomeMessage(status);
+}
+
 string OperationCenter::getDisplay(){
 	return Feedback::getDisplay();
 }
