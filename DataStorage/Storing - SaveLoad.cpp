@@ -1,37 +1,23 @@
-#include "InternalStorage.h"
+#include "InternalStoring.h"
+const std::string LocalStorage::DEFAULT_SAVE_DIRECTORY = "save.txt";
 
-//////////////////////
-//loading all commands
-//////////////////////
-
-//load command list from all_commands.txt and automatically print out the commands
-void SaveLoad::retrieveCommandList(){
-	std::string commandList;
-	std::ifstream in("all_commands.txt");
-	//if file exists
-	if (in){
-		while (getline(in,commandList)){
-			std::cout << commandList << std::endl;
-		} 
-	} else {
-		std::cout << "Command List could not be found"; 
-	}
-}
-
-////////////////
-//loading method
-////////////////
-
-void DataBase::loadData(bool& status){
-	std::ifstream in("test.txt");
+//API for loading Data from txt file
+void LocalStorage::loadData(bool& status, std::string& directory){
+	adjustFormat(directory);
+	
+	std::ifstream in(directory);
 	//if file exists
 	if (in){
 
 		std::string strUnique;
 		getline(in,strUnique);
 		std::stringstream streamUnique;
+		int uniqueNo;
+
 		streamUnique << strUnique;
-		streamUnique >> uniqueCodeStore;
+		streamUnique >> uniqueNo;
+		uniqueCodeStore = uniqueNo;
+
 
 		//throw away Heading
 		std::string temp;
@@ -39,9 +25,12 @@ void DataBase::loadData(bool& status){
 
 		std::string strData;
 		int i=0; //iterator for vector
-		
+		Data data;
+
 		while(getline(in,strData)){
-			parseLoad(strData, i);
+			parseLoad(strData, i, data);
+			dataList.push_back(data);
+			i++;
 			} 
 		
 		status = true; //tell command file exist to display
@@ -52,8 +41,79 @@ void DataBase::loadData(bool& status){
 	}
 }
 
+//check whether user input directory exists
+bool LocalStorage::directoryCheck(std::ofstream& out){
+	try{
+		if(!out.is_open()){
+			throw false;
+		} else {
+			throw true;
+		}
+	}
+	catch (const bool status) {
+		return status;
+	}
+}
+
+//format the input directory from user
+//so that it can be read by all compiler
+void LocalStorage::adjustFormat(std::string& inputDirectory){
+	if (inputDirectory != ""){
+		inputDirectory += '/';
+	}
+	inputDirectory += "save.txt";
+}
+
+
+//API for saving data into file
+bool LocalStorage::saveData(std::string& directory){
+	adjustFormat(directory);
+	bool status;
+
+	std::ofstream out;
+	out.open(directory.c_str());
+	status = directoryCheck(out);
+
+	if(status){
+		out << uniqueCodeStore <<'\n';
+ 		 	
+		writeHeading(directory, out); //write Heading for readability
+
+	
+		for(int i=0; i != LocalStorage::dataList.size(); i++){
+			std::string tMacroBeg = convertTimeMacroToString(begin, i);
+			std::string tMacroEnd = convertTimeMacroToString(end, i);
+			std::string alarmMacro = convertTimeMacroToString(alarm, i);
+
+			std::string tMicroBeg = convertTimeMicroToString(begin, i);
+			std::string tMicroEnd = convertTimeMicroToString(end, i);
+			std::string alarmMicro = convertTimeMicroToString(alarm, i);
+
+			//convert boolean into string
+			std::string isDone;
+			if(dataList[i].getCompleteStatus() == true){
+				isDone = "true";
+			} else {
+				isDone = "false";
+			}
+
+			//save into file
+			out << dataList[i].getUniqueCode()
+				<< '\t' << tMacroBeg
+				<< "\t\t" << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
+				<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
+				<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
+				<< dataList[i].getDesc() << '\n';
+		}
+	}	
+	return status;
+}
+
+//////////////////////////////////////////
+//Start of Helper Methods for Loading Data
+
 //helper method for loadDate to parse input
-void DataBase::parseLoad(std::string strData, int& i){
+void LocalStorage::parseLoad(std::string strData, int i, Data& data){
 	std::stringstream streamConverter; //to help convert string to int
 
 	std::string tempMacroTBeg;
@@ -82,9 +142,7 @@ void DataBase::parseLoad(std::string strData, int& i){
 	tempAlarmMacro = tokenizerSpace(strData);
 	tempAlarmMicro = tokenizerSpace(strData);
 	desc = tokenizerSpace(strData);
-
-	Data data;
-
+	
 	data.updateUniqueCode(uniqueCode); 
 	data.updateDesc(desc);
 
@@ -106,13 +164,10 @@ void DataBase::parseLoad(std::string strData, int& i){
 	TimeMicro inAlarmMicro = microParser(tempAlarmMicro);
 	data.updateAlarmMicro(inAlarmMicro);
 
-	dataList.push_back(data);
-
-	i++;
 }
 
 //helper method to parseLoad to parse string and convert to TimeMacro
-TimeMacro DataBase::macroParser(std::string tempMacro){
+TimeMacro LocalStorage::macroParser(std::string tempMacro){
 	TimeMacro temp;
 	std::string inDay;
 	int inDate;
@@ -132,7 +187,7 @@ TimeMacro DataBase::macroParser(std::string tempMacro){
 }
 
 //helper method to parseLoad to parse string to TimeMicro
-TimeMicro DataBase::microParser(std::string tempMicro){
+TimeMicro LocalStorage::microParser(std::string tempMicro){
 	TimeMicro temp;
 	int inHour;
 	int inMin;
@@ -146,7 +201,7 @@ TimeMicro DataBase::microParser(std::string tempMicro){
 }
 
 //helper method for MicroParser and Macro Parser to get individual token
-std::string DataBase::tokenizerSlash(std::string& str){
+std::string LocalStorage::tokenizerSlash(std::string& str){
 	size_t start = 0;
 	size_t end = str.find_first_of("/");
 	std::string firstToken = str.substr(start, end - start); //get the first token
@@ -158,7 +213,7 @@ std::string DataBase::tokenizerSlash(std::string& str){
 }
 
 //helper method for loadParser to get individual token
-std::string DataBase::tokenizerSpace(std::string& str){
+std::string LocalStorage::tokenizerSpace(std::string& str){
 	size_t start = str.find_first_not_of('\t');
 	
 	//if there is more than one \t
@@ -176,109 +231,71 @@ std::string DataBase::tokenizerSpace(std::string& str){
 	return firstToken;
 }
 
-///////////////
-//saving method
-///////////////
+//End of Helper method for Loading Data
+///////////////////////////////////////
 
-
-//savind data into file
-void DataBase::saveData(){
-	std::string fileName = "test.txt";
-	std::ofstream out;
-	out.open(fileName.c_str());
-
-	out << uniqueCodeStore <<'\n';
- 		 	
-	writeHeading(fileName, out); //write Heading for readability
-
-	
-	for(int i=0; i != dataList.size(); i++){
-		std::string tMacroBeg = convertTimeMacroToString("Begin", i);
-		std::string tMacroEnd = convertTimeMacroToString("End", i);
-		std::string alarmMacro = convertTimeMacroToString("Alarm", i);
-
-		std::string tMicroBeg = convertTimeMicroToString("Begin", i);
-		std::string tMicroEnd = convertTimeMicroToString("End", i);
-		std::string alarmMicro = convertTimeMicroToString("Alarm", i);
-
-		//convert boolean into string
-		std::string isDone;
-		if(dataList[i].getCompleteStatus() == true){
-			isDone = "true";
-		} else {
-			isDone = "false";
-		}
-
-		//save into file
-		out <<dataList[i].getUniqueCode()
-			<< '\t' << tMacroBeg
-			<< "\t\t" << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
-			<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
-			<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
-			<< dataList[i].getDesc() << '\n';
-
-	}	
-}
+/////////////////////////////////////////
+//Start of Helper method for saving Data
 
 //helper method to convert TimeMacro into String
-std::string DataBase::convertTimeMacroToString(std::string type, int i){
+std::string LocalStorage::convertTimeMacroToString(TimeType type, int i){
 	std::string tMacro;
-
-	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
-
-	if(type == "Begin"){
+	
+	switch(type){
+	case begin :
 		tMacro = dataList[i].getTimeMacroBeg().getDay() + '/'
 		+ std::to_string(dataList[i].getTimeMacroBeg().getDate()) + '/'
 		+ std::to_string(dataList[i].getTimeMacroBeg().getMonth()) + '/'
 		+ std::to_string(dataList[i].getTimeMacroBeg().getYear());
-	}
+		break;
 
-	if(type == "End"){
+	case end :
 		tMacro = dataList[i].getTimeMacroEnd().getDay() + '/'
 		+ std::to_string(dataList[i].getTimeMacroEnd().getDate()) + '/'
 		+ std::to_string(dataList[i].getTimeMacroEnd().getMonth()) + '/'
 		+ std::to_string(dataList[i].getTimeMacroEnd().getYear());
-	}
+		break;
 
-	if(type == "Alarm"){
+	case alarm :
 		tMacro = dataList[i].getAlarmMacro().getDay() + '/'
 		+ std::to_string(dataList[i].getAlarmMacro().getDate()) + '/'
 		+ std::to_string(dataList[i].getAlarmMacro().getMonth()) + '/'
 		+ std::to_string(dataList[i].getAlarmMacro().getYear());
+		break;
 	}
 
 	return tMacro;
 }
 
 //helper method to convert TimeMicro into String
-std::string DataBase::convertTimeMicroToString(std::string type, int i){
+std::string LocalStorage::convertTimeMicroToString(TimeType type, int i){
 	std::string tMicro;
 
-	_ASSERTE (type == "Begin" || type == "End" || type == "Alarm");
-
-	if(type == "Begin"){
+	switch(type){
+	case begin :
 		tMicro = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + '/'
 		+ std::to_string(dataList[i].getTimeMicroBeg().getMin());
-	}
+		break;
 
-	if(type == "End"){
+	case (end) :
 		tMicro = std::to_string(dataList[i].getTimeMicroEnd().getHour()) + '/'
 		+ std::to_string(dataList[i].getTimeMicroEnd().getMin());
-	}
+		break;
 
-	if(type == "Alarm"){
+	case (alarm) :
 		tMicro = std::to_string(dataList[i].getAlarmMicro().getHour()) + '/'
 		+ std::to_string(dataList[i].getAlarmMicro().getMin());
+		break;
 	}
 
 	return tMicro;
 }
 
 //write heading for output file
-void DataBase::writeHeading (std::string fileName, std::ofstream& out){
-	out <<"uCode" 
-		<< '\t' << "macroTBeg" << "\t\t" << "macroTEnd" << "\t\t" 
-		<< "microTBeg" << "\t" << "microTEnd" << "\t" << "completeStatus" 
-		<< "\t" << "priority" << '\t' << "alarmMacro" << "\t\t" << "alarmMicro"
-		<< '\t' << "desc" << '\n';
+void LocalStorage::writeHeading (std::string fileName, std::ofstream& out){
+	PrewrittenData list;
+	list.retrieveList(heading, out);
 }
+
+//End of Helper method for Saving Data
+//////////////////////////////////////
