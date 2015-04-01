@@ -159,15 +159,16 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == "show done"){
 		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showDone();
+		if(returnDisplay == ""){
+			returnResponse = "You are lazy, you have done nothing at all";
+		}
 	}else if(command == "show float"){
 		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showFloat();
+		if(returnDisplay == ""){
+			returnResponse = "You have no floating task";
+		}
 	}
-
-	/*if(command != "show" && command != "search" && command != "show commands"){
-		dataProcessor.clearDisplayList();
-		returnDisplay = displayToday(returnDisplay, currentTime);
-	}*/
 
 }
 
