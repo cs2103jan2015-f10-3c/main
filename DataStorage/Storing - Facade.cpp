@@ -1,5 +1,10 @@
 #include "Storing.h"
 
+//<<Interface>>
+//go into specific methods implementation
+//in different classes
+//for explanation on methods
+
 void Storing::addData(Data& inData){
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	localStorage->addData(inData);

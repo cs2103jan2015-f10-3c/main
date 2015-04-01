@@ -14,82 +14,35 @@ LocalStorage* LocalStorage::getInstance(){
 }
 
 
-//End of Definition
+//End of Singleton Definition
 ///////////////////////////////////////
 
 
 
-/////////////////////////
-//API for DisplayStorage
+///////////////////////////////
+//API implementation
 
-//helper method for search Data from a specific period
-//to be pass to DisplayStorage
-//return vector<long long> with two psedoDates inside 
+//API for DisplayStorage
+//to search for two dates from a specific period
 std::vector<long long> LocalStorage::searchPeriod(TimeMacro startTime, TimeMacro endTime){
 	allocatePsedoDate();
-	std::vector<long long> saveNo;
 
-	//allocate startTime into psedoDate format
-	long long pStartTime;
-	pStartTime= 100000000;
-	pStartTime= startTime.getYear()*pStartTime;
-	long long tempMonth;
-	tempMonth = 1000000;
-	tempMonth = tempMonth * startTime.getMonth();
-	pStartTime = pStartTime + tempMonth;
-	long long tempDate = 10000;
-	tempDate = tempDate * startTime.getDate();
-	pStartTime = pStartTime + tempDate;
+	//allocate startTime & endTime into psedoDate format
+	long long pStartTime = allocateTimeToPsedoDate(startTime);
+	long long pEndTime = allocateTimeToPsedoDate(endTime);
 
-	//allocate endTime into psedoDate format
-	long long pEndTime;
-	pEndTime= 100000000;
-	pEndTime= endTime.getYear()*pEndTime;
-	long long tempMonth1;
-	tempMonth1 = 1000000;
-	tempMonth1 = tempMonth1 * endTime.getMonth();
-	pEndTime = pEndTime + tempMonth1;
-	long long tempDate1 = 10000;
-	tempDate1 = tempDate1 * endTime.getDate();
-	pEndTime = pEndTime + tempDate1;
-
-	//find first relevant date
-	bool marker = false;
-	long long time;
-	Data copyTask;
-	for(int i = 0; marker == false && i != dataList.size(); i++){
-		copyTask = dataList[i];
-		time = copyTask.getPsedoDate();
-		if(time >= pStartTime && time <= pEndTime + 2359){
-			marker = true;
-			saveNo.push_back(i);
-		}
-		
-	}
-
-	//find last relevant date
-	for(int i = dataList.size()-1; marker == true && i != 0; i--){
-		if(dataList[i].getPsedoDate() <= pEndTime+2359 ) {
-			marker = false;
-			saveNo.push_back(i);
-		}
-	}
-
-	return saveNo;
+	return searchRelevantDates(pStartTime,pEndTime);
 }
 
-//End of API for DisplayStorage
-///////////////////////////////
-
-
-//return the DataBase list 
-//for command such as search
+//return the list containing all tasks
+//in internal storage
 std::vector<Data>& LocalStorage::getDataList() {
 	return dataList;
 }
 
+//clearing all tasks from internal storage
 void LocalStorage::clearDataList(){
-	History::updateLatestCommand("clear");
+	History::updateLatestCommand("clear"); //store for undo
 	dataList.clear();
 }
 
@@ -97,53 +50,36 @@ void LocalStorage::clearDataList(){
 //it allocates uniqueCode into Data
 //and also automaticallly sort dataList
 void LocalStorage::addData(Data& inData){
-	int tempNo = allocateUniqueCode(uniqueCodeStore);
-	inData.updateUniqueCode(tempNo);
+	int uniqueNo = allocateUniqueCode(uniqueCodeStore); //get unique code
+	inData.updateUniqueCode(uniqueNo);// assign unique code to Data
 	
 	dataList.push_back(inData);
-	sortDataList();
+	sortDataList(); //automatic sorting of list chronologically
 
-
-	History::updateLatestCommand("add");
-	History::updateLatestData(inData); //store for undo
+	History::updateLatestCommand("add"); //store for undo
+	History::updateLatestData(inData);
 }
 
 
 //method for delete command
 //input the taskno of the display list to be deleted
-//return the Data that was deleted
 Data LocalStorage::deleteData(int taskNo){
-	History::updateLatestCommand("delete");
-
+	History::updateLatestCommand("delete"); //store for undo
 	
 	DisplayStorage *display = DisplayStorage::getInstance();
 	int uniqueCode = display->getUniqueCode(taskNo);
 
-	std::vector<Data> listTofacilitateDeletion;
-	for(int i = 0; i != dataList.size(); i++){
-		if(uniqueCode != dataList[i].getUniqueCode()){
-				listTofacilitateDeletion.push_back(dataList[i]);
-		} else {
-			History::updateLatestData(dataList[i]); //store in History
-		}
-	}
-	dataList = listTofacilitateDeletion;
+	dataList = deleteDataOfUniqueCode(uniqueCode);
+
 	return display->getData(taskNo);
 }
 
-
-//API for undo function
+//API to help undo add
 void LocalStorage::undoAdd(){
 	int uniqueCode;
 	uniqueCode = History::getLatestData().getUniqueCode();
 
-	std::vector<Data> tempList;
-	for(int i = 0; i != dataList.size(); i++){
-		if(uniqueCode != dataList[i].getUniqueCode()){
-				tempList.push_back(dataList[i]);
-		}
-	}
-	dataList = tempList;
+	dataList = deleteDataOfUniqueCode(uniqueCode);
 }
 
 //method for edit command
@@ -151,7 +87,6 @@ void LocalStorage::undoAdd(){
 //return Data that was edited
 Data LocalStorage::editData(int taskNo, Data updatedData){
 	History::updateLatestVector(); //Store for undo
-
 	
 	DisplayStorage *display = DisplayStorage::getInstance();
 	int uniqueNo = display->getUniqueCode(taskNo);
@@ -203,9 +138,73 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	return display->getData(taskNo);
 }
 
+//End of API implementation
+////////////////////////////////////
+
 /////////////////////////////////////
 //Helper methods for internal working
 
+//helper method for undoAdd and deleteData
+//delete data that have a certain unique code
+std::vector<Data> LocalStorage::deleteDataOfUniqueCode(int uniqueCode){
+	std::vector<Data> listAfterDeletion;
+	for(int i = 0; i != dataList.size(); i++){
+		if(uniqueCode != dataList[i].getUniqueCode()){
+				listAfterDeletion.push_back(dataList[i]);
+		} else {
+			History::updateLatestData(dataList[i]); //store for undo
+		}
+	}
+	return listAfterDeletion;
+}
+
+
+//helper method for searchPeriod
+//to change time type
+//from TimeMacro to psedoDate
+long long LocalStorage::allocateTimeToPsedoDate(TimeMacro time){
+	long long pTime;
+	long long tempMonth;
+	long long tempDate = 10000;
+
+	pTime= 100000000;
+	pTime= time.getYear()*pTime;
+	tempMonth = 1000000;
+	tempMonth = tempMonth * time.getMonth();
+	pTime = pTime + tempMonth;
+	tempDate = tempDate * time.getDate();
+	pTime = pTime + tempDate;
+
+	return pTime;
+}
+
+//helper method for searchPeriod
+//to look for relevant dates
+std::vector<long long> LocalStorage::searchRelevantDates(long long pStartTime, long long pEndTime){
+	std::vector<long long> saveNo;
+
+	//find first relevant date
+	bool marker = false;
+	long long time;
+	Data copyTask;
+	for(int i = 0; marker == false && i != dataList.size(); i++){
+		copyTask = dataList[i];
+		time = copyTask.getPsedoDate();
+		if(time >= pStartTime && time <= pEndTime + 2359){
+			marker = true;
+			saveNo.push_back(i);
+		}
+	}
+
+	//find last relevant date
+	for(int i = dataList.size()-1; marker == true && i != 0; i--){
+		if(dataList[i].getPsedoDate() <= pEndTime+2359 ) {
+			marker = false;
+			saveNo.push_back(i);
+		}
+	}
+	return saveNo;
+}
 
 //helper method for deleteData and editData
 Data LocalStorage::getData(int uniqueNo){
@@ -228,7 +227,6 @@ int LocalStorage::allocateUniqueCode(int& uniqueNo){
 }
 
 
-// !!test done by processor
 //sorting dataList for maintenance
 //use radix sorting algorithm
 void LocalStorage::sortDataList(){
@@ -324,5 +322,5 @@ void LocalStorage::allocatePsedoDate(){
 	}
 }
 
-//End of Helper Methods
-///////////////////////
+//End of Helper Methods for internal working
+////////////////////////////////////////////
