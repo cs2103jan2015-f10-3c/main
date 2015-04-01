@@ -156,7 +156,8 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == "show commands"){
 		dataProcessor.clearDisplayList();
 		dataProcessor.showCommands();
-	}else{	
+	}else if(command == "show done"){
+		returnDisplay = dataProcessor.showDone();
 	}
 
 	/*if(command != "show" && command != "search" && command != "show commands"){
