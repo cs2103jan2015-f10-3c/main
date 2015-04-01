@@ -80,7 +80,7 @@ bool LocalStorage::saveData(std::string& directory){
 		writeHeading(directory, out); //write Heading for readability
 
 	
-		for(int i=0; i != LocalStorage::dataList.size(); i++){
+		for(int i=0; i != dataList.size(); i++){
 			std::string tMacroBeg = convertTimeMacroToString(begin, i);
 			std::string tMacroEnd = convertTimeMacroToString(end, i);
 			std::string alarmMacro = convertTimeMacroToString(alarm, i);

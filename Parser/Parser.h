@@ -54,26 +54,28 @@ private:
 	}
 	
 
+	char message[100];
 	static const unsigned int LENGTH_OF_DATE_FULL_NUMBER;
 	static const unsigned int LENGTH_OF_DATE_ABBRE_NUMBER;
 	static const unsigned int LENGTH_OF_DATE_FULL_ALPHABET;
 	static const unsigned int LENGTH_OF_DATE_ABBRE_ALPHABET;
-    static const string DATE_FIRST_DIGIT;
-    static const string DATE_SECOND_DIGIT;
-    static const string MONTH_FIRST_DIGIT;
-    static const string MONTH_SECOND_DIGIT;
-    static const string YEAR_FIRST_DIGIT;
-    static const string YEAR_SECOND_DIGIT;
-    static const string YEAR_THIRD_DIGIT;
-    static const string YEAR_FOURTH_DIGIT;
+    static const char DATE_FIRST_DIGIT[100];
+    static const char MONTH_FIRST_DIGIT[100];
+    static const char YEAR_FIRST_DIGIT[100];
 	static const unsigned int LENGTH_OF_STARTING_TIME;
 	static const unsigned int LENGTH_OF_TIME_PERIOD;
-	static const string HOUR_FIRST_DIGIT;
-	static const string HOUR_SECOND_DIGIT;
-	static const string MINUTE_FIRST_DIGIT;
-	static const string MINUTE_SECOND_DIGIT;
-	//static const unsigned int LENGTH_OF_ATTRIBUTE;
-	static const string ERROR_MESSAGE_COMMAND;
+	static const char TWENTY_FOUR_HOUR_FIRST_DIGIT[100];
+	static const char TWELVE_HOUR_FIRST_DIGIT[100];
+	static const char MINUTE_FIRST_DIGIT[100];
+	static const char NON_NEGATIVE_DIGIT[100];
+	static const char POSITIVE_DIGIT[100];
+	static const char ERROR_MESSAGE_COMMAND[100];
+	static const char ERROR_MESSAGE_INPUT[100];
+	static const char ERROR_MESSAGE_EDIT[100];
+	static const char ERROR_MESSAGE_TASK_NO[100];
+	static const char ERROR_MESSAGE_SHOW[100];
+	static const char ERROR_MESSAGE_DATE[100];
+	static const char ERROR_MESSAGE_TIME[100];
 
 public: 
 	//default constructor
@@ -128,7 +130,7 @@ public:
 	bool isTimePeriodTwentyFour (string inputToBeParsed);
 	bool isStartingTimeTwelve (string inputToBeParsed);
 	bool isTimePeriodTwelve (string inputToBeParsed);
-	bool searchSubstring (string timeString, char substring);
+	bool searchSubstring (const string timeString, char substring);
 	bool isStringEqual (string inputString, vector<string> compString);
 	int convertAlphabetMonthToInteger (string month);
 	void getTodayDate (TimeMacro& timeMacro);
