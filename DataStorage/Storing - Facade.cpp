@@ -1,5 +1,10 @@
 #include "Storing.h"
 
+//<<Interface>>
+//go into specific methods implementation
+//in different classes
+//for explanation on methods
+
 void Storing::addData(Data& inData){
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	localStorage->addData(inData);
@@ -26,15 +31,14 @@ void Storing::undoAdd(){
 }
 
 
-void Storing::retrieveCommandList(){
+std::stringstream& Storing::retrieveCommandList(){
 	PrewrittenData prewrittenData;
-	prewrittenData.retrieveList(command);
-
+	return prewrittenData.retrieveList(command);
 }
 
-void Storing::retrieveFeatureList(){
+std::stringstream& Storing::retrieveFeatureList(){
 	PrewrittenData prewrittenData;
-	prewrittenData.retrieveList(feature);
+	return prewrittenData.retrieveList(feature);
 }
 
 void Storing::loadData(bool& status, std::string directory){

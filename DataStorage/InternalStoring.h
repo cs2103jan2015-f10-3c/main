@@ -15,10 +15,16 @@ typedef enum ListType {command, feature, heading};
 typedef enum DisplayType {search, done, floating};
 typedef enum TimeType {begin, end, alarm};
 
+
+
+//acts as internal database
+//all data entry is recorded in this class
+//saving and loading is done into and from this class.
 //using singleton pattern
 class LocalStorage {
 private:
-	static const std::string DEFAULT_SAVE_DIRECTORY;
+	//Magic String declarations
+	static const char DEFAULT_SAVE_DIRECTORY[100];
 
 	//Singleton instance and private constructor
 	static LocalStorage* instance;
@@ -29,12 +35,17 @@ private:
 	int uniqueCodeStore;
 	
 	//Helper Methods for internal working
+	std::vector<Data> deleteDataOfUniqueCode(int uniqueCode);
+	long long allocateTimeMacroToPsedoDate(TimeMacro time);
+	long long allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro);
+	std::vector<long long> searchRelevantDates(long long pStartTime, long long pEndTime);
 	void sortDataList();
 	int allocateUniqueCode(int& uniqueCodeStore);
 	void allocatePsedoDate();
 	void radixDistribute(std::queue<Data> digitQ[], int power);
 	void radixCollect(std::queue<Data> digitQ[]);
 	Data getData(int uniqueNo);
+	Data updateData(Data dataToEdit, Data updatedData);
 
 	//Helper methods for internal working Save and Load
 	void writeHeading (std::string fileName, std::ofstream& out);
@@ -52,6 +63,9 @@ private:
 public: 
 	//get instance for singleton pattern
 	static LocalStorage* getInstance();
+	
+	//API for DisplayStorage
+	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 
 	//API for Facade Class
 	void addData(Data& inData);	
@@ -60,18 +74,21 @@ public:
 	void clearDataList();
 	void undoAdd();
 	std::vector<Data>& getDataList();
-	
 	bool saveData(std::string& directory);
 	void loadData(bool& status, std::string& directory);
 
-	//API for DisplayStorage
-	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
-	
 };
 
+
+
+
+//an internal storage 
+//for storing latest data.
+//Singleton method was tried
+//but was not implemented
+//as it caused unsolvable bug
 class History {
 private:
-
 	//private attribute
 	static std::string latestCommand;
 	static Data latestData;
@@ -88,6 +105,10 @@ public:
 
 };
 
+
+
+
+//container to store list to be displayed
 //using singleton pattern
 class DisplayStorage {
 private:
@@ -120,15 +141,26 @@ public:
 	int getUniqueCode(int taskNo);
 };
 
+
+
+
+
+//to retrieve data from prewritten .txt files
 class PrewrittenData {
 private:
+	static const char ALL_COMMANDS_FILE[100];
+	static const char ALL_FEATURES_FILE[100];
+	static const char HEADING_TEMPLATE_FILE[100];
 	std::stringstream retrievedList;
+
+	//helper method
+	std::string determineListType(ListType type);
 
 public:
 	PrewrittenData() {}
 
 	//API for facade class
-	void retrieveList(ListType type);
+	std::stringstream& retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
 };
 

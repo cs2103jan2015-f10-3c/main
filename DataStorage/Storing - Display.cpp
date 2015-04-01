@@ -99,7 +99,6 @@ void DisplayStorage::enterDataToList(std::vector<long long> timePeriod){
 	
 	std::vector<Data> tempList = getListFromLocal();
 
-
 	if(timePeriod.size() == 1){
 		endT = startT = timePeriod[0];
 	} else {
