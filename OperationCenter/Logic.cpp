@@ -97,7 +97,7 @@ string Logic::displaySpecificDay(DataProcessor dataProcessor, TimeMacro current)
 	returnDisplay = dataProcessor.displayTask(latestData.getTimeMacroBeg(), latestData.getTimeMacroBeg());
 
 	if(returnDisplay == "" && latestData.getTimeMacroBeg().getDate() != 0){
-		out << "Your have no task on " << latestData.getTimeMacroBeg().getDay() << ", "  
+		out << "You have no task on " << latestData.getTimeMacroBeg().getDay() << ", "  
 			<< latestData.getTimeMacroBeg().getDate() << "-" 
 			<< latestData.getTimeMacroBeg().getMonth() << "-"
 			<< latestData.getTimeMacroBeg().getYear() << endl;
