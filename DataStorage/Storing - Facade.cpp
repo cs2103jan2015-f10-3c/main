@@ -33,12 +33,12 @@ void Storing::undoAdd(){
 
 std::string Storing::retrieveCommandList(){
 	PrewrittenData prewrittenData;
-	return prewrittenData.retrieveList(command).str();
+	return prewrittenData.retrieveList(command);
 }
 
 std::string Storing::retrieveFeatureList(){
 	PrewrittenData prewrittenData;
-	return prewrittenData.retrieveList(feature).str();
+	return prewrittenData.retrieveList(feature);
 }
 
 void Storing::loadData(bool& status, std::string directory){

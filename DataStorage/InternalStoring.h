@@ -160,7 +160,7 @@ public:
 	PrewrittenData() {}
 
 	//API for facade class
-	std::stringstream& retrieveList(ListType type);
+	std::string retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
 };
 
