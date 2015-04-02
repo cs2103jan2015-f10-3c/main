@@ -31,14 +31,14 @@ void Storing::undoAdd(){
 }
 
 
-std::stringstream& Storing::retrieveCommandList(){
+std::string Storing::retrieveCommandList(){
 	PrewrittenData prewrittenData;
-	return prewrittenData.retrieveList(command);
+	return prewrittenData.retrieveList(command).str();
 }
 
-std::stringstream& Storing::retrieveFeatureList(){
+std::string Storing::retrieveFeatureList(){
 	PrewrittenData prewrittenData;
-	return prewrittenData.retrieveList(feature);
+	return prewrittenData.retrieveList(feature).str();
 }
 
 void Storing::loadData(bool& status, std::string directory){

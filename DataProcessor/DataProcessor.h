@@ -39,7 +39,8 @@ public:
 	string markDone(int taskNo);
 	string showFloat();
 	string showDone();
-	static void showCommands();
+	static string showCommands();
+	static string showFeatures();
 	static void saveData();
 	static void loadData(bool& status);
 	static void clearDisplayList();

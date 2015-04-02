@@ -1,22 +1,19 @@
-49
+72
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
-28	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		haiku
-29	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		makan siang
-30	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		play with mochi
-31	Wednesday/1/4/2015		undefined/0/0/0		15/0		-1/-1		false		None		undefined/0/0/0		-1/-1		do unit testing cs
-47	Wednesday/1/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with alvinna
-33	Thursday/2/4/2015		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		cs meeting again
-34	Thursday/2/4/2015		undefined/0/0/0		10/0		-1/-1		false		None		undefined/0/0/0		-1/-1		breakfast with steven
-35	Thursday/2/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		study ie2150
-49	Thursday/2/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
-36	Thursday/2/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		charity concert
-37	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline cs v0.3
-38	Saturday/4/4/2015		undefined/0/0/0		0/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dreamtown
-39	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting 2150
-40	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
-41	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting2150 to consolidate
-42	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline internal 2150 report
-43	Monday/13/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		cs v0.5 deadline
-44	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		ie2130 report deadline
-45	Saturday/18/4/2015		undefined/0/0/0		10/0		13/0		false		None		undefined/0/0/0		-1/-1		gem1919 test1
-46	Saturday/25/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		gem1919 test 2
+54	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		haiku
+55	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		makan siang
+56	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		play with mochi
+57	Wednesday/1/4/2015		undefined/0/0/0		15/0		-1/-1		false		None		undefined/0/0/0		-1/-1		do unit testing cs
+58	Wednesday/1/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with alvinna
+72	Thursday/2/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		study ie2150
+60	Thursday/2/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
+61	Thursday/2/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		charity concert
+62	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline cs v0.3
+63	Saturday/4/4/2015		undefined/0/0/0		0/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dreamtown
+64	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting 2150
+65	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
+66	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting2150 to consolidate
+67	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline internal 2150 report
+68	Monday/13/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		cs v0.5 deadline
+69	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		ie2130 report deadline
+70	Saturday/18/4/2015		undefined/0/0/0		10/0		13/0		false		None		undefined/0/0/0		-1/-1		gem1919 test1

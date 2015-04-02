@@ -157,7 +157,13 @@ string DataProcessor::convertDataObjectToString(Data task){
 	string timeMicroString = "   ";
 	outData << setw(descriptionWidth) << left << task.getDesc() << endl;
 
-	
+	outData << "   ";
+	if(timeMacroBeg.getDay() != "undefined"){
+		outData << setfill(' ') << setw(13) << timeMacroBeg.getDay();
+	}
+	else{
+		outData << setfill(' ') << setw(13);
+	}
 
 	//Check if there is deadline time associated with the task
 	if(timeMicroBeg.getHour() != -1){
@@ -182,8 +188,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 		}
 		timeMicroString += to_string(timeMicroEnd.getMin());
 	}
-	outData << setw(20) << left << timeMicroString;
-	outData << setfill(' ') << setw(13) << timeMacroBeg.getDay();
+	outData << setw(17) << left << timeMicroString;
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
 		outData << setw(dateWidth) << right
@@ -231,8 +236,8 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	int numberOfTask = 1;
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
-				<< convertDataObjectToString(taskList[i])
-				<< setfill('=') << setw(81)
+				<< convertDataObjectToString(taskList[i]) << endl
+				<< setfill('*') << setw(81)
 				<< "\n";
 		numberOfTask++;
 	}
@@ -272,9 +277,18 @@ string DataProcessor::markDone(int taskNo){
 
 //This function calls up a list of commands 
 //available at BlinkList
-void DataProcessor::showCommands(){
+string DataProcessor::showCommands(){
 	Storing storing;
-	storing.retrieveCommandList();
+	string commandList = storing.retrieveCommandList();
+	return commandList;
+}
+
+//This function calls up a list of features
+//features will be more elaborated than command file
+string DataProcessor::showFeatures(){
+	Storing storing;
+	string featureList = storing.retrieveFeatureList();
+	return featureList;
 }
 
 //This function receives a Data object
