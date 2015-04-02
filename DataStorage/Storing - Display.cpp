@@ -20,7 +20,7 @@ DisplayStorage* DisplayStorage::getInstance(){
 //get display list method for a time frame
 std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
 	LocalStorage *localStorage = LocalStorage::getInstance();
-
+	
 	std::vector<long long> timePeriod;
 	timePeriod = localStorage->searchPeriod(startTime,endTime);
 	
