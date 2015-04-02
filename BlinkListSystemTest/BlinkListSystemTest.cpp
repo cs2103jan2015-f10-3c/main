@@ -21,13 +21,13 @@ namespace BlinkListSystemTest
 		}
 
 		//For command "delete"
-		TEST_METHOD(add_normal_test)			//Example, change it if you need to.
+		TEST_METHOD(delete_normal_test)			//Example, change it if you need to.
 		{
 			// TODO: Your test code here
 		}
 
 		//For command "edit"
-		TEST_METHOD(add_normal_test)			//Example, change it if you need to.
+		TEST_METHOD(edit_normal_test)			//Example, change it if you need to.
 		{
 			// TODO: Your test code here
 		}

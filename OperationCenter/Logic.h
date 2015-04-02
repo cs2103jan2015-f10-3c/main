@@ -42,7 +42,7 @@ private:
 
 public:
 	static void executeInput(string input);
-	static void executeCommand(string& returnDisplay, string& returnResponse, string command, Data task, int taskNo, TimeMacro currentTime);
+	static void executeCommand(string& returnDisplay, string& returnResponse, string command, string directory, Data task, int taskNo, TimeMacro currentTime);
 	static void saveData();
 	static void loadData(bool& status);
 	static string displayIfEmpty(string returnDisplay, TimeMacro current, TimeMacro start, TimeMacro end);

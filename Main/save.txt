@@ -2,7 +2,7 @@
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
 33	Wednesday/1/4/2015		undefined/0/0/0		23/0		-1/-1		false		None		undefined/0/0/0		-1/-1		do CS
 34	Wednesday/1/4/2015		undefined/0/0/0		23/30		-1/-1		false		None		undefined/0/0/0		-1/-1		sleep
-57	Thursday/2/4/2015		undefined/0/0/0		7/0		-1/-1		true		None		undefined/0/0/0		-1/-1		wake up
+57	Thursday/2/4/2015		undefined/0/0/0		7/0		-1/-1		false		None		undefined/0/0/0		-1/-1		wake up
 36	Thursday/2/4/2015		undefined/0/0/0		7/30		-1/-1		false		None		undefined/0/0/0		-1/-1		devotion
 37	Thursday/2/4/2015		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		CS meeting
 38	Thursday/2/4/2015		undefined/0/0/0		10/0		11/30		false		None		undefined/0/0/0		-1/-1		GEM2006 Lecture

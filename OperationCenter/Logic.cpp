@@ -118,7 +118,7 @@ string Logic::displaySpecificDay(DataProcessor dataProcessor, TimeMacro current)
 	return returnDisplay;
 }
 
-void Logic::executeCommand(string& returnDisplay, string& returnResponse, string command, Data task, int taskNo, TimeMacro currentTime){
+void Logic::executeCommand(string& returnDisplay, string& returnResponse, string command, string directory, Data task, int taskNo, TimeMacro currentTime){
 	
 	DataProcessor dataProcessor;
 
@@ -191,6 +191,8 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == SHOW_FEATURES){
 		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showFeatures();
+	}else if(command == "save"){
+		dataProcessor.saveData();//directory should be added, waiting for support from DataProcessor
 	}
 
 }
@@ -221,6 +223,7 @@ void Logic::executeInput(string input){
 	Data task = parser.getData();
 	int taskNo = parser.getTaskNo();
 	string errorMessage = parser.getErrorMessage();
+	string directory = parser.getDirectory();
 	
 	string returnResponse;
 	string returnDisplay;
@@ -230,7 +233,7 @@ void Logic::executeInput(string input){
 		if(undoCount > 1){
 			returnResponse = "You can only undo once";
 		} else {
-			executeCommand(returnDisplay, returnResponse, command, task, taskNo, currentTime);
+			executeCommand(returnDisplay, returnResponse, command, directory, task, taskNo, currentTime);
 		}
 		checkCommand(command);
 
