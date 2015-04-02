@@ -5,7 +5,6 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 30	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		play with mochi
 31	Wednesday/1/4/2015		undefined/0/0/0		15/0		-1/-1		false		None		undefined/0/0/0		-1/-1		do unit testing cs
 47	Wednesday/1/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with alvinna
-33	Thursday/2/4/2015		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		cs meeting again
 34	Thursday/2/4/2015		undefined/0/0/0		10/0		-1/-1		false		None		undefined/0/0/0		-1/-1		breakfast with steven
 35	Thursday/2/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		study ie2150
 49	Thursday/2/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner

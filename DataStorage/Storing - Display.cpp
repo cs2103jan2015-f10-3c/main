@@ -21,8 +21,6 @@ DisplayStorage* DisplayStorage::getInstance(){
 std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	
-	History::updateLatestCommand("show");
-
 	std::vector<long long> timePeriod;
 	timePeriod = localStorage->searchPeriod(startTime,endTime);
 	
@@ -39,8 +37,6 @@ std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro
 std::vector<Data>& DisplayStorage::getDisplayList(DisplayType type, std::string keyword){
 	std::vector<Data> tempList = getListFromLocal();
 	
-	History::updateLatestCommand("show");
-
 	switch (type){
 	case search:
 		displaySearch(tempList, keyword);		
