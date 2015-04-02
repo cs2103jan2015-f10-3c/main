@@ -5,7 +5,7 @@
 
 //using namespace std;
 
-const string DataProcessor::ADD_MESSAGE = "is added";
+const string DataProcessor::ADD_MESSAGE = " is added";
 const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
 const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
 const string DataProcessor::EDIT_MESSAGE = "is edited";
@@ -103,7 +103,7 @@ string DataProcessor::clearTask(){
 	Storing storing;
 	storing.clearDataList();
 
-	return "response";
+	return "All tasks are cleared";
 }
 
 
