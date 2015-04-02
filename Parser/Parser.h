@@ -14,6 +14,7 @@ private:
 	Data _myData;
 	int _taskNo;
 	string _errorMessage;
+	string _directory;
 
 	void updateCommand (string commandWord) {
 		_command = commandWord;
@@ -52,6 +53,10 @@ private:
 	void updateStatus (bool status) {
 		_myData.updateCompleteStatus (status);
 	}
+
+	void updateDirectory (string directory) {
+		_directory = directory;
+	}
 	
 
 	char message[100];
@@ -74,6 +79,7 @@ private:
 	static const char ERROR_MESSAGE_EDIT[100];
 	static const char ERROR_MESSAGE_TASK_NO[100];
 	static const char ERROR_MESSAGE_SHOW[100];
+	static const char ERROR_MESSAGE_DIRECTORY[100];
 	static const char ERROR_MESSAGE_DATE[100];
 	static const char ERROR_MESSAGE_TIME[100];
 
@@ -102,6 +108,9 @@ public:
 		return _errorMessage;
 	}
 
+	string getDirectory () {
+		return _directory;
+	}
 
 	void parseInput (string userInput);
 	string extractCommandWord (string userInput);
@@ -114,6 +123,7 @@ public:
 	void parseDone (string userInput, string commandWord);
 	void parseShow (string userInput, string commandWord);
 	void parseClear (string userInput, string commandWord);
+	void parseSaveLoad (string userInput, string commandWord);
     void parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
