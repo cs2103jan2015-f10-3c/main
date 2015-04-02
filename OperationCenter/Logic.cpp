@@ -2,6 +2,25 @@
 
 using namespace std;
 
+const char Logic::ADD_COMMAND[] = "add";
+const char Logic::DELETE_COMMAND[] = "delete";
+const char Logic::SHOW_COMMAND[] = "show";
+const char Logic::CLEAR_COMMAND[] = "clear";
+const char Logic::SORT_COMMAND[] = "sort";
+const char Logic::SEARCH_COMMAND[] = "search";
+const char Logic::EDIT_COMMAND[] = "edit";
+const char Logic::UNDO_COMMAND[] = "undo";
+const char Logic::EXIT_COMMAND[] = "exit";
+const char Logic::EMPTY_RESPONSE[] = "";
+const char Logic::IVALID_COMMAND_MESSAGE[] = "Invalid Command";
+const char Logic::DONE_COMMAND[] = "done";
+const char Logic::SHOW_COMMANDS[] = "show commands";
+const char Logic::SHOW_FEATURES[] = "show features";
+const char Logic::SHOW_DONE[] = "show done";
+const char Logic::SHOW_FLOAT[] = "show float";
+const char Logic::FLOAT_NOT_FOUND_MESSAGE[] = "You have no floating task";
+const char Logic::DONE_NOT_FOUND_MESSAGE[] = "You are lazy, you have done nothing at all";
+const char Logic::SEARCH_NOT_FOUND_MESSAGE[] = "Oops, there is no matching task in your BlinkList\n";
 string Feedback::display;
 string Feedback::response;
 int Logic::undoCount;
@@ -99,31 +118,31 @@ string Logic::displaySpecificDay(DataProcessor dataProcessor, TimeMacro current)
 	return returnDisplay;
 }
 
-void Logic::executeCommand(string& returnDisplay, string& returnResponse, string command, Data task, int taskNo, TimeMacro currentTime){
+void Logic::executeCommand(string& returnDisplay, string& returnResponse, string command, string directory, Data task, int taskNo, TimeMacro currentTime){
 	
 	DataProcessor dataProcessor;
 
-	if(command == "add") {
+	if(command == ADD_COMMAND) {
 		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.addTask(task);
 		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
-	}else if(command == "show") {
+	}else if(command == SHOW_COMMAND) {
 		dataProcessor.clearDisplayList();
 		returnResponse = EMPTY_RESPONSE;
 		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		if(returnDisplay == ""){
 			returnDisplay = displayIfEmpty(returnDisplay, currentTime, task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		}
-	}else if(command == "delete"){
+	}else if(command == DELETE_COMMAND){
 		returnResponse = dataProcessor.deleteTask(taskNo);
 		dataProcessor.clearDisplayList();
 		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
-	}else if(command == "clear"){
+	}else if(command == CLEAR_COMMAND){
 		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.clearTask();
-	}else if(command == "sort"){
+	}else if(command == SORT_COMMAND){
 		returnResponse = "under construction";
-	}else if(command == "search"){
+	}else if(command == SEARCH_COMMAND){
 		try{
 			dataProcessor.clearDisplayList();
 			returnDisplay = dataProcessor.searchTask(task.getDesc());
@@ -133,10 +152,10 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			//std::cout << e.what();
 			returnResponse = e.what();
 		}
-		if(returnDisplay == ""){
-			returnResponse = "Oops, there is no matching task in your BlinkList\n";
+		if(returnDisplay == EMPTY_RESPONSE){
+			returnResponse = SEARCH_NOT_FOUND_MESSAGE;
 		}
-	}else if(command == "edit"){
+	}else if(command == EDIT_COMMAND){
 		try{
 			returnResponse = dataProcessor.editTask(taskNo, task);
 			dataProcessor.clearDisplayList();
@@ -146,31 +165,52 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			//std::cout << e.what();
 			returnResponse = e.what();
 		}
-	}else if(command == "undo"){
+	}else if(command == UNDO_COMMAND){
 			dataProcessor.clearDisplayList();
 			returnResponse = dataProcessor.executeUndo();
 			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
-	}else if(command == "done"){
+	}else if(command == DONE_COMMAND){
 		returnResponse = dataProcessor.markDone(taskNo);
 		dataProcessor.clearDisplayList();
 		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
-	}else if(command == "show commands"){
+	}else if(command == SHOW_COMMANDS){
 		dataProcessor.clearDisplayList();
-		dataProcessor.showCommands();
-	}else if(command == "show done"){
+		returnDisplay = dataProcessor.showCommands();
+	}else if(command == SHOW_DONE){
 		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showDone();
-		if(returnDisplay == ""){
-			returnResponse = "You are lazy, you have done nothing at all";
+		if(returnDisplay == EMPTY_RESPONSE){
+			returnResponse = DONE_NOT_FOUND_MESSAGE;
 		}
-	}else if(command == "show float"){
+	}else if(command == SHOW_FLOAT){
 		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showFloat();
-		if(returnDisplay == ""){
-			returnResponse = "You have no floating task";
+		if(returnDisplay == EMPTY_RESPONSE){
+			returnResponse = FLOAT_NOT_FOUND_MESSAGE;
 		}
+	}else if(command == SHOW_FEATURES){
+		dataProcessor.clearDisplayList();
+		returnDisplay = dataProcessor.showFeatures();
+	}else if(command == "save"){
+		dataProcessor.saveData();//directory should be added, waiting for support from DataProcessor
 	}
 
+}
+
+void Logic::updateUndoCount(string command){
+	if(command == UNDO_COMMAND){
+		++undoCount;
+	}
+
+	if(command != UNDO_COMMAND){
+		undoCount = 0;
+	}
+}
+
+void Logic::checkCommand(string command){
+	if(command != ADD_COMMAND && command != DELETE_COMMAND && command != EDIT_COMMAND && command != CLEAR_COMMAND && command != DONE_COMMAND){
+		++undoCount;
+	}
 }
 
 void Logic::executeInput(string input){
@@ -183,25 +223,19 @@ void Logic::executeInput(string input){
 	Data task = parser.getData();
 	int taskNo = parser.getTaskNo();
 	string errorMessage = parser.getErrorMessage();
+	string directory = parser.getDirectory();
 	
 	string returnResponse;
 	string returnDisplay;
 	
-	if(errorMessage == ""){
-		
-		if(command == "undo"){
-			++undoCount;
-		}
-
-		if(command != "undo"){
-			undoCount = 0;
-		}
-		
+	if(errorMessage == EMPTY_RESPONSE){		
+		updateUndoCount(command);
 		if(undoCount > 1){
 			returnResponse = "You can only undo once";
 		} else {
-			executeCommand(returnDisplay, returnResponse, command, task, taskNo, currentTime);
+			executeCommand(returnDisplay, returnResponse, command, directory, task, taskNo, currentTime);
 		}
+		checkCommand(command);
 
 		if(command == "show" || command == "show commands" || command == "show done" || command == "show float" || command == "show features" || command == "search"){
 			++undoCount;
