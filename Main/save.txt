@@ -1,20 +1,24 @@
-30
+57
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
-28	Wednesday/1/4/2015		undefined/0/0/0		23/0		-1/-1		false		None		undefined/0/0/0		-1/-1		do CS
-10	Wednesday/1/4/2015		undefined/0/0/0		23/30		-1/-1		false		None		undefined/0/0/0		-1/-1		sleep
-3	Thursday/2/4/2015		undefined/0/0/0		7/0		-1/-1		false		None		undefined/0/0/0		-1/-1		wake up
-4	Thursday/2/4/2015		undefined/0/0/0		7/30		-1/-1		false		None		undefined/0/0/0		-1/-1		devotion
-5	Thursday/2/4/2015		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		CS meeting
-13	Thursday/2/4/2015		undefined/0/0/0		10/0		11/30		false		None		undefined/0/0/0		-1/-1		GEM2006 Lecture
-7	Thursday/2/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch with Johan
-8	Thursday/2/4/2015		undefined/0/0/0		12/30		-1/-1		false		None		undefined/0/0/0		-1/-1		take a nap
-12	Thursday/2/4/2015		undefined/0/0/0		14/0		16/0		false		None		undefined/0/0/0		-1/-1		IE2130 Lecture
-27	Thursday/2/4/2015		undefined/0/0/0		16/0		16/45		false		None		undefined/0/0/0		-1/-1		IE2100 Tutorial
-15	Thursday/2/4/2015		undefined/0/0/0		17/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
-19	Thursday/2/4/2015		undefined/0/0/0		23/30		-1/-1		false		None		undefined/0/0/0		-1/-1		sleep
-20	Friday/3/4/2015		undefined/0/0/0		7/0		-1/-1		false		None		undefined/0/0/0		-1/-1		wake up
-22	Friday/3/4/2015		undefined/0/0/0		7/30		-1/-1		false		None		undefined/0/0/0		-1/-1		devotion
-21	Friday/3/4/2015		undefined/0/0/0		8/30		-1/-1		false		None		undefined/0/0/0		-1/-1		NUS ISCF Camp Meeting
-23	Friday/3/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch with Camp Committee
-25	Friday/3/4/2015		undefined/0/0/0		16/30		-1/-1		false		None		undefined/0/0/0		-1/-1		Good Friday Service at True Way Presbyterian Church
-26	Friday/3/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with church friends
+33	Wednesday/1/4/2015		undefined/0/0/0		23/0		-1/-1		false		None		undefined/0/0/0		-1/-1		do CS
+34	Wednesday/1/4/2015		undefined/0/0/0		23/30		-1/-1		false		None		undefined/0/0/0		-1/-1		sleep
+57	Thursday/2/4/2015		undefined/0/0/0		7/0		-1/-1		true		None		undefined/0/0/0		-1/-1		wake up
+36	Thursday/2/4/2015		undefined/0/0/0		7/30		-1/-1		false		None		undefined/0/0/0		-1/-1		devotion
+37	Thursday/2/4/2015		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		CS meeting
+38	Thursday/2/4/2015		undefined/0/0/0		10/0		11/30		false		None		undefined/0/0/0		-1/-1		GEM2006 Lecture
+39	Thursday/2/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch with Johan
+40	Thursday/2/4/2015		undefined/0/0/0		12/30		-1/-1		false		None		undefined/0/0/0		-1/-1		take a nap
+41	Thursday/2/4/2015		undefined/0/0/0		14/0		16/0		false		None		undefined/0/0/0		-1/-1		IE2130 Lecture
+42	Thursday/2/4/2015		undefined/0/0/0		16/0		16/45		false		None		undefined/0/0/0		-1/-1		IE2100 Tutorial
+43	Thursday/2/4/2015		undefined/0/0/0		17/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
+51	Thursday/2/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		go to Clementi
+53	Thursday/2/4/2015		undefined/0/0/0		21/0		-1/-1		false		None		undefined/0/0/0		-1/-1		go back RVR
+44	Thursday/2/4/2015		undefined/0/0/0		23/30		-1/-1		false		None		undefined/0/0/0		-1/-1		sleep
+45	Friday/3/4/2015		undefined/0/0/0		7/0		-1/-1		false		None		undefined/0/0/0		-1/-1		wake up
+46	Friday/3/4/2015		undefined/0/0/0		7/30		-1/-1		false		None		undefined/0/0/0		-1/-1		devotion
+47	Friday/3/4/2015		undefined/0/0/0		8/30		-1/-1		false		None		undefined/0/0/0		-1/-1		NUS ISCF Camp Meeting
+55	Friday/3/4/2015		undefined/0/0/0		10/30		-1/-1		false		None		undefined/0/0/0		-1/-1		Brief about camp content to committee
+48	Friday/3/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch with Camp Committee
+56	Friday/3/4/2015		undefined/0/0/0		14/0		-1/-1		false		None		undefined/0/0/0		-1/-1		nap
+49	Friday/3/4/2015		undefined/0/0/0		16/30		-1/-1		false		None		undefined/0/0/0		-1/-1		Good Friday Service at True Way Presbyterian Church
+50	Friday/3/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with church friends

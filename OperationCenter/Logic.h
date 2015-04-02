@@ -18,17 +18,25 @@ using namespace std;
 class Logic{
 
 private:
-	static const string ADD_COMMAND;
-	static const string DELETE_COMMAND;
-	static const string DISPLAY_COMMAND;
-	static const string CLEAR_COMMAND;
-	static const string SORT_COMMAND;
-	static const string SEARCH_COMMAND;
-	static const string EDIT_COMMAND;
-	static const string EXIT_COMMAND;
-	static const string UNDO_COMMAND;
-	static const string EMPTY_RESPONSE;
-	static const string IVALID_COMMAND_MESSAGE;
+	static const char ADD_COMMAND[100];
+	static const char DELETE_COMMAND[100];
+	static const char SHOW_COMMAND[100];
+	static const char CLEAR_COMMAND[100];
+	static const char SORT_COMMAND[100];
+	static const char SEARCH_COMMAND[100];
+	static const char EDIT_COMMAND[100];
+	static const char EXIT_COMMAND[100];
+	static const char UNDO_COMMAND[100];
+	static const char EMPTY_RESPONSE[100];
+	static const char IVALID_COMMAND_MESSAGE[100];
+	static const char DONE_COMMAND[100];
+	static const char SHOW_COMMANDS[100];
+	static const char SHOW_FEATURES[100];
+	static const char SHOW_DONE[100];
+	static const char SHOW_FLOAT[100];
+	static const char FLOAT_NOT_FOUND_MESSAGE[100];
+	static const char DONE_NOT_FOUND_MESSAGE[100];
+	static const char SEARCH_NOT_FOUND_MESSAGE[100];
 	static int undoCount;
 
 
@@ -43,6 +51,7 @@ public:
 	static string showWelcomeMessage(bool status);
 	static string displaySpecificDay(DataProcessor dataProcessor, TimeMacro current);
 	static void updateUndoCount(string command);
+	static void checkCommand(string command);
 };
 
 #endif
