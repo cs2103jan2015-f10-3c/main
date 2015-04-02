@@ -11,6 +11,7 @@ std::stringstream& PrewrittenData::retrieveList(ListType type){
 	std::string list;
 	std::string txtFile;
 	std::stringstream ss;
+	History::updateLatestCommand("show");
 
 	txtFile = determineListType(type);
 
@@ -31,6 +32,7 @@ std::stringstream& PrewrittenData::retrieveList(ListType type){
 void PrewrittenData::retrieveList(ListType type, std::ofstream& out){
 	std::string txtFile;
 	std::string list;
+	History::updateLatestCommand("show");
 	
 	txtFile = determineListType(type);
 
