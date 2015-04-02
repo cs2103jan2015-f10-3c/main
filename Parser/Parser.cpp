@@ -7,8 +7,8 @@ const unsigned int Parser::LENGTH_OF_DATE_ABBRE_ALPHABET = 5;  //"d MMM"
 const char Parser::DATE_FIRST_DIGIT[] = "0123";
 const char Parser::MONTH_FIRST_DIGIT[] = "01";
 const char Parser::YEAR_FIRST_DIGIT[] = "2";
-const unsigned int Parser::LENGTH_OF_STARTING_TIME = 5;  //"09:00"
-const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 11;  //"09:00-10:30"
+const unsigned int Parser::LENGTH_OF_STARTING_TIME = 4;  //"9:00"
+const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 9;  //"9:00-9:30"
 const char Parser::TWENTY_FOUR_HOUR_FIRST_DIGIT[] = "012";
 const char Parser::TWELVE_HOUR_FIRST_DIGIT[] = "01";
 const char Parser::MINUTE_FIRST_DIGIT[] = "012345";
@@ -38,7 +38,6 @@ void Parser::parseInput (string userInput) {
 
 	catch (const char* errorMessge) {
 		updateErrorMessage (errorMessge);
-		//cout << getErrorMessage () << endl;
 	}
 }
 
@@ -119,8 +118,13 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 		parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-		parseDateNumber (inputToBeParsed, timeMacro);
-		parseDateAlphabet (inputToBeParsed, timeMacro);
+		if (timeMacro.getDate() == 0 &&
+			timeMacro.getMonth() == 0 &&
+			timeMacro.getYear() == 0) {
+				parseDateNumber (inputToBeParsed, timeMacro);
+				parseDateAlphabet (inputToBeParsed, timeMacro);
+		}
+		
 		desc = inputToBeParsed;
 
 
