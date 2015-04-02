@@ -103,7 +103,7 @@ string DataProcessor::clearTask(){
 	Storing storing;
 	storing.clearDataList();
 
-	return "response";
+	return "All tasks are cleared";
 }
 
 
