@@ -167,6 +167,9 @@ void Parser::parseEdit (string userInput, string commandWord) {
 
 		index = parseTaskNo (inputToBeParsed);
 		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
 
 		inputToBeParsed = inputToBeParsed.substr(index.size ());
 		if (inputToBeParsed != "" && inputToBeParsed != " ") {
@@ -232,6 +235,9 @@ void Parser::parseDelete (string userInput, string commandWord) {
 	if (index != "" && index != " ") {
 		index = index.substr (1);
 		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
 		updateCommand (commandWord);
 		updateTaskNo (taskNo);
 	}
@@ -249,6 +255,9 @@ void Parser::parseDone (string userInput, string commandWord) {
 	if (index != "" && index != " ") {
 		index = index.substr (1);
 		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
 		updateCommand (commandWord);
 		updateTaskNo (taskNo);
 		updateStatus (true);
@@ -775,11 +784,10 @@ bool Parser::isYearNumber (string inputToBeParsed) {
 	end = inputToBeParsed.find_first_of ("/");
 	if (end == 1 || end == 2) {
 		inputToBeParsed = inputToBeParsed.substr (end + 1);
-		if (inputToBeParsed[0] == '/' &&
-			searchSubstring (YEAR_FIRST_DIGIT, inputToBeParsed[1]) &&
+		if (searchSubstring (YEAR_FIRST_DIGIT, inputToBeParsed[0]) &&
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
 			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[2]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
+			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3])) {
 				return true;
 		}
 	}
@@ -1397,8 +1405,25 @@ void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
 
 	timeMacroEnd.updateYear (now.tm_year);
 	timeMacroEnd.updateMonth (now.tm_mon);
-	timeMacroEnd.updateDate (31);
+
+	if (now.tm_mon == 1 || now.tm_mon == 3 ||
+		now.tm_mon == 5 || now.tm_mon == 7 ||
+		now.tm_mon == 8 || now.tm_mon == 10 ||
+		now.tm_mon == 12) {
+			timeMacroEnd.updateDate (31);
+	}
+	else if (now.tm_mon == 4 || now.tm_mon == 6 ||
+		now.tm_mon == 9 || now.tm_mon == 11) {
+			timeMacroEnd.updateDate (30);
+	}
+	else if (now.tm_mon == 2 && isLeapYear (now.tm_year)) {
+		timeMacroEnd.updateDate (29);
+	}
+	else {
+		timeMacroEnd.updateDate (28);
+	}	
 }
+
 //One potential bug:
 //the date period must be the start and end of this month
 //there may be bug when the ending date of month changes
