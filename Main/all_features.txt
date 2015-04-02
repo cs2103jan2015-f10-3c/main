@@ -69,4 +69,11 @@ Format Supported:
 - done #
 * # refers to the number on your displayed list
 
+-------------------------------------------------------------------------
+7. Clear
+to clear all tasks from storage
+
+Format Supported:
+- clear
+
 -------------------------------end of all commands-----------------------
