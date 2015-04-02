@@ -19,6 +19,7 @@ const char Parser::ERROR_MESSAGE_INPUT[] = "Please enter correct input following
 const char Parser::ERROR_MESSAGE_EDIT[] = "Please enter content you want to edit";
 const char Parser::ERROR_MESSAGE_TASK_NO[] = "Please enter correct task number after command word";
 const char Parser::ERROR_MESSAGE_SHOW[] = "Please enter correct time period or task type";
+const char Parser::ERROR_MESSAGE_DIRECTORY[] = "Please enter the correct directory";
 const char Parser::ERROR_MESSAGE_DATE[] = "Please enter the correct date";
 const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
 
@@ -70,6 +71,10 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	}
 	else if (commandWord == "clear") {
 		parseClear (userInput, commandWord);
+	}
+	else if (commandWord == "save" ||
+		commandWord == "load" ) {
+		parseSaveLoad (userInput, commandWord);
 	}
 	else {
 		throw ERROR_MESSAGE_COMMAND;
@@ -293,7 +298,8 @@ void Parser::parseShow (string userInput, string commandWord) {
 		}
 		else if (inputToBeParsed == "commands" ||
 			inputToBeParsed == "float" ||
-			inputToBeParsed == "done") {
+			inputToBeParsed == "done" ||
+			inputToBeParsed == "features") {
 				commandWord = commandWord + " " + inputToBeParsed;
 				updateCommand (commandWord);
 		}
@@ -313,6 +319,20 @@ void Parser::parseClear (string userInput, string commandWord) {
 	updateCommand (commandWord);
 }
 
+
+void Parser::parseSaveLoad (string userInput, string commandWord) {
+	string inputToBeParsed = userInput.substr (commandWord.size ());
+
+	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+		inputToBeParsed = inputToBeParsed.substr(1);
+
+		updateCommand (commandWord);
+		updateDirectory (inputToBeParsed);	
+	}
+	else {
+		throw ERROR_MESSAGE_DIRECTORY;
+	}
+}
 
 //This method is to parse date after the start of the string is recoganised as a date.
 //The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",

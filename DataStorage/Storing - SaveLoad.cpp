@@ -1,5 +1,13 @@
 #include "InternalStoring.h"
-const std::string LocalStorage::DEFAULT_SAVE_DIRECTORY = "save.txt";
+
+//Implementation of LocalStorage class
+//for saving and loading methods
+//.cpp file is separated from Storing - Local.cpp
+//to allow for spacier room
+
+
+//Magic string definition
+const char LocalStorage::DEFAULT_SAVE_DIRECTORY[] = "save.txt";
 
 //API for loading Data from txt file
 void LocalStorage::loadData(bool& status, std::string& directory){
@@ -61,7 +69,7 @@ void LocalStorage::adjustFormat(std::string& inputDirectory){
 	if (inputDirectory != ""){
 		inputDirectory += '/';
 	}
-	inputDirectory += "save.txt";
+	inputDirectory += DEFAULT_SAVE_DIRECTORY;
 }
 
 

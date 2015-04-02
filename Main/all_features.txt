@@ -42,6 +42,7 @@ to show you the task list in the display feature
 Some format we support:
 - show today
 - show tomorrow
+- show this week
 - show this month
 
 -------------------------------------------------------------------------
@@ -60,14 +61,7 @@ Format supported:
 - undo
 
 -------------------------------------------------------------------------
-7. Redo
-to redo an undo operation.
-
-Format supported:
-- redo
-
--------------------------------------------------------------------------
-8. Done
+7. Done
 to mark a task as done. Marked task wil not be displayed on usual list.
 Completed task can be display through "show done" (Hint: see Show)
 
