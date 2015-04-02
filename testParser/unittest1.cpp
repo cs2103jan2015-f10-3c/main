@@ -10,7 +10,7 @@ namespace testParser
 	public:
 		
 		//To test whether can extract "add" command
-		TEST_METHOD(testExtractCommand1)
+		TEST_METHOD(testExtractCommand)
 		{
 			Parser parser;
 			string testString = "add 08/03/2015 go for tutorial";
@@ -18,13 +18,14 @@ namespace testParser
 			Assert::AreEqual (parser.extractCommandWord (testString), expected);
 		}
 
-		//To test whether can extract "undo" command
-		TEST_METHOD(testExtractCommand2)
+		//To test for invalid command
+		TEST_METHOD(testInvalidCommand)
 		{
 			Parser parser;
-			string testString = "undo";
-			string expected = "undo";
-			Assert::AreEqual (parser.extractCommandWord (testString), expected);
+			string testString = "abc";
+			string expected = "Please enter the correct command";
+			parser.parseInput (testString);
+			Assert::AreEqual (parser.getErrorMessage(), expected);
 		}
 
 		//To test for a leap year
