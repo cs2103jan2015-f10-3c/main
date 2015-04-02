@@ -203,6 +203,10 @@ void Logic::executeInput(string input){
 			executeCommand(returnDisplay, returnResponse, command, task, taskNo, currentTime);
 		}
 
+		if(command == "show" || command == "show commands" || command == "show done" || command == "show float" || command == "show features" || command == "search"){
+			++undoCount;
+		}
+
 	} else {
 		returnResponse = errorMessage;
 	}
