@@ -47,7 +47,7 @@ Some format we support:
 
 -------------------------------------------------------------------------
 5. Search
-to search task by a single keyword from all the description
+to search task by exact sentence, phrase or keyword from all tasks' description
 
 Format supported:
 - search Keyword
