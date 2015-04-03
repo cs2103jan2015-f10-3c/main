@@ -25,7 +25,8 @@ std::string PrewrittenData::retrieveList(ListType type){
 		ss << "List could not be found"; 
 	}
 	
-	return ss.str();
+	list = ss.str();
+	return list;
 }
 
 void PrewrittenData::retrieveList(ListType type, std::ofstream& out){
