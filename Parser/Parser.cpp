@@ -7,8 +7,8 @@ const unsigned int Parser::LENGTH_OF_DATE_ABBRE_ALPHABET = 5;  //"d MMM"
 const char Parser::DATE_FIRST_DIGIT[] = "0123";
 const char Parser::MONTH_FIRST_DIGIT[] = "01";
 const char Parser::YEAR_FIRST_DIGIT[] = "2";
-const unsigned int Parser::LENGTH_OF_STARTING_TIME = 5;  //"09:00"
-const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 11;  //"09:00-10:30"
+const unsigned int Parser::LENGTH_OF_STARTING_TIME = 4;  //"9:00"
+const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 9;  //"9:00-9:30"
 const char Parser::TWENTY_FOUR_HOUR_FIRST_DIGIT[] = "012";
 const char Parser::TWELVE_HOUR_FIRST_DIGIT[] = "01";
 const char Parser::MINUTE_FIRST_DIGIT[] = "012345";
@@ -19,6 +19,7 @@ const char Parser::ERROR_MESSAGE_INPUT[] = "Please enter correct input following
 const char Parser::ERROR_MESSAGE_EDIT[] = "Please enter content you want to edit";
 const char Parser::ERROR_MESSAGE_TASK_NO[] = "Please enter correct task number after command word";
 const char Parser::ERROR_MESSAGE_SHOW[] = "Please enter correct time period or task type";
+const char Parser::ERROR_MESSAGE_DIRECTORY[] = "Please enter the correct directory";
 const char Parser::ERROR_MESSAGE_DATE[] = "Please enter the correct date";
 const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
 
@@ -37,7 +38,6 @@ void Parser::parseInput (string userInput) {
 
 	catch (const char* errorMessge) {
 		updateErrorMessage (errorMessge);
-		//cout << getErrorMessage () << endl;
 	}
 }
 
@@ -70,6 +70,10 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	}
 	else if (commandWord == "clear") {
 		parseClear (userInput, commandWord);
+	}
+	else if (commandWord == "save" ||
+		commandWord == "load" ) {
+		parseSaveLoad (userInput, commandWord);
 	}
 	else {
 		throw ERROR_MESSAGE_COMMAND;
@@ -114,8 +118,13 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 		parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-		parseDateNumber (inputToBeParsed, timeMacro);
-		parseDateAlphabet (inputToBeParsed, timeMacro);
+		if (timeMacro.getDate() == 0 &&
+			timeMacro.getMonth() == 0 &&
+			timeMacro.getYear() == 0) {
+				parseDateNumber (inputToBeParsed, timeMacro);
+				parseDateAlphabet (inputToBeParsed, timeMacro);
+		}
+		
 		desc = inputToBeParsed;
 
 
@@ -293,7 +302,8 @@ void Parser::parseShow (string userInput, string commandWord) {
 		}
 		else if (inputToBeParsed == "commands" ||
 			inputToBeParsed == "float" ||
-			inputToBeParsed == "done") {
+			inputToBeParsed == "done" ||
+			inputToBeParsed == "features") {
 				commandWord = commandWord + " " + inputToBeParsed;
 				updateCommand (commandWord);
 		}
@@ -313,6 +323,20 @@ void Parser::parseClear (string userInput, string commandWord) {
 	updateCommand (commandWord);
 }
 
+
+void Parser::parseSaveLoad (string userInput, string commandWord) {
+	string inputToBeParsed = userInput.substr (commandWord.size ());
+
+	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+		inputToBeParsed = inputToBeParsed.substr(1);
+
+		updateCommand (commandWord);
+		updateDirectory (inputToBeParsed);	
+	}
+	else {
+		throw ERROR_MESSAGE_DIRECTORY;
+	}
+}
 
 //This method is to parse date after the start of the string is recoganised as a date.
 //The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",

@@ -31,12 +31,12 @@ void Storing::undoAdd(){
 }
 
 
-std::stringstream& Storing::retrieveCommandList(){
+std::string Storing::retrieveCommandList(){
 	PrewrittenData prewrittenData;
 	return prewrittenData.retrieveList(command);
 }
 
-std::stringstream& Storing::retrieveFeatureList(){
+std::string Storing::retrieveFeatureList(){
 	PrewrittenData prewrittenData;
 	return prewrittenData.retrieveList(feature);
 }
