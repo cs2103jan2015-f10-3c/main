@@ -23,6 +23,8 @@ undo
 7. Done
 done #
 
+8. Clear
+
 * # refers to the number on your displayed list
 
 -------------------------------end of all commands-----------------------
