@@ -44,6 +44,8 @@ Some format we support:
 - show tomorrow
 - show this week
 - show this month
+- show done
+- show float
 
 -------------------------------------------------------------------------
 5. Search
