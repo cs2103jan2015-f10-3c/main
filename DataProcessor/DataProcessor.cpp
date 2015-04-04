@@ -257,7 +257,7 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 
 //this function reads in the task number 
 //and update the status of the corresponding
-//task
+//task to done
 string DataProcessor::markDone(int taskNo){
 	ostringstream outData;
 	Data targetData;
@@ -267,6 +267,21 @@ string DataProcessor::markDone(int taskNo){
 	targetData.updateCompleteStatus(true);
 	storing.changeData(taskNo, targetData);
 	outData << convertDataObjectToLine(targetData) << " is done";
+	return outData.str();
+}
+
+//this function reads in the task number 
+//and update the status of the corresponding
+//task to ongoing
+string DataProcessor::unDone(int taskNo){
+	ostringstream outData;
+	Data targetData;
+	Storing storing;
+
+	targetData = storing.getData(taskNo);
+	targetData.updateCompleteStatus(false);
+	storing.changeData(taskNo, targetData);
+	outData << convertDataObjectToLine(targetData) << " is reopened";
 	return outData.str();
 }
 

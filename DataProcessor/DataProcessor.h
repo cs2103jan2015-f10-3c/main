@@ -37,6 +37,7 @@ public:
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
 	string markDone(int taskNo);
+	string unDone(int taskNo);
 	string showFloat();
 	string showDone();
 	static string showCommands();
