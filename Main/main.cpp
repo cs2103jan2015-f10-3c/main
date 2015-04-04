@@ -1,6 +1,7 @@
 #include <iostream>
 #include "OperationCenter.h"
 
+void ClearScreen();
 int main(){
 	bool status = false;
 	OperationCenter::loadData(status);
@@ -11,6 +12,7 @@ int main(){
 	getline(cin, userInput);
 
 	while(userInput != "exit"){
+		OperationCenter::clearScreen();
 		OperationCenter::executeInput(userInput);
 		cout << OperationCenter::getResponse() << endl;
 		cout << OperationCenter::getDisplay() << endl;
@@ -20,3 +22,6 @@ int main(){
 
 	return 0;
 }
+
+
+

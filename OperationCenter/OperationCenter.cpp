@@ -27,3 +27,6 @@ string OperationCenter::getResponse(){
 	return Feedback::getResponse();
 }
 
+void OperationCenter::clearScreen(){
+	Logic::clearScreen();
+}
