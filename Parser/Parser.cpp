@@ -22,6 +22,8 @@ const char Parser::ERROR_MESSAGE_SHOW[] = "Please enter correct time period or t
 const char Parser::ERROR_MESSAGE_DIRECTORY[] = "Please enter the correct directory";
 const char Parser::ERROR_MESSAGE_DATE[] = "Please enter the correct date";
 const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
+const char Parser::ERROR_MESSAGE_DESC[] = "Please enter task description";
+
 
 
 //This method is called by Operation Center.
@@ -127,6 +129,9 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		
 		desc = inputToBeParsed;
 
+		if (desc == "") {
+			throw ERROR_MESSAGE_DESC;
+		}
 
 		updateCommand (commandWord);
 		updateTimeMacro (timeMacro);

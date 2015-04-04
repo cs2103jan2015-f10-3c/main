@@ -82,6 +82,7 @@ private:
 	static const char ERROR_MESSAGE_DIRECTORY[100];
 	static const char ERROR_MESSAGE_DATE[100];
 	static const char ERROR_MESSAGE_TIME[100];
+	static const char ERROR_MESSAGE_DESC[100];
 
 public: 
 	//default constructor
