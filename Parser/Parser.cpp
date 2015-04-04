@@ -317,11 +317,13 @@ void Parser::parseUndone (string userInput, string commandWord) {
 }
 
 //This method is to parse user's input if the command word is "show".
-//1st case: the command word show is followed by a period.
+//1st case: the command word "show" is followed by a date.
+//Then the date/month/year/day will be updated.
+//2nd case: the command word "show" is followed by a period.
 //The user can enter "show today", "show tomorrow",
 //"show this week" and "show this month".
 //The starting and ending date/month/year/day will be updated.
-//2nd case: the command word show is followed by the 
+//3rd case: the command word "show" is followed by the 
 //words "commands", "float", "done", or "features".
 //Then the command word will become "show commands" or "show float", etc.
 //If the word following "show" does not fall into these 2 cases,
@@ -340,6 +342,11 @@ void Parser::parseShow (string userInput, string commandWord) {
 			isDateAlphabet (inputToBeParsed, dateInt)) {
 				parseDateNumber (inputToBeParsed, timeMacroBeg);
 				parseDateAlphabet (inputToBeParsed, timeMacroBeg);
+
+				if (inputToBeParsed != "" && inputToBeParsed != " ") {
+					throw ERROR_MESSAGE_SHOW;
+				}
+
 				timeMacroEnd = timeMacroBeg;
 				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}		
@@ -992,6 +999,7 @@ bool Parser::isSlash (string directory) {
 }
 
 
+//This method checks if a vector contains certain string.
 bool Parser::isStringEqual (string inputString, vector<string> compString) {
 	for (int i = 0; i != compString.size(); i++) {
 		if (inputString == compString [i]) {
@@ -1001,6 +1009,8 @@ bool Parser::isStringEqual (string inputString, vector<string> compString) {
 	return false;
 }
 
+
+//This method is to month in alphabet format to integer format.
 int Parser::convertAlphabetMonthToInteger (string month) {
 	int monthInt;
 	if (month == "Jan" || month == "jan") {
