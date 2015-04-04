@@ -286,7 +286,7 @@ namespace BlinkListSystemTest
 
 
 
-		//Xiao zhou
+		//@Yang Xiaozhou A0113538J
 		//For command "show"
 		TEST_METHOD(show_today_test)			
 		{
@@ -456,42 +456,6 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput("show float");
 			actualResponse = OperationCenter::getResponse();
 			expectedResponse = "You have no task with unspecified date\n"; 
-			
-			//vector<Data> expectedTaskList;
-			//Data task1("task 1");
-			//Data task2("task 2");
-			//Data task3("task 3");
-			//Data task4("task 4");
-			//expectedTaskList.push_back(task1);
-			//expectedTaskList.push_back(task2);
-			//expectedTaskList.push_back(task3);
-			//expectedTaskList.push_back(task4);
-			//Assert::AreEqual(expectedTaskList.size(), actualTaskList.size());
-			//Assert::AreEqual(expectedTaskList[0].getDesc(), actualTaskList[0].getDesc());
-			//Assert::AreEqual(expectedTaskList[1].getDesc(), actualTaskList[1].getDesc());
-			//Assert::AreEqual(expectedTaskList[2].getDesc(), actualTaskList[2].getDesc());
-			//Assert::AreEqual(expectedTaskList[3].getDesc(), actualTaskList[3].getDesc());
-
-
-			/*string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay;
-			ostringstream out;
-			out	<< "1. task 1" << "                                  " << endl
-				<< "                                                                                " << endl
-				<< "********************************************************************************" << endl;
-				<< "2. task 2" << "                   " << endl
-				<< "                                                                                " << endl                
-				<< "********************************************************************************" << endl
-				<< "3. task 3" << "                   " << endl
-				<< "                                                                                " << endl                
-				<< "********************************************************************************" << endl
-				<< "4. task 4" << "                   " << endl
-				<< "                                                                                " << endl                
-				<< "********************************************************************************" << endl;
-			expectedDisplay = out.str();
-			Assert::AreEqual(expectedDisplay, actualDisplay);*/
 		}
-	};
-}
 	};
 }
