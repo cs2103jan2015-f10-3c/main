@@ -330,11 +330,20 @@ void Parser::parseShow (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size ());
 	TimeMacro timeMacroBeg;
 	TimeMacro timeMacroEnd;
+	int dateInt;
+	int monthInt;
 
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
 		inputToBeParsed = inputToBeParsed.substr(ONE);
 
-		if (inputToBeParsed == "today") {
+		if (isDateNumber (inputToBeParsed, dateInt, monthInt) ||
+			isDateAlphabet (inputToBeParsed, dateInt)) {
+				parseDateNumber (inputToBeParsed, timeMacroBeg);
+				parseDateAlphabet (inputToBeParsed, timeMacroBeg);
+				timeMacroEnd = timeMacroBeg;
+				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}		
+		else if (inputToBeParsed == "today") {
 			getTodayDate (timeMacroBeg);
 			timeMacroEnd = timeMacroBeg;
 			updateCommand (commandWord);
@@ -376,6 +385,8 @@ void Parser::parseShow (string userInput, string commandWord) {
 
 //This method is to parse user's input if the command word is "clear".
 //Only the command word "clear" will be parsed.
+//If the command word "clear" is followed by some other input,
+//an exception is thrown.
 void Parser::parseClear (string userInput, string commandWord) {
 	updateCommand (commandWord);
 
@@ -386,6 +397,11 @@ void Parser::parseClear (string userInput, string commandWord) {
 }
 
 
+//This method is to parse user's input if the command word is "path".
+//The command word "path" must be followed by a directory.
+//If the directory does not contain at least one slash, 
+//it means it is a wrong directory.
+//In this case, an exception is thrown.
 void Parser::parsePath (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size ());
 
@@ -406,6 +422,11 @@ void Parser::parsePath (string userInput, string commandWord) {
 	}
 }
 
+
+//This method is to parse user's input if the command word is "help".
+//Only the command word "help" will be parsed.
+//If the command word "help" is followed by some other input,
+//an exception is thrown.
 void Parser::parseHelp (string userInput, string commandWord) {
 	updateCommand (commandWord);
 
