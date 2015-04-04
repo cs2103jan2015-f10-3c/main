@@ -122,6 +122,7 @@ public:
 	void parseUndo (string userInput, string commandWord);
 	void parseDelete (string userInput, string commandWord);
 	void parseDone (string userInput, string commandWord);
+	void parseUndone (string userInput, string commandWord);
 	void parseShow (string userInput, string commandWord);
 	void parseClear (string userInput, string commandWord);
 	void parsePath (string userInput, string commandWord);

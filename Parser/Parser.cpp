@@ -67,6 +67,9 @@ void Parser::checkCommandWord (string userInput, string commandWord) {
 	else if (commandWord == "done") {
 		parseDone (userInput, commandWord);
 	}
+	else if (commandWord == "undone") {
+		parseUndone (userInput, commandWord);
+	}
 	else if (commandWord == "show") {
 		parseShow (userInput, commandWord);
 	}
@@ -292,6 +295,25 @@ void Parser::parseDone (string userInput, string commandWord) {
 }
 
 
+//This method is to parse user's input if the command word is "undone".
+//The command word "undone" must be followed by a task number.
+void Parser::parseUndone (string userInput, string commandWord) {
+	int taskNo;
+	string index = userInput.substr (commandWord.size());
+	if (index != "" && index != " ") {
+		index = index.substr (ONE);
+		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
+		updateCommand (commandWord);
+		updateTaskNo (taskNo);
+		updateStatus (false);
+	}
+	else {
+		throw ERROR_MESSAGE_TASK_NO;
+	}
+}
 
 //This method is to parse user's input if the command word is "show".
 //1st case: the command word show is followed by a period.
