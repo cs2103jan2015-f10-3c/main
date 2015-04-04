@@ -9,6 +9,7 @@ Some format we support:
 - add DD/MM/YYYY HH:MM-HH:MM Description
 - add DD/MM HH:MM Description
 - add DD/MM Description
+- add HH:MM Description (Default: today)
 - add DD MMM Description (e.g: 15 Mar)
 - add Description (Hint: floating task)
 
@@ -44,6 +45,9 @@ Some format we support:
 - show tomorrow
 - show this week
 - show this month
+- show DD/MM/YYYY (show a particular day)
+- show done
+- show float
 
 -------------------------------------------------------------------------
 5. Search
@@ -69,4 +73,11 @@ Format Supported:
 - done #
 * # refers to the number on your displayed list
 
+-------------------------------------------------------------------------
+8. Undone
+to reopen a task that was marked done. 
+
+Format Supported:
+- undone #
+* # refers to the number on your displayed list
 -------------------------------end of all commands-----------------------
