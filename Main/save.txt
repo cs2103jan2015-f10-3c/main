@@ -11,9 +11,6 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 99	Thursday/2/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		CCA presentation slides
 79	Friday/3/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2130 project meeting
 194	undefined/4/4/0		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		breakfast
-210	Saturday/4/4/2015		undefined/0/0/0		8/0		22/30		false		None		undefined/0/0/0		-1/-1		haha
-205	Saturday/4/4/2015		undefined/0/0/0		21/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
-206	Saturday/4/4/2015		undefined/0/0/0		21/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
 183	Saturday/4/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
 80	Sunday/5/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		concert at UT Audi2
 94	Monday/6/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		CCA presentation

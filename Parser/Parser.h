@@ -125,6 +125,7 @@ public:
 	void parseShow (string userInput, string commandWord);
 	void parseClear (string userInput, string commandWord);
 	void parsePath (string userInput, string commandWord);
+	void parseHelp (string userInput, string commandWord);
     void parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);

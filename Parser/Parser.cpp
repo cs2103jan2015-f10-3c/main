@@ -76,6 +76,9 @@ void Parser::checkCommandWord (string userInput, string commandWord) {
 	else if (commandWord == "path") {
 		parsePath (userInput, commandWord);
 	}
+	else if (commandWord == "help") {
+		parseHelp (userInput, commandWord);
+	}
 	else {
 		throw ERROR_MESSAGE_COMMAND;
 	}
@@ -373,6 +376,16 @@ void Parser::parsePath (string userInput, string commandWord) {
 		throw ERROR_MESSAGE_DIRECTORY;
 	}
 }
+
+void Parser::parseHelp (string userInput, string commandWord) {
+	updateCommand (commandWord);
+
+	string leftOver = userInput.substr (commandWord.size());
+	if (leftOver != "" && leftOver != " ") {
+		throw ERROR_MESSAGE_COMMAND;
+	}
+}
+
 
 //This method is to parse date after the start of the string is recoganised as a date.
 //The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",
