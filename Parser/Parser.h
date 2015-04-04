@@ -73,6 +73,7 @@ private:
 	static const unsigned int SEVEN;
 	static const unsigned int LENGTH_OF_STARTING_TIME;
 	static const unsigned int LENGTH_OF_TIME_PERIOD;
+	static const char SLASH;
 	static const char ERROR_MESSAGE_COMMAND[100];
 	static const char ERROR_MESSAGE_INPUT[100];
 	static const char ERROR_MESSAGE_EDIT[100];
@@ -145,6 +146,7 @@ public:
 	bool isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& minuteInt);
 	bool isTimePeriodTwelve (string inputToBeParsed, int& hourBegInt, int& hourEndInt, 
 		int& minuteBegInt, int& minuteEndInt);
+	bool isSlash (string directory);
 	bool isStringEqual (string inputString, vector<string> compString);
 	int convertAlphabetMonthToInteger (string month);
 	void getTodayDate (TimeMacro& timeMacro);
