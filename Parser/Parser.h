@@ -124,7 +124,7 @@ public:
 	void parseDone (string userInput, string commandWord);
 	void parseShow (string userInput, string commandWord);
 	void parseClear (string userInput, string commandWord);
-	void parseSaveLoad (string userInput, string commandWord);
+	void parsePath (string userInput, string commandWord);
     void parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro);
 	void parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd);
@@ -132,13 +132,14 @@ public:
 	string parseTaskNo (string inputToBeParsed);
 	bool isInteger (string index);
 	int convertStringToInteger (string index);
-	bool isDateNumber (string inputToBeParsed);
-	bool isYearNumber (string inputToBeParsed);
-	bool isDateAlphabet (string inputToBeParsed);
-	bool isYearAlphabet (string inputToBeParsed);
+	bool isDateNumber (string inputToBeParsed, int& dateInt, int& monthInt);
+	bool isYearNumber (string inputToBeParsed, int& yearInt);
+	bool isDateAlphabet (string inputToBeParsed, int& dateInt);
+	bool isYearAlphabet (string inputToBeParsed, int& yearInt);
 	string convertDateToDayOfTheWeek (int date, int month, int year);
-	bool isStartingTimeTwentyFour (string inputToBeParsed);
-	bool isTimePeriodTwentyFour (string inputToBeParsed);
+	bool isStartingTimeTwentyFour (string inputToBeParsed, int& hourInt, int& minuteInt);
+	bool isTimePeriodTwentyFour (string inputToBeParsed, int& hourBegInt, int& hourEndInt, 
+		int& minuteBegInt, int& minuteEndInt);
 	bool isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& minuteInt);
 	bool isTimePeriodTwelve (string inputToBeParsed, int& hourBegInt, int& hourEndInt, 
 		int& minuteBegInt, int& minuteEndInt);

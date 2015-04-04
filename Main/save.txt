@@ -1,4 +1,4 @@
-151
+210
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
 93	Monday/23/3/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		vip acceptance deadline
 75	Thursday/26/3/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		Eusoff conversation over dinner
@@ -10,12 +10,11 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 77	Wednesday/1/4/2015		undefined/0/0/0		14/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2100 homework6
 99	Thursday/2/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		CCA presentation slides
 79	Friday/3/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2130 project meeting
-147	Saturday/4/4/2015		undefined/0/0/0		9/0		10/0		false		None		undefined/0/0/0		-1/-1		breakfast
-148	Saturday/4/4/2015		undefined/0/0/0		9/0		10/59		false		None		undefined/0/0/0		-1/-1		breakfast
-149	Saturday/4/4/2015		undefined/0/0/0		9/0		10/0		false		None		undefined/0/0/0		-1/-1		breakfast
-150	Saturday/4/4/2015		undefined/0/0/0		9/30		10/0		false		None		undefined/0/0/0		-1/-1		breakfast
-151	Saturday/4/4/2015		undefined/0/0/0		9/30		22/0		false		None		undefined/0/0/0		-1/-1		breakfast
-104	Saturday/4/4/2015		undefined/0/0/0		9/39		-1/-1		false		None		undefined/0/0/0		-1/-1		wake up
+194	undefined/4/4/0		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		breakfast
+210	Saturday/4/4/2015		undefined/0/0/0		8/0		22/30		false		None		undefined/0/0/0		-1/-1		haha
+205	Saturday/4/4/2015		undefined/0/0/0		21/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
+206	Saturday/4/4/2015		undefined/0/0/0		21/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
+183	Saturday/4/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
 80	Sunday/5/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		concert at UT Audi2
 94	Monday/6/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		CCA presentation
 78	Wednesday/8/4/2015		undefined/0/0/0		14/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2100 homework7
@@ -29,3 +28,4 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 87	Tuesday/28/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		bsp1005 exam
 88	Tuesday/28/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2150 exam
 89	Thursday/30/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		dsc2006 exam
+155	Monday/4/5/2015		undefined/0/0/0		9/0		22/0		false		None		undefined/0/0/0		-1/-1		breakfast

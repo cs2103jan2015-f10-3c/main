@@ -73,9 +73,8 @@ void Parser::checkCommandWord (string userInput, string commandWord) {
 	else if (commandWord == "clear") {
 		parseClear (userInput, commandWord);
 	}
-	else if (commandWord == "save" ||
-		commandWord == "load" ) {
-		parseSaveLoad (userInput, commandWord);
+	else if (commandWord == "path") {
+		parsePath (userInput, commandWord);
 	}
 	else {
 		throw ERROR_MESSAGE_COMMAND;
@@ -361,7 +360,7 @@ void Parser::parseClear (string userInput, string commandWord) {
 }
 
 
-void Parser::parseSaveLoad (string userInput, string commandWord) {
+void Parser::parsePath (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size ());
 
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
@@ -381,62 +380,40 @@ void Parser::parseSaveLoad (string userInput, string commandWord) {
 //If the year is not specified, it assumes to be this year.
 //Date/month/year/day will be updated.
 void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
-	int start = 0;
 	int end = 0;
-	string date;
-	string month;
-	string year;
 	int dateInt;
 	int monthInt;
 	int yearInt;
+	string day;
 
-	if (isDateNumber (inputToBeParsesd)) {
-		end = inputToBeParsesd.find_first_of ("/");
-		date = inputToBeParsesd.substr (0, end);
+	if (isDateNumber (inputToBeParsesd, dateInt, monthInt)) {
+		timeMacro.updateDate (dateInt);
+		timeMacro.updateMonth (monthInt);
 
-		start = end + 1;
-		inputToBeParsesd = inputToBeParsesd.substr (start);
-
-		if (isYearNumber (inputToBeParsesd)) {
-			end = inputToBeParsesd.find_first_of ("/");
-			month = inputToBeParsesd.substr (0, end);
-			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
-			year = inputToBeParsesd.substr (0, 4);
-			yearInt = atoi (year.c_str());
-
-			if (inputToBeParsesd.size() > 5) {
-				inputToBeParsesd = inputToBeParsesd.substr (start + 4);
-			}
-			else {
-				inputToBeParsesd = "";
-			}
+		end = inputToBeParsesd.find_first_of ('/');
+		inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+		if (isYearNumber (inputToBeParsesd, yearInt)) {
+			timeMacro.updateYear (yearInt);
 		}
-
 		else {
-			end = inputToBeParsesd.find_first_of (" ");
-			month = inputToBeParsesd.substr (0, end);
-			
-			if (end != string::npos) {
-				inputToBeParsesd = inputToBeParsesd.substr (end + 1);
-			}
-			else {
-				inputToBeParsesd = "";
-			}
-			
 			time_t t = time (0);
 			struct tm now;
 			localtime_s (&now, &t);
 			now.tm_year = now.tm_year + 1900;
 			yearInt = now.tm_year;
+			timeMacro.updateYear (yearInt);
 		}
 
-		dateInt = atoi (date.c_str());
-		monthInt = atoi (month.c_str());
-		string day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
-		timeMacro.updateDate (dateInt);
+		day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
 		timeMacro.updateDay (day);
-		timeMacro.updateMonth (monthInt);
-		timeMacro.updateYear (yearInt);
+
+		end = inputToBeParsesd.find_first_of (' ');
+		if (end != string::npos) {
+			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+		}
+		else {
+			inputToBeParsesd = "";
+		}
 	}
 }
 
@@ -447,52 +424,46 @@ void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 //If the year is not specified, it assumes it is this year.
 //Date/month/year/day will be updated.
 void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) {
-	int start = 0;
 	int end = 0;
-	string date;
-	string year;
 	int dateInt;
 	int monthInt;
 	int yearInt;
+	string day;
 
-	if (isDateAlphabet (inputToBeParsesd)) {
-		end = inputToBeParsesd.find_first_of (" ");
-		date = inputToBeParsesd.substr (0, end);
+	if (isDateAlphabet (inputToBeParsesd, dateInt)) {
+		timeMacro.updateDate (dateInt);
 
-		start = end + 1;
-		inputToBeParsesd = inputToBeParsesd.substr (start);
-		monthInt = convertAlphabetMonthToInteger (inputToBeParsesd.substr (0, 3));
-		inputToBeParsesd = inputToBeParsesd.substr (3);
+		end = inputToBeParsesd.find_first_of (' ');
+		inputToBeParsesd = inputToBeParsesd.substr (end + ONE);
+		monthInt = convertAlphabetMonthToInteger (inputToBeParsesd.substr (START, THREE));
+		timeMacro.updateMonth (monthInt);
+		inputToBeParsesd = inputToBeParsesd.substr (THREE);
 
-		if (isYearAlphabet (inputToBeParsesd)) {
-			year = inputToBeParsesd.substr (1, 4);
-			yearInt = atoi (year.c_str());
-			if (inputToBeParsesd.size() > 6) {
-				inputToBeParsesd = inputToBeParsesd.substr (6); //there is still content after the year
+		if (isYearAlphabet (inputToBeParsesd, yearInt)) {
+			timeMacro.updateYear (yearInt);
+			if (inputToBeParsesd.size() > SIX) {
+				inputToBeParsesd = inputToBeParsesd.substr (SIX); //there is still content after the year
 			}
 			else {
 				inputToBeParsesd = "";
 			}
-			
 		}
+
 		else {
-			if (inputToBeParsesd.size() > 2) {
-				inputToBeParsesd = inputToBeParsesd.substr (1);
+			if (inputToBeParsesd.size() > ONE) {
+				inputToBeParsesd = inputToBeParsesd.substr (ONE);
 			}
-			
+
 			time_t t = time (0);
 			struct tm now;
 			localtime_s (&now, &t);
 			now.tm_year = now.tm_year + 1900;
 			yearInt = now.tm_year;
+			timeMacro.updateYear (yearInt);
 		}
 
-		dateInt = atoi (date.c_str());
-		string day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
-		timeMacro.updateDate (dateInt);
+		day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
 		timeMacro.updateDay (day);
-		timeMacro.updateMonth (monthInt);
-		timeMacro.updateYear (yearInt);
 	}
 }
 
@@ -505,45 +476,34 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 //both starting and ending hour and minute will be updated.
 void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
 	int end = 0;
-	if (isTimePeriodTwentyFour (inputToBeParsed) || isStartingTimeTwentyFour (inputToBeParsed)) {
-		end = inputToBeParsed.find_first_of (':');
-        string hourBeg = inputToBeParsed.substr (0, end);
-		string minuteBeg = inputToBeParsed.substr (end + 1, 2);
-		int hourBegInt = atoi (hourBeg.c_str());
-		int minuteBegInt = atoi (minuteBeg.c_str());
-		timeMicroBeg.updateHour (hourBegInt);
-		timeMicroBeg.updateMin (minuteBegInt);
+	int hourBegInt;
+	int hourEndInt;
+	int minuteBegInt;
+	int minuteEndInt;
 
-
-		if (!isTimePeriodTwentyFour (inputToBeParsed)) {
-			end = inputToBeParsed.find_first_of (' ');
-			if (end != string::npos) {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
+	if (isTimePeriodTwentyFour (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt) ||
+		isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
+			if (isTimePeriodTwentyFour (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {
+				timeMicroBeg.updateHour (hourBegInt);
+				timeMicroBeg.updateMin (minuteBegInt);
+				timeMicroEnd.updateHour (hourEndInt);
+				timeMicroEnd.updateMin (minuteEndInt);
 			}
+
 			else {
-				inputToBeParsed = "";
+				if (isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
+					timeMicroBeg.updateHour (hourBegInt);
+					timeMicroBeg.updateMin (minuteBegInt);
+				}
 			}
-		}
-
-		else {
-			end = inputToBeParsed.find_first_of ('-');
-			inputToBeParsed = inputToBeParsed.substr (end + 1);
-			end = inputToBeParsed.find_first_of (':');
-			string hourEnd = inputToBeParsed.substr (0, end);
-			string minuteEnd = inputToBeParsed.substr (end + 1, 2);
-			int hourEndInt = atoi (hourEnd.c_str());
-			int minuteEndInt = atoi (minuteEnd.c_str());
-			timeMicroEnd.updateHour (hourEndInt);
-			timeMicroEnd.updateMin (minuteEndInt);
 
 			end = inputToBeParsed.find_first_of (' ');
 			if (end == string::npos) {
 				inputToBeParsed = "";
 			}
 			else {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
 			}
-		}
 	}
 }
 
@@ -563,20 +523,30 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 	int minuteBegInt;
 	int minuteEndInt;
 
-	if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {
-		timeMicroBeg.updateHour (hourBegInt);
-		timeMicroBeg.updateMin (minuteBegInt);
-		timeMicroEnd.updateHour (hourEndInt);
-		timeMicroEnd.updateMin (minuteEndInt);
-	}
+	if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt) ||
+		isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
+			if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {
+				timeMicroBeg.updateHour (hourBegInt);
+				timeMicroBeg.updateMin (minuteBegInt);
+				timeMicroEnd.updateHour (hourEndInt);
+				timeMicroEnd.updateMin (minuteEndInt);
+			}
 
-	end = inputToBeParsed.find_first_of (' ');
-	if (end == string::npos) {
-		inputToBeParsed = "";
-	}
-	else {
-		inputToBeParsed = inputToBeParsed.substr (end + ONE);
-	}
+			else {
+				if (isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
+					timeMicroBeg.updateHour (hourBegInt);
+					timeMicroBeg.updateMin (minuteBegInt);
+				}
+			}
+
+			end = inputToBeParsed.find_first_of (' ');
+			if (end == string::npos) {
+				inputToBeParsed = "";
+			}
+			else {
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
+			}
+	}	
 }
 
 //This method is to parse the task numnber.
@@ -620,12 +590,11 @@ int Parser::convertStringToInteger (string index) {
 //The formats of date and month can be
 //"dd/mm", "dd/m", "d/mm", "d/m".
 //The string firstly needs to be longer than the date format.
-bool Parser::isDateNumber (string inputToBeParsed) {
+bool Parser::isDateNumber (string inputToBeParsed, int& dateInt, int& monthInt) {
 	int end;
 	string date;
 	string month;
-	int dateInt;
-	int monthInt;
+
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE_NUMBER) {
 		end = inputToBeParsed.find_first_of ('/');
 		if (end == ONE || end == TWO) {
@@ -668,10 +637,10 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 //If the date and month are followed by "/yyyy",
 //it returns true;
 //else, it returns false
-bool Parser::isYearNumber (string inputToBeParsed) {
+bool Parser::isYearNumber (string inputToBeParsed, int& yearInt) {
 	int end;
 	string year;
-	int yearInt;
+
 	end = inputToBeParsed.find_first_of ("/");
 	if (end == ONE || end == TWO) {
 		year = inputToBeParsed.substr (end + ONE, FOUR);
@@ -694,10 +663,9 @@ bool Parser::isYearNumber (string inputToBeParsed) {
 //followed by month (abbreviation, the first alphabet can be both capital or small)
 //eg. 21 Mar or 21 mar.
 //The string firstly needs to be longer than the date format.
-bool Parser::isDateAlphabet (string inputToBeParsed) {
+bool Parser::isDateAlphabet (string inputToBeParsed, int& dateInt) {
 	int end;
 	string date;
-	int dateInt;
 	string month;
 	vector<string> monthList;
 	monthList.push_back ("Jan");
@@ -759,10 +727,9 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 //If the date and month are followed by " yyyy",
 //it returns true;
 //else, it returns false
-bool Parser::isYearAlphabet (string inputToBeParsed) {
+bool Parser::isYearAlphabet (string inputToBeParsed, int& yearInt) {
 	int end = 0;
 	string year;
-	int yearInt;
 	if (inputToBeParsed.size() >= LENGTH_OF_YEAR_ALPHABET) {
 		end = inputToBeParsed.find_first_of (' ');
 		if (end == 0) {
@@ -786,12 +753,10 @@ bool Parser::isYearAlphabet (string inputToBeParsed) {
 //The string firstly needs to be longer than the time format.
 //Then it must follow the format "hh:mm" or "h:mm"
 //in order to be recognised as a starting time.
-bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
+bool Parser::isStartingTimeTwentyFour (string inputToBeParsed, int& hourInt, int& minuteInt) {
 	int end = 0;
 	string hour;
-	int hourInt;
 	string minute;
-	int minuteInt;
 
 	if (inputToBeParsed.size() >= LENGTH_OF_STARTING_TIME) {
 		end = inputToBeParsed.find_first_of (':');
@@ -825,14 +790,15 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
 //Then it must follow the format "hh:mm-hh:mm", "h:mm-h:mm",
 //"h:mm-hh:mm", or "hh:mm-h:mm"
 //in order to be recognised as a time period.
-bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
+bool Parser::isTimePeriodTwentyFour (string inputToBeParsed, int& hourBegInt, int& hourEndInt, 
+		int& minuteBegInt, int& minuteEndInt) {
 	int end = 0;
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
-		if (isStartingTimeTwentyFour (inputToBeParsed)) {
+		if (isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
 			end = inputToBeParsed.find_first_of ('-');
 			if (end == FOUR || end == FIVE) {
 				inputToBeParsed = inputToBeParsed.substr (end + 1);
-				if (isStartingTimeTwentyFour (inputToBeParsed)) {
+				if (isStartingTimeTwentyFour (inputToBeParsed, hourEndInt, minuteEndInt)) {
 					return true;
 				}
 			}
@@ -873,15 +839,18 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& mi
 
 					if (inputToBeParsed.substr (end + THREE, TWO) == "am" ||
 						inputToBeParsed.substr (end + THREE, TWO) == "pm") {
-							if (inputToBeParsed.substr (end + THREE, TWO) == "am" &&
-								hourInt == 12) {
+							if (inputToBeParsed.substr (end + THREE, TWO) == "am") {
+								if (hourInt == 12) {
 									hourInt = 0;
+								}
 							}
-							if (inputToBeParsed.substr (end - ONE, TWO) == "pm" &&
-								hourInt <= 11 && hourInt >= 1) {
+
+							else {
+								if (hourInt <= 11 && hourInt >= 1) {
 									hourInt += 12;
+								}
 							}
-							return true;
+								return true;
 					}
 				}
 			}
@@ -901,14 +870,18 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& mi
 
 				if (inputToBeParsed.substr (end - ONE, TWO) == "am" ||
 					inputToBeParsed.substr (end - ONE, TWO) == "pm") {
-						if (inputToBeParsed.substr (end + THREE, TWO) == "am" &&
-							hourInt == 12) {
+						if (inputToBeParsed.substr (end - ONE, TWO) == "am") {
+							if (hourInt == 12) {
 								hourInt = 0;
+							}
 						}
-						if (inputToBeParsed.substr (end - ONE, TWO) == "pm" &&
-							hourInt <= 11 && hourInt >= 1) {
+							
+						else {
+							if (hourInt <= 11 && hourInt >= 1) {
 								hourInt += 12;
+							}
 						}
+							
 						return true;
 				}
 			}
