@@ -65,12 +65,7 @@ void DataProcessor::setLatestData(Data data){
 }
 
 
-
-//Start of Yang Xiaozhou's part of DataProcessor
-
-
-
-
+//@Yang Xiaozhou A0113538J
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
@@ -188,7 +183,7 @@ string DataProcessor::convertDataObjectToString(Data task){
 		}
 		timeMicroString += to_string(timeMicroEnd.getMin());
 	}
-	outData << setw(17) << left << timeMicroString;
+	outData << setw(16) << left << timeMicroString;
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
 		outData << setw(dateWidth) << right
