@@ -332,7 +332,7 @@ namespace testParser
 			Parser parser;
 			string input = "undo";
 			string commandWord = "undo";
-			parser.parseUndo (input);
+			parser.parseUndo (input, commandWord);
 			Assert::AreEqual (parser.getCommand (), commandWord);
 		}
 
