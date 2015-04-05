@@ -64,13 +64,16 @@ void LocalStorage::addData(Data& inData){
 //method for delete command
 //input the taskno of the display list to be deleted
 Data LocalStorage::deleteData(int taskNo){
-	History::updateLatestCommand("delete"); //store for undo
-	
+	History::updateLatestCommand("delete"); //store for undo	
 	DisplayStorage *display = DisplayStorage::getInstance();
-	int uniqueCode = display->getUniqueCode(taskNo);
 
-	dataList = deleteDataOfUniqueCode(uniqueCode);
-
+	try{
+		processDeletion (taskNo);
+	}
+	catch(int errorNo){
+		throw errorNo; 
+	}
+	
 	return display->getData(taskNo);
 }
 
@@ -110,6 +113,21 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 /////////////////////////////////////
 //Helper methods for internal working
 
+//helper method for deleteData and editData
+//check whether input no is within the boundary
+//throw exception otherwise
+//process the deletion when within boundary
+void LocalStorage::processDeletion(int taskNo){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	int listSize = display->getListSize();
+
+	if(taskNo <= 0 || taskNo > listSize){
+		throw 1;
+	} else {
+	int uniqueCode = display->getUniqueCode(taskNo);
+	dataList = deleteDataOfUniqueCode(uniqueCode);
+	}
+}
 //helper method for undoAdd and deleteData
 //delete data that have a certain unique code
 std::vector<Data> LocalStorage::deleteDataOfUniqueCode(int uniqueCode){

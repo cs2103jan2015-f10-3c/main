@@ -29,7 +29,12 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
+	try{
 	out << convertDataObjectToLine(storing.deleteData(number)) << " is deleted from BlinkList" << endl;
+	}
+	catch(string errorMessage){
+		throw errorMessage;
+	}
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;

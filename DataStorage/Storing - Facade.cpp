@@ -11,8 +11,13 @@ void Storing::addData(Data& inData){
 }
 
 Data Storing::deleteData(int taskNo){
+	try{
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	return localStorage->deleteData(taskNo);
+	}
+	catch (int errorNo){
+		handleException(errorNo);
+	}
 }
 
 Data Storing::changeData(int taskNo, Data& inData){
@@ -97,5 +102,21 @@ void Storing::clearDisplayList(){
 	return display->clearList();
 }
 
+void Storing::handleException(int errorNo){
+	std::string errorMessage;
 
+	switch (errorNo){
+	case 1:
+		errorMessage = "Please enter a valid task number. \n";
+		throw errorMessage;
+
+		break;
+	case 2:
+		break;
+	default:
+		break;
+
+	}
+
+}
 

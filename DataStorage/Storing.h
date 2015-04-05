@@ -30,7 +30,9 @@ public:
 	std::vector<Data>& displayDone();
 	std::vector<Data>& displayfloat();
 	void clearDisplayList();
-
+	
+	//method for exception handling
+	void handleException(int errorNo);
 };
 
 

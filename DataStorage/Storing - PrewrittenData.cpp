@@ -8,8 +8,6 @@ const char PrewrittenData::HEADING_TEMPLATE_FILE[] = "heading_template.txt";
 
 //API for Retrieve list from .txt file
 std::string PrewrittenData::retrieveList(ListType type){
-	std::string list;
-	std::string txtFile;
 	std::stringstream ss;
 
 	txtFile = determineListType(type);
@@ -18,29 +16,26 @@ std::string PrewrittenData::retrieveList(ListType type){
 	
 	//if file exists
 	if (in){
-		while (getline(in,list)){
-			ss << list << std::endl;
+		while (getline(in,retrievedList)){
+			ss << retrievedList << std::endl;
 		} 
 	} else {
 		ss << "List could not be found"; 
 	}
 	
-	list = ss.str();
-	return list;
+	retrievedList = ss.str();
+	return retrievedList;
 }
 
-void PrewrittenData::retrieveList(ListType type, std::ofstream& out){
-	std::string txtFile;
-	std::string list;
-	
+void PrewrittenData::retrieveList(ListType type, std::ofstream& out){	
 	txtFile = determineListType(type);
 
 	std::ifstream in(txtFile);
 	
 	//if file exists
 	if (in){
-		while (getline(in,list)){
-			out << list << std::endl;
+		while (getline(in,retrievedList)){
+			out << retrievedList << std::endl;
 		} 
 	} else {
 		out << "List could not be found"; 
@@ -49,8 +44,6 @@ void PrewrittenData::retrieveList(ListType type, std::ofstream& out){
 
 //helper method to determine list type
 std::string PrewrittenData::determineListType(ListType type){
-	std::string txtFile;
-
 	switch(type){
 	case command:
 		txtFile = ALL_COMMANDS_FILE;

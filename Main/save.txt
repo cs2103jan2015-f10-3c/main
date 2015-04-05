@@ -20,7 +20,6 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 121	Saturday/4/4/2015		undefined/0/0/0		0/0		-1/-1		true		None		undefined/0/0/0		-1/-1		dreamtown
 129	Saturday/4/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		d
 122	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		true		None		undefined/0/0/0		-1/-1		meeting 2150
-130	Sunday/5/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		e
 97	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
 123	Sunday/5/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		makan
 131	Monday/6/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		e

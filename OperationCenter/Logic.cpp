@@ -134,9 +134,14 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			returnDisplay = displayIfEmpty(returnDisplay, currentTime, task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		}
 	}else if(command == DELETE_COMMAND){
-		returnResponse = dataProcessor.deleteTask(taskNo);
-		dataProcessor.clearDisplayList();
-		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		try{
+			returnResponse = dataProcessor.deleteTask(taskNo);
+			dataProcessor.clearDisplayList();
+			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		}
+		catch (string errorMessage){
+			returnResponse = errorMessage;
+		}
 	}else if(command == CLEAR_COMMAND){
 		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.clearTask();

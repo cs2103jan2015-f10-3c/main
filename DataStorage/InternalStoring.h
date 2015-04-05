@@ -16,7 +16,6 @@ typedef enum DisplayType {search, done, floating};
 typedef enum TimeType {begin, end, alarm};
 
 
-
 //acts as internal database
 //all data entry is recorded in this class
 //saving and loading is done into and from this class.
@@ -46,6 +45,7 @@ private:
 	void radixCollect(std::queue<Data> digitQ[]);
 	Data getData(int uniqueNo);
 	Data updateData(Data dataToEdit, Data updatedData);
+	void processDeletion(int taskNo);
 
 	//Helper methods for internal working Save and Load
 	void writeHeading (std::string fileName, std::ofstream& out);
@@ -139,6 +139,7 @@ public:
 
 	//API for LocalStorage
 	int getUniqueCode(int taskNo);
+	int getListSize();
 };
 
 
@@ -151,7 +152,9 @@ private:
 	static const char ALL_COMMANDS_FILE[100];
 	static const char ALL_FEATURES_FILE[100];
 	static const char HEADING_TEMPLATE_FILE[100];
-	std::stringstream retrievedList;
+
+	std::string retrievedList;
+	std::string txtFile;
 
 	//helper method
 	std::string determineListType(ListType type);
@@ -164,5 +167,15 @@ public:
 	void retrieveList(ListType type, std::ofstream& out);
 };
 
+
+class StorageErrorResponse {
+private:
+	std::string response;
+
+public:
+	
+
+
+};
 
 #endif

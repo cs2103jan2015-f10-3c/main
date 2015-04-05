@@ -75,7 +75,9 @@ int DisplayStorage::getUniqueCode(int taskNo){
 	return desiredTask.getUniqueCode();
 }
 
-
+int DisplayStorage::getListSize(){
+	return displayList.size();
+}
 
 
 //////////////////////////////////
