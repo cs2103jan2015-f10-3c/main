@@ -21,8 +21,16 @@ private:
 	static const char DELETE_MESSAGE[100];
 	static const char CLEAR_MESSAGE[100];
 	static const char EDIT_MESSAGE[100];
+	static const char UNDO_MESSAGE[100];
 
-	const static char EXCEPTION_INVALID_TASKNUMBER[100];
+	static const char DataProcessor::ADD_COMMAND[100];
+	static const char DataProcessor::DELETE_COMMAND[100];
+	static const char DataProcessor::SHOW_COMMAND[100];
+	static const char DataProcessor::CLEAR_COMMAND[100];
+	static const char DataProcessor::EDIT_COMMAND[100];
+
+	static const char EXCEPTION_INVALID_TASKNUMBER[100];
+	static const char EXCEPTION_EMPTY_KEYWORD[100];
 	Data _latestData;
 
 public:
@@ -47,6 +55,7 @@ public:
 	static void saveData();
 	static void loadData(bool& status);
 	static void clearDisplayList();
+	static void undoEditOrClear(Storing & storing, vector<Data> & latestVector);
 	
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);

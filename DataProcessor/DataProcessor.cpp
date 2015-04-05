@@ -8,8 +8,17 @@ const char DataProcessor::ADD_MESSAGE[] = " is added";
 const char DataProcessor::DELETE_MESSAGE[] = "is deleted from BlinkList";
 const char DataProcessor::CLEAR_MESSAGE[] = "all contents are cleared";
 const char DataProcessor::EDIT_MESSAGE[] = "is edited";
+const char DataProcessor::UNDO_MESSAGE[] = "You have undone your operation";
+
+const char DataProcessor::ADD_COMMAND[] = "add";
+const char DataProcessor::DELETE_COMMAND[] = "delete";
+const char DataProcessor::SHOW_COMMAND[] = "show";
+const char DataProcessor::CLEAR_COMMAND[] = "clear";
+const char DataProcessor::EDIT_COMMAND[] = "edit";
+
 
 const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[] = "Exception:invalid tasknumber";
+const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[] = "Exception:empty keyword entere";
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
@@ -119,27 +128,28 @@ string DataProcessor::executeUndo(){
 	string			latestCommand = storing.getLatestCommand();
 	Data			latestData = storing.getLatestData();
 
-	if (latestCommand == "add"){
+	if (latestCommand == ADD_COMMAND){
 		storing.undoAdd();
 	}
-	else if (latestCommand == "delete"){
+	else if (latestCommand == DELETE_COMMAND){
 		storing.addData(latestData);
 	}
-	else if (latestCommand == "edit"){
-		storing.clearDataList();
-		for(int i = 0; i != latestVector.size(); i++){
-			storing.addData(latestVector[i]);
-		}
+	else if (latestCommand == EDIT_COMMAND || latestCommand == CLEAR_COMMAND){
+		undoEditOrClear(storing, latestVector);
 	}
-	else if (latestCommand == "clear"){
-		storing.clearDataList();
-		for(int i = 0; i != latestVector.size(); i++){
-			storing.addData(latestVector[i]);
-		}
-	}
+
 	setLatestData(latestData);
-	string undoMessage = "You have undone your operation";
-	return undoMessage;
+	return UNDO_MESSAGE;
+}
+
+//This function is the undo helper function
+//it performs the undo action whenever
+//the latest command is edit or clear
+void DataProcessor::undoEditOrClear(Storing & storing, vector<Data> & latestVector){
+		storing.clearDataList();
+		for(int i = 0; i != latestVector.size(); i++){
+			storing.addData(latestVector[i]);
+		}
 }
 
 
@@ -150,19 +160,18 @@ string DataProcessor::searchTask(string keyword){
 	ofstream outData;
 	outData.open("log.txt");
 	if(keyword.size() == 0){
-		outData << "handling exception: empty keyword entere";
-		throw std::exception("Empty Keyword Entered");
+		outData << EXCEPTION_EMPTY_KEYWORD;
+		throw std::exception(EXCEPTION_EMPTY_KEYWORD);
 	}
 	
 	Storing storing;
 	storing.clearDisplayList();
-	vector<Data> returnTaskList;
+	
+	//logging
 	outData << "update current displayList to display matched tasks";
-	returnTaskList = storing.displaySearch(keyword);
+	vector<Data> returnTaskList = storing.displaySearch(keyword);
 
-	//Convert the taskList into a string that is ready for UI to display
-	string returnTaskListString;
-	returnTaskListString = convertTaskListToString(returnTaskList);
+	string returnTaskListString = convertTaskListToString(returnTaskList);
 	return returnTaskListString;
 
 }
