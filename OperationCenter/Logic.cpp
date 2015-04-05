@@ -170,14 +170,22 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			//std::cout << e.what();
 			returnResponse = e.what();
 		}
+		catch (string errorMessage){
+			returnResponse = errorMessage;
+		}
 	}else if(command == UNDO_COMMAND){
 			dataProcessor.clearDisplayList();
 			returnResponse = dataProcessor.executeUndo();
 			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == DONE_COMMAND){
-		returnResponse = dataProcessor.markDone(taskNo);
-		dataProcessor.clearDisplayList();
-		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		try {
+			returnResponse = dataProcessor.markDone(taskNo);
+			dataProcessor.clearDisplayList();
+			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		}
+		catch (string errorMessage) {
+			returnResponse = errorMessage;
+		}
 	}else if(command == SHOW_COMMANDS){
 		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showCommands();

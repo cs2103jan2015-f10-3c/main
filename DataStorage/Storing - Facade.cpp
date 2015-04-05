@@ -21,8 +21,13 @@ Data Storing::deleteData(int taskNo){
 }
 
 Data Storing::changeData(int taskNo, Data& inData){
+	try{
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	return localStorage->editData(taskNo, inData);
+	}
+	catch (int errorNo){
+		handleException(errorNo);
+	}
 }
 
 void Storing::clearDataList(){
@@ -73,8 +78,13 @@ std::vector<Data>& Storing::getLatestVector(){
 
 
 Data Storing::getData(int taskNo){
-	DisplayStorage *display = DisplayStorage::getInstance();
-	return display->getData(taskNo);
+	try{
+		DisplayStorage *display = DisplayStorage::getInstance();
+		return display->getData(taskNo);
+	}
+	catch (int errorNo){
+		handleException(errorNo);
+	}
 }
 
 std::vector<Data>& Storing::display(TimeMacro tBegin, TimeMacro tEnd){

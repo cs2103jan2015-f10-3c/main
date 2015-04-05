@@ -85,13 +85,15 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	ofstream outData;
 	Storing storing;
 	outData.open("log.txt");
-	if(taskNumber <= 0){
-		outData << "handling exception:invalid tasknumber";
-		throw std::exception("Invalid Tasknumber Entered");
-	}
+
 	Data uneditedTask;
 	outData << "start editing data";
-	uneditedTask = storing.changeData(taskNumber, task);
+	try{
+		uneditedTask = storing.changeData(taskNumber, task);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
 	outData << "edit data is done";
 	setLatestData(uneditedTask);
@@ -272,8 +274,13 @@ string DataProcessor::markDone(int taskNo){
 	ostringstream outData;
 	Data targetData;
 	Storing storing;
-
+	
+	try{
 	targetData = storing.getData(taskNo);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 	targetData.updateCompleteStatus(true);
 	storing.changeData(taskNo, targetData);
 	outData << convertDataObjectToLine(targetData) << " is done";

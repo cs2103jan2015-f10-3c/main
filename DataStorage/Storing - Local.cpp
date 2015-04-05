@@ -64,16 +64,18 @@ void LocalStorage::addData(Data& inData){
 //method for delete command
 //input the taskno of the display list to be deleted
 Data LocalStorage::deleteData(int taskNo){
-	History::updateLatestCommand("delete"); //store for undo	
 	DisplayStorage *display = DisplayStorage::getInstance();
-
 	try{
-		processDeletion (taskNo);
+		checkTaskNoValidity(taskNo);
+		
 	}
 	catch(int errorNo){
 		throw errorNo; 
 	}
-	
+
+	int uniqueCode = display->getUniqueCode(taskNo);
+	dataList = deleteDataOfUniqueCode(uniqueCode);
+	History::updateLatestCommand("delete"); //store for undo
 	return display->getData(taskNo);
 }
 
@@ -92,8 +94,16 @@ void LocalStorage::undoAdd(){
 //return Data that was edited
 Data LocalStorage::editData(int taskNo, Data updatedData){
 	History::updateLatestVector(); //Store for undo
-	
 	DisplayStorage *display = DisplayStorage::getInstance();
+
+	try{
+		checkTaskNoValidity(taskNo);
+
+	}
+	catch (int errorNo){
+		throw errorNo;
+	}
+
 	int uniqueNo = display->getUniqueCode(taskNo);
 	Data dataToEdit = getData(uniqueNo);
 
@@ -103,7 +113,7 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	addData(dataToEdit);
 
 	History::updateLatestCommand("edit"); //Store for undo
-
+	
 	return display->getData(taskNo);
 }
 
@@ -113,21 +123,19 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 /////////////////////////////////////
 //Helper methods for internal working
 
+
 //helper method for deleteData and editData
 //check whether input no is within the boundary
 //throw exception otherwise
-//process the deletion when within boundary
-void LocalStorage::processDeletion(int taskNo){
+void LocalStorage::checkTaskNoValidity(int taskNo){
 	DisplayStorage *display = DisplayStorage::getInstance();
 	int listSize = display->getListSize();
 
 	if(taskNo <= 0 || taskNo > listSize){
 		throw 1;
-	} else {
-	int uniqueCode = display->getUniqueCode(taskNo);
-	dataList = deleteDataOfUniqueCode(uniqueCode);
-	}
+	} 
 }
+
 //helper method for undoAdd and deleteData
 //delete data that have a certain unique code
 std::vector<Data> LocalStorage::deleteDataOfUniqueCode(int uniqueCode){

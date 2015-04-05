@@ -1,4 +1,4 @@
-136
+137
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
 114	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		haiku
 115	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		makan siang
@@ -21,7 +21,7 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 129	Saturday/4/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		d
 122	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		true		None		undefined/0/0/0		-1/-1		meeting 2150
 97	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
-123	Sunday/5/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		makan
+137	Sunday/5/4/2015		undefined/0/0/0		12/0		-1/-1		true		None		undefined/0/0/0		-1/-1		makan
 131	Monday/6/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		e
 132	Tuesday/7/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		f
 133	Wednesday/8/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		g

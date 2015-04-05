@@ -45,7 +45,7 @@ private:
 	void radixCollect(std::queue<Data> digitQ[]);
 	Data getData(int uniqueNo);
 	Data updateData(Data dataToEdit, Data updatedData);
-	void processDeletion(int taskNo);
+	void checkTaskNoValidity(int taskNo);
 
 	//Helper methods for internal working Save and Load
 	void writeHeading (std::string fileName, std::ofstream& out);
@@ -126,6 +126,7 @@ private:
 	void displayDone(std::vector<Data> tempList);
 	void enterDataToList(std::vector<long long> timePeriod);
 	std::vector<Data> getListFromLocal();
+	void checkTaskNoValidity(int taskNo);
 
 public:
 	//getInstance for singleton pattern
