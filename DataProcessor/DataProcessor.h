@@ -17,10 +17,12 @@ using namespace std;
 class DataProcessor{
 private:
 
-	static const string ADD_MESSAGE;
-	static const string DELETE_MESSAGE;
-	static const string CLEAR_MESSAGE;
-	static const string EDIT_MESSAGE;
+	static const char ADD_MESSAGE[100];
+	static const char DELETE_MESSAGE[100];
+	static const char CLEAR_MESSAGE[100];
+	static const char EDIT_MESSAGE[100];
+
+	const static char EXCEPTION_INVALID_TASKNUMBER[100];
 	Data _latestData;
 
 public:

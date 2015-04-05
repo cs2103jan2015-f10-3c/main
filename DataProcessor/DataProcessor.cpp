@@ -3,13 +3,13 @@
 #include <iomanip>
 #include "DataProcessor.h"
 
-//using namespace std;
 
-const string DataProcessor::ADD_MESSAGE = " is added";
-const string DataProcessor::DELETE_MESSAGE = "is deleted from BlinkList";
-const string DataProcessor::CLEAR_MESSAGE = "all contents are cleared";
-const string DataProcessor::EDIT_MESSAGE = "is edited";
+const char DataProcessor::ADD_MESSAGE[] = " is added";
+const char DataProcessor::DELETE_MESSAGE[] = "is deleted from BlinkList";
+const char DataProcessor::CLEAR_MESSAGE[] = "all contents are cleared";
+const char DataProcessor::EDIT_MESSAGE[] = "is edited";
 
+const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[] = "Exception:invalid tasknumber";
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
@@ -17,7 +17,7 @@ string DataProcessor::addTask(Data task){
 	Storing storing;
 	storing.addData(task); 
 	ostringstream out;
-	out << convertDataObjectToLine(task) << " is added" << endl;
+	out << convertDataObjectToLine(task) << ADD_MESSAGE << endl;
 	string addMessage;
 	addMessage = out.str();
 	setLatestData(task);
@@ -29,7 +29,7 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
-	out << convertDataObjectToLine(storing.deleteData(number)) << " is deleted from BlinkList" << endl;
+	out << convertDataObjectToLine(storing.deleteData(number)) << DELETE_MESSAGE << endl;
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -76,41 +76,48 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	Storing storing;
 	outData.open("log.txt");
 	if(taskNumber <= 0){
-		outData << "handling exception:invalid tasknumber";
-		throw std::exception("Invalid Tasknumber Entered");
+		outData << EXCEPTION_INVALID_TASKNUMBER;
+		throw std::exception(EXCEPTION_INVALID_TASKNUMBER);
 	}
 	Data uneditedTask;
 	outData << "start editing data";
+	
 	uneditedTask = storing.changeData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask) + " is edited\n";
+	string editMessage = getEditMessage(uneditedTask);
+	
 	outData << "edit data is done";
 	setLatestData(uneditedTask);
+	
 	return editMessage;
-
 }
 
+string DataProcessor::getEditMessage(Data uneditedTask){
+	assert (uneditedTask.getDesc() != "\0");
+	string editMessage = convertDataObjectToLine(uneditedTask) + EDIT_MESSAGE + "\n";;	
+	return editMessage;
+}
+
+//This function clears the current display list
 void DataProcessor::clearDisplayList(){
 	Storing storing;
 	storing.clearDisplayList();
 }
 
+//This function clears all the tasks inside storage
 string DataProcessor::clearTask(){
 	Storing storing;
 	storing.clearDataList();
 
-	return "All tasks are cleared";
+	return CLEAR_MESSAGE;
 }
 
 
 string DataProcessor::executeUndo(){
-	Data latestData;
-	string latestCommand;
-	vector<Data> latestVector;
-	Storing storing; 
 
-	latestVector = storing.getLatestVector();
-	latestCommand = storing.getLatestCommand();
-	latestData = storing.getLatestData();
+	Storing			storing; 
+	vector<Data>	latestVector = storing.getLatestVector();
+	string			latestCommand = storing.getLatestCommand();
+	Data			latestData = storing.getLatestData();
 
 	if (latestCommand == "add"){
 		storing.undoAdd();
@@ -133,6 +140,96 @@ string DataProcessor::executeUndo(){
 	setLatestData(latestData);
 	string undoMessage = "You have undone your operation";
 	return undoMessage;
+}
+
+
+
+//This function reads in the desired keyword to be searched in the current
+//task list, all tasks with description containing the keyword will be returned
+string DataProcessor::searchTask(string keyword){
+	ofstream outData;
+	outData.open("log.txt");
+	if(keyword.size() == 0){
+		outData << "handling exception: empty keyword entere";
+		throw std::exception("Empty Keyword Entered");
+	}
+	
+	Storing storing;
+	storing.clearDisplayList();
+	vector<Data> returnTaskList;
+	outData << "update current displayList to display matched tasks";
+	returnTaskList = storing.displaySearch(keyword);
+
+	//Convert the taskList into a string that is ready for UI to display
+	string returnTaskListString;
+	returnTaskListString = convertTaskListToString(returnTaskList);
+	return returnTaskListString;
+
+}
+
+
+//this function reads in the task number 
+//and update the status of the corresponding
+//task to done
+string DataProcessor::markDone(int taskNo){
+	ostringstream outData;
+	Data targetData;
+	Storing storing;
+
+	targetData = storing.getData(taskNo);
+	targetData.updateCompleteStatus(true);
+	storing.changeData(taskNo, targetData);
+	outData << convertDataObjectToLine(targetData) << " is done";
+	return outData.str();
+}
+
+//this function reads in the task number 
+//and update the status of the corresponding
+//task to ongoing
+string DataProcessor::unDone(int taskNo){
+	ostringstream outData;
+	Data targetData;
+	Storing storing;
+
+	targetData = storing.getData(taskNo);
+	targetData.updateCompleteStatus(false);
+	storing.changeData(taskNo, targetData);
+	outData << convertDataObjectToLine(targetData) << " is reopened";
+	return outData.str();
+}
+
+//This function gets a list of floating tasks
+//and return it to Operation Center for displaying
+string DataProcessor::showFloat(){
+	Storing storing;
+	vector<Data> floatingTaskList = storing.displayfloat();
+	string floatingTaskListString = convertTaskListToString(floatingTaskList);
+	return floatingTaskListString;
+}
+
+//This function get a list of completed tasks
+//and return it to Operation Center for displaying
+string DataProcessor::showDone(){
+	Storing storing;
+	vector<Data> completedTaskList = storing.displayDone();
+	string completedTaskListString = convertTaskListToString(completedTaskList);
+	return completedTaskListString;
+}
+
+//This function calls up a list of commands 
+//available at BlinkList
+string DataProcessor::showCommands(){
+	Storing storing;
+	string commandList = storing.retrieveCommandList();
+	return commandList;
+}
+
+//This function calls up a list of features
+//features will be more elaborated than command file
+string DataProcessor::showFeatures(){
+	Storing storing;
+	string featureList = storing.retrieveFeatureList();
+	return featureList;
 }
 
 //This function reads in a Data object and convert it into a string
@@ -199,108 +296,6 @@ string DataProcessor::convertDataObjectToString(Data task){
 
 }
 
-//This function reads in the desired keyword to be searched in the current
-//task list, all tasks with description containing the keyword will be returned
-string DataProcessor::searchTask(string keyword){
-	ofstream outData;
-	outData.open("log.txt");
-	if(keyword.size() == 0){
-		outData << "handling exception: empty keyword entere";
-		throw std::exception("Empty Keyword Entered");
-	}
-	
-	Storing storing;
-	storing.clearDisplayList();
-	vector<Data> returnTaskList;
-	outData << "update current displayList to display matched tasks";
-	returnTaskList = storing.displaySearch(keyword);
-
-	//Convert the taskList into a string that is ready for UI to display
-	string returnTaskListString;
-	returnTaskListString = convertTaskListToString(returnTaskList);
-	return returnTaskListString;
-
-}
-
-//This function reads in a vector of Data object and subsequently converts
-//them into a string that contains all datas in the vector
-//The string will be ready for display by UI
-string DataProcessor::convertTaskListToString(vector<Data>& taskList){
-	string taskListString;
-	ostringstream outList;
-	int numberOfTask = 1;
-	for(int i = 0; i != taskList.size(); i++){
-		outList << numberOfTask << ". "
-				<< convertDataObjectToString(taskList[i]) << endl
-				<< setfill('*') << setw(81)
-				<< "\n";
-		numberOfTask++;
-	}
-	assert (numberOfTask >= 1);
-
-	taskListString = outList.str();
-	return taskListString;
-
-}
-
-string DataProcessor::getEditMessage(Data uneditedTask){
-	assert (uneditedTask.getDesc() != "\0");
-	string uneditedTaskString;
-	string editMessage;
-	uneditedTaskString = convertDataObjectToLine(uneditedTask);
-	ostringstream out;
-	out << uneditedTaskString << " ";
-	editMessage = out.str(); 
-	
-	return editMessage;
-}
-
-//this function reads in the task number 
-//and update the status of the corresponding
-//task to done
-string DataProcessor::markDone(int taskNo){
-	ostringstream outData;
-	Data targetData;
-	Storing storing;
-
-	targetData = storing.getData(taskNo);
-	targetData.updateCompleteStatus(true);
-	storing.changeData(taskNo, targetData);
-	outData << convertDataObjectToLine(targetData) << " is done";
-	return outData.str();
-}
-
-//this function reads in the task number 
-//and update the status of the corresponding
-//task to ongoing
-string DataProcessor::unDone(int taskNo){
-	ostringstream outData;
-	Data targetData;
-	Storing storing;
-
-	targetData = storing.getData(taskNo);
-	targetData.updateCompleteStatus(false);
-	storing.changeData(taskNo, targetData);
-	outData << convertDataObjectToLine(targetData) << " is reopened";
-	return outData.str();
-}
-
-//This function calls up a list of commands 
-//available at BlinkList
-string DataProcessor::showCommands(){
-	Storing storing;
-	string commandList = storing.retrieveCommandList();
-	return commandList;
-}
-
-//This function calls up a list of features
-//features will be more elaborated than command file
-string DataProcessor::showFeatures(){
-	Storing storing;
-	string featureList = storing.retrieveFeatureList();
-	return featureList;
-}
-
 //This function receives a Data object
 //and converts it into a line of string
 //that is ready to be put into response string
@@ -353,20 +348,23 @@ string DataProcessor::convertDataObjectToLine(Data task){
 
 }
 
-//This function gets a list of floating tasks
-//and return it to Operation Center for displaying
-string DataProcessor::showFloat(){
-	Storing storing;
-	vector<Data> floatingTaskList = storing.displayfloat();
-	string floatingTaskListString = convertTaskListToString(floatingTaskList);
-	return floatingTaskListString;
-}
+//This function reads in a vector of Data object and subsequently converts
+//them into a string that contains all datas in the vector
+//The string will be ready for display by UI
+string DataProcessor::convertTaskListToString(vector<Data>& taskList){
+	string taskListString;
+	ostringstream outList;
+	int numberOfTask = 1;
+	for(int i = 0; i != taskList.size(); i++){
+		outList << numberOfTask << ". "
+				<< convertDataObjectToString(taskList[i]) << endl
+				<< setfill('*') << setw(81)
+				<< "\n";
+		numberOfTask++;
+	}
+	assert (numberOfTask >= 1);
 
-//This function get a list of completed tasks
-//and return it to Operation Center for displaying
-string DataProcessor::showDone(){
-	Storing storing;
-	vector<Data> completedTaskList = storing.displayDone();
-	string completedTaskListString = convertTaskListToString(completedTaskList);
-	return completedTaskListString;
+	taskListString = outList.str();
+	return taskListString;
+
 }
