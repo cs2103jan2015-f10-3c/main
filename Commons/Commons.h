@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <sstream>
 #include <vector>
+#include <fstream>
 
 
 class TimeMacro{
@@ -28,8 +29,6 @@ private:
 	int date;
 	int month;
 	int year;
-
-	
 
 public:
 
@@ -168,5 +167,24 @@ public:
 	void updateAlarmMacro(TimeMacro inAlarm);
 	void updateAlarmMicro(TimeMicro inAlarm);
 
+
+};
+
+class log{
+private: 
+	std::ofstream writeLog;
+	std::string directory;
+
+public:
+	void logging(std::string inputMessage){
+		std::string directory = "log.txt";
+		writeLog.open(directory.c_str() , std::ofstream::app);
+		writeLog << inputMessage;
+	}
+
+	void deleteLogContent(){
+		std::string directory = "log.txt";
+		writeLog.open(directory.c_str() , std::ofstream::app);
+	}
 
 };
