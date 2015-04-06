@@ -5,17 +5,25 @@
 
 
 const char DataProcessor::ADD_MESSAGE[] = " is added";
-const char DataProcessor::DELETE_MESSAGE[] = "is deleted from BlinkList";
+const char DataProcessor::DELETE_MESSAGE[] = " is deleted from BlinkList";
 const char DataProcessor::CLEAR_MESSAGE[] = "all contents are cleared";
-const char DataProcessor::EDIT_MESSAGE[] = "is edited";
+const char DataProcessor::EDIT_MESSAGE[] = " is edited";
 const char DataProcessor::UNDO_MESSAGE[] = "You have undone your operation";
-
+const char DataProcessor::DONE_MESSAGE[] = " is done";
+const char DataProcessor::UNDONE_MESSAGE[] = " is reopened";
 const char DataProcessor::ADD_COMMAND[] = "add";
 const char DataProcessor::DELETE_COMMAND[] = "delete";
 const char DataProcessor::SHOW_COMMAND[] = "show";
 const char DataProcessor::CLEAR_COMMAND[] = "clear";
 const char DataProcessor::EDIT_COMMAND[] = "edit";
+const char DataProcessor::NO_DATE[] = "undefined";
 
+const unsigned int DataProcessor::TIME_WIDTH	= 16;
+const unsigned int DataProcessor::TIME_10		= 10;
+const unsigned int DataProcessor::NO_TIME		= -1;
+const unsigned int DataProcessor::DATE_WIDTH	= 40;
+const unsigned int DataProcessor::DAY_WIDTH		= 13;
+const unsigned int DataProcessor::WINDOW_WIDTH	= 81;
 
 const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[] = "Exception:invalid tasknumber";
 const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[] = "Exception:empty keyword entere";
@@ -82,22 +90,22 @@ void DataProcessor::setLatestData(Data data){
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
 	ofstream outData;
-	Storing storing;
+	Storing  storing;
 	outData.open("log.txt");
 	if(taskNumber <= 0){
 		outData << EXCEPTION_INVALID_TASKNUMBER;
 		throw std::exception(EXCEPTION_INVALID_TASKNUMBER);
 	}
-	Data uneditedTask;
+	Data	 uneditedTask;
 	outData << "start editing data";
 	
 	uneditedTask = storing.changeData(taskNumber, task);
-	string editMessage = getEditMessage(uneditedTask);
+	string	 editMessage = getEditMessage(uneditedTask);
 	
 	outData << "edit data is done";
 	setLatestData(uneditedTask);
 	
-	return editMessage;
+	return	 editMessage;
 }
 
 string DataProcessor::getEditMessage(Data uneditedTask){
@@ -117,7 +125,7 @@ string DataProcessor::clearTask(){
 	Storing storing;
 	storing.clearDataList();
 
-	return CLEAR_MESSAGE;
+	return  CLEAR_MESSAGE;
 }
 
 
@@ -157,22 +165,22 @@ void DataProcessor::undoEditOrClear(Storing & storing, vector<Data> & latestVect
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
 string DataProcessor::searchTask(string keyword){
-	ofstream outData;
+	ofstream	 outData;
 	outData.open("log.txt");
 	if(keyword.size() == 0){
 		outData << EXCEPTION_EMPTY_KEYWORD;
 		throw std::exception(EXCEPTION_EMPTY_KEYWORD);
 	}
 	
-	Storing storing;
+	Storing		 storing;
 	storing.clearDisplayList();
 	
 	//logging
 	outData << "update current displayList to display matched tasks";
 	vector<Data> returnTaskList = storing.displaySearch(keyword);
 
-	string returnTaskListString = convertTaskListToString(returnTaskList);
-	return returnTaskListString;
+	string		 returnTaskListString = convertTaskListToString(returnTaskList);
+	return		 returnTaskListString;
 
 }
 
@@ -181,147 +189,108 @@ string DataProcessor::searchTask(string keyword){
 //and update the status of the corresponding
 //task to done
 string DataProcessor::markDone(int taskNo){
-	ostringstream outData;
-	Data targetData;
 	Storing storing;
 
-	targetData = storing.getData(taskNo);
-	targetData.updateCompleteStatus(true);
-	storing.changeData(taskNo, targetData);
-	outData << convertDataObjectToLine(targetData) << " is done";
-	return outData.str();
+	Data	targetData = storing.getData(taskNo);
+			targetData.updateCompleteStatus(true);
+			storing.changeData(taskNo, targetData);
+	string	doneMessage = getDoneMessage(targetData);
+
+	return doneMessage;
+}
+
+string DataProcessor::getDoneMessage(Data targetData){
+	string doneMessage = convertDataObjectToLine(targetData) + DONE_MESSAGE;
+	return doneMessage;
 }
 
 //this function reads in the task number 
 //and update the status of the corresponding
 //task to ongoing
 string DataProcessor::unDone(int taskNo){
-	ostringstream outData;
-	Data targetData;
 	Storing storing;
 
-	targetData = storing.getData(taskNo);
-	targetData.updateCompleteStatus(false);
-	storing.changeData(taskNo, targetData);
-	outData << convertDataObjectToLine(targetData) << " is reopened";
-	return outData.str();
+	Data	targetData = storing.getData(taskNo);
+			targetData.updateCompleteStatus(false);
+			storing.changeData(taskNo, targetData);
+	string	undoneMessage = getUndoneMessage(targetData);
+	
+	return	undoneMessage;
+}
+
+string DataProcessor::getUndoneMessage(Data targetData){
+	string undoneMessage = convertDataObjectToLine(targetData) + UNDONE_MESSAGE;
+	return undoneMessage;
 }
 
 //This function gets a list of floating tasks
 //and return it to Operation Center for displaying
 string DataProcessor::showFloat(){
-	Storing storing;
-	vector<Data> floatingTaskList = storing.displayfloat();
-	string floatingTaskListString = convertTaskListToString(floatingTaskList);
-	return floatingTaskListString;
+	Storing			storing;
+	vector<Data>	floatingTaskList = storing.displayfloat();
+	string			floatingTaskListString = convertTaskListToString(floatingTaskList);
+	return			floatingTaskListString;
 }
 
 //This function get a list of completed tasks
 //and return it to Operation Center for displaying
 string DataProcessor::showDone(){
-	Storing storing;
-	vector<Data> completedTaskList = storing.displayDone();
-	string completedTaskListString = convertTaskListToString(completedTaskList);
-	return completedTaskListString;
+	Storing			storing;
+	vector<Data>	completedTaskList = storing.displayDone();
+	string			completedTaskListString = convertTaskListToString(completedTaskList);
+	return			completedTaskListString;
 }
 
 //This function calls up a list of commands 
 //available at BlinkList
 string DataProcessor::showCommands(){
-	Storing storing;
-	string commandList = storing.retrieveCommandList();
-	return commandList;
+	Storing		storing;
+	string		commandList = storing.retrieveCommandList();
+	return		commandList;
 }
 
 //This function calls up a list of features
 //features will be more elaborated than command file
 string DataProcessor::showFeatures(){
-	Storing storing;
-	string featureList = storing.retrieveFeatureList();
-	return featureList;
+	Storing		storing;
+	string		featureList = storing.retrieveFeatureList();
+	return		featureList;
 }
 
 //This function reads in a Data object and convert it into a string
 //that contains all the information of that data and ready to be displayed
 string DataProcessor::convertDataObjectToString(Data task){
 	assert ( task.getDesc() != "\0");
-	string taskString;
-	ostringstream outData;
-	TimeMacro timeMacroBeg, timeMacroEnd;
-	timeMacroBeg = task.getTimeMacroBeg();
-	timeMacroEnd = task.getTimeMacroEnd();
+	TimeMacro timeMacroBeg;
 	TimeMicro timeMicroBeg, timeMicroEnd;
-	timeMicroBeg = task.getTimeMicroBeg();
-	timeMicroEnd = task.getTimeMicroEnd();
-	int descriptionWidth = task.getDesc().length();
-	int dateWidth = 40;
-	string timeMicroString = "   ";
-	outData << setw(descriptionWidth) << left << task.getDesc() << endl;
-
-	outData << "   ";
-	if(timeMacroBeg.getDay() != "undefined"){
-		outData << setfill(' ') << setw(13) << timeMacroBeg.getDay();
-	}
-	else{
-		outData << setfill(' ') << setw(13);
-	}
-
-	//Check if there is deadline time associated with the task
-	if(timeMicroBeg.getHour() != -1){
-		if (timeMicroBeg.getHour() < 10) {
-			timeMicroString += "0";
-		}
-		timeMicroString += to_string(timeMicroBeg.getHour()) + ":";
-		if (timeMicroBeg.getMin() < 10) {
-			timeMicroString += "0";
-		}
-		timeMicroString += to_string(timeMicroBeg.getMin());
-
-	}
-	if(timeMicroEnd.getHour() != -1){
-		timeMicroString += "-";
-		if (timeMicroEnd.getHour() < 10) {
-			timeMicroString += "0";
-		}
-		timeMicroString += to_string(timeMicroEnd.getHour()) + ":";
-		if (timeMicroEnd.getMin() < 10) {
-			timeMicroString += "0";
-		}
-		timeMicroString += to_string(timeMicroEnd.getMin());
-	}
-	outData << setw(16) << left << timeMicroString;
-	//If there is deadline date associated with the task
-	if(timeMacroBeg.getDate() != 0){
-		outData << setw(dateWidth) << right
-				<< timeMacroBeg.getDate() << "-"
-				<< timeMacroBeg.getMonth() << "-"
-				<< timeMacroBeg.getYear();
-
-	}
-
+	getTimeObject(timeMacroBeg, timeMicroBeg, timeMicroEnd, task);	
 	
-	taskString = outData.str();
+	string descriptionLine = getDescriptionLine(task);
+	string dayLine		   = getDayLine(timeMacroBeg);
+	string timeLine		   = getTimeLine(timeMicroBeg, timeMicroEnd);
+	string dateLine		   = getDateLine(timeMacroBeg);
+
+	string taskString = descriptionLine + dayLine + timeLine + dateLine;
 	return taskString;
 
 }
 
 //This function receives a Data object
-//and converts it into a line of string
+//and converts it into one line of string
 //that is ready to be put into response string
 string DataProcessor::convertDataObjectToLine(Data task){
 	assert ( task.getDesc() != "\0");
 	setLatestData(task);
 	ostringstream outData;
-	TimeMacro timeMacroBeg = task.getTimeMacroBeg();
-	TimeMacro timeMacroEnd = task.getTimeMacroEnd();
-	TimeMicro timeMicroBeg = task.getTimeMicroBeg();
-	TimeMicro timeMicroEnd = task.getTimeMicroEnd();
+	TimeMacro timeMacroBeg;
+	TimeMicro timeMicroBeg, timeMicroEnd;
+	getTimeObject(timeMacroBeg, timeMicroBeg, timeMicroEnd, task);	
 	
 	outData << task.getDesc();
 	//If there is deadline date associated with the task
 	if(timeMacroBeg.getDate() != 0){
 		outData << " on " 
-			<< timeMacroBeg.getDay() << ", "
+				<< timeMacroBeg.getDay() << ", "
 				<< timeMacroBeg.getDate() << "-"
 				<< timeMacroBeg.getMonth() << "-"
 				<< timeMacroBeg.getYear() << " ";
@@ -352,8 +321,7 @@ string DataProcessor::convertDataObjectToLine(Data task){
 		outData << timeMicroEnd.getMin();
 	}
 
-	string taskString = outData.str();
-	return taskString;
+	return outData.str();
 
 }
 
@@ -361,19 +329,98 @@ string DataProcessor::convertDataObjectToLine(Data task){
 //them into a string that contains all datas in the vector
 //The string will be ready for display by UI
 string DataProcessor::convertTaskListToString(vector<Data>& taskList){
-	string taskListString;
 	ostringstream outList;
 	int numberOfTask = 1;
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
 				<< convertDataObjectToString(taskList[i]) << endl
-				<< setfill('*') << setw(81)
-				<< "\n";
+				<< setfill('*') << setw(WINDOW_WIDTH) << "\n";
 		numberOfTask++;
 	}
 	assert (numberOfTask >= 1);
 
-	taskListString = outList.str();
+	string taskListString = outList.str();
 	return taskListString;
 
+}
+
+
+//This function gets and returns all the
+//time associated with the target task
+void DataProcessor::getTimeObject(TimeMacro & timeMacroBeg, TimeMicro & timeMicroBeg,
+								  TimeMicro & timeMicroEnd, Data task){
+	timeMacroBeg = task.getTimeMacroBeg();
+	timeMicroBeg = task.getTimeMicroBeg();
+	timeMicroEnd = task.getTimeMicroEnd();
+}
+
+//This function converts the description
+//of the target task into a formated string
+string DataProcessor::getDescriptionLine(Data task){
+	ostringstream outData;
+	int descriptionWidth = task.getDesc().length();
+	outData << setw(descriptionWidth) << left 
+			<< task.getDesc() << endl << "   ";
+	return outData.str();
+}
+
+//This function converts the day value
+//of the target task into a formated string
+string DataProcessor::getDayLine(TimeMacro timeMacroBeg){
+	ostringstream outData;
+	if(timeMacroBeg.getDay() != NO_DATE){
+		outData << setfill(' ') << setw(DAY_WIDTH) << left << timeMacroBeg.getDay();
+	}
+	else{
+		outData << setfill(' ') << setw(DAY_WIDTH) << left;
+	}
+	return outData.str();
+}
+
+//This function converts the time value
+//of the target task into a formated string
+string DataProcessor::getTimeLine(TimeMicro timeMicroBeg, TimeMicro timeMicroEnd){
+	ostringstream outData;
+	string timeMicroString = "   ";
+	//Check if there is deadline time associated with the task
+	if(timeMicroBeg.getHour() != NO_TIME){
+		if (timeMicroBeg.getHour() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroBeg.getHour()) + ":";
+		if (timeMicroBeg.getMin() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroBeg.getMin());
+
+	}
+	if(timeMicroEnd.getHour() != NO_TIME){
+		timeMicroString += "-";
+		if (timeMicroEnd.getHour() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroEnd.getHour()) + ":";
+		if (timeMicroEnd.getMin() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroEnd.getMin());
+	}
+	
+	outData << setw(TIME_WIDTH) << left << timeMicroString;
+	return outData.str();
+}
+
+//This function converts the date value
+//of the target task into a formated string
+string DataProcessor::getDateLine(TimeMacro timeMacroBeg){
+	ostringstream outData;
+	//If there is deadline date associated with the task
+	if(timeMacroBeg.getDate() != 0){
+		outData << setw(DATE_WIDTH) << right
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
+				<< timeMacroBeg.getYear();
+	}
+
+	return outData.str();
 }
