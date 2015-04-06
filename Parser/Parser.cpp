@@ -1,19 +1,19 @@
 #include "Parser.h"
 
-const unsigned int Parser::LENGTH_OF_DATE_FULL_NUMBER = 5;  //"dd/mm"
-const unsigned int Parser::LENGTH_OF_DATE_ABBRE_NUMBER = 3;  //"d/m"
-const unsigned int Parser::LENGTH_OF_DATE_FULL_ALPHABET = 6;  //"dd MMM"
-const unsigned int Parser::LENGTH_OF_DATE_ABBRE_ALPHABET = 5;  //"d MMM"
-const char Parser::DATE_FIRST_DIGIT[] = "0123";
-const char Parser::MONTH_FIRST_DIGIT[] = "01";
-const char Parser::YEAR_FIRST_DIGIT[] = "2";
+const unsigned int Parser::LENGTH_OF_DATE_NUMBER = 3;  //"d/m"
+const unsigned int Parser::LENGTH_OF_DATE_ALPHABET = 5;  //"d MMM"
+const unsigned int Parser::LENGTH_OF_YEAR_ALPHABET = 5;
+const unsigned int Parser::START = 0;
+const unsigned int Parser::ONE = 1;
+const unsigned int Parser::TWO = 2;
+const unsigned int Parser::THREE = 3;
+const unsigned int Parser::FOUR = 4;
+const unsigned int Parser::FIVE = 5;
+const unsigned int Parser::SIX = 6;
+const unsigned int Parser::SEVEN = 7;
 const unsigned int Parser::LENGTH_OF_STARTING_TIME = 4;  //"9:00"
 const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 9;  //"9:00-9:30"
-const char Parser::TWENTY_FOUR_HOUR_FIRST_DIGIT[] = "012";
-const char Parser::TWELVE_HOUR_FIRST_DIGIT[] = "01";
-const char Parser::MINUTE_FIRST_DIGIT[] = "012345";
-const char Parser::NON_NEGATIVE_DIGIT[] = "0123456789";
-const char Parser::POSITIVE_DIGIT[] = "123456789";
+const char Parser::SLASH = '/';
 const char Parser::ERROR_MESSAGE_COMMAND[] = "Please enter the correct command";
 const char Parser::ERROR_MESSAGE_INPUT[] = "Please enter correct input following the command word";
 const char Parser::ERROR_MESSAGE_EDIT[] = "Please enter content you want to edit";
@@ -21,10 +21,13 @@ const char Parser::ERROR_MESSAGE_TASK_NO[] = "Please enter correct task number a
 const char Parser::ERROR_MESSAGE_SHOW[] = "Please enter correct time period or task type";
 const char Parser::ERROR_MESSAGE_DIRECTORY[] = "Please enter the correct directory";
 const char Parser::ERROR_MESSAGE_DATE[] = "Please enter the correct date";
+const char Parser::ERROR_MESSAGE_YEAR[] = "Please enter the correct year";
 const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
+const char Parser::ERROR_MESSAGE_DESC[] = "Please enter task description";
 
 
-//This method is called by Operation Center.
+
+//This method is called by OperationCenter.
 //It takes in user's input message
 //and updates error message if the user's command word is incorrect.
 void Parser::parseInput (string userInput) {
@@ -33,7 +36,7 @@ void Parser::parseInput (string userInput) {
 	commandWord = extractCommandWord (userInput);
 
 	try {
-		checkCommandWord (commandWord, userInput);
+		checkCommandWord (userInput, commandWord);
 	}
 
 	catch (const char* errorMessge) {
@@ -46,7 +49,7 @@ void Parser::parseInput (string userInput) {
 //and call for different actions accordingly.
 //If the user enters an incorrect command word,
 //it will throw an exception.
-void Parser::checkCommandWord (string commandWord, string userInput) {
+void Parser::checkCommandWord (string userInput, string commandWord) {
 	if (commandWord == "add") {
 		parseAdd (userInput, commandWord);
 	}
@@ -57,7 +60,7 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 		parseSearch (userInput, commandWord);
 	}
 	else if (commandWord == "undo") {
-		parseUndo (commandWord);
+		parseUndo (userInput, commandWord);
 	}
 	else if (commandWord == "delete") {
 		parseDelete (userInput, commandWord);
@@ -65,15 +68,20 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 	else if (commandWord == "done") {
 		parseDone (userInput, commandWord);
 	}
+	else if (commandWord == "undone") {
+		parseUndone (userInput, commandWord);
+	}
 	else if (commandWord == "show") {
 		parseShow (userInput, commandWord);
 	}
 	else if (commandWord == "clear") {
 		parseClear (userInput, commandWord);
 	}
-	else if (commandWord == "save" ||
-		commandWord == "load" ) {
-		parseSaveLoad (userInput, commandWord);
+	else if (commandWord == "path") {
+		parsePath (userInput, commandWord);
+	}
+	else if (commandWord == "help") {
+		parseHelp (userInput, commandWord);
 	}
 	else {
 		throw ERROR_MESSAGE_COMMAND;
@@ -81,16 +89,15 @@ void Parser::checkCommandWord (string commandWord, string userInput) {
 }
 
 
-//This method is to extract command word from user's input.
-//Since the command word is only one word,
-//it will extract the first word from the user's input.
+//This method is to extract command word 
+//which is the first word from the user's input.
 //It assumes each word is separated by a whitespace in user's input.
 //If the user input only consists one word,
 //this single word will be extracted.
 string Parser::extractCommandWord (string userInput) {
 	int end = 0;
 	string commandWord;
-	end = userInput.find_first_of (" ");
+	end = userInput.find_first_of (' ');
 	commandWord = userInput.substr (0, end);
 	return commandWord;
 }
@@ -98,9 +105,12 @@ string Parser::extractCommandWord (string userInput) {
 
 //This method is to parse user's input if the command word is "add".
 //There are at most 3 things to be parsed:
-//timeMacro, timeMicro and task description.
-//a task must have a description and end with a description
-//date and time may be omitted and they can switch order if there are any
+//date, time and task description.
+//A task must have a description and end with a description
+//else, an exception will be thrown.
+//Date and time may be omitted and they can switch order if there are any
+//If a task only has a time but no date,
+//it assumes to be today.
 void Parser::parseAdd (string userInput, string commandWord) {
 	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
@@ -110,7 +120,11 @@ void Parser::parseAdd (string userInput, string commandWord) {
 
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size());
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
-		inputToBeParsed = inputToBeParsed.substr (1);
+		//This "if" condition is to account for the cases where
+		//the user only enters the command word
+		//or enters a command word followed by a white space.
+		//These cases may usually happen when the users are careless.
+		inputToBeParsed = inputToBeParsed.substr (ONE);
 
 		parseDateNumber (inputToBeParsed, timeMacro);
 		parseDateAlphabet (inputToBeParsed, timeMacro);
@@ -124,9 +138,14 @@ void Parser::parseAdd (string userInput, string commandWord) {
 				parseDateNumber (inputToBeParsed, timeMacro);
 				parseDateAlphabet (inputToBeParsed, timeMacro);
 		}
+		//This "if" block is to make sure the date can be parsed
+		//even if it is put after the time.
 		
 		desc = inputToBeParsed;
 
+		if (desc == "") {
+			throw ERROR_MESSAGE_DESC;
+		}
 
 		updateCommand (commandWord);
 		updateTimeMacro (timeMacro);
@@ -147,11 +166,11 @@ void Parser::parseAdd (string userInput, string commandWord) {
 
 //This method is to parse user's input if the command word is "edit".
 //There are at most 4 things to be parsed:
-//task number, timeMacro, timeMicro and task description.
+//task number, date, time and task description.
 //The command word "edit" must be followed by a task number.
 //a task will end with a description if there is one
-//date, time and description can also stand alone
-//The task no must be followed by something to edit
+//date, time and description can also stand alone and switch order
+//The task number must be followed by something to edit
 void Parser::parseEdit (string userInput, string commandWord) {
 	TimeMacro timeMacro;
 	TimeMicro timeMicroBeg;
@@ -163,14 +182,17 @@ void Parser::parseEdit (string userInput, string commandWord) {
 
 	inputToBeParsed = userInput.substr (commandWord.size());
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
-		inputToBeParsed = inputToBeParsed.substr (1);
+		inputToBeParsed = inputToBeParsed.substr (ONE);
 
 		index = parseTaskNo (inputToBeParsed);
 		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
 
 		inputToBeParsed = inputToBeParsed.substr(index.size ());
 		if (inputToBeParsed != "" && inputToBeParsed != " ") {
-			inputToBeParsed = inputToBeParsed.substr(1);
+			inputToBeParsed = inputToBeParsed.substr(ONE);
 
 			parseDateNumber (inputToBeParsed, timeMacro);
 			parseDateAlphabet (inputToBeParsed, timeMacro);
@@ -178,8 +200,12 @@ void Parser::parseEdit (string userInput, string commandWord) {
 			parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 			parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-			parseDateNumber (inputToBeParsed, timeMacro);
-			parseDateAlphabet (inputToBeParsed, timeMacro);
+			if (timeMacro.getDate() == 0 &&
+				timeMacro.getMonth() == 0 &&
+				timeMacro.getYear() == 0) {
+					parseDateNumber (inputToBeParsed, timeMacro);
+					parseDateAlphabet (inputToBeParsed, timeMacro);
+			}
 
 			desc = inputToBeParsed;
 
@@ -206,7 +232,7 @@ void Parser::parseSearch (string userInput, string commandWord) {
 	string desc = userInput.substr (commandWord.size());
 	int end = 0;
 	if (desc != "" && desc != " ") {
-		desc = desc.substr (1);
+		desc = desc.substr (ONE);
 
 		updateCommand (commandWord);
 		updateDesc (desc);
@@ -219,19 +245,27 @@ void Parser::parseSearch (string userInput, string commandWord) {
 
 //This method is to parse user's input if the command word is "undo".
 //Only the command word "undo" will be parsed.
-void Parser::parseUndo (string commandWord) {
+void Parser::parseUndo (string userInput, string commandWord) {
     updateCommand (commandWord);
+
+	string leftOver = userInput.substr (commandWord.size());
+	if (leftOver != "" && leftOver != " ") {
+		throw ERROR_MESSAGE_COMMAND;
+	}
 }
 
 
 //This method is to parse user's input if the command word is "delete".
-//The command word "delete" will be followed by a task number.
+//The command word "delete" must be followed by a task number.
 void Parser::parseDelete (string userInput, string commandWord) {
 	int taskNo;
 	string index = userInput.substr (commandWord.size());
 	if (index != "" && index != " ") {
-		index = index.substr (1);
+		index = index.substr (ONE);
 		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
 		updateCommand (commandWord);
 		updateTaskNo (taskNo);
 	}
@@ -242,13 +276,16 @@ void Parser::parseDelete (string userInput, string commandWord) {
 
 
 //This method is to parse user's input if the command word is "done".
-//The command word "done" will be followed by a task number.
+//The command word "done" must be followed by a task number.
 void Parser::parseDone (string userInput, string commandWord) {
 	int taskNo;
 	string index = userInput.substr (commandWord.size());
 	if (index != "" && index != " ") {
-		index = index.substr (1);
+		index = index.substr (ONE);
 		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
 		updateCommand (commandWord);
 		updateTaskNo (taskNo);
 		updateStatus (true);
@@ -259,25 +296,61 @@ void Parser::parseDone (string userInput, string commandWord) {
 }
 
 
+//This method is to parse user's input if the command word is "undone".
+//The command word "undone" must be followed by a task number.
+void Parser::parseUndone (string userInput, string commandWord) {
+	int taskNo;
+	string index = userInput.substr (commandWord.size());
+	if (index != "" && index != " ") {
+		index = index.substr (ONE);
+		taskNo = convertStringToInteger (index);
+		if (taskNo < 1) {
+			throw ERROR_MESSAGE_TASK_NO;
+		}
+		updateCommand (commandWord);
+		updateTaskNo (taskNo);
+		updateStatus (false);
+	}
+	else {
+		throw ERROR_MESSAGE_TASK_NO;
+	}
+}
 
 //This method is to parse user's input if the command word is "show".
-//1st case: the command word show is followed by a period.
-//So far, this method is able to parse the period when the period is
-//"today", "tomorrow" and "this month".
+//1st case: the command word "show" is followed by a date.
+//Then the date/month/year/day will be updated.
+//2nd case: the command word "show" is followed by a period.
+//The user can enter "show today", "show tomorrow",
+//"show this week" and "show this month".
 //The starting and ending date/month/year/day will be updated.
-//2nd case: the command word show is followed by the word "commands".
-//Then the command word will become "show commands".
+//3rd case: the command word "show" is followed by the 
+//words "commands", "float", "done", or "features".
+//Then the command word will become "show commands" or "show float", etc.
 //If the word following "show" does not fall into these 2 cases,
 //it will throw an exception.
 void Parser::parseShow (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size ());
 	TimeMacro timeMacroBeg;
 	TimeMacro timeMacroEnd;
+	int dateInt;
+	int monthInt;
 
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
-		inputToBeParsed = inputToBeParsed.substr(1);
+		inputToBeParsed = inputToBeParsed.substr(ONE);
 
-		if (inputToBeParsed == "today") {
+		if (isDateNumber (inputToBeParsed, dateInt, monthInt) ||
+			isDateAlphabet (inputToBeParsed, dateInt)) {
+				parseDateNumber (inputToBeParsed, timeMacroBeg);
+				parseDateAlphabet (inputToBeParsed, timeMacroBeg);
+
+				if (inputToBeParsed != "" && inputToBeParsed != " ") {
+					throw ERROR_MESSAGE_SHOW;
+				}
+
+				timeMacroEnd = timeMacroBeg;
+				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
+		}		
+		else if (inputToBeParsed == "today") {
 			getTodayDate (timeMacroBeg);
 			timeMacroEnd = timeMacroBeg;
 			updateCommand (commandWord);
@@ -319,87 +392,98 @@ void Parser::parseShow (string userInput, string commandWord) {
 
 //This method is to parse user's input if the command word is "clear".
 //Only the command word "clear" will be parsed.
+//If the command word "clear" is followed by some other input,
+//an exception is thrown.
 void Parser::parseClear (string userInput, string commandWord) {
 	updateCommand (commandWord);
+
+	string leftOver = userInput.substr (commandWord.size());
+	if (leftOver != "" && leftOver != " ") {
+		throw ERROR_MESSAGE_COMMAND;
+	}
 }
 
 
-void Parser::parseSaveLoad (string userInput, string commandWord) {
+//This method is to parse user's input if the command word is "path".
+//The command word "path" must be followed by a directory.
+//If the directory does not contain at least one slash, 
+//it means it is a wrong directory.
+//In this case, an exception is thrown.
+void Parser::parsePath (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size ());
 
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
-		inputToBeParsed = inputToBeParsed.substr(1);
+		inputToBeParsed = inputToBeParsed.substr(ONE);
 
-		updateCommand (commandWord);
-		updateDirectory (inputToBeParsed);	
+		if (isSlash (inputToBeParsed)) {
+			updateCommand (commandWord);
+			updateDirectory (inputToBeParsed);	
+		}
+		else {
+			throw ERROR_MESSAGE_DIRECTORY;
+		}
+
 	}
 	else {
 		throw ERROR_MESSAGE_DIRECTORY;
 	}
 }
 
+
+//This method is to parse user's input if the command word is "help".
+//Only the command word "help" will be parsed.
+//If the command word "help" is followed by some other input,
+//an exception is thrown.
+void Parser::parseHelp (string userInput, string commandWord) {
+	updateCommand (commandWord);
+
+	string leftOver = userInput.substr (commandWord.size());
+	if (leftOver != "" && leftOver != " ") {
+		throw ERROR_MESSAGE_COMMAND;
+	}
+}
+
+
 //This method is to parse date after the start of the string is recoganised as a date.
 //The formats it recognises are "dd/mm/yyyy", "d/mm/yyyy", "dd/m/yyyy", "d/m/yyyy",
 //"dd/mm", "d/mm", "dd/m", "d/m".
-//If the year is not specified, it assumes it is this year.
+//If the year is not specified, it assumes to be this year.
 //Date/month/year/day will be updated.
 void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
-	int start = 0;
 	int end = 0;
-	string date;
-	string month;
-	string year;
 	int dateInt;
 	int monthInt;
 	int yearInt;
+	string day;
 
-	if (isDateNumber (inputToBeParsesd)) {
-		end = inputToBeParsesd.find_first_of ("/");
-		date = inputToBeParsesd.substr (0, end);
+	if (isDateNumber (inputToBeParsesd, dateInt, monthInt)) {
+		timeMacro.updateDate (dateInt);
+		timeMacro.updateMonth (monthInt);
 
-		start = end + 1;
-		inputToBeParsesd = inputToBeParsesd.substr (start);
-
-		if (isYearNumber (inputToBeParsesd)) {
-			end = inputToBeParsesd.find_first_of ("/");
-			month = inputToBeParsesd.substr (0, end);
-			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
-			year = inputToBeParsesd.substr (0, 4);
-			yearInt = atoi (year.c_str());
-
-			if (inputToBeParsesd.size() > 5) {
-				inputToBeParsesd = inputToBeParsesd.substr (start + 4);
-			}
-			else {
-				inputToBeParsesd = "";
-			}
+		end = inputToBeParsesd.find_first_of ('/');
+		inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+		if (isYearNumber (inputToBeParsesd, yearInt)) {
+			timeMacro.updateYear (yearInt);
 		}
-
 		else {
-			end = inputToBeParsesd.find_first_of (" ");
-			month = inputToBeParsesd.substr (0, end);
-			
-			if (end != string::npos) {
-				inputToBeParsesd = inputToBeParsesd.substr (end + 1);
-			}
-			else {
-				inputToBeParsesd = "";
-			}
-			
 			time_t t = time (0);
 			struct tm now;
 			localtime_s (&now, &t);
 			now.tm_year = now.tm_year + 1900;
 			yearInt = now.tm_year;
+			timeMacro.updateYear (yearInt);
 		}
 
-		dateInt = atoi (date.c_str());
-		monthInt = atoi (month.c_str());
-		string day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
-		timeMacro.updateDate (dateInt);
+		day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
 		timeMacro.updateDay (day);
-		timeMacro.updateMonth (monthInt);
-		timeMacro.updateYear (yearInt);
+
+		end = inputToBeParsesd.find_first_of (' ');
+		if (end != string::npos) {
+			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+		}
+		else {
+			inputToBeParsesd = "";
+		}
 	}
 }
 
@@ -410,52 +494,46 @@ void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 //If the year is not specified, it assumes it is this year.
 //Date/month/year/day will be updated.
 void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) {
-	int start = 0;
 	int end = 0;
-	string date;
-	string year;
 	int dateInt;
 	int monthInt;
 	int yearInt;
+	string day;
 
-	if (isDateAlphabet (inputToBeParsesd)) {
-		end = inputToBeParsesd.find_first_of (" ");
-		date = inputToBeParsesd.substr (0, end);
+	if (isDateAlphabet (inputToBeParsesd, dateInt)) {
+		timeMacro.updateDate (dateInt);
 
-		start = end + 1;
-		inputToBeParsesd = inputToBeParsesd.substr (start);
-		monthInt = convertAlphabetMonthToInteger (inputToBeParsesd.substr (0, 3));
-		inputToBeParsesd = inputToBeParsesd.substr (3);
+		end = inputToBeParsesd.find_first_of (' ');
+		inputToBeParsesd = inputToBeParsesd.substr (end + ONE);
+		monthInt = convertAlphabetMonthToInteger (inputToBeParsesd.substr (START, THREE));
+		timeMacro.updateMonth (monthInt);
+		inputToBeParsesd = inputToBeParsesd.substr (THREE);
 
-		if (isYearAlphabet (inputToBeParsesd)) {
-			year = inputToBeParsesd.substr (1, 4);
-			yearInt = atoi (year.c_str());
-			if (inputToBeParsesd.size() > 6) {
-				inputToBeParsesd = inputToBeParsesd.substr (6); //there is still content after the year
+		if (isYearAlphabet (inputToBeParsesd, yearInt)) {
+			timeMacro.updateYear (yearInt);
+			if (inputToBeParsesd.size() > SIX) {
+				inputToBeParsesd = inputToBeParsesd.substr (SIX); //there is still content after the year
 			}
 			else {
 				inputToBeParsesd = "";
 			}
-			
 		}
+
 		else {
-			if (inputToBeParsesd.size() > 2) {
-				inputToBeParsesd = inputToBeParsesd.substr (1);
+			if (inputToBeParsesd.size() > ONE) {
+				inputToBeParsesd = inputToBeParsesd.substr (ONE);
 			}
-			
+
 			time_t t = time (0);
 			struct tm now;
 			localtime_s (&now, &t);
 			now.tm_year = now.tm_year + 1900;
 			yearInt = now.tm_year;
+			timeMacro.updateYear (yearInt);
 		}
 
-		dateInt = atoi (date.c_str());
-		string day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
-		timeMacro.updateDate (dateInt);
+		day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
 		timeMacro.updateDay (day);
-		timeMacro.updateMonth (monthInt);
-		timeMacro.updateYear (yearInt);
 	}
 }
 
@@ -468,45 +546,34 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 //both starting and ending hour and minute will be updated.
 void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
 	int end = 0;
-	if (isTimePeriodTwentyFour (inputToBeParsed) || isStartingTimeTwentyFour (inputToBeParsed)) {
-		end = inputToBeParsed.find_first_of (':');
-        string hourBeg = inputToBeParsed.substr (0, end);
-		string minuteBeg = inputToBeParsed.substr (end + 1, 2);
-		int hourBegInt = atoi (hourBeg.c_str());
-		int minuteBegInt = atoi (minuteBeg.c_str());
-		timeMicroBeg.updateHour (hourBegInt);
-		timeMicroBeg.updateMin (minuteBegInt);
+	int hourBegInt;
+	int hourEndInt;
+	int minuteBegInt;
+	int minuteEndInt;
 
-
-		if (!isTimePeriodTwentyFour (inputToBeParsed)) {
-			end = inputToBeParsed.find_first_of (' ');
-			if (end != string::npos) {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
+	if (isTimePeriodTwentyFour (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt) ||
+		isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
+			if (isTimePeriodTwentyFour (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {
+				timeMicroBeg.updateHour (hourBegInt);
+				timeMicroBeg.updateMin (minuteBegInt);
+				timeMicroEnd.updateHour (hourEndInt);
+				timeMicroEnd.updateMin (minuteEndInt);
 			}
+
 			else {
-				inputToBeParsed = "";
+				if (isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
+					timeMicroBeg.updateHour (hourBegInt);
+					timeMicroBeg.updateMin (minuteBegInt);
+				}
 			}
-		}
-
-		else {
-			end = inputToBeParsed.find_first_of ('-');
-			inputToBeParsed = inputToBeParsed.substr (end + 1);
-			end = inputToBeParsed.find_first_of (':');
-			string hourEnd = inputToBeParsed.substr (0, end);
-			string minuteEnd = inputToBeParsed.substr (end + 1, 2);
-			int hourEndInt = atoi (hourEnd.c_str());
-			int minuteEndInt = atoi (minuteEnd.c_str());
-			timeMicroEnd.updateHour (hourEndInt);
-			timeMicroEnd.updateMin (minuteEndInt);
 
 			end = inputToBeParsed.find_first_of (' ');
 			if (end == string::npos) {
 				inputToBeParsed = "";
 			}
 			else {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
 			}
-		}
 	}
 }
 
@@ -520,152 +587,43 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 //If the string starts with a time period,
 //both starting and ending hour and minute will be updated.
 void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, TimeMicro& timeMicroEnd) {
-	int start = 0;
 	int end = 0;
-	string hourBeg;
-	string hourEnd;
-	string minuteBeg;
-	string minuteEnd;
 	int hourBegInt;
 	int hourEndInt;
 	int minuteBegInt;
 	int minuteEndInt;
-	if (isTimePeriodTwelve (inputToBeParsed) || isStartingTimeTwelve (inputToBeParsed)) {
-		end = inputToBeParsed.find_first_of (".");
-		//case "9.00am"/"19.00am"
-		if (end == 1 || end ==2) {
-			hourBeg = inputToBeParsed.substr (0, end);
-			minuteBeg = inputToBeParsed.substr (end + 1, 2);
-			minuteBegInt = atoi (minuteBeg.c_str());
-			if (inputToBeParsed[end + 3] == 'a') {
-				if (hourBeg == "12") {
-					hourBegInt = 0;
-				}
-				else {
-					hourBegInt = atoi (hourBeg.c_str());
-				}
-			}
-			else if (inputToBeParsed[end + 3] == 'p') {
-				if (hourBeg == "12") {
-					hourBegInt = atoi (hourBeg.c_str());
-				}
-				else {
-					hourBegInt = atoi (hourBeg.c_str()) +12;
-				}
-			}
-		}
-		//case "9am"/"19am"
-		else {
-			end = inputToBeParsed.find_first_of ('a');
-			if (end == 1 || end == 2) {
-				hourBeg = inputToBeParsed.substr (0, end);
-				if (hourBeg == "12") {
-					hourBegInt = 0;
-				}
-				else {
-					hourBegInt = atoi (hourBeg.c_str());
-				}
-				minuteBegInt = 0;
+
+	if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt) ||
+		isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
+			if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {
+				timeMicroBeg.updateHour (hourBegInt);
+				timeMicroBeg.updateMin (minuteBegInt);
+				timeMicroEnd.updateHour (hourEndInt);
+				timeMicroEnd.updateMin (minuteEndInt);
 			}
 
-			end = inputToBeParsed.find_first_of ('p');
-			if (end == 1 || end == 2) {
-				hourBeg = inputToBeParsed.substr (0, end);
-				if (hourBeg == "12") {
-					hourBegInt = atoi (hourBeg.c_str());
-				}
-				else {
-					hourBegInt = atoi (hourBeg.c_str()) +12;
-				}
-				minuteBegInt = 0;
-			}
-		}
-		timeMicroBeg.updateHour (hourBegInt);
-		timeMicroBeg.updateMin (minuteBegInt);
-
-		if (!isTimePeriodTwelve (inputToBeParsed)) {
-			end = inputToBeParsed.find_first_of (' ');
-			if (end == string::npos) {
-				inputToBeParsed = "";
-			}
 			else {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
-			}
-		}
-
-		else {
-			end = inputToBeParsed.find_first_of ('-');
-			inputToBeParsed = inputToBeParsed.substr (end + 1);
-
-			end = inputToBeParsed.find_first_of (".");
-			//case "9.00am"/"19.00am"
-			if (end == 1 || end ==2) {
-				hourEnd = inputToBeParsed.substr (0, end);
-				minuteEnd = inputToBeParsed.substr (end + 1, 2);
-				minuteEndInt = atoi (minuteEnd.c_str());
-				if (inputToBeParsed[end + 3] == 'a') {
-					if (hourEnd == "12") {
-						hourEndInt = 0;
-					}
-					else {
-						hourEndInt = atoi (hourEnd.c_str());
-					}
-				}
-				else if (inputToBeParsed[end + 3] == 'p') {
-					if (hourEnd == "12") {
-						hourEndInt = atoi (hourEnd.c_str());
-					}
-					else {
-						hourEndInt = atoi (hourEnd.c_str()) +12;
-					}
+				if (isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
+					timeMicroBeg.updateHour (hourBegInt);
+					timeMicroBeg.updateMin (minuteBegInt);
 				}
 			}
-			//case "9am"/"19am"
-			else {
-				end = inputToBeParsed.find_first_of ('a');
-				if (end == 1 || end == 2) {
-					hourEnd = inputToBeParsed.substr (0, end);
-					if (hourEnd == "12") {
-						hourEndInt = 0;
-					}
-					else {
-						hourEndInt = atoi (hourEnd.c_str());
-					}
-					minuteEndInt = 0;
-				}
-
-				end = inputToBeParsed.find_first_of ('p');
-				if (end == 1 || end == 2) {
-					hourEnd = inputToBeParsed.substr (0, end);
-					if (hourEnd == "12") {
-						hourEndInt = atoi (hourEnd.c_str());
-					}
-					else {
-						hourEndInt = atoi (hourEnd.c_str()) +12;
-					}
-					minuteEndInt = 0;
-				}
-			}
-			timeMicroEnd.updateHour (hourEndInt);
-			timeMicroEnd.updateMin (minuteEndInt);
 
 			end = inputToBeParsed.find_first_of (' ');
 			if (end == string::npos) {
 				inputToBeParsed = "";
 			}
 			else {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
 			}
-		}
-	}     
+	}	
 }
 
 //This method is to parse the task numnber.
-//It assumes the task number will be separated with the following string
+//It assumes the task number is separated with the following string
 //with a whitespace,
 //or the task number is the end of the string.
-//The task number which is originally a string
-//will be converted to an integer.
+//The task number returned is a string.
 string Parser::parseTaskNo (string inputToBeParsed) {
 	int lengthOfTaskNo = inputToBeParsed.find_first_of (' ');
 	string index = inputToBeParsed.substr (0, lengthOfTaskNo);
@@ -694,8 +652,7 @@ int Parser::convertStringToInteger (string index) {
 	else {
 		int taskNo = atoi (index.c_str());
 		return taskNo;
-	}
-	
+	}	
 }
 
 //This method is to check if the start of the string is a date.
@@ -703,62 +660,42 @@ int Parser::convertStringToInteger (string index) {
 //The formats of date and month can be
 //"dd/mm", "dd/m", "d/mm", "d/m".
 //The string firstly needs to be longer than the date format.
-bool Parser::isDateNumber (string inputToBeParsed) {
-	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL_NUMBER) {
-		if (searchSubstring (DATE_FIRST_DIGIT, inputToBeParsed[0]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-			inputToBeParsed[2] == '/' &&
-			searchSubstring (MONTH_FIRST_DIGIT, inputToBeParsed[3]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
-				if ((inputToBeParsed[0] == '3' &&
-					inputToBeParsed[1] > '1') ||  //date > 31
-					(inputToBeParsed[0] == '0' &&
-					inputToBeParsed[1] == '0') || //date = 00
-					(inputToBeParsed[3] == '0' &&
-					inputToBeParsed[4] == '0') || //month = 00
-					(inputToBeParsed[3] == '1' &&
-					inputToBeParsed[4] > '2')) { //month > 12
-						throw ERROR_MESSAGE_DATE;
-				}
-				else {
-					return true;
-				}
-		}
-	}
+bool Parser::isDateNumber (string inputToBeParsed, int& dateInt, int& monthInt) {
+	int end;
+	string date;
+	string month;
 
-	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE_NUMBER) {
-		if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
-			inputToBeParsed[1] == '/' &&
-			searchSubstring (POSITIVE_DIGIT, inputToBeParsed[2])) {
-				return true;
-		}
-		else if (searchSubstring (DATE_FIRST_DIGIT, inputToBeParsed[0]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-			inputToBeParsed[2] == '/' &&
-			searchSubstring (POSITIVE_DIGIT, inputToBeParsed[3])) {
-				if ((inputToBeParsed[0] == '0' &&
-					inputToBeParsed[1] == '0') ||
-					(inputToBeParsed[0] == '3' &&
-					inputToBeParsed[1] > '1')) {
-						throw ERROR_MESSAGE_DATE;
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_NUMBER) {
+		end = inputToBeParsed.find_first_of ('/');
+		if (end == ONE || end == TWO) {
+			date = inputToBeParsed.substr (0, end);
+			if (isInteger (date)) {
+				dateInt = convertStringToInteger (date);
+				if (dateInt < 1 || dateInt > 31) {
+					throw ERROR_MESSAGE_DATE;
 				}
-				else {
-					return true;
+
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				end = inputToBeParsed.find_first_of(" /");
+				if (end == ONE || end == TWO ||
+					(end == string::npos && 
+					(inputToBeParsed.size() == 1 || inputToBeParsed.size () ==2))) {
+						month = inputToBeParsed.substr (0, end);
+						if (isInteger (month)) {
+							monthInt= convertStringToInteger (month);
+							if (monthInt < 1 || monthInt > 12) {
+								throw ERROR_MESSAGE_DATE;
+							}
+
+							if ((monthInt == 4 || monthInt == 6 ||
+								monthInt == 9 || monthInt == 11) &&
+								dateInt == 31) {
+									throw ERROR_MESSAGE_DATE;
+							}
+							return true;
+						}
 				}
-		}
-		else if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
-			inputToBeParsed[1] == '/' &&
-			searchSubstring (MONTH_FIRST_DIGIT, inputToBeParsed[2]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3])) {
-				if ((inputToBeParsed[2] == '0' &&
-					inputToBeParsed[3] == '0') ||
-					(inputToBeParsed[2] == '1' &&
-					inputToBeParsed[3] > '2')) {
-						throw ERROR_MESSAGE_DATE;
-				}
-				else {
-					return true;
-				}
+			}
 		}
 	}
 
@@ -770,17 +707,19 @@ bool Parser::isDateNumber (string inputToBeParsed) {
 //If the date and month are followed by "/yyyy",
 //it returns true;
 //else, it returns false
-bool Parser::isYearNumber (string inputToBeParsed) {
+bool Parser::isYearNumber (string inputToBeParsed, int& yearInt) {
 	int end;
+	string year;
+
 	end = inputToBeParsed.find_first_of ("/");
-	if (end == 1 || end == 2) {
-		inputToBeParsed = inputToBeParsed.substr (end + 1);
-		if (inputToBeParsed[0] == '/' &&
-			searchSubstring (YEAR_FIRST_DIGIT, inputToBeParsed[1]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[2]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
-				return true;
+	if (end == ONE || end == TWO) {
+		year = inputToBeParsed.substr (end + ONE, FOUR);
+		if (isInteger (year)) {
+			yearInt = convertStringToInteger (year);
+			if (yearInt < 2000 || yearInt > 2100) {
+				throw ERROR_MESSAGE_YEAR;
+			}
+			return true;
 		}
 	}
 
@@ -790,59 +729,63 @@ bool Parser::isYearNumber (string inputToBeParsed) {
 
 //This method is to check if the start of the string is a date.
 //This method only checks for date and month.
-//The formats of date and month is date (integer) 
+//The format is date (integer) 
 //followed by month (abbreviation, the first alphabet can be both capital or small)
 //eg. 21 Mar or 21 mar.
 //The string firstly needs to be longer than the date format.
-bool Parser::isDateAlphabet (string inputToBeParsed) {
-	vector<string> month;
-	month.push_back ("Jan");
-	month.push_back ("Feb");
-	month.push_back ("Mar");
-	month.push_back ("Apr");
-	month.push_back ("May");
-	month.push_back ("Jun");
-	month.push_back ("Jul");
-	month.push_back ("Aug");
-	month.push_back ("Sep");
-	month.push_back ("Oct");
-	month.push_back ("Nov");
-	month.push_back ("Dec");
-	month.push_back ("jan");
-	month.push_back ("feb");
-	month.push_back ("mar");
-	month.push_back ("apr");
-	month.push_back ("may");
-	month.push_back ("jun");
-	month.push_back ("jul");
-	month.push_back ("aug");
-	month.push_back ("sep");
-	month.push_back ("oct");
-	month.push_back ("nov");
-	month.push_back ("dec");
+bool Parser::isDateAlphabet (string inputToBeParsed, int& dateInt) {
+	int end;
+	string date;
+	string month;
+	vector<string> monthList;
+	monthList.push_back ("Jan");
+	monthList.push_back ("Feb");
+	monthList.push_back ("Mar");
+	monthList.push_back ("Apr");
+	monthList.push_back ("May");
+	monthList.push_back ("Jun");
+	monthList.push_back ("Jul");
+	monthList.push_back ("Aug");
+	monthList.push_back ("Sep");
+	monthList.push_back ("Oct");
+	monthList.push_back ("Nov");
+	monthList.push_back ("Dec");
+	monthList.push_back ("jan");
+	monthList.push_back ("feb");
+	monthList.push_back ("mar");
+	monthList.push_back ("apr");
+	monthList.push_back ("may");
+	monthList.push_back ("jun");
+	monthList.push_back ("jul");
+	monthList.push_back ("aug");
+	monthList.push_back ("sep");
+	monthList.push_back ("oct");
+	monthList.push_back ("nov");
+	monthList.push_back ("dec");
 
-	if (inputToBeParsed.size() >= LENGTH_OF_DATE_FULL_ALPHABET) {
-		if (searchSubstring (DATE_FIRST_DIGIT, inputToBeParsed[0]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-			inputToBeParsed[2] == ' ' &&
-			isStringEqual (inputToBeParsed.substr (3, 3), month)) {
-				if ((inputToBeParsed[0] == '0' &&
-					inputToBeParsed[1] == '0') ||
-					(inputToBeParsed[0] == '3' &&
-					inputToBeParsed[1] > '1')) {
-						throw ERROR_MESSAGE_DATE;
+	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ALPHABET) {
+		end = inputToBeParsed.find_first_of (' ');
+		if (end == ONE || end == TWO) {
+			date = inputToBeParsed.substr (0, end);
+			if (isInteger (date)) {
+				dateInt = convertStringToInteger (date);
+				if (dateInt < 1 || dateInt > 31) {
+					throw ERROR_MESSAGE_DATE;
 				}
-				else {
+
+				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				month = inputToBeParsed.substr (0, THREE);
+				if (isStringEqual (month, monthList)) {
+					if ((month == "Apr" || month == "apr" ||
+						month == "Jun" || month == "jun" ||
+						month == "Sep" || month == "sep" ||
+						month == "Nov" || month == "nov") &&
+						dateInt == 31) {
+							throw ERROR_MESSAGE_DATE;
+					}
 					return true;
 				}
-		}
-	}
-
-	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ABBRE_ALPHABET) {
-		if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
-			inputToBeParsed[1] == ' ' &&
-			isStringEqual (inputToBeParsed.substr(2, 3), month)) {
-				return true;
+			}
 		}
 	}
 
@@ -854,15 +797,23 @@ bool Parser::isDateAlphabet (string inputToBeParsed) {
 //If the date and month are followed by " yyyy",
 //it returns true;
 //else, it returns false
-bool Parser::isYearAlphabet (string inputToBeParsed) {
-		if (inputToBeParsed[0] == ' ' &&
-			searchSubstring (YEAR_FIRST_DIGIT, inputToBeParsed[1]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[2]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
+bool Parser::isYearAlphabet (string inputToBeParsed, int& yearInt) {
+	int end = 0;
+	string year;
+	if (inputToBeParsed.size() >= LENGTH_OF_YEAR_ALPHABET) {
+		end = inputToBeParsed.find_first_of (' ');
+		if (end == 0) {
+			year = inputToBeParsed.substr (end + 1, FOUR);
+			if (isInteger (year)) {
+				yearInt = convertStringToInteger (year);
+				if (yearInt > 2100 || yearInt < 2000) {
+					throw ERROR_MESSAGE_YEAR;
+				}
 				return true;
+			}
 		}
-	
+	}
+
 	return false;
 }
 
@@ -870,76 +821,60 @@ bool Parser::isYearAlphabet (string inputToBeParsed) {
 //This method is to check if the start of the string is a starting time
 //(which may be followed by an ending time).
 //The string firstly needs to be longer than the time format.
-//Then it must follow the format "hh:mm"
+//Then it must follow the format "hh:mm" or "h:mm"
 //in order to be recognised as a starting time.
-bool Parser::isStartingTimeTwentyFour (string inputToBeParsed) {
+bool Parser::isStartingTimeTwentyFour (string inputToBeParsed, int& hourInt, int& minuteInt) {
+	int end = 0;
+	string hour;
+	string minute;
+
 	if (inputToBeParsed.size() >= LENGTH_OF_STARTING_TIME) {
-		if (searchSubstring (TWENTY_FOUR_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-			inputToBeParsed[2] == ':' &&
-			searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
-				if (inputToBeParsed[0] == '2' &&
-					inputToBeParsed[1] > '3') {
-						throw ERROR_MESSAGE_TIME;
+		end = inputToBeParsed.find_first_of (':');
+		if (end == ONE || end == TWO) {
+			hour = inputToBeParsed.substr (START, end);
+			if (isInteger (hour)) {
+				hourInt = convertStringToInteger (hour);
+				if (hourInt < 0 || hourInt > 23) {
+					throw ERROR_MESSAGE_TIME;
 				}
-				else {
+
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
+				minute = inputToBeParsed.substr (START, TWO);
+				if (isInteger (minute)) {
+					minuteInt = convertStringToInteger (minute);
+					if (minuteInt < 0 || minuteInt > 59) {
+						throw ERROR_MESSAGE_TIME;
+					}
 					return true;
 				}
-		}
-		else if (searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[0]) &&
-			inputToBeParsed[1] == ':' &&
-			searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3])) {
-				return true;
-		}
-		else {
-			return false;
+			}
 		}
 	}
-	else {
-		return false;
-	}
+
+	return false;
 }
 
 
 //This method is to check if the start of the string is a time period.
 //The string firstly needs to be longer than the time period format.
-//Then it must follow the format "hh:mm-hh:mm"
+//Then it must follow the format "hh:mm-hh:mm", "h:mm-h:mm",
+//"h:mm-hh:mm", or "hh:mm-h:mm"
 //in order to be recognised as a time period.
-bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
+bool Parser::isTimePeriodTwentyFour (string inputToBeParsed, int& hourBegInt, int& hourEndInt, 
+		int& minuteBegInt, int& minuteEndInt) {
 	int end = 0;
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
-		if (isStartingTimeTwentyFour (inputToBeParsed)) {
+		if (isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
 			end = inputToBeParsed.find_first_of ('-');
-			if (end != string::npos) {
+			if (end == FOUR || end == FIVE) {
 				inputToBeParsed = inputToBeParsed.substr (end + 1);
-				if (searchSubstring (TWENTY_FOUR_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
-					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-					inputToBeParsed[2] == ':' &&
-					searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
-					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4])) {
-						if (inputToBeParsed[0] == '2' &&
-							inputToBeParsed[1] > '3') {
-								throw ERROR_MESSAGE_TIME;
-						}
-						else {
-							return true;
-						}
-
-				}
-				else if (searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[0]) &&
-					inputToBeParsed[1] == ':' &&
-					searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
-					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3])) {
-						return true;
+				if (isStartingTimeTwentyFour (inputToBeParsed, hourEndInt, minuteEndInt)) {
+					return true;
 				}
 			}
-
-
 		}
-
 	}
+
 	return false;
 }
 
@@ -950,63 +885,76 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed) {
 //Then it must follow the format "h", "hh", "h.mm", or "hh.mm"
 //followed by "am" or "pm"
 //in order to be recognised as a starting time.
-bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
+bool Parser::isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& minuteInt) {
 	int end = 0;
-	if (inputToBeParsed.size () >= 3) {  //"9am"
-		end = inputToBeParsed.find_first_of (".");	
-			
-		if (end == 1) { //case "9.00am"
-			if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
-				searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
-				searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
-				(inputToBeParsed[4] == 'a' ||
-				inputToBeParsed[4] == 'p') &&
-				inputToBeParsed[5] == 'm') {
-					return true;
-			}
-		}
-		else if (end == 2) {
-			//case "09.00am"
-			if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
-				searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-				searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
-				searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4]) &&
-				(inputToBeParsed[5] == 'a' ||
-				inputToBeParsed[5] == 'p') &&
-				inputToBeParsed[6] == 'm') {
-					if ((inputToBeParsed[0] == '0' &&
-						inputToBeParsed[1] == '0') ||
-						(inputToBeParsed[0] == '1' &&
-						inputToBeParsed[1] > '2')) {
-							throw ERROR_MESSAGE_TIME;
-					}
-					else {
-						return true;
-					}
-			}
-		}
-		//case "9am"
-		else if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&  
-			(inputToBeParsed[1] == 'a' ||
-			inputToBeParsed[1] == 'p') &&
-			inputToBeParsed[2] == 'm') {
-				return true;
-		}
-		//case "19am"
-		else if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
-			searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-			(inputToBeParsed[2] == 'a' ||
-			inputToBeParsed[2] == 'p') &&
-			inputToBeParsed[3] == 'm') {
-				if ((inputToBeParsed[0] == '0' &&
-					inputToBeParsed[1] == '0') ||
-					(inputToBeParsed[0] == '1' &&
-					inputToBeParsed[1] > '2')) {
+	string hour;
+	string minute;
+
+	if (inputToBeParsed.size () >= SIX) {  //"9.00am"
+		end = inputToBeParsed.find_first_of ('.');
+		if (end == ONE || end == TWO) { //case 9.00am or 09.00am
+			hour = inputToBeParsed.substr (START, end);
+			if (isInteger (hour)) {
+				hourInt = convertStringToInteger (hour);
+				if (hourInt < 1 || hourInt > 12) {
+					throw ERROR_MESSAGE_TIME;
+				}
+
+				minute = inputToBeParsed.substr (end + ONE, TWO);
+				if (isInteger (minute)) {
+					minuteInt = convertStringToInteger (minute);
+					if (minuteInt < 0 || minuteInt > 59) {
 						throw ERROR_MESSAGE_TIME;
+					}
+
+					if (inputToBeParsed.substr (end + THREE, TWO) == "am" ||
+						inputToBeParsed.substr (end + THREE, TWO) == "pm") {
+							if (inputToBeParsed.substr (end + THREE, TWO) == "am") {
+								if (hourInt == 12) {
+									hourInt = 0;
+								}
+							}
+
+							else {
+								if (hourInt <= 11 && hourInt >= 1) {
+									hourInt += 12;
+								}
+							}
+								return true;
+					}
 				}
-				else {
-					return true;
+			}
+		}
+	}
+
+	if (inputToBeParsed.size () >= THREE) {  //"9am"
+		end = inputToBeParsed.find_first_of ('m');
+		if (end == TWO || end == THREE) { //case 9am or 19am
+			hour = inputToBeParsed.substr (START, end - ONE);
+			if (isInteger (hour)) {
+				hourInt = convertStringToInteger (hour);
+				if (hourInt < 1 || hourInt > 12) {
+					throw ERROR_MESSAGE_TIME;
 				}
+				minuteInt = START;
+
+				if (inputToBeParsed.substr (end - ONE, TWO) == "am" ||
+					inputToBeParsed.substr (end - ONE, TWO) == "pm") {
+						if (inputToBeParsed.substr (end - ONE, TWO) == "am") {
+							if (hourInt == 12) {
+								hourInt = 0;
+							}
+						}
+							
+						else {
+							if (hourInt <= 11 && hourInt >= 1) {
+								hourInt += 12;
+							}
+						}
+							
+						return true;
+				}
+			}
 		}
 	}
 
@@ -1019,86 +967,31 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed) {
 //Then it must follow the format "h", "hh", "h.mm", or "hh.mm"
 //followed by "am" or "pm"
 //in order to be recognised as a time period.
-bool Parser::isTimePeriodTwelve (string inputToBeParsed) {
+bool Parser::isTimePeriodTwelve (string inputToBeParsed,  int& hourBegInt, int& hourEndInt, 
+		int& minuteBegInt, int& minuteEndInt) {
 	int end = 0;
-	if (isStartingTimeTwelve (inputToBeParsed) &&
-		inputToBeParsed.size () >= 7) {  //"9am-9pm"
-			end = inputToBeParsed.find_first_of ("-");
-			if (end == string::npos) {
-				return false;
-			}
-			else {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
-			}
-
-			end = inputToBeParsed.find_first_of (".");
-			if (end != string::npos) {
-				//case "9.00am"
-				if (end == 1) {
-					if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
-						searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[2]) &&
-						searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[3]) &&
-						(inputToBeParsed[4] == 'a' ||
-						inputToBeParsed[4] == 'p') &&
-						inputToBeParsed[5] == 'm') {
-							return true;
-					}
-				}
-				else if (end == 2) {
-					//case "09.00am"
-					if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
-						searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-						searchSubstring (MINUTE_FIRST_DIGIT, inputToBeParsed[3]) &&
-						searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[4]) &&
-						(inputToBeParsed[5] == 'a' ||
-						inputToBeParsed[5] == 'p') &&
-						inputToBeParsed[6] == 'm') {
-							if ((inputToBeParsed[0] == '0' &&
-								inputToBeParsed[1] == '0') ||
-								(inputToBeParsed[0] == '1' &&
-								inputToBeParsed[1] > '2')) {
-									throw ERROR_MESSAGE_TIME;
-							}
-							else {
-								return true;
-							}
-					}
-				}
-			}
-			else {
-				//case "9am"
-				if (searchSubstring (POSITIVE_DIGIT, inputToBeParsed[0]) &&
-					(inputToBeParsed[1] == 'a' ||
-					inputToBeParsed[1] == 'p') &&
-					inputToBeParsed[2] == 'm') {
+	if (inputToBeParsed.size() >= SEVEN ) { //9am-9pm
+		if (isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
+			end = inputToBeParsed.find_first_of ('-');
+			if (end == THREE || end == FOUR ||
+				end ==SIX || end == SEVEN) {
+					inputToBeParsed = inputToBeParsed.substr (end + ONE);
+					if (isStartingTimeTwelve (inputToBeParsed, hourEndInt, minuteEndInt)) {
 						return true;
-				}
-				//case "19am"
-				else if (searchSubstring (TWELVE_HOUR_FIRST_DIGIT, inputToBeParsed[0]) &&
-					searchSubstring (NON_NEGATIVE_DIGIT, inputToBeParsed[1]) &&
-					(inputToBeParsed[2] == 'a' ||
-					inputToBeParsed[2] == 'p') &&
-					inputToBeParsed[3] == 'm') {
-						if ((inputToBeParsed[0] == '0' &&
-							inputToBeParsed[1] == '0') ||
-							(inputToBeParsed[0] == '1' &&
-							inputToBeParsed[1] > '2')) {
-								throw ERROR_MESSAGE_TIME;
-						}
-						else {
-							return true;
-						}
-				}
+					}
 			}
+		}
 	}
+
 	return false;
 }
 
-//This method is to check if a specific character is in a string.
-bool Parser::searchSubstring (const string timeString, char substring) {
+
+//This method is to check if the directory contains slash.
+bool Parser::isSlash (string directory) {
 	unsigned int index = 0;
-	for (index = 0; index < timeString.size(); index ++) {
-		if (substring == timeString[index]) {
+	for (index = 0; index < directory.size(); index ++) {
+		if (directory[index] == SLASH) {
 			return true;
 		}
 	}
@@ -1106,6 +999,7 @@ bool Parser::searchSubstring (const string timeString, char substring) {
 }
 
 
+//This method checks if a vector contains certain string.
 bool Parser::isStringEqual (string inputString, vector<string> compString) {
 	for (int i = 0; i != compString.size(); i++) {
 		if (inputString == compString [i]) {
@@ -1115,6 +1009,8 @@ bool Parser::isStringEqual (string inputString, vector<string> compString) {
 	return false;
 }
 
+
+//This method is to month in alphabet format to integer format.
 int Parser::convertAlphabetMonthToInteger (string month) {
 	int monthInt;
 	if (month == "Jan" || month == "jan") {
@@ -1397,8 +1293,25 @@ void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
 
 	timeMacroEnd.updateYear (now.tm_year);
 	timeMacroEnd.updateMonth (now.tm_mon);
-	timeMacroEnd.updateDate (31);
+
+	if (now.tm_mon == 1 || now.tm_mon == 3 ||
+		now.tm_mon == 5 || now.tm_mon == 7 ||
+		now.tm_mon == 8 || now.tm_mon == 10 ||
+		now.tm_mon == 12) {
+			timeMacroEnd.updateDate (31);
+	}
+	else if (now.tm_mon == 4 || now.tm_mon == 6 ||
+		now.tm_mon == 9 || now.tm_mon == 11) {
+			timeMacroEnd.updateDate (30);
+	}
+	else if (now.tm_mon == 2 && isLeapYear (now.tm_year)) {
+		timeMacroEnd.updateDate (29);
+	}
+	else {
+		timeMacroEnd.updateDate (28);
+	}	
 }
+
 //One potential bug:
 //the date period must be the start and end of this month
 //there may be bug when the ending date of month changes

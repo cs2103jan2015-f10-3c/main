@@ -10,6 +10,7 @@
 #include <sstream>
 #include <ctime>
 #include <chrono>
+#include <Windows.h>
 #include "Commons.h"
 #include "DataProcessor.h"
 #include "Parser.h"
@@ -28,6 +29,7 @@ public:
 	static void saveData();
 	static void loadData(bool& status);
 	static string showWelcomeMessage(bool status);
+	static void clearScreen();
 };
 
 
