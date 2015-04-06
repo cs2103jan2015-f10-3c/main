@@ -5,6 +5,9 @@ const char PrewrittenData::ALL_COMMANDS_FILE[] = "all_commands.txt";
 const char PrewrittenData::ALL_FEATURES_FILE[] = "all_features.txt";
 const char PrewrittenData::HEADING_TEMPLATE_FILE[] = "heading_template.txt";
 const char PrewrittenData::PATH_FILE[] = "path.txt";
+const char PrewrittenData::LOGGING_MESSAGE_1[] = "Exception is caught in PrewrittenData Class";
+const char PrewrittenData::LOGGING_MESSAGE_2[] = "Exception is thrown from PrewrittenData Class";
+const char PrewrittenData::LOGGING_MESSAGE_3[] = "Heading for storage could not be found";
 
 void PrewrittenData::savePath(std::string inPath){
 	pathName = inPath;
@@ -34,12 +37,12 @@ std::string PrewrittenData::retrieveList(ListType type){
 			} 
 		} else {
 			Logger log;
-			log.logging("Exception is thrown in PrewrittenData");
+			log.logging(LOGGING_MESSAGE_2);
 			throw 2; 
 		}
 	} catch (int errorNo){
 		Logger log;
-		log.logging("Exception is caught in PrewrittenData");
+		log.logging(LOGGING_MESSAGE_1);
 		throw errorNo;
 	}
 	
@@ -59,7 +62,7 @@ void PrewrittenData::retrieveList(ListType type, std::ofstream& out){
 		} 
 	} else {
 		Logger log;
-		log.logging("Heading for Storage could not be found");
+		log.logging(LOGGING_MESSAGE_3);
 	}
 }
 

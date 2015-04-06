@@ -1,6 +1,27 @@
 #include "InternalStoring.h"
 
 
+const char LocalStorage::LOGGING_MESSAGE_1[] = "Exception is caught in LocalStorage Class";
+const char LocalStorage::LOGGING_MESSAGE_2[] = "Esception is thrown from LocalStorage Class";
+const char LocalStorage::LOGGING_MESSAGE_3[] = "LocalStorage is initiated";
+const char LocalStorage::LOGGING_MESSAGE_4[] = "Adding data in storage is succesful";
+const char LocalStorage::LOGGING_MESSAGE_5[] = "Editing data in storage is succesful";
+const char LocalStorage::LOGGING_MESSAGE_6[] = "Clearing data in storage is succesful";
+const char LocalStorage::LOGGING_MESSAGE_7[] = "Deleting data in storage is succesful";
+const char LocalStorage::ADD[] = "add";
+const char LocalStorage::EDIT[] = "edit";
+const char LocalStorage::DELETE_WORD[] = "delete";
+const char LocalStorage::CLEAR[] = "clear";
+const int LocalStorage::TIME_MICRO_DEFAULT = -1;
+const int LocalStorage::TIME_MACRO_DEFAULT = 0;
+const int LocalStorage::TIME_MICRO_ADJUSTMENT = 2359;
+const int LocalStorage::NO_OF_DIGITS = 10;
+const int LocalStorage::LENGTH_OF_PSEDODATE =8;
+const int LocalStorage::ZERO = 0;
+const int LocalStorage::TEN_THOUSAND = 10000;
+const int LocalStorage::ONE_MILLION = 1000000;
+const int LocalStorage::HUNDRED_MILLION = 100000000;
+
 ///////////////////////////////////////
 //Singleton Definition / Implementation
 
@@ -11,7 +32,7 @@ LocalStorage* LocalStorage::getInstance(){
 		instance = new LocalStorage;
 
 		Logger log;
-		log.logging("LocalStorage initiated"); //write in log
+		log.logging(LOGGING_MESSAGE_3); //write in log
 	}
 	return instance;
 }
@@ -45,12 +66,12 @@ std::vector<Data>& LocalStorage::getDataList() {
 
 //clearing all tasks from internal storage
 void LocalStorage::clearDataList(){
-	History::updateLatestCommand("clear"); //store for undo
+	History::updateLatestCommand(CLEAR); //store for undo
 	History::updateLatestVector();
 	dataList.clear();
 
 	Logger log;
-	log.logging("Clearing Data in Storage is succesful"); //log a message
+	log.logging(LOGGING_MESSAGE_6); //log a message
 }
 
 //for add command to update the dataList
@@ -58,7 +79,7 @@ void LocalStorage::clearDataList(){
 //and also automaticallly sort dataList
 void LocalStorage::addData(Data& inData){
 	Logger log;
-	log.logging("adding data"); //log a message
+	log.logging(LOGGING_MESSAGE_4); //log a message
 
 	int uniqueNo = allocateUniqueCode(uniqueCodeStore); //get unique code
 	inData.updateUniqueCode(uniqueNo);// assign unique code to Data
@@ -66,7 +87,7 @@ void LocalStorage::addData(Data& inData){
 	dataList.push_back(inData);
 	sortDataList(); //automatic sorting of list chronologically
 
-	History::updateLatestCommand("add"); //store for undo
+	History::updateLatestCommand(ADD); //store for undo
 	History::updateLatestData(inData);
 }
 
@@ -80,16 +101,16 @@ Data LocalStorage::deleteData(int taskNo){
 	}
 	catch(int errorNo){
 		Logger log;
-		log.logging("Exception is caught in LocalStorage");
+		log.logging(LOGGING_MESSAGE_1);
 		throw errorNo; 
 	}
 
 	int uniqueCode = display->getUniqueCode(taskNo);
 	dataList = deleteDataOfUniqueCode(uniqueCode);
 
-	History::updateLatestCommand("delete"); //store for undo
+	History::updateLatestCommand(DELETE_WORD); //store for undo
 	Logger log;
-	log.logging("delete data in storage is succesful");
+	log.logging(LOGGING_MESSAGE_7);
 	return display->getData(taskNo);
 }
 
@@ -116,7 +137,7 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	}
 	catch (int errorNo){
 		Logger log;
-		log.logging("Exception is caught in LocalStorage");
+		log.logging(LOGGING_MESSAGE_2);
 		throw errorNo;
 	}
 
@@ -128,9 +149,9 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	deleteData(taskNo);
 	addData(dataToEdit);
 
-	History::updateLatestCommand("edit"); //Store for undo
+	History::updateLatestCommand(EDIT); //Store for undo
 	Logger log;
-	log.logging("edit data in storage is succesful");
+	log.logging(LOGGING_MESSAGE_5);
 	
 	return display->getData(taskNo);
 }
@@ -138,11 +159,11 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 std::string LocalStorage::checkPathName(){
 	PrewrittenData prewrittenData;
 	std::string directory;
-	if (prewrittenData.getPath() !=""){
+	if (prewrittenData.getPath() != EMPTY_STRING){
 		directory = prewrittenData.getPath();
 		return directory;
 	} else {
-		return "";
+		return EMPTY_STRING;
 	}
 }
 
@@ -160,9 +181,9 @@ void LocalStorage::checkTaskNoValidity(int taskNo){
 	DisplayStorage *display = DisplayStorage::getInstance();
 	int listSize = display->getListSize();
 
-	if(taskNo <= 0 || taskNo > listSize){
+	if(taskNo <= ZERO || taskNo > listSize){
 		Logger log;
-		log.logging("Exception is thrown from LocalStroage");
+		log.logging(LOGGING_MESSAGE_2);
 		throw 1;
 	} 
 }
@@ -171,7 +192,7 @@ void LocalStorage::checkTaskNoValidity(int taskNo){
 //delete data that have a certain unique code
 std::vector<Data> LocalStorage::deleteDataOfUniqueCode(int uniqueCode){
 	std::vector<Data> listAfterDeletion;
-	for(int i = 0; i != dataList.size(); i++){
+	for(int i = ZERO; i != dataList.size(); i++){
 		if(uniqueCode != dataList[i].getUniqueCode()){
 				listAfterDeletion.push_back(dataList[i]);
 		} else {
@@ -188,14 +209,14 @@ std::vector<Data> LocalStorage::deleteDataOfUniqueCode(int uniqueCode){
 long long LocalStorage::allocateTimeMacroToPsedoDate(TimeMacro time){
 	long long pTime;
 	long long tempMonth;
-	long long tempDate = 10000;
+	long long tempDate = TEN_THOUSAND;
 
 	//Allocate all components systematically to pTime
 	//addition is done slowly to prevent memory loss
 	//from changing type;
-	pTime= 100000000;
+	pTime= HUNDRED_MILLION;
 	pTime= time.getYear()*pTime;
-	tempMonth = 1000000;
+	tempMonth = ONE_MILLION;
 	tempMonth = tempMonth * time.getMonth();
 	pTime = pTime + tempMonth;
 	tempDate = tempDate * time.getDate();
@@ -211,13 +232,13 @@ long long LocalStorage::allocateTimeMicroToPsedoDate(long long time, TimeMicro t
 	int min = tMicro.getMin();
 
 	//qualify default hour
-	if(hour == -1){
-		hour = 0;
+	if(hour == TIME_MICRO_DEFAULT){
+		hour = ZERO;
 		}
 	
 	//qualify default min
-	if(min == -1){
-		min = 0;
+	if(min == TIME_MICRO_DEFAULT){
+		min =ZERO;
 	}
 
 	time += hour*100 + min; //update psedoData
@@ -234,18 +255,18 @@ std::vector<long long> LocalStorage::searchRelevantDates(long long pStartTime, l
 	Data copyTask;
 
 	//find first relevant date
-	for(int i = 0; marker == false && i != dataList.size(); i++){
+	for(int i = ZERO; marker == false && i != dataList.size(); i++){
 		copyTask = dataList[i];
 		time = copyTask.getPsedoDate();
-		if(time >= pStartTime && time <= pEndTime + 2359){
+		if(time >= pStartTime && time <= pEndTime + TIME_MICRO_ADJUSTMENT){
 			marker = true;
 			saveNo.push_back(i);
 		}
 	}
 
 	//find last relevant date
-	for(int i = dataList.size()-1; marker == true && i != 0; i--){
-		if(dataList[i].getPsedoDate() <= pEndTime+2359 ) {
+	for(int i = dataList.size()-1; marker == true && i != ZERO; i--){
+		if(dataList[i].getPsedoDate() <= pEndTime + TIME_MICRO_ADJUSTMENT ) {
 			marker = false;
 			saveNo.push_back(i);
 		}
@@ -256,7 +277,7 @@ std::vector<long long> LocalStorage::searchRelevantDates(long long pStartTime, l
 //helper method for deleteData and editData
 Data LocalStorage::getData(int uniqueNo){
 	Data desiredTask;
-	for(int i = 0; i != dataList.size(); i++){
+	for(int i = ZERO; i != dataList.size(); i++){
 		if(dataList[i].getUniqueCode() == uniqueNo){
 			desiredTask = dataList[i];
 		}
@@ -279,14 +300,14 @@ int LocalStorage::allocateUniqueCode(int& uniqueNo){
 void LocalStorage::sortDataList(){
 	int i;
 	int power = 1;
-	std::queue<Data> digitQueue[10];
+	std::queue<Data> digitQueue[NO_OF_DIGITS];
 	
 	allocatePsedoDate();
 
-	for (i=0; i<8; i++) {
+	for (i=0; i < LENGTH_OF_PSEDODATE; i++) {
 		radixDistribute(digitQueue, power);
 		radixCollect(digitQueue);
-		power *= 10;
+		power *= NO_OF_DIGITS;
 	}
 
 }
@@ -298,7 +319,7 @@ void LocalStorage::radixDistribute(std::queue<Data> digitQ[], int power){
 
 	for(int i = 0; i != dataList.size(); i++){
 		long long sDate = dataList[i].getPsedoDate();
-		digit = (sDate / power ) % 10; //extract digit
+		digit = (sDate / power ) % NO_OF_DIGITS; //extract digit
 		digitQ[digit].push(dataList[i]);
 
 	}
@@ -310,7 +331,7 @@ void LocalStorage::radixCollect(std::queue<Data> digitQ[]){
 	int digit;
 	int i=0;
 
-	for(digit = 0 ; digit < 10; digit++){
+	for(digit = 0 ; digit < NO_OF_DIGITS; digit++){
 		while (!digitQ[digit].empty()) {
 			dataList[i] = digitQ[digit].front();
 			digitQ[digit].pop();
@@ -349,38 +370,38 @@ Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
 	}
 
 	//update TimeMacro begin when there is a change
-	if (updatedData.getTimeMacroBeg().getDate() != 0 
-		&& updatedData.getTimeMacroBeg().getMonth() != 0
+	if (updatedData.getTimeMacroBeg().getDate() != TIME_MACRO_DEFAULT 
+		&& updatedData.getTimeMacroBeg().getMonth() != TIME_MACRO_DEFAULT
 		&& updatedData.getTimeMacroBeg().getYear() != 0) {
 			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
 	}
 
 	//update TimeMacro End when there is a change
-	if (updatedData.getTimeMacroEnd().getDate() != 0 
-		&& updatedData.getTimeMacroEnd().getMonth() != 0
-		&& updatedData.getTimeMacroEnd().getYear() != 0) {
+	if (updatedData.getTimeMacroEnd().getDate() != TIME_MACRO_DEFAULT 
+		&& updatedData.getTimeMacroEnd().getMonth() != TIME_MACRO_DEFAULT
+		&& updatedData.getTimeMacroEnd().getYear() != TIME_MACRO_DEFAULT) {
 			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
 	}
 
 	//update TimeMicro begin when there is a change
-	if (updatedData.getTimeMicroBeg().getHour() != -1
-		&& updatedData.getTimeMicroBeg().getMin() != -1) {
+	if (updatedData.getTimeMicroBeg().getHour() != TIME_MICRO_DEFAULT
+		&& updatedData.getTimeMicroBeg().getMin() != TIME_MICRO_DEFAULT) {
 			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
 			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
 	}
 
 	//update AlarmMacro when there is a change
 	//alarm is not a supported feature of the software at submission time
-	if (updatedData.getAlarmMacro().getDate() != 0 
-		&& updatedData.getAlarmMacro().getMonth() != 0
-		&& updatedData.getAlarmMacro().getYear() != 0) {
+	if (updatedData.getAlarmMacro().getDate() != TIME_MACRO_DEFAULT 
+		&& updatedData.getAlarmMacro().getMonth() != TIME_MACRO_DEFAULT
+		&& updatedData.getAlarmMacro().getYear() != TIME_MACRO_DEFAULT) {
 			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
 	}
 	
 	//update AlarmMicro when there is a change
 	//alarm is not a supported feature of the software at submission time
-	if (updatedData.getAlarmMicro().getHour() != -1
-		&& updatedData.getAlarmMicro().getMin() != -1) {
+	if (updatedData.getAlarmMicro().getHour() != TIME_MICRO_DEFAULT
+		&& updatedData.getAlarmMicro().getMin() != TIME_MICRO_DEFAULT) {
 			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
 	}
 

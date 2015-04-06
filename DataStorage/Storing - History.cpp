@@ -7,6 +7,9 @@ std::string History::latestCommand;
 Data History::latestData;
 std::vector<Data> History::latestVector;
 
+const char History::LOGGING_MESSAGE_1[] = "latestCommand is update";
+const char History::LOGGING_MESSAGE_2[] = "latestData is updated";
+const char History::LOGGING_MESSAGE_3[] = "latestVector is updated";
 //End of Definition
 ////////////////////////////////////////////
 

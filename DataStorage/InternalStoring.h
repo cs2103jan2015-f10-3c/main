@@ -23,7 +23,35 @@ typedef enum TimeType {begin, end, alarm};
 class LocalStorage {
 private:
 	//Magic String declarations
+	//defined in Storing - local.cpp
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+	static const char LOGGING_MESSAGE_4[100];
+	static const char LOGGING_MESSAGE_5[100];
+	static const char LOGGING_MESSAGE_6[100];
+	static const char LOGGING_MESSAGE_7[100];
+	static const char ADD[10];
+	static const char EDIT[10];
+	static const char DELETE_WORD[10];
+	static const char CLEAR[10];
+	static const int TIME_MICRO_DEFAULT;
+	static const int TIME_MACRO_DEFAULT;
+	static const int TIME_MICRO_ADJUSTMENT;
+	static const int NO_OF_DIGITS;
+	static const int LENGTH_OF_PSEDODATE;
+	static const int ZERO;
+	static const int TEN_THOUSAND;
+	static const int ONE_MILLION;
+	static const int HUNDRED_MILLION;
+	
+	//defined in Storing - SaveLoad.cpp
 	static const char DEFAULT_SAVE_DIRECTORY[100];
+	static const char SLASH[10];
+	static const char TAB[10];
+	static const char TRUE_STRING[10];
+	static const char FALSE_STRING[10];
+	static const char EMPTY_STRING[10];
 
 	//Singleton instance and private constructor
 	static LocalStorage* instance;
@@ -90,6 +118,10 @@ public:
 //as it caused unsolvable bug
 class History {
 private:
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+
 	//private attribute
 	static std::string latestCommand;
 	static Data latestData;
@@ -155,6 +187,9 @@ private:
 	static const char ALL_FEATURES_FILE[100];
 	static const char HEADING_TEMPLATE_FILE[100];
 	static const char PATH_FILE[100];
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
 
 	std::string retrievedList;
 	std::string txtFile;

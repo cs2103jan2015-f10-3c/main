@@ -8,6 +8,11 @@
 
 //Magic string definition
 const char LocalStorage::DEFAULT_SAVE_DIRECTORY[] = "save.txt";
+const char LocalStorage::SLASH[] = "/";
+const char LocalStorage::TAB[] = "\t";
+const char LocalStorage::TRUE_STRING[] = "true";
+const char LocalStorage::FALSE_STRING[] = "false";
+const char LocalStorage::EMPTY_STRING[] = "";
 
 //API for loading Data from txt file
 void LocalStorage::loadData(bool& status, std::string& directory){
@@ -53,7 +58,7 @@ bool LocalStorage::directoryCheck(std::ofstream& out){
 	try{
 		if(!out.is_open()){
 			Logger log;
-			log.logging("Exception is thrown in LocalStorage");
+			log.logging(LOGGING_MESSAGE_2);
 			throw false;
 		} else {
 			throw true;
@@ -61,7 +66,7 @@ bool LocalStorage::directoryCheck(std::ofstream& out){
 	}
 	catch (const bool status) {
 		Logger log;
-		log.logging("Exception is caught in LocalStorage");
+		log.logging(LOGGING_MESSAGE_1);
 		return status;
 	}
 }
@@ -69,8 +74,8 @@ bool LocalStorage::directoryCheck(std::ofstream& out){
 //format the input directory from user
 //so that it can be read by all compiler
 void LocalStorage::adjustFormat(std::string& inputDirectory){
-	if (inputDirectory != ""){
-		inputDirectory += '/';
+	if (inputDirectory != EMPTY_STRING){
+		inputDirectory += SLASH;
 	}
 	inputDirectory += DEFAULT_SAVE_DIRECTORY;
 }
@@ -86,7 +91,7 @@ bool LocalStorage::saveData(std::string& directory){
 	status = directoryCheck(out);
 
 	if(status){
-		out << uniqueCodeStore <<'\n';
+		out << uniqueCodeStore << std::endl;
  		 	
 		writeHeading(directory, out); //write Heading for readability
 
@@ -104,18 +109,18 @@ bool LocalStorage::saveData(std::string& directory){
 			//convert boolean into string
 			std::string isDone;
 			if(dataList[i].getCompleteStatus() == true){
-				isDone = "true";
+				isDone = TRUE_STRING;
 			} else {
-				isDone = "false";
+				isDone = FALSE_STRING;
 			}
 
 			//save into file
 			out << dataList[i].getUniqueCode()
-				<< '\t' << tMacroBeg
-				<< "\t\t" << tMacroEnd << "\t\t" << tMicroBeg << "\t\t" << tMicroEnd
-				<< "\t\t" << isDone << "\t\t" << dataList[i].getPriority() 
-				<< "\t\t" << alarmMacro << "\t\t" << alarmMicro << "\t\t"
-				<< dataList[i].getDesc() << '\n';
+				<< TAB << tMacroBeg
+				<< TAB << TAB << tMacroEnd << TAB << TAB << tMicroBeg << TAB << TAB << tMicroEnd
+				<< TAB << TAB << isDone << TAB << TAB << dataList[i].getPriority() 
+				<< TAB << TAB << alarmMacro << TAB << TAB << alarmMicro << TAB << TAB
+				<< dataList[i].getDesc() << std::endl;
 		}
 	}	
 	return status;
@@ -173,10 +178,10 @@ void LocalStorage::parseLoad(std::string strData, int i, Data& data){
 	data.updateAlarmMicro(inAlarmMicro);
 
 	//update completeStatus for Data object
-	if(tempCompleteStatus == "true"){
+	if(tempCompleteStatus == TRUE_STRING){
 		data.updateCompleteStatus(true);
 	} else {
-		if (tempCompleteStatus == "false"){
+		if (tempCompleteStatus == FALSE_STRING){
 			data.updateCompleteStatus(false);
 		}
 	}
@@ -220,7 +225,7 @@ TimeMicro LocalStorage::microParser(std::string tempMicro){
 //helper method for MicroParser and Macro Parser to get individual token
 std::string LocalStorage::tokenizerSlash(std::string& str){
 	size_t start = 0;
-	size_t end = str.find_first_of("/");
+	size_t end = str.find_first_of(SLASH);
 	std::string firstToken = str.substr(start, end - start); //get the first token
 
 	//delete the first token from remaining string
@@ -231,7 +236,7 @@ std::string LocalStorage::tokenizerSlash(std::string& str){
 
 //helper method for loadParser to get individual token
 std::string LocalStorage::tokenizerSpace(std::string& str){
-	size_t start = str.find_first_not_of('\t');
+	size_t start = str.find_first_not_of(TAB);
 	
 	//if there is more than one \t
 	if(start != 0){
@@ -239,7 +244,7 @@ std::string LocalStorage::tokenizerSpace(std::string& str){
 		start =0;
 	}
 
-	size_t end = str.find_first_of('\t');
+	size_t end = str.find_first_of(TAB);
 	std::string firstToken = str.substr(start, end - start); //get the first token
 
 	//delete the first token from the remaining string
@@ -261,23 +266,23 @@ std::string LocalStorage::convertTimeMacroToString(TimeType type, int i){
 	
 	switch(type){
 	case begin :
-		tMacro = dataList[i].getTimeMacroBeg().getDay() + '/'
-		+ std::to_string(dataList[i].getTimeMacroBeg().getDate()) + '/'
-		+ std::to_string(dataList[i].getTimeMacroBeg().getMonth()) + '/'
+		tMacro = dataList[i].getTimeMacroBeg().getDay() + SLASH
+		+ std::to_string(dataList[i].getTimeMacroBeg().getDate()) + SLASH
+		+ std::to_string(dataList[i].getTimeMacroBeg().getMonth()) + SLASH
 		+ std::to_string(dataList[i].getTimeMacroBeg().getYear());
 		break;
 
 	case end :
-		tMacro = dataList[i].getTimeMacroEnd().getDay() + '/'
-		+ std::to_string(dataList[i].getTimeMacroEnd().getDate()) + '/'
-		+ std::to_string(dataList[i].getTimeMacroEnd().getMonth()) + '/'
+		tMacro = dataList[i].getTimeMacroEnd().getDay() + SLASH
+		+ std::to_string(dataList[i].getTimeMacroEnd().getDate()) + SLASH
+		+ std::to_string(dataList[i].getTimeMacroEnd().getMonth()) + SLASH
 		+ std::to_string(dataList[i].getTimeMacroEnd().getYear());
 		break;
 
 	case alarm :
-		tMacro = dataList[i].getAlarmMacro().getDay() + '/'
-		+ std::to_string(dataList[i].getAlarmMacro().getDate()) + '/'
-		+ std::to_string(dataList[i].getAlarmMacro().getMonth()) + '/'
+		tMacro = dataList[i].getAlarmMacro().getDay() + SLASH
+		+ std::to_string(dataList[i].getAlarmMacro().getDate()) + SLASH
+		+ std::to_string(dataList[i].getAlarmMacro().getMonth()) + SLASH
 		+ std::to_string(dataList[i].getAlarmMacro().getYear());
 		break;
 	}
@@ -292,17 +297,17 @@ std::string LocalStorage::convertTimeMicroToString(TimeType type, int i){
 
 	switch(type){
 	case begin :
-		tMicro = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + '/'
+		tMicro = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + SLASH
 		+ std::to_string(dataList[i].getTimeMicroBeg().getMin());
 		break;
 
 	case (end) :
-		tMicro = std::to_string(dataList[i].getTimeMicroEnd().getHour()) + '/'
+		tMicro = std::to_string(dataList[i].getTimeMicroEnd().getHour()) + SLASH
 		+ std::to_string(dataList[i].getTimeMicroEnd().getMin());
 		break;
 
 	case (alarm) :
-		tMicro = std::to_string(dataList[i].getAlarmMicro().getHour()) + '/'
+		tMicro = std::to_string(dataList[i].getAlarmMicro().getHour()) + SLASH
 		+ std::to_string(dataList[i].getAlarmMicro().getMin());
 		break;
 	}
