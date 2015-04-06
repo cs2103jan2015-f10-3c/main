@@ -29,5 +29,8 @@
     <ClCompile Include="Commons - TimeMacro.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Commons - Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
