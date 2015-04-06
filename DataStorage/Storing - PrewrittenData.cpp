@@ -7,7 +7,7 @@ const char PrewrittenData::HEADING_TEMPLATE_FILE[] = "heading_template.txt";
 
 
 //API for Retrieve list from .txt file
-std::stringstream& PrewrittenData::retrieveList(ListType type){
+std::string PrewrittenData::retrieveList(ListType type){
 	std::string list;
 	std::string txtFile;
 	std::stringstream ss;
@@ -25,7 +25,8 @@ std::stringstream& PrewrittenData::retrieveList(ListType type){
 		ss << "List could not be found"; 
 	}
 	
-	return ss;
+	list = ss.str();
+	return list;
 }
 
 void PrewrittenData::retrieveList(ListType type, std::ofstream& out){

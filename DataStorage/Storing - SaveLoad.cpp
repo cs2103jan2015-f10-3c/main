@@ -172,6 +172,14 @@ void LocalStorage::parseLoad(std::string strData, int i, Data& data){
 	TimeMicro inAlarmMicro = microParser(tempAlarmMicro);
 	data.updateAlarmMicro(inAlarmMicro);
 
+	if(tempCompleteStatus == "true"){
+		data.updateCompleteStatus(true);
+	} else {
+		if (tempCompleteStatus == "false"){
+			data.updateCompleteStatus(false);
+		}
+	}
+
 }
 
 //helper method to parseLoad to parse string and convert to TimeMacro

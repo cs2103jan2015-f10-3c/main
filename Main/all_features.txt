@@ -44,10 +44,12 @@ Some format we support:
 - show tomorrow
 - show this week
 - show this month
+- show done
+- show float
 
 -------------------------------------------------------------------------
 5. Search
-to search task by a single keyword from all the description
+to search task by exact sentence, phrase or keyword from all tasks' description
 
 Format supported:
 - search Keyword
@@ -68,5 +70,12 @@ Completed task can be display through "show done" (Hint: see Show)
 Format Supported:
 - done #
 * # refers to the number on your displayed list
+
+-------------------------------------------------------------------------
+7. Clear
+to clear all tasks from storage
+
+Format Supported:
+- clear
 
 -------------------------------end of all commands-----------------------

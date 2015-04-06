@@ -252,7 +252,7 @@ string DataProcessor::getEditMessage(Data uneditedTask){
 	assert (uneditedTask.getDesc() != "\0");
 	string uneditedTaskString;
 	string editMessage;
-	uneditedTaskString = convertDataObjectToString(uneditedTask);
+	uneditedTaskString = convertDataObjectToLine(uneditedTask);
 	ostringstream out;
 	out << uneditedTaskString << " ";
 	editMessage = out.str(); 
