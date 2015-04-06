@@ -54,6 +54,10 @@ private:
 	static const char AGENDA_FOR_MESSAGE[100];
 	static const char NO_FLOAT_TASK_MESSAGE[100];
 	static const char FLOAT_TASK_MESSAGE[100];
+	static const char PATH_COMMAND[100];
+	static const char LOAD_COMMAND[100];
+	static const char PATH_MESSAGE[100];
+	static const char REINPUT_PATH[100];
 
 	static int undoCount;
 

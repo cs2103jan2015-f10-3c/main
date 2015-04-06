@@ -15,6 +15,8 @@ const char Logic::EDIT_COMMAND[] = "edit";
 const char Logic::UNDO_COMMAND[] = "undo";
 const char Logic::UNDONE_COMMAND[] = "undone";
 const char Logic::HELP_REQUEST[] = "help";
+const char Logic::PATH_COMMAND[] = "path";
+const char Logic::LOAD_COMMAND[] = "load";
 const char Logic::EXIT_COMMAND[] = "exit";
 const char Logic::EMPTY_RESPONSE[] = "";
 const char Logic::IVALID_COMMAND_MESSAGE[] = "Invalid Command";
@@ -38,6 +40,8 @@ const char Logic::NO_TASK_ON_MESSAGE[] = "You have no task on ";
 const char Logic::AGENDA_FOR_MESSAGE[] = "Your agenda for ";
 const char Logic::NO_FLOAT_TASK_MESSAGE[] = "You have no task with unspecified date";
 const char Logic::FLOAT_TASK_MESSAGE[] = "Your tasks with unspecified date are as follows: ";
+const char Logic::PATH_MESSAGE[] = "New user path: ";
+const char Logic::REINPUT_PATH[] = "Please reinput path ";
 
 string Feedback::display;
 string Feedback::response;
@@ -202,7 +206,7 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		catch (string errorMessage) {
 			returnResponse = errorMessage;
 		}
-		}else if(command == UNDONE_COMMAND){
+	}else if(command == UNDONE_COMMAND){
 		try {
 			returnResponse = dataProcessor.unDone(taskNo);
 			dataProcessor.clearDisplayList();
@@ -231,6 +235,14 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		returnDisplay = dataProcessor.showFeatures();
 	}else if(command == HELP_REQUEST){
 		returnResponse = HELP_MESSAGE;
+	}else if(command == PATH_COMMAND){
+		if(dataProcessor.savePath(directory)){
+			ostringstream out;
+			out << PATH_MESSAGE << directory <<endl ;
+			returnResponse = out.str();
+		} else{
+			returnResponse = REINPUT_PATH;
+		}
 	}
 
 }
@@ -246,7 +258,7 @@ void Logic::updateUndoCount(string command){
 }
 
 void Logic::checkCommand(string command){
-	if(command != ADD_COMMAND && command != DELETE_COMMAND && command != EDIT_COMMAND && command != CLEAR_COMMAND && command != DONE_COMMAND){
+	if(command != ADD_COMMAND && command != DELETE_COMMAND && command != EDIT_COMMAND && command != CLEAR_COMMAND && command != DONE_COMMAND && command != UNDONE_COMMAND){
 		++undoCount;
 	}
 }
@@ -267,17 +279,16 @@ void Logic::executeInput(string input){
 	string returnDisplay;
 	
 	if(errorMessage == EMPTY_RESPONSE){		
+		
 		updateUndoCount(command);
+		
 		if(undoCount > 1){
 			returnResponse = CANNOT_UNDO_MESSAGE;
 		} else {
 			executeCommand(returnDisplay, returnResponse, command, directory, task, taskNo, currentTime);
 		}
-		checkCommand(command);
 
-		if(command == SHOW_COMMAND || command == SHOW_COMMANDS || command == SHOW_DONE || command == SHOW_FLOAT || command == SHOW_FEATURES || command == SEARCH_COMMAND){
-			++undoCount;
-		}
+		checkCommand(command);
 
 	} else {
 		returnResponse = errorMessage;
