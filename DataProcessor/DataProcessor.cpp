@@ -46,7 +46,12 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
+	try{
 	out << convertDataObjectToLine(storing.deleteData(number)) << DELETE_MESSAGE << endl;
+	}
+	catch(string errorMessage){
+		throw errorMessage;
+	}
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -98,8 +103,12 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	}
 	Data	 uneditedTask;
 	outData << "start editing data";
-	
-	uneditedTask = storing.changeData(taskNumber, task);
+	try{
+		uneditedTask = storing.changeData(taskNumber, task);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 	string	 editMessage = getEditMessage(uneditedTask);
 	
 	outData << "edit data is done";
@@ -190,8 +199,13 @@ string DataProcessor::searchTask(string keyword){
 //task to done
 string DataProcessor::markDone(int taskNo){
 	Storing storing;
-
-	Data	targetData = storing.getData(taskNo);
+	Data targetData;
+	try{
+ 	targetData = storing.getData(taskNo);		 	
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 			targetData.updateCompleteStatus(true);
 			storing.changeData(taskNo, targetData);
 	string	doneMessage = getDoneMessage(targetData);

@@ -152,10 +152,15 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			returnDisplay = displayIfEmpty(returnDisplay, currentTime, task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		}
 	}else if(command == DELETE_COMMAND){
-		returnResponse = dataProcessor.deleteTask(taskNo);
-		dataProcessor.clearDisplayList();
-		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
-	}else if(command == CLEAR_COMMAND){
+		try{
+			returnResponse = dataProcessor.deleteTask(taskNo);
+			dataProcessor.clearDisplayList();
+			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		}		
+		catch (string errorMessage){
+			returnResponse = errorMessage;
+		}
+		}else if(command == CLEAR_COMMAND){
 		dataProcessor.clearDisplayList();
 		returnResponse = dataProcessor.clearTask();
 	}else if(command == SEARCH_COMMAND){
@@ -181,15 +186,23 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			//std::cout << e.what();
 			returnResponse = e.what();
 		}
+		catch (string errorMessage){
+			returnResponse = errorMessage;
+		}
 	}else if(command == UNDO_COMMAND){
 			dataProcessor.clearDisplayList();
 			returnResponse = dataProcessor.executeUndo();
 			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == DONE_COMMAND){
-		returnResponse = dataProcessor.markDone(taskNo);
-		dataProcessor.clearDisplayList();
-		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
-	}else if(command == UNDONE_COMMAND){
+		try{
+			returnResponse = dataProcessor.markDone(taskNo);
+			dataProcessor.clearDisplayList();
+			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		}
+		catch (string errorMessage) {
+			returnResponse = errorMessage;
+		}
+		}else if(command == UNDONE_COMMAND){
 		returnResponse = dataProcessor.unDone(taskNo);
 		dataProcessor.clearDisplayList();
 		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
