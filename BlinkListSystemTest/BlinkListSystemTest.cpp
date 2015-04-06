@@ -379,7 +379,7 @@ namespace BlinkListSystemTest
 
 
 
-		//@Yang Xiaozhou A0113538J
+		//@author A0113538J
 		//For command "show"
 		TEST_METHOD(show_today_test)			
 		{

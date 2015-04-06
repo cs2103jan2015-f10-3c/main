@@ -9,21 +9,26 @@ edit # DD MMM HH:MM Description
 3. Delete
 delete #
 
-4. Show
+4. Clear
+clear
+
+5. Show
 show today
 show tomorrow
+show this week
 show this month
+show DD/MM/YYYY (show a particular day, date format may vary)
+show done
+show float
 
-5. Search
+6. Search
 search Keyword
 
-6. Undo 
+7. Undo 
 undo
 
-7. Done
+8. Done
 done #
-
-8. Clear
 
 * # refers to the number on your displayed list
 

@@ -4,19 +4,21 @@
 #include "DataProcessor.h"
 
 
-const char DataProcessor::ADD_MESSAGE[] = " is added";
-const char DataProcessor::DELETE_MESSAGE[] = " is deleted from BlinkList";
-const char DataProcessor::CLEAR_MESSAGE[] = "all contents are cleared";
-const char DataProcessor::EDIT_MESSAGE[] = " is edited";
-const char DataProcessor::UNDO_MESSAGE[] = "You have undone your operation";
-const char DataProcessor::DONE_MESSAGE[] = " is done";
-const char DataProcessor::UNDONE_MESSAGE[] = " is reopened";
-const char DataProcessor::ADD_COMMAND[] = "add";
-const char DataProcessor::DELETE_COMMAND[] = "delete";
-const char DataProcessor::SHOW_COMMAND[] = "show";
-const char DataProcessor::CLEAR_COMMAND[] = "clear";
-const char DataProcessor::EDIT_COMMAND[] = "edit";
-const char DataProcessor::NO_DATE[] = "undefined";
+const char DataProcessor::ADD_MESSAGE[]		= " is added";
+const char DataProcessor::DELETE_MESSAGE[]  = " is deleted from BlinkList";
+const char DataProcessor::CLEAR_MESSAGE[]	= "all contents are cleared";
+const char DataProcessor::EDIT_MESSAGE[]	= " is edited";
+const char DataProcessor::UNDO_MESSAGE[]	= "You have undone your operation";
+const char DataProcessor::DONE_MESSAGE[]	= " is done";
+const char DataProcessor::UNDONE_MESSAGE[]	= " is reopened";
+const char DataProcessor::ADD_COMMAND[]		= "add";
+const char DataProcessor::DELETE_COMMAND[]	= "delete";
+const char DataProcessor::SHOW_COMMAND[]	= "show";
+const char DataProcessor::CLEAR_COMMAND[]	= "clear";
+const char DataProcessor::DONE_COMMAND[]	= "done";
+const char DataProcessor::UNDONE_COMMAND[]	= "undone";
+const char DataProcessor::EDIT_COMMAND[]	= "edit";
+const char DataProcessor::NO_DATE[]			= "undefined";
 
 const unsigned int DataProcessor::TIME_WIDTH	= 16;
 const unsigned int DataProcessor::TIME_10		= 10;
@@ -26,7 +28,7 @@ const unsigned int DataProcessor::DAY_WIDTH		= 13;
 const unsigned int DataProcessor::WINDOW_WIDTH	= 81;
 
 const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[] = "Exception:invalid tasknumber";
-const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[] = "Exception:empty keyword entere";
+const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[]		 = "Exception:empty keyword entere";
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
@@ -87,22 +89,21 @@ void DataProcessor::setLatestData(Data data){
 }
 
 
-//@Yang Xiaozhou A0113538J
+//@author A0113538J
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
 //the updated information about the task.
 //The return string is the successfuly message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
-	ofstream outData;
 	Storing  storing;
-	outData.open("log.txt");
+	Logger	 logger;
 	if(taskNumber <= 0){
-		outData << EXCEPTION_INVALID_TASKNUMBER;
+		logger.logging(EXCEPTION_INVALID_TASKNUMBER);
 		throw std::exception(EXCEPTION_INVALID_TASKNUMBER);
 	}
 	Data	 uneditedTask;
-	outData << "start editing data";
+	logger.logging("start editing data");
 	try{
 		uneditedTask = storing.changeData(taskNumber, task);
 	}
@@ -111,7 +112,7 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	}
 	string	 editMessage = getEditMessage(uneditedTask);
 	
-	outData << "edit data is done";
+	logger.logging("edit data is done");
 	setLatestData(uneditedTask);
 	
 	return	 editMessage;
@@ -154,6 +155,14 @@ string DataProcessor::executeUndo(){
 	else if (latestCommand == DELETE_COMMAND){
 		storing.addData(latestData);
 	}
+	else if (latestCommand == DONE_COMMAND){
+		latestData.updateCompleteStatus(false);
+		storing.changeData(latestData.getTaskNo(), latestData);
+	}
+	else if (latestCommand == UNDONE_COMMAND){
+		latestData.updateCompleteStatus(true);
+		storing.changeData(latestData.getTaskNo(), latestData);
+	}
 	else if (latestCommand == EDIT_COMMAND || latestCommand == CLEAR_COMMAND){
 		undoEditOrClear(storing, latestVector);
 	}
@@ -177,18 +186,16 @@ void DataProcessor::undoEditOrClear(Storing & storing, vector<Data> & latestVect
 //This function reads in the desired keyword to be searched in the current
 //task list, all tasks with description containing the keyword will be returned
 string DataProcessor::searchTask(string keyword){
-	ofstream	 outData;
-	outData.open("log.txt");
+	Logger logger;
 	if(keyword.size() == 0){
-		outData << EXCEPTION_EMPTY_KEYWORD;
+		logger.logging(EXCEPTION_EMPTY_KEYWORD);
 		throw std::exception(EXCEPTION_EMPTY_KEYWORD);
 	}
 	
 	Storing		 storing;
 	storing.clearDisplayList();
 	
-	//logging
-	outData << "update current displayList to display matched tasks";
+	logger.logging("update current displayList to display matched tasks");
 	vector<Data> returnTaskList = storing.displaySearch(keyword);
 
 	string		 returnTaskListString = convertTaskListToString(returnTaskList);
@@ -204,20 +211,20 @@ string DataProcessor::markDone(int taskNo){
 	Storing storing;
 	Data targetData;
 	try{
- 	targetData = storing.getData(taskNo);		 	
+ 		targetData = storing.getData(taskNo);		 	
 	}
 	catch (string errorMessage){
 		throw errorMessage;
 	}
-			targetData.updateCompleteStatus(true);
-			storing.changeData(taskNo, targetData);
+	targetData.updateCompleteStatus(true);
+	storing.changeData(taskNo, targetData);
 	string	doneMessage = getDoneMessage(targetData);
 
 	return doneMessage;
 }
 
 string DataProcessor::getDoneMessage(Data targetData){
-	string doneMessage = convertDataObjectToLine(targetData) + DONE_MESSAGE;
+	string doneMessage = convertDataObjectToLine(targetData) + DONE_MESSAGE + "\n";
 	return doneMessage;
 }
 
@@ -229,13 +236,13 @@ string DataProcessor::unDone(int taskNo){
 	Data targetData;
 
 	try{
-	targetData = storing.getData(taskNo);
+		targetData = storing.getData(taskNo);
 	}
 	catch (string errorMessage){
 		throw errorMessage;
 	}
-			targetData.updateCompleteStatus(false);
-			storing.changeData(taskNo, targetData);
+	targetData.updateCompleteStatus(false);
+	storing.changeData(taskNo, targetData);
 	string	undoneMessage = getUndoneMessage(targetData);
 	setLatestData(targetData);
 	return	undoneMessage;
@@ -278,6 +285,33 @@ string DataProcessor::showFeatures(){
 	Storing		storing;
 	string		featureList = storing.retrieveFeatureList();
 	return		featureList;
+}
+
+//This function passes the save 
+//file path to DataSotrage
+bool DataProcessor::savePath(string path){
+	Storing storing;
+	if(storing.saveUserPathName(path)){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+//This function ask DataStorage
+//to check whether there is 
+//an existing path for saving file
+bool DataProcessor::checkPathExistence(){
+	Storing storing;
+	try{
+		if(storing.findPathName()){
+			return true;
+		}
+	}
+	catch(string errorMessage){
+		throw(errorMessage);
+	}
 }
 
 //This function reads in a Data object and convert it into a string

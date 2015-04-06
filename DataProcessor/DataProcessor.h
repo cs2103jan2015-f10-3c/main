@@ -30,6 +30,8 @@ private:
 	static const char SHOW_COMMAND[100];
 	static const char CLEAR_COMMAND[100];
 	static const char EDIT_COMMAND[100];
+	static const char DONE_COMMAND[100];
+	static const char UNDONE_COMMAND[100];
 	static const char NO_DATE[100];
 
 	static const unsigned int TIME_WIDTH;
@@ -66,9 +68,9 @@ public:
 	static void loadData(bool& status);
 	static void clearDisplayList();
 	static void undoEditOrClear(Storing & storing, vector<Data> & latestVector);
-	static void getTimeObject(TimeMacro & timeMacroBeg,TimeMicro & timeMicroBeg,
-							  TimeMicro & timeMicroEnd, Data task);
-
+	static void getTimeObject(TimeMacro & timeMacroBeg,TimeMicro & timeMicroBeg, TimeMicro & timeMicroEnd, Data task);
+	static bool savePath(string path);
+	static bool checkPathExistence();
 	
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
