@@ -214,7 +214,7 @@ string DataProcessor::unDone(int taskNo){
 			targetData.updateCompleteStatus(false);
 			storing.changeData(taskNo, targetData);
 	string	undoneMessage = getUndoneMessage(targetData);
-	
+	setLatestData(targetData);
 	return	undoneMessage;
 }
 

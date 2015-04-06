@@ -10,6 +10,7 @@ const char Logic::SORT_COMMAND[] = "sort";
 const char Logic::SEARCH_COMMAND[] = "search";
 const char Logic::EDIT_COMMAND[] = "edit";
 const char Logic::UNDO_COMMAND[] = "undo";
+const char Logic::UNDONE_COMMAND[] = "undone";
 const char Logic::HELP_REQUEST[] = "help";
 const char Logic::EXIT_COMMAND[] = "exit";
 const char Logic::EMPTY_RESPONSE[] = "";
@@ -173,6 +174,10 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == DONE_COMMAND){
 		returnResponse = dataProcessor.markDone(taskNo);
+		dataProcessor.clearDisplayList();
+		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+	}else if(command == UNDONE_COMMAND){
+		returnResponse = dataProcessor.unDone(taskNo);
 		dataProcessor.clearDisplayList();
 		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
 	}else if(command == SHOW_COMMANDS){
