@@ -4,6 +4,13 @@
 //in different classes
 //for explanation on methods
 
+//magic string definition
+const char Storing::LOGGING_MESSAGE_1[] = "Exception is caught in Storing (facade) Class";
+const char Storing::LOGGING_MESSAGE_2[] = "Exception is thrown from Storing (facade) Class";
+const char Storing::ERROR_MESSAGE_1[] = "Please enter a valid task number. \n";
+const char Storing::ERROR_MESSAGE_2[] = "Data could not be found. \n";
+const char Storing::ERROR_MESSAGE_3[] = "Exception of unknown type is caught. \n"; 
+
 void Storing::addData(Data& inData){
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	localStorage->addData(inData);
@@ -15,6 +22,8 @@ Data Storing::deleteData(int taskNo){
 	return localStorage->deleteData(taskNo);
 	}
 	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
 	}
 }
@@ -25,6 +34,8 @@ Data Storing::changeData(int taskNo, Data& inData){
 	return localStorage->editData(taskNo, inData);
 	}
 	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
 	}
 }
@@ -45,6 +56,8 @@ std::string Storing::retrieveCommandList(){
 		PrewrittenData prewrittenData;
 		return prewrittenData.retrieveList(command);
 	} catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
 	}
 }
@@ -54,6 +67,8 @@ std::string Storing::retrieveFeatureList(){
 		PrewrittenData prewrittenData;
 		return prewrittenData.retrieveList(feature);
 	} catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
 	}
 }
@@ -63,6 +78,8 @@ bool Storing::findPathName(){
 		PrewrittenData prewrittenData;
 		return prewrittenData.checkPath();
 	} catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
 	}
 }
@@ -114,6 +131,8 @@ Data Storing::getData(int taskNo){
 		return display->getData(taskNo);
 	}
 	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
 	}
 }
@@ -145,17 +164,20 @@ void Storing::clearDisplayList(){
 
 void Storing::handleException(int errorNo){
 	std::string errorMessage;
+	Logger log;
+	log.logging(LOGGING_MESSAGE_2);
 
 	switch (errorNo){
 	case 1:
-		errorMessage = "Please enter a valid task number. \n";
+		errorMessage = ERROR_MESSAGE_1;
 		throw errorMessage;
 		break;
 	case 2:
-		errorMessage = "Data could not be found. \n";
+		errorMessage = ERROR_MESSAGE_2;
 		throw errorMessage;
 		break;
 	default:
+		errorMessage = ERROR_MESSAGE_3;
 		break;
 
 	}

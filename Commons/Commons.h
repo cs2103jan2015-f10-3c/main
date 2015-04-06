@@ -170,21 +170,17 @@ public:
 
 };
 
+
+//used by any components to store logging message
+//at log.txt
 class Logger{
-private: 
+private:
+	static const char LOG_FILE_NAME[10];
 	std::ofstream writeLog;
 	std::string directory;
 
 public:
-	void logging(std::string inputMessage){
-		std::string directory = "log.txt";
-		writeLog.open(directory.c_str() , std::ofstream::app);
-		writeLog << inputMessage << '\n';
-	}
-
-	void deleteLogContent(){
-		std::string directory = "log.txt";
-		writeLog.open(directory.c_str() , std::ofstream::app);
-	}
-
+	Logger() {}
+	void logging(std::string inputMessage);
+	void deleteLogContent();
 };

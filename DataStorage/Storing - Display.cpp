@@ -1,5 +1,10 @@
 #include "InternalStoring.h"
 
+//magic string definition
+const char DisplayStorage::LOGGING_MESSAGE_1[] = "Exception is caught in DisplayStorage";
+const char DisplayStorage::LOGGING_MESSAGE_2[] = "Exception is thrown from DisplayStorage";
+const char DisplayStorage::DEFAULT_DESCRIPTION[] = "undefined";
+
 ///////////////////////////////////////
 //Singleton Definition / Implementation
 
@@ -68,6 +73,8 @@ Data DisplayStorage::getData(int taskNo){
 		checkTaskNoValidity(taskNo);
 	}
 	catch(int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_2);
 		throw errorNo;
 	}
 	desiredTask = displayList[taskNo-1];
@@ -77,6 +84,8 @@ Data DisplayStorage::getData(int taskNo){
 void DisplayStorage::checkTaskNoValidity(int taskNo){
 	int listSize = displayList.size();
 	if (taskNo <= 0 || taskNo > listSize){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
 		throw 1;
 	}
 }
@@ -162,7 +171,7 @@ void DisplayStorage::displayDone(std::vector<Data> tempList){
 
 void DisplayStorage::displayFloat(std::vector<Data> tempList){
 	for(int i = 0; i != tempList.size(); i++){
-		if(tempList[i].getTimeMacroBeg().getDay() == "undefined"){
+		if(tempList[i].getTimeMacroBeg().getDay() == DEFAULT_DESCRIPTION){
 			displayList.push_back(tempList[i]);
 		}
 	}
