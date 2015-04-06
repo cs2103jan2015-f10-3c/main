@@ -10,6 +10,7 @@ const char Logic::SORT_COMMAND[] = "sort";
 const char Logic::SEARCH_COMMAND[] = "search";
 const char Logic::EDIT_COMMAND[] = "edit";
 const char Logic::UNDO_COMMAND[] = "undo";
+const char Logic::HELP_REQUEST[] = "help";
 const char Logic::EXIT_COMMAND[] = "exit";
 const char Logic::EMPTY_RESPONSE[] = "";
 const char Logic::IVALID_COMMAND_MESSAGE[] = "Invalid Command";
@@ -21,6 +22,7 @@ const char Logic::SHOW_FLOAT[] = "show float";
 const char Logic::FLOAT_NOT_FOUND_MESSAGE[] = "You have no floating task";
 const char Logic::DONE_NOT_FOUND_MESSAGE[] = "You are lazy, you have done nothing at all";
 const char Logic::SEARCH_NOT_FOUND_MESSAGE[] = "Oops, there is no matching task in your BlinkList\n";
+const char Logic::HELP_MESSAGE[] = "Please type 'show commands' or 'show features'";
 string Feedback::display;
 string Feedback::response;
 int Logic::undoCount;
@@ -193,6 +195,8 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		returnDisplay = dataProcessor.showFeatures();
 	}else if(command == "save"){
 		dataProcessor.saveData();//directory should be added, waiting for support from DataProcessor
+	}else if(command == HELP_REQUEST){
+		returnResponse = HELP_MESSAGE;
 	}
 
 }

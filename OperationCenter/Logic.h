@@ -27,6 +27,7 @@ private:
 	static const char EDIT_COMMAND[100];
 	static const char EXIT_COMMAND[100];
 	static const char UNDO_COMMAND[100];
+	static const char HELP_REQUEST[100];
 	static const char EMPTY_RESPONSE[100];
 	static const char IVALID_COMMAND_MESSAGE[100];
 	static const char DONE_COMMAND[100];
@@ -37,6 +38,7 @@ private:
 	static const char FLOAT_NOT_FOUND_MESSAGE[100];
 	static const char DONE_NOT_FOUND_MESSAGE[100];
 	static const char SEARCH_NOT_FOUND_MESSAGE[100];
+	static const char HELP_MESSAGE[200];
 	static int undoCount;
 
 
