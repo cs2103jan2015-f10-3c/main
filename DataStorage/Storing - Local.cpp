@@ -43,6 +43,7 @@ std::vector<Data>& LocalStorage::getDataList() {
 //clearing all tasks from internal storage
 void LocalStorage::clearDataList(){
 	History::updateLatestCommand("clear"); //store for undo
+	History::updateLatestVector();
 	dataList.clear();
 }
 
