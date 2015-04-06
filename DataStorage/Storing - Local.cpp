@@ -356,8 +356,8 @@ Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
 			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
 	}
 
-	if (updatedData.getCompleteStatus() != false){
-		dataToEdit.updateCompleteStatus(true);
+	if (updatedData.getCompleteStatus() != dataToEdit.getCompleteStatus()){
+		dataToEdit.updateCompleteStatus(updatedData.getCompleteStatus());
 	}
 	return dataToEdit;
 }

@@ -203,9 +203,14 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 			returnResponse = errorMessage;
 		}
 		}else if(command == UNDONE_COMMAND){
-		returnResponse = dataProcessor.unDone(taskNo);
-		dataProcessor.clearDisplayList();
-		returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		try {
+			returnResponse = dataProcessor.unDone(taskNo);
+			dataProcessor.clearDisplayList();
+			returnDisplay = displaySpecificDay(dataProcessor, currentTime);
+		}
+		catch (string errorMessage){
+			returnResponse = errorMessage;
+		}
 	}else if(command == SHOW_COMMANDS){
 		dataProcessor.clearDisplayList();
 		returnDisplay = dataProcessor.showCommands();

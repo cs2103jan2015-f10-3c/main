@@ -226,8 +226,14 @@ string DataProcessor::getDoneMessage(Data targetData){
 //task to ongoing
 string DataProcessor::unDone(int taskNo){
 	Storing storing;
+	Data targetData;
 
-	Data	targetData = storing.getData(taskNo);
+	try{
+	targetData = storing.getData(taskNo);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 			targetData.updateCompleteStatus(false);
 			storing.changeData(taskNo, targetData);
 	string	undoneMessage = getUndoneMessage(targetData);
