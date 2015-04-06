@@ -46,7 +46,12 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
+	try{
 	out << convertDataObjectToLine(storing.deleteData(number)) << DELETE_MESSAGE << endl;
+	}
+	catch(string errorMessage){
+		throw errorMessage;
+	}
 	string deleteMessage;
 	deleteMessage = out.str();
 	return deleteMessage;
@@ -98,8 +103,12 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	}
 	Data	 uneditedTask;
 	outData << "start editing data";
-	
-	uneditedTask = storing.changeData(taskNumber, task);
+	try{
+		uneditedTask = storing.changeData(taskNumber, task);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 	string	 editMessage = getEditMessage(uneditedTask);
 	
 	outData << "edit data is done";
@@ -130,11 +139,14 @@ string DataProcessor::clearTask(){
 
 
 string DataProcessor::executeUndo(){
+	Data latestData;
+	string latestCommand;
+	vector<Data> latestVector;
+	Storing storing; 
 
-	Storing			storing; 
-	vector<Data>	latestVector = storing.getLatestVector();
-	string			latestCommand = storing.getLatestCommand();
-	Data			latestData = storing.getLatestData();
+	latestVector = storing.getLatestVector();
+	latestCommand = storing.getLatestCommand();
+	latestData = storing.getLatestData();
 
 	if (latestCommand == ADD_COMMAND){
 		storing.undoAdd();
@@ -190,8 +202,13 @@ string DataProcessor::searchTask(string keyword){
 //task to done
 string DataProcessor::markDone(int taskNo){
 	Storing storing;
-
-	Data	targetData = storing.getData(taskNo);
+	Data targetData;
+	try{
+ 	targetData = storing.getData(taskNo);		 	
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 			targetData.updateCompleteStatus(true);
 			storing.changeData(taskNo, targetData);
 	string	doneMessage = getDoneMessage(targetData);
@@ -209,8 +226,14 @@ string DataProcessor::getDoneMessage(Data targetData){
 //task to ongoing
 string DataProcessor::unDone(int taskNo){
 	Storing storing;
+	Data targetData;
 
-	Data	targetData = storing.getData(taskNo);
+	try{
+	targetData = storing.getData(taskNo);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
 			targetData.updateCompleteStatus(false);
 			storing.changeData(taskNo, targetData);
 	string	undoneMessage = getUndoneMessage(targetData);

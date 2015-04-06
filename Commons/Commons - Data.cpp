@@ -1,5 +1,10 @@
 #include "Commons.h"
 
+const char Data::NONE[] = "None";
+const char Data::LOW[] = "Low";
+const char Data::MEDIUM[] = "Med";
+const char Data::HIGH[] = "High";
+
 ////////////////////////////////
 //getter methods implementations
 ////////////////////////////////
@@ -95,8 +100,8 @@ void Data::updateTimeMicroBeg(TimeMicro inMicroBeg){
 }
 
 void Data::updatePriority(std::string inPriority){
-	_ASSERTE ( inPriority == "Low" || inPriority == "Medium" ||
-				inPriority == "High" || inPriority == "None" );
+	_ASSERTE ( inPriority == LOW || inPriority == MEDIUM ||
+				inPriority == HIGH || inPriority == NONE );
 
 	priority = inPriority;
 }

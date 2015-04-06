@@ -1,6 +1,5 @@
 #include "Storing.h"
 
-//<<Interface>>
 //go into specific methods implementation
 //in different classes
 //for explanation on methods
@@ -11,13 +10,23 @@ void Storing::addData(Data& inData){
 }
 
 Data Storing::deleteData(int taskNo){
+	try{
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	return localStorage->deleteData(taskNo);
+	}
+	catch (int errorNo){
+		handleException(errorNo);
+	}
 }
 
 Data Storing::changeData(int taskNo, Data& inData){
+	try{
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	return localStorage->editData(taskNo, inData);
+	}
+	catch (int errorNo){
+		handleException(errorNo);
+	}
 }
 
 void Storing::clearDataList(){
@@ -32,22 +41,54 @@ void Storing::undoAdd(){
 
 
 std::string Storing::retrieveCommandList(){
-	PrewrittenData prewrittenData;
-	return prewrittenData.retrieveList(command);
+	try{
+		PrewrittenData prewrittenData;
+		return prewrittenData.retrieveList(command);
+	} catch (int errorNo){
+		handleException(errorNo);
+	}
 }
 
 std::string Storing::retrieveFeatureList(){
+	try{
+		PrewrittenData prewrittenData;
+		return prewrittenData.retrieveList(feature);
+	} catch (int errorNo){
+		handleException(errorNo);
+	}
+}
+
+bool Storing::findPathName(){
+	try {
+		PrewrittenData prewrittenData;
+		return prewrittenData.checkPath();
+	} catch (int errorNo){
+		handleException(errorNo);
+	}
+}
+
+bool Storing::saveUserPathName(std::string userPathName){
+	bool status;
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	status = localStorage->saveData(userPathName);
+	
 	PrewrittenData prewrittenData;
-	return prewrittenData.retrieveList(feature);
+	if(status == true){
+		prewrittenData.savePath(userPathName);
+	}
+
+	return status;
 }
 
 void Storing::loadData(bool& status, std::string directory){
 	LocalStorage *localStorage = LocalStorage::getInstance();
+	directory = localStorage->checkPathName();
 	localStorage->loadData(status, directory);
 }
 
 bool Storing::saveData(std::string directory){
 	LocalStorage *localStorage = LocalStorage::getInstance();
+	directory = localStorage->checkPathName();
 	return localStorage->saveData(directory);
 }
 
@@ -68,8 +109,13 @@ std::vector<Data>& Storing::getLatestVector(){
 
 
 Data Storing::getData(int taskNo){
-	DisplayStorage *display = DisplayStorage::getInstance();
-	return display->getData(taskNo);
+	try{
+		DisplayStorage *display = DisplayStorage::getInstance();
+		return display->getData(taskNo);
+	}
+	catch (int errorNo){
+		handleException(errorNo);
+	}
 }
 
 std::vector<Data>& Storing::display(TimeMacro tBegin, TimeMacro tEnd){
@@ -97,5 +143,22 @@ void Storing::clearDisplayList(){
 	return display->clearList();
 }
 
+void Storing::handleException(int errorNo){
+	std::string errorMessage;
 
+	switch (errorNo){
+	case 1:
+		errorMessage = "Please enter a valid task number. \n";
+		throw errorMessage;
+		break;
+	case 2:
+		errorMessage = "Data could not be found. \n";
+		throw errorMessage;
+		break;
+	default:
+		break;
+
+	}
+
+}
 

@@ -43,6 +43,7 @@ std::vector<Data>& LocalStorage::getDataList() {
 //clearing all tasks from internal storage
 void LocalStorage::clearDataList(){
 	History::updateLatestCommand("clear"); //store for undo
+	History::updateLatestVector();
 	dataList.clear();
 }
 
@@ -50,6 +51,8 @@ void LocalStorage::clearDataList(){
 //it allocates uniqueCode into Data
 //and also automaticallly sort dataList
 void LocalStorage::addData(Data& inData){
+	Logger log;
+	log.logging("adding data");
 	int uniqueNo = allocateUniqueCode(uniqueCodeStore); //get unique code
 	inData.updateUniqueCode(uniqueNo);// assign unique code to Data
 	
@@ -64,13 +67,18 @@ void LocalStorage::addData(Data& inData){
 //method for delete command
 //input the taskno of the display list to be deleted
 Data LocalStorage::deleteData(int taskNo){
-	History::updateLatestCommand("delete"); //store for undo
-	
 	DisplayStorage *display = DisplayStorage::getInstance();
+	try{
+		checkTaskNoValidity(taskNo);
+		
+	}
+	catch(int errorNo){
+		throw errorNo; 
+	}
+
 	int uniqueCode = display->getUniqueCode(taskNo);
-
 	dataList = deleteDataOfUniqueCode(uniqueCode);
-
+	History::updateLatestCommand("delete"); //store for undo
 	return display->getData(taskNo);
 }
 
@@ -89,8 +97,16 @@ void LocalStorage::undoAdd(){
 //return Data that was edited
 Data LocalStorage::editData(int taskNo, Data updatedData){
 	History::updateLatestVector(); //Store for undo
-	
 	DisplayStorage *display = DisplayStorage::getInstance();
+
+	try{
+		checkTaskNoValidity(taskNo);
+
+	}
+	catch (int errorNo){
+		throw errorNo;
+	}
+
 	int uniqueNo = display->getUniqueCode(taskNo);
 	Data dataToEdit = getData(uniqueNo);
 
@@ -100,8 +116,19 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	addData(dataToEdit);
 
 	History::updateLatestCommand("edit"); //Store for undo
-
+	
 	return display->getData(taskNo);
+}
+
+std::string LocalStorage::checkPathName(){
+	PrewrittenData prewrittenData;
+	std::string directory;
+	if (prewrittenData.getPath() !=""){
+		directory = prewrittenData.getPath();
+		return directory;
+	} else {
+		return "";
+	}
 }
 
 //End of API implementation
@@ -109,6 +136,19 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 
 /////////////////////////////////////
 //Helper methods for internal working
+
+
+//helper method for deleteData and editData
+//check whether input no is within the boundary
+//throw exception otherwise
+void LocalStorage::checkTaskNoValidity(int taskNo){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	int listSize = display->getListSize();
+
+	if(taskNo <= 0 || taskNo > listSize){
+		throw 1;
+	} 
+}
 
 //helper method for undoAdd and deleteData
 //delete data that have a certain unique code
@@ -316,8 +356,8 @@ Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
 			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
 	}
 
-	if (updatedData.getCompleteStatus() != false){
-		dataToEdit.updateCompleteStatus(true);
+	if (updatedData.getCompleteStatus() != dataToEdit.getCompleteStatus()){
+		dataToEdit.updateCompleteStatus(updatedData.getCompleteStatus());
 	}
 	return dataToEdit;
 }
