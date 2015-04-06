@@ -52,6 +52,7 @@ public:
 	static string displaySpecificDay(DataProcessor dataProcessor, TimeMacro current);
 	static void updateUndoCount(string command);
 	static void checkCommand(string command);
+	static void clearScreen();
 };
 
 #endif
