@@ -69,7 +69,7 @@ Data DisplayStorage::getData(int taskNo){
 	}
 	catch(int errorNo){
 		Logger log;
-		log.logging(Exception is caught in DisplayStorage");
+		log.logging("Exception is caught in DisplayStorage");
 		throw errorNo;
 	}
 	desiredTask = displayList[taskNo-1];

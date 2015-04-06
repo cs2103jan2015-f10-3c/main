@@ -170,6 +170,9 @@ public:
 
 };
 
+
+//used by any components to store logging message
+//at log.txt
 class Logger{
 private: 
 	std::ofstream writeLog;
