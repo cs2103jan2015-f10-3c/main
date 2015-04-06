@@ -139,11 +139,14 @@ string DataProcessor::clearTask(){
 
 
 string DataProcessor::executeUndo(){
+	Data latestData;
+	string latestCommand;
+	vector<Data> latestVector;
+	Storing storing; 
 
-	Storing			storing; 
-	vector<Data>	latestVector = storing.getLatestVector();
-	string			latestCommand = storing.getLatestCommand();
-	Data			latestData = storing.getLatestData();
+	latestVector = storing.getLatestVector();
+	latestCommand = storing.getLatestCommand();
+	latestData = storing.getLatestData();
 
 	if (latestCommand == ADD_COMMAND){
 		storing.undoAdd();
