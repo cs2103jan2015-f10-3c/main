@@ -3,6 +3,13 @@
 
 //facade class for all InternalStorage classes
 class Storing {
+private:
+	static const char Storing::LOGGING_MESSAGE_1[100];
+	static const char Storing::LOGGING_MESSAGE_2[100];
+	static const char Storing::ERROR_MESSAGE_1[100];
+	static const char Storing::ERROR_MESSAGE_2[100];
+	static const char Storing::ERROR_MESSAGE_3[100]; 
+
 public:
 	Storing() {}
 

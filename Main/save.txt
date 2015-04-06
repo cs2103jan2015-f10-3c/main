@@ -1,4 +1,4 @@
-227
+229
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
 186	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		makan siang
 187	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
@@ -30,8 +30,9 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 212	Sunday/5/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		makan
 213	Monday/6/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		milk tea
 214	Monday/6/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		pantai
-215	Tuesday/7/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		f
+229	Tuesday/7/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		normalty
 216	Tuesday/7/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		candle
+228	Tuesday/7/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
 217	Wednesday/8/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		g
 218	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting2150 to consolidate
 219	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		f

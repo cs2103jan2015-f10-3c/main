@@ -1,6 +1,6 @@
 #include "InternalStoring.h"
 
-//magic string implementation
+//magic string definition
 const char PrewrittenData::ALL_COMMANDS_FILE[] = "all_commands.txt";
 const char PrewrittenData::ALL_FEATURES_FILE[] = "all_features.txt";
 const char PrewrittenData::HEADING_TEMPLATE_FILE[] = "heading_template.txt";

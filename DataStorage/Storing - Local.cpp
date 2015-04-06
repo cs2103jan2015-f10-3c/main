@@ -1,6 +1,6 @@
 #include "InternalStoring.h"
 
-
+//Magic string definition
 const char LocalStorage::LOGGING_MESSAGE_1[] = "Exception is caught in LocalStorage Class";
 const char LocalStorage::LOGGING_MESSAGE_2[] = "Esception is thrown from LocalStorage Class";
 const char LocalStorage::LOGGING_MESSAGE_3[] = "LocalStorage is initiated";

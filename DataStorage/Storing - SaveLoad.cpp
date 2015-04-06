@@ -5,8 +5,7 @@
 //.cpp file is separated from Storing - Local.cpp
 //to allow for more room
 
-
-//Magic string definition
+//magic string definition
 const char LocalStorage::DEFAULT_SAVE_DIRECTORY[] = "save.txt";
 const char LocalStorage::SLASH[] = "/";
 const char LocalStorage::TAB[] = "\t";

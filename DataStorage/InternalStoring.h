@@ -23,7 +23,7 @@ typedef enum TimeType {begin, end, alarm};
 class LocalStorage {
 private:
 	//Magic String declarations
-	//defined in Storing - local.cpp
+	//used in Storing - local.cpp
 	static const char LOGGING_MESSAGE_1[100];
 	static const char LOGGING_MESSAGE_2[100];
 	static const char LOGGING_MESSAGE_3[100];
@@ -45,7 +45,7 @@ private:
 	static const int ONE_MILLION;
 	static const int HUNDRED_MILLION;
 	
-	//defined in Storing - SaveLoad.cpp
+	//used in Storing - SaveLoad.cpp
 	static const char DEFAULT_SAVE_DIRECTORY[100];
 	static const char SLASH[10];
 	static const char TAB[10];
@@ -145,6 +145,10 @@ public:
 //using singleton pattern
 class DisplayStorage {
 private:
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char DEFAULT_DESCRIPTION[10];
+
 	//instance and private constructor for singleton pattern
 	static DisplayStorage* instance;
 	DisplayStorage() {}
