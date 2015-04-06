@@ -30,6 +30,7 @@ private:
 	static const char SHOW_COMMAND[100];
 	static const char CLEAR_COMMAND[100];
 	static const char EDIT_COMMAND[100];
+	static const char DONE_COMMAND[100];
 	static const char NO_DATE[100];
 
 	static const unsigned int TIME_WIDTH;

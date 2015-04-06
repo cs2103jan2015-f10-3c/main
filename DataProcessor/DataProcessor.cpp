@@ -15,6 +15,7 @@ const char DataProcessor::ADD_COMMAND[] = "add";
 const char DataProcessor::DELETE_COMMAND[] = "delete";
 const char DataProcessor::SHOW_COMMAND[] = "show";
 const char DataProcessor::CLEAR_COMMAND[] = "clear";
+const char DataProcessor::DONE_COMMAND[] = "done";
 const char DataProcessor::EDIT_COMMAND[] = "edit";
 const char DataProcessor::NO_DATE[] = "undefined";
 
@@ -82,7 +83,7 @@ void DataProcessor::setLatestData(Data data){
 }
 
 
-//@Yang Xiaozhou A0113538J
+//@author A0113538J
 
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
@@ -142,6 +143,10 @@ string DataProcessor::executeUndo(){
 	else if (latestCommand == DELETE_COMMAND){
 		storing.addData(latestData);
 	}
+	else if (latestCommand == DONE_COMMAND){
+		latestData.updateCompleteStatus(false);
+		storing.changeData(latestData.getTaskNo(),latestData);
+	}
 	else if (latestCommand == EDIT_COMMAND || latestCommand == CLEAR_COMMAND){
 		undoEditOrClear(storing, latestVector);
 	}
@@ -200,7 +205,7 @@ string DataProcessor::markDone(int taskNo){
 }
 
 string DataProcessor::getDoneMessage(Data targetData){
-	string doneMessage = convertDataObjectToLine(targetData) + DONE_MESSAGE;
+	string doneMessage = convertDataObjectToLine(targetData) + DONE_MESSAGE + "\n";
 	return doneMessage;
 }
 
@@ -256,6 +261,19 @@ string DataProcessor::showFeatures(){
 	string		featureList = storing.retrieveFeatureList();
 	return		featureList;
 }
+
+////This function passes the save 
+////file path to DataSotrage
+//void DataProcessor::savePath(string path){
+//
+//}
+//
+////This function ask DataStorage
+////to check whether there is 
+////an existing path for saving file
+//bool DataProcessor::checkPathExistence(){
+//
+//}
 
 //This function reads in a Data object and convert it into a string
 //that contains all the information of that data and ready to be displayed
