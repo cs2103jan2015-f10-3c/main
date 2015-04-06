@@ -5,9 +5,24 @@
 #include <cstdio>
 #include <sstream>
 #include <vector>
+#include <fstream>
+
 
 class TimeMacro{
 private:
+	static const char MONDAY[10];
+	static const char TUESDAY[10];
+	static const char WEDNESDAY[10];
+	static const char THURSDAY[10];
+	static const char FRIDAY[10];
+	static const char SATURDAY[10];
+	static const char SUNDAY[10];
+	static const char UNDEFINED[10];
+	static const int DEFAULT_TIME_MACRO_VALUE;
+	static const int MAX_MONTH_BOUNDARY;
+	static const int MAX_DATE_BOUNDARY;
+	static const int MAX_YEAR_BOUNDARY;
+	static const int MIN_YEAR_BOUNDARY;
 
 	//private attributes
 	std::string day;
@@ -15,17 +30,15 @@ private:
 	int month;
 	int year;
 
-	
-
 public:
 
 	//constructors 
 	TimeMacro () :
-		day("undefined"), date(00), month(00), year(0000) {}
+		day(UNDEFINED), date(DEFAULT_TIME_MACRO_VALUE), month(DEFAULT_TIME_MACRO_VALUE), year(DEFAULT_TIME_MACRO_VALUE) {}
 	TimeMacro (int inDate, int inMonth, int inYear) :
-		day("undefined"), date(inDate), month(inMonth), year(inYear) {}
+		day(UNDEFINED), date(inDate), month(inMonth), year(inYear) {}
 	TimeMacro (std::string inDay):
-		day(inDay), date(00), month(00), year(0000) {}
+		day(inDay), date(DEFAULT_TIME_MACRO_VALUE), month(DEFAULT_TIME_MACRO_VALUE), year(DEFAULT_TIME_MACRO_VALUE) {}
 	TimeMacro (std::string inDay, int inDate, int inMonth, int inYear) :
 		day(inDay), date(inDate), month(inMonth), year(inYear) {}
 
@@ -45,6 +58,11 @@ public:
 
 class TimeMicro{
 private:
+	static const int DEFAULT_TIME_MICRO_VALUE;
+	static const int MAX_HOUR_BOUNDARY;
+	static const int MIN_TIME_MICRO_BOUNDARY;
+	static const int MAX_MIN_BOUNDARY;
+
 	int hour;
 	int minute;
 
@@ -52,7 +70,7 @@ public:
 
 	//constructors
 	TimeMicro () :
-		hour(-1),minute(-1) {}
+		hour(DEFAULT_TIME_MICRO_VALUE),minute(DEFAULT_TIME_MICRO_VALUE) {}
 
 	TimeMicro (int inHourBeg, int inMinBeg) :
 		hour(inHourBeg), minute(inMinBeg){}
@@ -68,7 +86,12 @@ public:
 
 
 class Data {
-public:
+private:
+	static const char NONE[10];
+	static const char LOW[10];
+	static const char MEDIUM[10];
+	static const char HIGH[10];
+
 	//private attributes of internal working
 	int taskNo;
 	int uniqueCode;
@@ -91,26 +114,26 @@ public:
 	//constructors
 	//constructor for custom Data
 	Data () :
-	completeStatus(false), priority("None") {} 
+	completeStatus(false), priority(NONE) {} 
 
 	// constructor for activities that start and end at different days
 	Data (TimeMacro inMacroBeg, TimeMacro inMacroEnd, TimeMicro inMicroBeg, 
 		TimeMicro inMicroEnd, std::string inDesc) : 
 		macroTimeBeg(inMacroBeg), macroTimeEnd(inMacroEnd), microTimeBeg(inMicroBeg), 
-		microTimeEnd(inMicroEnd), desc(inDesc), completeStatus(false), priority ("None") {} 
+		microTimeEnd(inMicroEnd), desc(inDesc), completeStatus(false), priority (NONE) {} 
 
 	//constructor for activities that start and end at the same time
 	Data (TimeMacro inMacro, TimeMicro inMicroBeg, TimeMicro inMicroEnd, std::string inDesc) :
 		macroTimeBeg(inMacro), microTimeBeg(inMicroBeg), microTimeEnd(inMicroEnd), 
-		desc(inDesc), completeStatus(false), priority("None") {}
+		desc(inDesc), completeStatus(false), priority(NONE) {}
 
 	//constructor for activities that only have a deadline
 	Data (TimeMacro inMacro, std::string inDesc) :
-		macroTimeBeg(inMacro), desc(inDesc), completeStatus(false), priority("None") {}
+		macroTimeBeg(inMacro), desc(inDesc), completeStatus(false), priority(NONE) {}
 
 	//constructor for floating task
 	Data (std::string inDesc) : 
-		desc(inDesc), completeStatus(false), priority("None") {}
+		desc(inDesc), completeStatus(false), priority(NONE) {}
 	
 
 	//getter methods
@@ -144,5 +167,24 @@ public:
 	void updateAlarmMacro(TimeMacro inAlarm);
 	void updateAlarmMicro(TimeMicro inAlarm);
 
+
+};
+
+class Logger{
+private: 
+	std::ofstream writeLog;
+	std::string directory;
+
+public:
+	void logging(std::string inputMessage){
+		std::string directory = "log.txt";
+		writeLog.open(directory.c_str() , std::ofstream::app);
+		writeLog << inputMessage << '\n';
+	}
+
+	void deleteLogContent(){
+		std::string directory = "log.txt";
+		writeLog.open(directory.c_str() , std::ofstream::app);
+	}
 
 };

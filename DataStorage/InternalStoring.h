@@ -11,10 +11,9 @@
 #include <sstream>
 #include "Commons.h"
 
-typedef enum ListType {command, feature, heading};
+typedef enum ListType {command, feature, heading, path};
 typedef enum DisplayType {search, done, floating};
 typedef enum TimeType {begin, end, alarm};
-
 
 
 //acts as internal database
@@ -46,6 +45,7 @@ private:
 	void radixCollect(std::queue<Data> digitQ[]);
 	Data getData(int uniqueNo);
 	Data updateData(Data dataToEdit, Data updatedData);
+	void checkTaskNoValidity(int taskNo);
 
 	//Helper methods for internal working Save and Load
 	void writeHeading (std::string fileName, std::ofstream& out);
@@ -76,6 +76,7 @@ public:
 	std::vector<Data>& getDataList();
 	bool saveData(std::string& directory);
 	void loadData(bool& status, std::string& directory);
+	std::string checkPathName();
 
 };
 
@@ -126,6 +127,7 @@ private:
 	void displayDone(std::vector<Data> tempList);
 	void enterDataToList(std::vector<long long> timePeriod);
 	std::vector<Data> getListFromLocal();
+	void checkTaskNoValidity(int taskNo);
 
 public:
 	//getInstance for singleton pattern
@@ -139,6 +141,7 @@ public:
 
 	//API for LocalStorage
 	int getUniqueCode(int taskNo);
+	int getListSize();
 };
 
 
@@ -151,7 +154,11 @@ private:
 	static const char ALL_COMMANDS_FILE[100];
 	static const char ALL_FEATURES_FILE[100];
 	static const char HEADING_TEMPLATE_FILE[100];
-	std::stringstream retrievedList;
+	static const char PATH_FILE[100];
+
+	std::string retrievedList;
+	std::string txtFile;
+	std::string pathName;
 
 	//helper method
 	std::string determineListType(ListType type);
@@ -162,7 +169,20 @@ public:
 	//API for facade class
 	std::string retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
+	bool checkPath();
+	std::string PrewrittenData::getPath();		
+	void savePath(std::string inPath);
 };
 
+
+class StorageErrorResponse {
+private:
+	std::string response;
+
+public:
+	
+
+
+};
 
 #endif

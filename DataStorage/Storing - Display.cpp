@@ -64,10 +64,22 @@ void DisplayStorage::clearList(){
 //getting Data from the displayList taskNo
 Data DisplayStorage::getData(int taskNo){
 	Data desiredTask;
+	try{
+		checkTaskNoValidity(taskNo);
+	}
+	catch(int errorNo){
+		throw errorNo;
+	}
 	desiredTask = displayList[taskNo-1];
 	return desiredTask;
 }
 
+void DisplayStorage::checkTaskNoValidity(int taskNo){
+	int listSize = displayList.size();
+	if (taskNo <= 0 || taskNo > listSize){
+		throw 1;
+	}
+}
 // !! unit test done
 //API DataBase to get unique code of the data
 int DisplayStorage::getUniqueCode(int taskNo){
@@ -75,7 +87,9 @@ int DisplayStorage::getUniqueCode(int taskNo){
 	return desiredTask.getUniqueCode();
 }
 
-
+int DisplayStorage::getListSize(){
+	return displayList.size();
+}
 
 
 //////////////////////////////////
