@@ -11,7 +11,7 @@
 #include <sstream>
 #include "Commons.h"
 
-typedef enum ListType {command, feature, heading};
+typedef enum ListType {command, feature, heading, path};
 typedef enum DisplayType {search, done, floating};
 typedef enum TimeType {begin, end, alarm};
 
@@ -76,6 +76,7 @@ public:
 	std::vector<Data>& getDataList();
 	bool saveData(std::string& directory);
 	void loadData(bool& status, std::string& directory);
+	std::string checkPathName();
 
 };
 
@@ -153,9 +154,11 @@ private:
 	static const char ALL_COMMANDS_FILE[100];
 	static const char ALL_FEATURES_FILE[100];
 	static const char HEADING_TEMPLATE_FILE[100];
+	static const char PATH_FILE[100];
 
 	std::string retrievedList;
 	std::string txtFile;
+	std::string pathName;
 
 	//helper method
 	std::string determineListType(ListType type);
@@ -166,6 +169,9 @@ public:
 	//API for facade class
 	std::string retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
+	bool checkPath();
+	std::string PrewrittenData::getPath();		
+	void savePath(std::string inPath);
 };
 
 

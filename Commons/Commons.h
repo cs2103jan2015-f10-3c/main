@@ -170,7 +170,7 @@ public:
 
 };
 
-class log{
+class Logger{
 private: 
 	std::ofstream writeLog;
 	std::string directory;
@@ -179,7 +179,7 @@ public:
 	void logging(std::string inputMessage){
 		std::string directory = "log.txt";
 		writeLog.open(directory.c_str() , std::ofstream::app);
-		writeLog << inputMessage;
+		writeLog << inputMessage << '\n';
 	}
 
 	void deleteLogContent(){

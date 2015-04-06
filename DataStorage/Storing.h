@@ -13,10 +13,12 @@ public:
 	void undoAdd();
 	void loadData(bool& status , std::string directory = "");
 	bool saveData(std::string directory = "");
+	bool saveUserPathName(std::string userPathName);
 
 	//methods that call PrewrittenData Class
 	std::string retrieveCommandList();
 	std::string retrieveFeatureList();
+	bool findPathName();
 
 	//methods that call History Class
 	std::string getLatestCommand();

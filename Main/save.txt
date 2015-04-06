@@ -1,9 +1,13 @@
-173
+180
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
 139	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		haiku
 140	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		makan siang
 141	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
 142	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		rabu
+174	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		1 milktea
+177	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		honeyMilkTea
+178	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		milktea
+179	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		hellow
 143	Thursday/1/1/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		makan
 144	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		play with mochi
 145	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		a
@@ -23,7 +27,9 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 159	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		true		None		undefined/0/0/0		-1/-1		meeting 2150
 160	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
 161	Sunday/5/4/2015		undefined/0/0/0		12/0		-1/-1		true		None		undefined/0/0/0		-1/-1		makan
-162	Monday/6/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		e
+176	Monday/6/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		milk tea
+180	Monday/6/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		hellow
+175	Monday/6/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		pantai
 163	Tuesday/7/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		f
 164	Wednesday/8/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		g
 165	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting2150 to consolidate

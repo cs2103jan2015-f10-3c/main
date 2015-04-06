@@ -51,6 +51,8 @@ void LocalStorage::clearDataList(){
 //it allocates uniqueCode into Data
 //and also automaticallly sort dataList
 void LocalStorage::addData(Data& inData){
+	Logger log;
+	log.logging("adding data");
 	int uniqueNo = allocateUniqueCode(uniqueCodeStore); //get unique code
 	inData.updateUniqueCode(uniqueNo);// assign unique code to Data
 	
@@ -116,6 +118,17 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	History::updateLatestCommand("edit"); //Store for undo
 	
 	return display->getData(taskNo);
+}
+
+std::string LocalStorage::checkPathName(){
+	PrewrittenData prewrittenData;
+	std::string directory;
+	if (prewrittenData.getPath() !=""){
+		directory = prewrittenData.getPath();
+		return directory;
+	} else {
+		return "";
+	}
 }
 
 //End of API implementation
