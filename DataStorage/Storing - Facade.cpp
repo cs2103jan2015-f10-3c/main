@@ -15,6 +15,8 @@ Data Storing::deleteData(int taskNo){
 	return localStorage->deleteData(taskNo);
 	}
 	catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in Storage Facade class");
 		handleException(errorNo);
 	}
 }
@@ -25,6 +27,8 @@ Data Storing::changeData(int taskNo, Data& inData){
 	return localStorage->editData(taskNo, inData);
 	}
 	catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in Storage Facade class");
 		handleException(errorNo);
 	}
 }
@@ -45,6 +49,8 @@ std::string Storing::retrieveCommandList(){
 		PrewrittenData prewrittenData;
 		return prewrittenData.retrieveList(command);
 	} catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in Storage Facade class");
 		handleException(errorNo);
 	}
 }
@@ -54,6 +60,8 @@ std::string Storing::retrieveFeatureList(){
 		PrewrittenData prewrittenData;
 		return prewrittenData.retrieveList(feature);
 	} catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in Storage Facade class");
 		handleException(errorNo);
 	}
 }
@@ -63,6 +71,8 @@ bool Storing::findPathName(){
 		PrewrittenData prewrittenData;
 		return prewrittenData.checkPath();
 	} catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in Storage Facade class");
 		handleException(errorNo);
 	}
 }
@@ -114,6 +124,8 @@ Data Storing::getData(int taskNo){
 		return display->getData(taskNo);
 	}
 	catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in Storage Facade class");
 		handleException(errorNo);
 	}
 }
@@ -145,6 +157,8 @@ void Storing::clearDisplayList(){
 
 void Storing::handleException(int errorNo){
 	std::string errorMessage;
+	Logger log;
+	log.logging("Exception is thrown from Storage Facade class");
 
 	switch (errorNo){
 	case 1:
@@ -156,6 +170,7 @@ void Storing::handleException(int errorNo){
 		throw errorMessage;
 		break;
 	default:
+		errorMessage = "Exception of unknown type is caught. \n";
 		break;
 
 	}

@@ -33,9 +33,13 @@ std::string PrewrittenData::retrieveList(ListType type){
 				ss << retrievedList << std::endl;
 			} 
 		} else {
+			Logger log;
+			log.logging("Exception is thrown in PrewrittenData");
 			throw 2; 
 		}
 	} catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in PrewrittenData");
 		throw errorNo;
 	}
 	
@@ -54,7 +58,8 @@ void PrewrittenData::retrieveList(ListType type, std::ofstream& out){
 			out << retrievedList << std::endl;
 		} 
 	} else {
-		out << "List could not be found"; 
+		Logger log;
+		log.logging("Heading for Storage could not be found");
 	}
 }
 

@@ -68,6 +68,8 @@ Data DisplayStorage::getData(int taskNo){
 		checkTaskNoValidity(taskNo);
 	}
 	catch(int errorNo){
+		Logger log;
+		log.logging(Exception is caught in DisplayStorage");
 		throw errorNo;
 	}
 	desiredTask = displayList[taskNo-1];
@@ -77,6 +79,8 @@ Data DisplayStorage::getData(int taskNo){
 void DisplayStorage::checkTaskNoValidity(int taskNo){
 	int listSize = displayList.size();
 	if (taskNo <= 0 || taskNo > listSize){
+		Logger log;
+		log.logging("Exception is thrown from DisplayStorage");
 		throw 1;
 	}
 }

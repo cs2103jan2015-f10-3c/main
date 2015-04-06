@@ -3,7 +3,7 @@
 //Implementation of LocalStorage class
 //for saving and loading methods
 //.cpp file is separated from Storing - Local.cpp
-//to allow for spacier room
+//to allow for more room
 
 
 //Magic string definition
@@ -25,7 +25,6 @@ void LocalStorage::loadData(bool& status, std::string& directory){
 		streamUnique << strUnique;
 		streamUnique >> uniqueNo;
 		uniqueCodeStore = uniqueNo;
-
 
 		//throw away Heading
 		std::string temp;
@@ -53,12 +52,16 @@ void LocalStorage::loadData(bool& status, std::string& directory){
 bool LocalStorage::directoryCheck(std::ofstream& out){
 	try{
 		if(!out.is_open()){
+			Logger log;
+			log.logging("Exception is thrown in LocalStorage");
 			throw false;
 		} else {
 			throw true;
 		}
 	}
 	catch (const bool status) {
+		Logger log;
+		log.logging("Exception is caught in LocalStorage");
 		return status;
 	}
 }
@@ -87,7 +90,8 @@ bool LocalStorage::saveData(std::string& directory){
  		 	
 		writeHeading(directory, out); //write Heading for readability
 
-	
+		//converting Time type to string 
+		//according different types
 		for(int i=0; i != dataList.size(); i++){
 			std::string tMacroBeg = convertTimeMacroToString(begin, i);
 			std::string tMacroEnd = convertTimeMacroToString(end, i);
@@ -141,6 +145,7 @@ void LocalStorage::parseLoad(std::string strData, int i, Data& data){
 	streamConverter << temp;
 	streamConverter >> uniqueCode;
 
+	//get each data by getting rid of spaces
 	tempMacroTBeg = tokenizerSpace(strData);
 	tempMacroTEnd = tokenizerSpace(strData);
 	tempMicroTBeg = tokenizerSpace(strData);
@@ -151,27 +156,23 @@ void LocalStorage::parseLoad(std::string strData, int i, Data& data){
 	tempAlarmMicro = tokenizerSpace(strData);
 	desc = tokenizerSpace(strData);
 	
+	//update Data object
 	data.updateUniqueCode(uniqueCode); 
 	data.updateDesc(desc);
-
 	TimeMacro inMacroTBeg = macroParser(tempMacroTBeg);
 	data.updateTimeMacroBeg(inMacroTBeg);
-
 	TimeMacro inMacroTEnd = macroParser(tempMacroTEnd);
 	data.updateTimeMacroEnd(inMacroTEnd);
-
 	TimeMacro inAlarmMacro = macroParser(tempAlarmMacro);
 	data.updateAlarmMacro(inAlarmMacro);
-
 	TimeMicro inMicroTBeg = microParser(tempMicroTBeg);
 	data.updateTimeMicroBeg(inMicroTBeg);
-
 	TimeMicro inMicroTEnd = microParser(tempMicroTEnd);
 	data.updateTimeMicroEnd(inMicroTEnd);
-
 	TimeMicro inAlarmMicro = microParser(tempAlarmMicro);
 	data.updateAlarmMicro(inAlarmMicro);
 
+	//update completeStatus for Data object
 	if(tempCompleteStatus == "true"){
 		data.updateCompleteStatus(true);
 	} else {
@@ -254,6 +255,7 @@ std::string LocalStorage::tokenizerSpace(std::string& str){
 //Start of Helper method for saving Data
 
 //helper method to convert TimeMacro into String
+//adding slash in the middle for readability
 std::string LocalStorage::convertTimeMacroToString(TimeType type, int i){
 	std::string tMacro;
 	
@@ -284,6 +286,7 @@ std::string LocalStorage::convertTimeMacroToString(TimeType type, int i){
 }
 
 //helper method to convert TimeMicro into String
+//adding slash in the middle for readability
 std::string LocalStorage::convertTimeMicroToString(TimeType type, int i){
 	std::string tMicro;
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "InternalStoring.h"
 
+//facade class for all InternalStorage classes
 class Storing {
 public:
 	Storing() {}

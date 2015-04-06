@@ -175,14 +175,5 @@ public:
 };
 
 
-class StorageErrorResponse {
-private:
-	std::string response;
-
-public:
-	
-
-
-};
 
 #endif

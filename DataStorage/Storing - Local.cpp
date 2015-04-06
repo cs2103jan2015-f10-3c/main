@@ -9,6 +9,9 @@ LocalStorage* LocalStorage::instance = NULL;
 LocalStorage* LocalStorage::getInstance(){
 	if(instance == NULL){
 		instance = new LocalStorage;
+
+		Logger log;
+		log.logging("LocalStorage initiated"); //write in log
 	}
 	return instance;
 }
@@ -25,7 +28,7 @@ LocalStorage* LocalStorage::getInstance(){
 //API for DisplayStorage
 //to search for two dates from a specific period
 std::vector<long long> LocalStorage::searchPeriod(TimeMacro startTime, TimeMacro endTime){
-	allocatePsedoDate();
+	allocatePsedoDate(); //allocating psedoDate to ensure all data have psedoDates
 
 	//allocate startTime & endTime into psedoDate format
 	long long pStartTime = allocateTimeMacroToPsedoDate(startTime);
@@ -45,6 +48,9 @@ void LocalStorage::clearDataList(){
 	History::updateLatestCommand("clear"); //store for undo
 	History::updateLatestVector();
 	dataList.clear();
+
+	Logger log;
+	log.logging("Clearing Data in Storage is succesful"); //log a message
 }
 
 //for add command to update the dataList
@@ -52,7 +58,8 @@ void LocalStorage::clearDataList(){
 //and also automaticallly sort dataList
 void LocalStorage::addData(Data& inData){
 	Logger log;
-	log.logging("adding data");
+	log.logging("adding data"); //log a message
+
 	int uniqueNo = allocateUniqueCode(uniqueCodeStore); //get unique code
 	inData.updateUniqueCode(uniqueNo);// assign unique code to Data
 	
@@ -70,15 +77,19 @@ Data LocalStorage::deleteData(int taskNo){
 	DisplayStorage *display = DisplayStorage::getInstance();
 	try{
 		checkTaskNoValidity(taskNo);
-		
 	}
 	catch(int errorNo){
+		Logger log;
+		log.logging("Exception is caught in LocalStorage");
 		throw errorNo; 
 	}
 
 	int uniqueCode = display->getUniqueCode(taskNo);
 	dataList = deleteDataOfUniqueCode(uniqueCode);
+
 	History::updateLatestCommand("delete"); //store for undo
+	Logger log;
+	log.logging("delete data in storage is succesful");
 	return display->getData(taskNo);
 }
 
@@ -104,6 +115,8 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 
 	}
 	catch (int errorNo){
+		Logger log;
+		log.logging("Exception is caught in LocalStorage");
 		throw errorNo;
 	}
 
@@ -116,6 +129,8 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	addData(dataToEdit);
 
 	History::updateLatestCommand("edit"); //Store for undo
+	Logger log;
+	log.logging("edit data in storage is succesful");
 	
 	return display->getData(taskNo);
 }
@@ -146,6 +161,8 @@ void LocalStorage::checkTaskNoValidity(int taskNo){
 	int listSize = display->getListSize();
 
 	if(taskNo <= 0 || taskNo > listSize){
+		Logger log;
+		log.logging("Exception is thrown from LocalStroage");
 		throw 1;
 	} 
 }
@@ -173,6 +190,9 @@ long long LocalStorage::allocateTimeMacroToPsedoDate(TimeMacro time){
 	long long tempMonth;
 	long long tempDate = 10000;
 
+	//Allocate all components systematically to pTime
+	//addition is done slowly to prevent memory loss
+	//from changing type;
 	pTime= 100000000;
 	pTime= time.getYear()*pTime;
 	tempMonth = 1000000;
@@ -200,7 +220,7 @@ long long LocalStorage::allocateTimeMicroToPsedoDate(long long time, TimeMicro t
 		min = 0;
 	}
 
-	time += hour*100 + min;
+	time += hour*100 + min; //update psedoData
 
 	return time;
 }
@@ -323,39 +343,48 @@ void LocalStorage::allocatePsedoDate(){
 //go through Data components
 //to change what needed
 Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
+	//update description when there is a change
 	if (!updatedData.getDesc().empty()){
 		dataToEdit.updateDesc(updatedData.getDesc());
 	}
 
+	//update TimeMacro begin when there is a change
 	if (updatedData.getTimeMacroBeg().getDate() != 0 
 		&& updatedData.getTimeMacroBeg().getMonth() != 0
 		&& updatedData.getTimeMacroBeg().getYear() != 0) {
 			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
 	}
 
+	//update TimeMacro End when there is a change
 	if (updatedData.getTimeMacroEnd().getDate() != 0 
 		&& updatedData.getTimeMacroEnd().getMonth() != 0
 		&& updatedData.getTimeMacroEnd().getYear() != 0) {
 			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
 	}
 
+	//update TimeMicro begin when there is a change
 	if (updatedData.getTimeMicroBeg().getHour() != -1
 		&& updatedData.getTimeMicroBeg().getMin() != -1) {
 			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
 			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
 	}
 
+	//update AlarmMacro when there is a change
+	//alarm is not a supported feature of the software at submission time
 	if (updatedData.getAlarmMacro().getDate() != 0 
 		&& updatedData.getAlarmMacro().getMonth() != 0
 		&& updatedData.getAlarmMacro().getYear() != 0) {
 			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
 	}
-
+	
+	//update AlarmMicro when there is a change
+	//alarm is not a supported feature of the software at submission time
 	if (updatedData.getAlarmMicro().getHour() != -1
 		&& updatedData.getAlarmMicro().getMin() != -1) {
 			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
 	}
 
+	//update complete status when there is a change
 	if (updatedData.getCompleteStatus() != dataToEdit.getCompleteStatus()){
 		dataToEdit.updateCompleteStatus(updatedData.getCompleteStatus());
 	}

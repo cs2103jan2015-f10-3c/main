@@ -28,10 +28,14 @@ std::vector<Data>& History::getLatestVector(){
 
 void History::updateLatestCommand(std::string inCommand){
 	latestCommand = inCommand;
+	Logger log;
+	log.logging("latestCommand is updated"); // write in log
 }
 
 void History::updateLatestData(Data inData){
 	latestData = inData;
+	Logger log;
+	log.logging("latestData is updated"); //write in log
 }
 
 void History::updateLatestVector(){
@@ -40,5 +44,7 @@ void History::updateLatestVector(){
 	localStorage = LocalStorage::getInstance();
 
 	latestVector = localStorage->getDataList();
-
+	
+	Logger log;
+	log.logging("latestVector is updated"); //write in log
 }
