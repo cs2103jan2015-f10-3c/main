@@ -287,18 +287,32 @@ string DataProcessor::showFeatures(){
 	return		featureList;
 }
 
-////This function passes the save 
-////file path to DataSotrage
-//void DataProcessor::savePath(string path){
-//
-//}
-//
-////This function ask DataStorage
-////to check whether there is 
-////an existing path for saving file
-//bool DataProcessor::checkPathExistence(){
-//
-//}
+//This function passes the save 
+//file path to DataSotrage
+bool DataProcessor::savePath(string path){
+	Storing storing;
+	if(storing.saveUserPathName(path)){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+//This function ask DataStorage
+//to check whether there is 
+//an existing path for saving file
+bool DataProcessor::checkPathExistence(){
+	Storing storing;
+	try{
+		if(storing.findPathName()){
+			return true;
+		}
+	}
+	catch(string errorMessage){
+		throw(errorMessage);
+	}
+}
 
 //This function reads in a Data object and convert it into a string
 //that contains all the information of that data and ready to be displayed

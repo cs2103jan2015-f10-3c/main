@@ -68,9 +68,9 @@ public:
 	static void loadData(bool& status);
 	static void clearDisplayList();
 	static void undoEditOrClear(Storing & storing, vector<Data> & latestVector);
-	static void getTimeObject(TimeMacro & timeMacroBeg,TimeMicro & timeMicroBeg,
-							  TimeMicro & timeMicroEnd, Data task);
-
+	static void getTimeObject(TimeMacro & timeMacroBeg,TimeMicro & timeMicroBeg, TimeMicro & timeMicroEnd, Data task);
+	static bool savePath(string path);
+	static bool checkPathExistence();
 	
 	string convertTaskListToString(vector<Data> & taskList);
 	string convertDataObjectToString(Data task);
