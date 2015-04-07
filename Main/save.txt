@@ -1,45 +1,28 @@
-229
+212
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
-186	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		makan siang
-187	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
-188	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		rabu
-189	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		1 milktea
-190	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		honeyMilkTea
-191	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		milktea
-192	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		hellow
-193	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		haiku
-227	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		lets go
-194	Thursday/1/1/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		makan
-195	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		play with mochi
-196	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		a
-197	Wednesday/1/4/2015		undefined/0/0/0		15/0		-1/-1		true		None		undefined/0/0/0		-1/-1		do unit testing cs
-198	Wednesday/1/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with alvinna
-199	Thursday/2/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		b
-200	Thursday/2/4/2015		undefined/0/0/0		9/0		-1/-1		false		None		undefined/0/0/0		-1/-1		project
-201	Thursday/2/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		study ie2150
-202	Thursday/2/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		charity concert
-203	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		good friday
-204	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		hellow
-205	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		c
-206	Friday/3/4/2015		undefined/0/0/0		9/0		10/20		true		None		undefined/0/0/0		-1/-1		project
-207	Friday/3/4/2015		undefined/0/0/0		10/0		-1/-1		true		None		undefined/0/0/0		-1/-1		cs v0.3
-208	Saturday/4/4/2015		undefined/0/0/0		0/0		-1/-1		true		None		undefined/0/0/0		-1/-1		dreamtown
-209	Saturday/4/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		d
-210	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		true		None		undefined/0/0/0		-1/-1		meeting 2150
-211	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
-212	Sunday/5/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		makan
-213	Monday/6/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		milk tea
-214	Monday/6/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		pantai
-229	Tuesday/7/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		normalty
-216	Tuesday/7/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		candle
-228	Tuesday/7/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
-217	Wednesday/8/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		g
-218	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting2150 to consolidate
-219	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		f
-220	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline internal 2150 report
-221	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		j
-222	Monday/13/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		cs v0.5 deadline
-223	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		ie2130 report deadline
-224	Saturday/18/4/2015		undefined/0/0/0		10/0		13/0		false		None		undefined/0/0/0		-1/-1		gem1919 test1
-225	Saturday/25/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		gem1919 test 2
-226	Thursday/31/12/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		heyo
+93	Monday/23/3/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		vip acceptance deadline
+75	Thursday/26/3/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		Eusoff conversation over dinner
+91	Friday/27/3/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2100 return midterm script!!
+70	Sunday/29/3/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE 2150 busstop report
+74	Monday/30/3/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2150 homework
+72	Monday/30/3/2015		undefined/0/0/0		7/0		-1/-1		false		None		undefined/0/0/0		-1/-1		bsp problem set 3
+97	Tuesday/31/3/2015		undefined/0/0/0		10/0		-1/-1		false		None		undefined/0/0/0		-1/-1		go to clinic
+77	Wednesday/1/4/2015		undefined/0/0/0		14/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2100 homework6
+99	Thursday/2/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		CCA presentation slides
+79	Friday/3/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2130 project meeting
+194	undefined/4/4/0		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		breakfast
+183	Saturday/4/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
+80	Sunday/5/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		concert at UT Audi2
+211	Monday/6/4/2015		undefined/0/0/0		19/0		-1/-1		true		None		undefined/0/0/0		-1/-1		CCA presentation
+78	Wednesday/8/4/2015		undefined/0/0/0		14/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2100 homework7
+95	Friday/10/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		bsp1005 meeting
+81	Tuesday/14/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2150 report
+82	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2130 report
+83	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2130 presentation
+84	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		application of vacation stay
+85	Friday/17/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		dsc2006 presentation
+86	Saturday/25/4/2015		undefined/0/0/0		13/0		-1/-1		false		None		undefined/0/0/0		-1/-1		cs2130 exam
+87	Tuesday/28/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		bsp1005 exam
+88	Tuesday/28/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2150 exam
+89	Thursday/30/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		dsc2006 exam
+155	Monday/4/5/2015		undefined/0/0/0		9/0		22/0		false		None		undefined/0/0/0		-1/-1		breakfast

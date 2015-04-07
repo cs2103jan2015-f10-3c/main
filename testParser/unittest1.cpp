@@ -12,28 +12,25 @@ namespace testParser
 		//To test whether can extract "add" command
 		TEST_METHOD(testExtractCommand)
 		{
-			Parser parser;
 			string testString = "add 08/03/2015 go for tutorial";
 			string expected = "add";
-			Assert::AreEqual (parser.extractCommandWord (testString), expected);
+			Assert::AreEqual (Parser::extractCommandWord (testString), expected);
 		}
 
 		//To test for invalid command
 		TEST_METHOD(testInvalidCommand)
 		{
-			Parser parser;
 			string testString = "abc";
 			string expected = "Please enter the correct command";
-			parser.parseInput (testString);
-			Assert::AreEqual (parser.getErrorMessage(), expected);
+			Parser::parseInput (testString);
+			Assert::AreEqual (Parser::getErrorMessage(), expected);
 		}
 
 		//To test for a leap year
 		TEST_METHOD(testLeapYear1)
 		{
-			Parser parser;
 			int year = 2004;
-			Assert::IsTrue (parser.isLeapYear (year));
+			Assert::IsTrue (Parser::isLeapYear (year));
 		}
 
 		//To test for a non-leap year
