@@ -13,7 +13,6 @@ const unsigned int Parser::SIX = 6;
 const unsigned int Parser::SEVEN = 7;
 const unsigned int Parser::LENGTH_OF_STARTING_TIME = 4;  //"9:00"
 const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 9;  //"9:00-9:30"
-const char Parser::SLASH = '/';
 const char Parser::ERROR_MESSAGE_COMMAND[] = "Please enter the correct command";
 const char Parser::ERROR_MESSAGE_INPUT[] = "Please enter correct input following the command word";
 const char Parser::ERROR_MESSAGE_EDIT[] = "Please enter content you want to edit";
@@ -406,23 +405,14 @@ void Parser::parseClear (string userInput, string commandWord) {
 
 //This method is to parse user's input if the command word is "path".
 //The command word "path" must be followed by a directory.
-//If the directory does not contain at least one slash, 
-//it means it is a wrong directory.
-//In this case, an exception is thrown.
 void Parser::parsePath (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size ());
 
 	if (inputToBeParsed != "" && inputToBeParsed != " ") {
 		inputToBeParsed = inputToBeParsed.substr(ONE);
 
-		if (isSlash (inputToBeParsed)) {
-			updateCommand (commandWord);
-			updateDirectory (inputToBeParsed);	
-		}
-		else {
-			throw ERROR_MESSAGE_DIRECTORY;
-		}
-
+		updateCommand (commandWord);
+		updateDirectory (inputToBeParsed);	
 	}
 	else {
 		throw ERROR_MESSAGE_DIRECTORY;
@@ -983,18 +973,6 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed,  int& hourBegInt, int& 
 		}
 	}
 
-	return false;
-}
-
-
-//This method is to check if the directory contains slash.
-bool Parser::isSlash (string directory) {
-	unsigned int index = 0;
-	for (index = 0; index < directory.size(); index ++) {
-		if (directory[index] == SLASH) {
-			return true;
-		}
-	}
 	return false;
 }
 

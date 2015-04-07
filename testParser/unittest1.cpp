@@ -117,7 +117,7 @@ namespace testParser
 			int hourEnd;
 			int minuteBeg;
 			int minuteEnd;
-			string testString = "00:00-9:30";
+			string testString = "00:00-9:59";
 			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString, hourBeg, hourEnd, 
 				minuteBeg, minuteEnd));
 		}
@@ -132,7 +132,7 @@ namespace testParser
 			int hourEnd;
 			int minuteBeg;
 			int minuteEnd;
-			string testString = "0:00-9:30";
+			string testString = "0:00-9:59";
 			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString, hourBeg, hourEnd, 
 				minuteBeg, minuteEnd));
 		}
