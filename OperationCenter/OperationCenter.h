@@ -30,6 +30,7 @@ public:
 	static void loadData(bool& status);
 	static string showWelcomeMessage(bool status);
 	static void clearScreen();
+	static bool findPath();
 };
 
 

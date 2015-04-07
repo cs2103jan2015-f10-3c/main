@@ -30,3 +30,7 @@ string OperationCenter::getResponse(){
 void OperationCenter::clearScreen(){
 	Logic::clearScreen();
 }
+
+bool OperationCenter::findPath(){
+	return Logic::findPath();
+}
