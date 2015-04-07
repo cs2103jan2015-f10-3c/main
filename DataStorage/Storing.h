@@ -1,7 +1,15 @@
 #pragma once
 #include "InternalStoring.h"
 
+//facade class for all InternalStorage classes
 class Storing {
+private:
+	static const char Storing::LOGGING_MESSAGE_1[100];
+	static const char Storing::LOGGING_MESSAGE_2[100];
+	static const char Storing::ERROR_MESSAGE_1[100];
+	static const char Storing::ERROR_MESSAGE_2[100];
+	static const char Storing::ERROR_MESSAGE_3[100]; 
+
 public:
 	Storing() {}
 
@@ -13,10 +21,12 @@ public:
 	void undoAdd();
 	void loadData(bool& status , std::string directory = "");
 	bool saveData(std::string directory = "");
+	bool saveUserPathName(std::string userPathName);
 
 	//methods that call PrewrittenData Class
 	std::string retrieveCommandList();
 	std::string retrieveFeatureList();
+	bool findPathName();
 
 	//methods that call History Class
 	std::string getLatestCommand();
@@ -30,7 +40,9 @@ public:
 	std::vector<Data>& displayDone();
 	std::vector<Data>& displayfloat();
 	void clearDisplayList();
-
+	
+	//method for exception handling
+	void handleException(int errorNo);
 };
 
 

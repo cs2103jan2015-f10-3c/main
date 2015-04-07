@@ -11,10 +11,9 @@
 #include <sstream>
 #include "Commons.h"
 
-typedef enum ListType {command, feature, heading};
+typedef enum ListType {command, feature, heading, path};
 typedef enum DisplayType {search, done, floating};
 typedef enum TimeType {begin, end, alarm};
-
 
 
 //acts as internal database
@@ -24,7 +23,35 @@ typedef enum TimeType {begin, end, alarm};
 class LocalStorage {
 private:
 	//Magic String declarations
+	//used in Storing - local.cpp
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+	static const char LOGGING_MESSAGE_4[100];
+	static const char LOGGING_MESSAGE_5[100];
+	static const char LOGGING_MESSAGE_6[100];
+	static const char LOGGING_MESSAGE_7[100];
+	static const char ADD[10];
+	static const char EDIT[10];
+	static const char DELETE_WORD[10];
+	static const char CLEAR[10];
+	static const int TIME_MICRO_DEFAULT;
+	static const int TIME_MACRO_DEFAULT;
+	static const int TIME_MICRO_ADJUSTMENT;
+	static const int NO_OF_DIGITS;
+	static const int LENGTH_OF_PSEDODATE;
+	static const int ZERO;
+	static const int TEN_THOUSAND;
+	static const int ONE_MILLION;
+	static const int HUNDRED_MILLION;
+	
+	//used in Storing - SaveLoad.cpp
 	static const char DEFAULT_SAVE_DIRECTORY[100];
+	static const char SLASH[10];
+	static const char TAB[10];
+	static const char TRUE_STRING[10];
+	static const char FALSE_STRING[10];
+	static const char EMPTY_STRING[10];
 
 	//Singleton instance and private constructor
 	static LocalStorage* instance;
@@ -46,6 +73,7 @@ private:
 	void radixCollect(std::queue<Data> digitQ[]);
 	Data getData(int uniqueNo);
 	Data updateData(Data dataToEdit, Data updatedData);
+	void checkTaskNoValidity(int taskNo);
 
 	//Helper methods for internal working Save and Load
 	void writeHeading (std::string fileName, std::ofstream& out);
@@ -76,6 +104,7 @@ public:
 	std::vector<Data>& getDataList();
 	bool saveData(std::string& directory);
 	void loadData(bool& status, std::string& directory);
+	std::string checkPathName();
 
 };
 
@@ -89,6 +118,10 @@ public:
 //as it caused unsolvable bug
 class History {
 private:
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+
 	//private attribute
 	static std::string latestCommand;
 	static Data latestData;
@@ -112,6 +145,10 @@ public:
 //using singleton pattern
 class DisplayStorage {
 private:
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char DEFAULT_DESCRIPTION[10];
+
 	//instance and private constructor for singleton pattern
 	static DisplayStorage* instance;
 	DisplayStorage() {}
@@ -126,6 +163,7 @@ private:
 	void displayDone(std::vector<Data> tempList);
 	void enterDataToList(std::vector<long long> timePeriod);
 	std::vector<Data> getListFromLocal();
+	void checkTaskNoValidity(int taskNo);
 
 public:
 	//getInstance for singleton pattern
@@ -139,6 +177,7 @@ public:
 
 	//API for LocalStorage
 	int getUniqueCode(int taskNo);
+	int getListSize();
 };
 
 
@@ -151,7 +190,14 @@ private:
 	static const char ALL_COMMANDS_FILE[100];
 	static const char ALL_FEATURES_FILE[100];
 	static const char HEADING_TEMPLATE_FILE[100];
-	std::stringstream retrievedList;
+	static const char PATH_FILE[100];
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+
+	std::string retrievedList;
+	std::string txtFile;
+	std::string pathName;
 
 	//helper method
 	std::string determineListType(ListType type);
@@ -162,7 +208,11 @@ public:
 	//API for facade class
 	std::string retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
+	bool checkPath();
+	std::string PrewrittenData::getPath();		
+	void savePath(std::string inPath);
 };
+
 
 
 #endif

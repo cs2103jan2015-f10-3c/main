@@ -72,8 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Commons - Data.cpp" />
+    <ClCompile Include="Commons - Logger.cpp" />
     <ClCompile Include="Commons - TimeMicro.cpp" />
-    <ClCompile Include="Commons-TimeMacro.cpp" />
+    <ClCompile Include="Commons - TimeMacro.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

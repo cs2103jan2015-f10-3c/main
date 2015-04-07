@@ -99,6 +99,9 @@
     <ProjectReference Include="..\DataProcessor\DataProcessor.vcxproj">
       <Project>{00748712-4a07-4125-b153-8dffcf6c0827}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\DataStorage\DataStorage.vcxproj">
+      <Project>{21daf16e-0aeb-4767-8b3e-9c7322507362}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
