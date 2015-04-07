@@ -90,7 +90,39 @@ private:
 	static const char ERROR_MESSAGE_DESC[100];
 
 
-	//private methods
+	
+public:
+
+	//default constructor
+	Parser () {}
+
+
+	//getters
+	string Parser::getCommand () {
+		return _command;
+	}
+
+	int Parser::getTaskNo () {
+		return _taskNo;
+	}
+
+	Data getData () {
+		return _myData;
+	}
+
+	string getErrorMessage () {
+		return _errorMessage;
+	}
+
+	string getDirectory () {
+		return _directory;
+	}
+
+
+	//API for OperationCenter to access
+	void parseInput (string userInput);
+	
+	//public methods
 	string extractCommandWord (string userInput);
 	void checkCommandWord (string userInput, string commandWord);
 	void parseAdd (string userInput, string commandWord);
@@ -133,35 +165,5 @@ private:
 	bool isLeapYear (int year);
 	
 
-public:
-
-	//default constructor
-	Parser () {}
-
-
-	//getters
-	string Parser::getCommand () {
-		return _command;
-	}
-
-	int Parser::getTaskNo () {
-		return _taskNo;
-	}
-
-	Data getData () {
-		return _myData;
-	}
-
-	string getErrorMessage () {
-		return _errorMessage;
-	}
-
-	string getDirectory () {
-		return _directory;
-	}
-
-
-	//API for OperationCenter
-	void parseInput (string userInput);
 };
 #endif

@@ -346,6 +346,7 @@ void Parser::parseShow (string userInput, string commandWord) {
 					throw ERROR_MESSAGE_SHOW;
 				}
 
+				updateCommand (commandWord);
 				timeMacroEnd = timeMacroBeg;
 				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}		
