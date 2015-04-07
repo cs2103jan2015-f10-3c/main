@@ -11,11 +11,6 @@ using namespace std;
 class Parser {
 private: 
 
-	//Singleton instance and private constructor
-	static Parser* instance;
-	Parser () {}
-
-
 	//private attributes
 	string _command;
 	Data _myData;
@@ -140,8 +135,8 @@ private:
 
 public:
 
-	//get instance for singleton pattern
-	static Parser* getInstance();
+	//default constructor
+	Parser () {}
 
 
 	//getters
