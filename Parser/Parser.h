@@ -10,12 +10,21 @@ using namespace std;
 
 class Parser {
 private: 
+
+	//Singleton instance and private constructor
+	static Parser* instance;
+	Parser () {}
+
+
+	//private attributes
 	string _command;
 	Data _myData;
 	int _taskNo;
 	string _errorMessage;
 	string _directory;
 
+
+	//setters
 	void updateCommand (string commandWord) {
 		_command = commandWord;
 	}
@@ -59,7 +68,7 @@ private:
 	}
 	
 
-	char message[100];
+	//private static variables
 	static const unsigned int LENGTH_OF_DATE_NUMBER;
 	static const unsigned int LENGTH_OF_DATE_ALPHABET;
 	static const unsigned int LENGTH_OF_YEAR_ALPHABET;
@@ -85,36 +94,8 @@ private:
 	static const char ERROR_MESSAGE_TIME[100];
 	static const char ERROR_MESSAGE_DESC[100];
 
-public: 
-	//default constructor
-	Parser () {
-		_command = "";
-		_myData;
-		_taskNo = 0;
-	}
 
-	//getters
-    string Parser::getCommand () {
-	    return _command;
-    }
-
-    int Parser::getTaskNo () {
-	    return _taskNo;
-    }
-
-    Data getData () {
-		return _myData;
-	}
-
-	string getErrorMessage () {
-		return _errorMessage;
-	}
-
-	string getDirectory () {
-		return _directory;
-	}
-
-	void parseInput (string userInput);
+	//private methods
 	string extractCommandWord (string userInput);
 	void checkCommandWord (string userInput, string commandWord);
 	void parseAdd (string userInput, string commandWord);
@@ -156,5 +137,36 @@ public:
 	void getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd);
 	bool isLeapYear (int year);
 	
+
+public:
+
+	//get instance for singleton pattern
+	static Parser* getInstance();
+
+
+	//getters
+	string Parser::getCommand () {
+		return _command;
+	}
+
+	int Parser::getTaskNo () {
+		return _taskNo;
+	}
+
+	Data getData () {
+		return _myData;
+	}
+
+	string getErrorMessage () {
+		return _errorMessage;
+	}
+
+	string getDirectory () {
+		return _directory;
+	}
+
+
+	//API for OperationCenter
+	void parseInput (string userInput);
 };
 #endif

@@ -12,53 +12,47 @@ namespace testParser
 		//To test whether can extract "add" command
 		TEST_METHOD(testExtractCommand)
 		{
-			Parser parser;
 			string testString = "add 08/03/2015 go for tutorial";
 			string expected = "add";
-			Assert::AreEqual (parser.extractCommandWord (testString), expected);
+			Assert::AreEqual (Parser::extractCommandWord (testString), expected);
 		}
 
 		//To test for invalid command
 		TEST_METHOD(testInvalidCommand)
 		{
-			Parser parser;
 			string testString = "abc";
 			string expected = "Please enter the correct command";
-			parser.parseInput (testString);
-			Assert::AreEqual (parser.getErrorMessage(), expected);
+			Parser::parseInput (testString);
+			Assert::AreEqual (Parser::getErrorMessage(), expected);
 		}
 
 		//To test for a leap year
 		TEST_METHOD(testLeapYear1)
 		{
-			Parser parser;
 			int year = 2004;
-			Assert::IsTrue (parser.isLeapYear (year));
+			Assert::IsTrue (Parser::isLeapYear (year));
 		}
 
 		//To test for a non-leap year
 		TEST_METHOD(testLeapYear2)
 		{
-			Parser parser;
 			int year = 2015;
-			Assert::IsFalse (parser.isLeapYear (year));
+			Assert::IsFalse (Parser::isLeapYear (year));
 		}
 
 		//To test for a leap year which can be divided by 400
 		TEST_METHOD(testLeapYear3)
 		{
-			Parser parser;
 			int year = 2000;
-			Assert::IsTrue (parser.isLeapYear (year));
+			Assert::IsTrue (Parser::isLeapYear (year));
 		}
 
 		//To test whether can update and get today's date correctly
 		TEST_METHOD(testTodayDate)
 		{
-			Parser parser;
 			TimeMacro timeMacro;
 			string dayOfTheWeek = "Thursday";
-			parser.getTodayDate (timeMacro);
+			Parser::getTodayDate (timeMacro);
 			Assert::AreEqual (timeMacro.getDate(), 2);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
@@ -68,37 +62,11 @@ namespace testParser
 		//To test whether a date can be converted to day of the week correctly
 		TEST_METHOD(testConvertDateToDay1)
 		{
-			Parser parser;
 			TimeMacro timeMacro;
 			string dayOfTheWeek = "Thursday";
-			Assert::AreEqual (parser.convertDateToDayOfTheWeek (12, 3, 2015), dayOfTheWeek);
+			Assert::AreEqual (Parser::convertDateToDayOfTheWeek (12, 3, 2015), dayOfTheWeek);
 		}
 
-		//To test if a character can be found in a given string
-		//In this case, the character is present in the string
-		//This is a boundary case for the first character
-		TEST_METHOD(testSearchSubstring1)
-		{
-			Parser parser;
-			Assert::IsTrue (parser.searchSubstring ("abcdefg", 'a'));
-		}
-
-		//To test if a character can be found in a given string
-		//In this case, the character is absent from the string
-		TEST_METHOD(testSearchSubstring2)
-		{
-			Parser parser;
-			Assert::IsFalse (parser.searchSubstring ("abcdefg", 'm'));
-		}
-
-		//To test if a character can be found in a given string
-		//In this case, the character is present in the string
-		//This is a boundary case for the last character
-		TEST_METHOD(testSearchSubstring3)
-		{
-			Parser parser;
-			Assert::IsTrue (parser.searchSubstring ("abcdefg", 'g'));
-		}
 
 		//To test whether a string is a time period
 		//In this case, the string is a time period
@@ -106,9 +74,13 @@ namespace testParser
 		//"00:00-23:59" is also the boundary case
 		TEST_METHOD(testIsTimePeriodTwentyFour1)
 		{
-			Parser parser;
+			int hourBeg;
+			int hourEnd;
+			int minuteBeg;
+			int minuteEnd;
 			string testString = "00:00-23:59";
-			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+			Assert::IsTrue (Parser::isTimePeriodTwentyFour (testString, hourBeg, hourEnd, 
+				minuteBeg, minuteEnd));
 		}
 
 		//To test whether a string is a time period
@@ -117,9 +89,13 @@ namespace testParser
 		//"0:00-23:59" is also the boundary case
 		TEST_METHOD(testIsTimePeriodTwentyFour2)
 		{
-			Parser parser;
+			int hourBeg;
+			int hourEnd;
+			int minuteBeg;
+			int minuteEnd;
 			string testString = "0:00-23:59";
-			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+			Assert::IsTrue (Parser::isTimePeriodTwentyFour (testString, hourBeg, hourEnd, 
+				minuteBeg, minuteEnd));
 		}
 
 		//To test whether a string is a time period
@@ -127,9 +103,13 @@ namespace testParser
 		//with the format "hh:mm-h:mm"
 		TEST_METHOD(testIsTimePeriodTwentyFour3)
 		{
-			Parser parser;
+			int hourBeg;
+			int hourEnd;
+			int minuteBeg;
+			int minuteEnd;
 			string testString = "00:00-9:30";
-			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+			Assert::IsTrue (Parser::isTimePeriodTwentyFour (testString, hourBeg, hourEnd, 
+				minuteBeg, minuteEnd));
 		}
 
 		//To test whether a string is a time period
@@ -137,18 +117,26 @@ namespace testParser
 		//with the format "h:mm-h:mm"
 		TEST_METHOD(testIsTimePeriodTwentyFour4)
 		{
-			Parser parser;
+			int hourBeg;
+			int hourEnd;
+			int minuteBeg;
+			int minuteEnd;
 			string testString = "0:00-9:30";
-			Assert::IsTrue (parser.isTimePeriodTwentyFour (testString));
+			Assert::IsTrue (Parser::isTimePeriodTwentyFour (testString, hourBeg, hourEnd, 
+				minuteBeg, minuteEnd));
 		}
 
 		//To test whether a string is a time period
 		//In this case, the string is not a time period but a starting time
 		TEST_METHOD(testIsTimePeriodTwentyFour5)
 		{
-			Parser parser;
+			int hourBeg;
+			int hourEnd;
+			int minuteBeg;
+			int minuteEnd;
 			string testString = "09:00";
-			Assert::IsFalse (parser.isTimePeriodTwentyFour (testString));
+			Assert::IsFalse (Parser::isTimePeriodTwentyFour (testString, hourBeg, hourEnd, 
+				minuteBeg, minuteEnd));
 		}
 
 		//To test whether a string is a starting time
@@ -156,9 +144,10 @@ namespace testParser
 		//The boundary case is 00:00
 		TEST_METHOD(testIsStartingTimeTwentyFour1)
 		{
-			Parser parser;
+			int hour;
+			int minute;
 			string testString = "00:00";
-			Assert::IsTrue (parser.isStartingTimeTwentyFour (testString));
+			Assert::IsTrue (Parser::isStartingTimeTwentyFour (testString, hour, minute));
 		}
 
 		//To test whether a string is a starting time
@@ -166,9 +155,10 @@ namespace testParser
 		//The boundary case is 23:59
 		TEST_METHOD(testIsStartingTimeTwentyFour2)
 		{
-			Parser parser;
+			int hour;
+			int minute;
 			string testString = "23:59";
-			Assert::IsTrue (parser.isStartingTimeTwentyFour (testString));
+			Assert::IsTrue (Parser::isStartingTimeTwentyFour (testString, hour, minute));
 		}
 
 		//To test whether a string is a starting time
@@ -176,9 +166,10 @@ namespace testParser
 		//The boundary case is 0:00
 		TEST_METHOD(testIsStartingTimeTwentyFour3)
 		{
-			Parser parser;
+			int hour;
+			int minute;
 			string testString = "0:00";
-			Assert::IsTrue (parser.isStartingTimeTwentyFour (testString));
+			Assert::IsTrue (Parser::isStartingTimeTwentyFour (testString, hour, minute));
 		}
 
 		//To test whether a string is a starting time
@@ -186,18 +177,20 @@ namespace testParser
 		//The boundary case is 9:59
 		TEST_METHOD(testIsStartingTimeTwentyFour4)
 		{
-			Parser parser;
+			int hour;
+			int minute;
 			string testString = "9:59";
-			Assert::IsTrue (parser.isStartingTimeTwentyFour (testString));
+			Assert::IsTrue (Parser::isStartingTimeTwentyFour (testString, hour, minute));
 		}
 
 		//To test whether a string is a starting time
 		//In this case, the string is not a starting time but a date
 		TEST_METHOD(testIsStartingTimeTwentyFour5)
 		{
-			Parser parser;
+			int hour;
+			int minute;
 			string testString = "12/03/2015 dinner tonight";
-			Assert::IsFalse (parser.isStartingTimeTwentyFour (testString));
+			Assert::IsFalse (Parser::isStartingTimeTwentyFour (testString, hour, minute));
 		}
 
 		//To test whether a string is a date
@@ -205,9 +198,10 @@ namespace testParser
 		//The boundary case is 01/01/2000
 		TEST_METHOD(testIsDateNumber1)
 		{
-			Parser parser;
+			int date;
+			int month;
 			string testString = "01/01/2000";
-			Assert::IsTrue (parser.isDateNumber (testString));
+			Assert::IsTrue (Parser::isDateNumber (testString, date, month));
 		}
 
 		//To test whether a string is a date
@@ -215,7 +209,8 @@ namespace testParser
 		//The boundary case is 31/12/2999
 		TEST_METHOD(testIsDateNumber2)
 		{
-			Parser parser;
+			int date;
+			int month;
 			string testString = "31/12/2000";
 			Assert::IsTrue (parser.isDateNumber (testString));
 		}
@@ -225,7 +220,8 @@ namespace testParser
 		//The boundary case is 1/01/2000
 		TEST_METHOD(testIsDateNumber3)
 		{
-			Parser parser;
+			int date;
+			int month;
 			string testString = "1/01/2000";
 			Assert::IsTrue (parser.isDateNumber (testString));
 		}
@@ -235,7 +231,8 @@ namespace testParser
 		//The boundary case is 9/12/2999
 		TEST_METHOD(testIsDateNumber4)
 		{
-			Parser parser;
+			int date;
+			int month;
 			string testString = "9/12/2999";
 			Assert::IsTrue (parser.isDateNumber (testString));
 		}
@@ -245,7 +242,8 @@ namespace testParser
 		//The boundary case is 01/1/2000
 		TEST_METHOD(testIsDateNumber5)
 		{
-			Parser parser;
+			int date;
+			int month;
 			string testString = "01/1/2000";
 			Assert::IsTrue (parser.isDateNumber (testString));
 		}

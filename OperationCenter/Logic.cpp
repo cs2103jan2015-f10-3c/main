@@ -276,15 +276,13 @@ void Logic::checkCommand(string command){
 
 void Logic::executeInput(string input){
 	TimeMacro currentTime = setCurrentTime();
-
-	Parser parser;
 	
-	parser.parseInput(input);
-	string command = parser.getCommand();
-	Data task = parser.getData();
-	int taskNo = parser.getTaskNo();
-	string errorMessage = parser.getErrorMessage();
-	string directory = parser.getDirectory();
+	Parser::getInstance()->parseInput(input);
+	string command = Parser::getInstance()->getCommand();
+	Data task = Parser::getInstance()->getData();
+	int taskNo = Parser::getInstance()->getTaskNo();
+	string errorMessage = Parser::getInstance()->getErrorMessage();
+	string directory = Parser::getInstance()->getDirectory();
 	
 	string returnResponse;
 	string returnDisplay;

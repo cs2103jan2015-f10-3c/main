@@ -26,6 +26,23 @@ const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
 const char Parser::ERROR_MESSAGE_DESC[] = "Please enter task description";
 
 
+///////////////////////////////////////
+//Singleton Definition / Implementation
+
+Parser* Parser::instance = NULL;
+
+Parser* Parser::getInstance(){
+	if (instance == NULL){
+		instance = new Parser;
+	}
+	return instance;
+}
+
+
+//End of Singleton Definition
+///////////////////////////////////////
+
+
 
 //This method is called by OperationCenter.
 //It takes in user's input message

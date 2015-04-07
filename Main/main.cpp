@@ -7,6 +7,9 @@ enum Colors { dark=0, blue, green, cyan, red, purple, yellow, grey, dgrey, hblue
 
 
 int main(){
+	Logger log;
+	log.deleteLogContent(); // delete previous log if any
+
 	bool status = false;
 
 	cout << OperationCenter::findPath() << endl; //is it correct if I put here?
