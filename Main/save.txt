@@ -1,4 +1,4 @@
-210
+212
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
 93	Monday/23/3/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		vip acceptance deadline
 75	Thursday/26/3/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		Eusoff conversation over dinner
@@ -13,7 +13,7 @@ uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMac
 194	undefined/4/4/0		undefined/0/0/0		8/0		-1/-1		false		None		undefined/0/0/0		-1/-1		breakfast
 183	Saturday/4/4/2015		undefined/0/0/0		22/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner
 80	Sunday/5/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		concert at UT Audi2
-94	Monday/6/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		CCA presentation
+211	Monday/6/4/2015		undefined/0/0/0		19/0		-1/-1		true		None		undefined/0/0/0		-1/-1		CCA presentation
 78	Wednesday/8/4/2015		undefined/0/0/0		14/0		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2100 homework7
 95	Friday/10/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		bsp1005 meeting
 81	Tuesday/14/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2150 report
