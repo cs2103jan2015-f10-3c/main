@@ -86,12 +86,14 @@ bool Storing::findPathName(){
 
 bool Storing::saveUserPathName(std::string userPathName){
 	bool status;
+
 	LocalStorage *localStorage = LocalStorage::getInstance();
-	status = localStorage->saveData(userPathName);
+	localStorage->firstSave(); //set up for first time saving
+	status = localStorage->saveData(userPathName); //return validity of directory given by user
 	
 	PrewrittenData prewrittenData;
 	if(status == true){
-		prewrittenData.savePath(userPathName);
+		prewrittenData.savePath(userPathName); //save path in path.txt
 	}
 
 	return status;

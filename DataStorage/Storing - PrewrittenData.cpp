@@ -8,9 +8,16 @@ const char PrewrittenData::PATH_FILE[] = "path.txt";
 const char PrewrittenData::LOGGING_MESSAGE_1[] = "Exception is caught in PrewrittenData Class";
 const char PrewrittenData::LOGGING_MESSAGE_2[] = "Exception is thrown from PrewrittenData Class";
 const char PrewrittenData::LOGGING_MESSAGE_3[] = "Heading for storage could not be found";
+const char PrewrittenData::DIRECTORY_FILE[] = "path.txt";
 
 void PrewrittenData::savePath(std::string inPath){
 	pathName = inPath;
+
+	std::string directory = DIRECTORY_FILE;
+	std::ofstream out;
+	out.open(directory.c_str());
+
+	out << inPath << std::endl;
 }
 
 std::string PrewrittenData::getPath(){
