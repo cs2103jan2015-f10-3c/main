@@ -52,6 +52,10 @@ void LocalStorage::loadData(bool& status, std::string& directory){
 	}
 }
 
+void LocalStorage::firstSave(){
+	uniqueCodeStore = 0;
+}
+
 //check whether user input directory exists
 bool LocalStorage::directoryCheck(std::ofstream& out){
 	try{
@@ -60,7 +64,7 @@ bool LocalStorage::directoryCheck(std::ofstream& out){
 			log.logging(LOGGING_MESSAGE_2);
 			throw false;
 		} else {
-			throw true;
+			return true;
 		}
 	}
 	catch (const bool status) {
