@@ -105,6 +105,7 @@ public:
 	bool saveData(std::string& directory);
 	void loadData(bool& status, std::string& directory);
 	std::string checkPathName();
+	void firstSave();
 
 };
 
@@ -194,6 +195,7 @@ private:
 	static const char LOGGING_MESSAGE_1[100];
 	static const char LOGGING_MESSAGE_2[100];
 	static const char LOGGING_MESSAGE_3[100];
+	static const char DIRECTORY_FILE[100];
 
 	std::string retrievedList;
 	std::string txtFile;
@@ -208,9 +210,9 @@ public:
 	//API for facade class
 	std::string retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
-	bool checkPath();
-	std::string PrewrittenData::getPath();		
+	bool checkPath();	
 	void savePath(std::string inPath);
+	std::string getPath();
 };
 
 
