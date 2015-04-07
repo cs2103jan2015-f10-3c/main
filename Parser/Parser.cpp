@@ -773,6 +773,10 @@ bool Parser::isDateAlphabet (string inputToBeParsed, int& dateInt) {
 						dateInt == 31) {
 							throw ERROR_MESSAGE_DATE;
 					}
+					else if ((month == "Feb" || month == "feb") &&
+						(dateInt == 31 || dateInt == 30)) {
+							throw ERROR_MESSAGE_DATE;
+					}
 					return true;
 				}
 			}
