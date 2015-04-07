@@ -31,6 +31,6 @@ void OperationCenter::clearScreen(){
 	Logic::clearScreen();
 }
 
-string OperationCenter::findPath(){
+bool OperationCenter::findPath(){
 	return Logic::findPath();
 }

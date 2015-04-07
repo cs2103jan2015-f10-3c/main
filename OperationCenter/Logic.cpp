@@ -42,7 +42,7 @@ const char Logic::NO_FLOAT_TASK_MESSAGE[] = "You have no task with unspecified d
 const char Logic::FLOAT_TASK_MESSAGE[] = "Your tasks with unspecified date are as follows: ";
 const char Logic::PATH_MESSAGE[] = "New user path: ";
 const char Logic::REINPUT_PATH[] = "Please reinput path ";
-const char Logic::INPUT_PATH_MESSAGE[] = "Please input path by typing 'path *your directory*' ";
+const char Logic::INPUT_PATH_MESSAGE[] = "Please input path by typing 'path *your directory* ' ";
 
 string Feedback::display;
 string Feedback::response;
@@ -56,13 +56,16 @@ void Logic::loadData(bool& status){
 	DataProcessor::loadData(status);
 }
 
-string Logic::findPath(){
+bool Logic::findPath(){
 	try{
-		DataProcessor::checkPathExistence();
-		return EMPTY_RESPONSE;
+		if(DataProcessor::checkPathExistence()){
+			Feedback::updateResponse(EMPTY_RESPONSE);
+			return true;
+		}
 	}		
 	catch (string errorMessage){
-		return errorMessage;
+		Feedback::updateResponse(errorMessage + INPUT_PATH_MESSAGE);
+		return false;
 	}
 }
 
@@ -75,7 +78,7 @@ string Logic::showWelcomeMessage(bool status){
 		out << Feedback::getDisplay() << endl;
 
 	} else { 
-		out << NO_SAVED_DATA_MESSAGE << endl;
+		out << NO_SAVED_DATA_MESSAGE << endl << endl;
 	}
 	string welcomeMessage = out.str();
 	return welcomeMessage;

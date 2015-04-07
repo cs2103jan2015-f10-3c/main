@@ -12,9 +12,12 @@ int main(){
 
 	bool status = false;
 
-	cout << OperationCenter::findPath() << endl; //is it correct if I put here?
+	if(OperationCenter::findPath()){
+		OperationCenter::loadData(status);
+	}
 
-	OperationCenter::loadData(status);
+	coutc (13, OperationCenter::getResponse()); 
+	cout << endl << endl;
 
 	cout << OperationCenter::showWelcomeMessage(status);
 	//coutc(6, OperationCenter::showWelcomeMessage(status));	
