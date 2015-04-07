@@ -8,11 +8,14 @@ enum Colors { dark=0, blue, green, cyan, red, purple, yellow, grey, dgrey, hblue
 
 int main(){
 	bool status = false;
-	OperationCenter::loadData(status);
-	
-	cout<< OperationCenter::showWelcomeMessage(status);
-	//coutc(6, OperationCenter::showWelcomeMessage(status));
 
+	cout << OperationCenter::findPath() << endl; //is it correct if I put here?
+
+	OperationCenter::loadData(status);
+
+	cout << OperationCenter::showWelcomeMessage(status);
+	//coutc(6, OperationCenter::showWelcomeMessage(status));	
+	
 	string userInput;
 	getline(cin, userInput);
 

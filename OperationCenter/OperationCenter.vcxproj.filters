@@ -15,14 +15,14 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="OperationCenter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Logic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Feedback.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="OperationCenter.h">
+      <Filter>Source Files\Resource Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

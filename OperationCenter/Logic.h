@@ -58,6 +58,7 @@ private:
 	static const char LOAD_COMMAND[100];
 	static const char PATH_MESSAGE[100];
 	static const char REINPUT_PATH[100];
+	static const char INPUT_PATH_MESSAGE[100];
 
 	static int undoCount;
 
@@ -67,6 +68,7 @@ public:
 	static void executeCommand(string& returnDisplay, string& returnResponse, string command, string directory, Data task, int taskNo, TimeMacro currentTime);
 	static void saveData();
 	static void loadData(bool& status);
+	static string findPath();
 	static string displayIfEmpty(string returnDisplay, TimeMacro current, TimeMacro start, TimeMacro end);
 	static string displayToday(string returnDisplay, TimeMacro current);
 	static TimeMacro setCurrentTime();
