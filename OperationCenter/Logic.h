@@ -58,7 +58,7 @@ private:
 	static const char LOAD_COMMAND[100];
 	static const char PATH_MESSAGE[100];
 	static const char REINPUT_PATH[100];
-	static const char INPUT_PATH_MESSAGE[100];
+	static const char INPUT_PATH_MESSAGE[200];
 
 	static int undoCount;
 
