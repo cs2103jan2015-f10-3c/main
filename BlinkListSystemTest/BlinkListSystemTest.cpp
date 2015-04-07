@@ -219,6 +219,9 @@ namespace BlinkListSystemTest
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
 
+
+		//Chunhan
+		//For command "edit"
 		TEST_METHOD(editTimeTest)			
 		{
 			OperationCenter::executeInput ("clear");
@@ -233,19 +236,16 @@ namespace BlinkListSystemTest
 
 			ostringstream outDisplay;
 			string actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "Your agenda for Thursday, 2-4-2015:" << endl
+			outDisplay	<< "Your agenda for Thursday,2-4-2015:" << endl
 				<< "1. breakfast" << endl
 				<< "   Thursday        09:00                                               2-4-2015" << endl 
-				<< "********************************************************************************"<< endl
-				<< endl;
+				<< "********************************************************************************"<< endl;
+
 			string expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
 
 
-
-		//Chunhan
-		//For command "edit"
 		TEST_METHOD(editDescriptionTest)			
 		{
 			OperationCenter::executeInput ("clear");
@@ -260,11 +260,11 @@ namespace BlinkListSystemTest
 
 			ostringstream outDisplay;
 			string actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "Your agenda for Thursday, 2-4-2015:" << endl
+			outDisplay	<< "Your agenda for Thursday,2-4-2015:" << endl
 				<< "1. exercise" << endl
 				<< "   Thursday        10:00                                               2-4-2015" << endl 
-				<< "********************************************************************************"<< endl
-				<< endl;
+				<< "********************************************************************************"<< endl;
+
 			string expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -281,10 +281,18 @@ namespace BlinkListSystemTest
 			string expectedResponse = outResponse.str();
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
-			ostringstream outDisplay;
 			string actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "You have no task on Thursday, 2-4-2015\n";
-			string expectedDisplay = outDisplay.str();
+			string expectedDisplay = "You have no task on Thursday,2-4-2015\n";
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+
+			OperationCenter::executeInput ("show 3/4");
+			ostringstream outDisplay;
+			actualDisplay = OperationCenter::getDisplay();
+			outDisplay	<< "Your agenda for Friday,3-4-2015:" << endl
+				<< "1. exercise" << endl
+				<< "   Friday        10:00                                               3-4-2015" << endl 
+				<< "********************************************************************************"<< endl;
+			expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
 
