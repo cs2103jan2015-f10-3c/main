@@ -136,17 +136,18 @@ void DisplayStorage::enterDataToList(std::vector<long long> timePeriod){
 	}
 }
 
+//update taskNo for tasks in displayList
 void DisplayStorage::updateTaskNo(){
 	int trackNo=1;
 		
 	for(int i = 0; i != displayList.size(); i++){
-		if(displayList[i].getTaskNo() != trackNo){
-			displayList[i].updateTaskNo(trackNo);
-		}
+		displayList[i].updateTaskNo(trackNo);
 		trackNo++;
 	}
 }
 
+//get all relevant tasks for dataList
+//transfer to displayList
 void DisplayStorage::displaySearch(std::vector<Data> tempList, std::string keyword){
 	std::string taskDescription;
 	size_t found;
@@ -160,6 +161,8 @@ void DisplayStorage::displaySearch(std::vector<Data> tempList, std::string keywo
 	}
 }
 
+//get all completed tasks from dataList
+//transfer to displayList
 void DisplayStorage::displayDone(std::vector<Data> tempList){
 	for(int i = 0; i != tempList.size(); i++){
 		if(tempList[i].getCompleteStatus() == true){
@@ -168,9 +171,14 @@ void DisplayStorage::displayDone(std::vector<Data> tempList){
 	}
 }
 
+//get all floating tasks from dataList
+//transfer to displayList
 void DisplayStorage::displayFloat(std::vector<Data> tempList){
 	for(int i = 0; i != tempList.size(); i++){
+
+		// if 'day' is not specified, implying task in floating
 		if(tempList[i].getTimeMacroBeg().getDay() == DEFAULT_DESCRIPTION){
+
 			//input to list if task is not done
 			if(tempList[i].getCompleteStatus() == false){
 				displayList.push_back(tempList[i]);
