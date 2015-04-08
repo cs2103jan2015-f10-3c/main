@@ -154,6 +154,21 @@ string Logic::displaySpecificDay(DataProcessor dataProcessor, TimeMacro current)
 	return returnDisplay;
 }
 
+string Logic::showReturnDisplay(string returnDisplay, TimeMacro current, Data task){
+	if(returnDisplay == EMPTY_RESPONSE){
+		returnDisplay = displayIfEmpty(returnDisplay, current, task.getTimeMacroBeg(), task.getTimeMacroEnd());
+	} else {
+		ostringstream out;
+		out << AGENDA_FOR_MESSAGE << task.getTimeMacroBeg().getDay() << COMMA  
+			<< task.getTimeMacroBeg().getDate() << DASH 
+			<< task.getTimeMacroBeg().getMonth() << DASH
+			<< task.getTimeMacroBeg().getYear() << COLON << endl << endl;	
+		returnDisplay = out.str() + returnDisplay;
+	}
+
+	return returnDisplay;
+}
+
 void Logic::executeCommand(string& returnDisplay, string& returnResponse, string command, string directory, Data task, int taskNo, TimeMacro currentTime){
 	
 	DataProcessor dataProcessor;
@@ -166,9 +181,18 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		dataProcessor.clearDisplayList();
 		returnResponse = EMPTY_RESPONSE;
 		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
-		if(returnDisplay == EMPTY_RESPONSE){
+		returnDisplay = showReturnDisplay(returnDisplay, currentTime, task);
+	
+		/*	if(returnDisplay == EMPTY_RESPONSE){
 			returnDisplay = displayIfEmpty(returnDisplay, currentTime, task.getTimeMacroBeg(), task.getTimeMacroEnd());
-		}
+		} else {
+			ostringstream out;
+			out << AGENDA_FOR_MESSAGE << task.getTimeMacroBeg().getDay() << COMMA  
+				<< task.getTimeMacroBeg().getDate() << DASH 
+				<< task.getTimeMacroBeg().getMonth() << DASH
+				<< task.getTimeMacroBeg().getYear() << COLON << endl << endl;
+			returnDisplay = out.str() + returnDisplay;
+		}*/
 	}else if(command == DELETE_COMMAND){
 		try{
 			returnResponse = dataProcessor.deleteTask(taskNo);
