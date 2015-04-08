@@ -4,6 +4,7 @@
 #include <string>
 #include <time.h>
 #include <vector>
+#include <assert.h>
 #include "Commons.h"
 
 using namespace std;

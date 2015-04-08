@@ -548,6 +548,8 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 				timeMicroBeg.updateMin (minuteBegInt);
 				timeMicroEnd.updateHour (hourEndInt);
 				timeMicroEnd.updateMin (minuteEndInt);
+				assert (timeMicroEnd.getHour() != -1);
+				assert (timeMicroEnd.getMin() != -1);
 			}
 
 			else {
@@ -556,6 +558,9 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 					timeMicroBeg.updateMin (minuteBegInt);
 				}
 			}
+
+			assert (timeMicroBeg.getHour() != -1);
+			assert (timeMicroBeg.getMin() != -1);
 
 			end = inputToBeParsed.find_first_of (' ');
 			if (end == string::npos) {
@@ -590,6 +595,8 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 				timeMicroBeg.updateMin (minuteBegInt);
 				timeMicroEnd.updateHour (hourEndInt);
 				timeMicroEnd.updateMin (minuteEndInt);
+				assert (timeMicroEnd.getHour() != -1);
+				assert (timeMicroEnd.getMin() != -1);
 			}
 
 			else {
@@ -598,6 +605,9 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 					timeMicroBeg.updateMin (minuteBegInt);
 				}
 			}
+
+			assert (timeMicroBeg.getHour() != -1);
+			assert (timeMicroBeg.getMin() != -1);
 
 			end = inputToBeParsed.find_first_of (' ');
 			if (end == string::npos) {
