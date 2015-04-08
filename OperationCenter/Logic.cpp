@@ -141,7 +141,7 @@ string Logic::displaySpecificDay(DataProcessor dataProcessor, TimeMacro current)
 		out << AGENDA_FOR_MESSAGE << latestData.getTimeMacroBeg().getDay() << COMMA  
 			<< latestData.getTimeMacroBeg().getDate() << DASH 
 			<< latestData.getTimeMacroBeg().getMonth() << DASH
-			<< latestData.getTimeMacroBeg().getYear() << COLON << endl;
+			<< latestData.getTimeMacroBeg().getYear() << COLON << endl << endl;
 	} else if(returnDisplay == EMPTY_RESPONSE && latestData.getTimeMacroBeg().getDate() == 0){
 		out<< NO_FLOAT_TASK_MESSAGE<< endl;
 	} else if(latestData.getTimeMacroBeg().getDate() == 0){

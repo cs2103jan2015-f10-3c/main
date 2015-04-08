@@ -8,7 +8,7 @@ const char DataProcessor::ADD_MESSAGE[]		= " is added";
 const char DataProcessor::DELETE_MESSAGE[]  = " is deleted from BlinkList";
 const char DataProcessor::CLEAR_MESSAGE[]	= "all contents are cleared";
 const char DataProcessor::EDIT_MESSAGE[]	= " is edited";
-const char DataProcessor::UNDO_MESSAGE[]	= "You have undone your operation";
+const char DataProcessor::UNDO_MESSAGE[]	= "You have undone your operation\n";
 const char DataProcessor::DONE_MESSAGE[]	= " is done";
 const char DataProcessor::UNDONE_MESSAGE[]	= " is reopened";
 const char DataProcessor::ADD_COMMAND[]		= "add";
@@ -391,7 +391,7 @@ string DataProcessor::convertTaskListToString(vector<Data>& taskList){
 	for(int i = 0; i != taskList.size(); i++){
 		outList << numberOfTask << ". "
 				<< convertDataObjectToString(taskList[i]) << endl
-				<< setfill('*') << setw(WINDOW_WIDTH) << "\n";
+				<< setfill('_') << setw(WINDOW_WIDTH) << "\n";
 		numberOfTask++;
 	}
 	assert (numberOfTask >= 1);
