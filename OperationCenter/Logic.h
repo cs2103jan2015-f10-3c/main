@@ -59,6 +59,8 @@ private:
 	static const char PATH_MESSAGE[100];
 	static const char REINPUT_PATH[100];
 	static const char INPUT_PATH_MESSAGE[200];
+	static const char AGENDA_THIS_MONTH_MESSAGE[100];
+	static const char AGENDA_THIS_WEEK_MESSAGE[100];
 
 	static int undoCount;
 

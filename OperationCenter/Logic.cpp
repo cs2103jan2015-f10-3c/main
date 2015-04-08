@@ -2,7 +2,7 @@
 
 using namespace std;
 
-const char Logic::COMMA[] = ",";
+const char Logic::COMMA[] = ", ";
 const char Logic::DASH[] = "-";
 const char Logic::COLON[] = ":";
 const char Logic::ADD_COMMAND[] = "add";
@@ -29,8 +29,8 @@ const char Logic::SHOW_TODAY[] = "show today";
 const char Logic::FLOAT_NOT_FOUND_MESSAGE[] = "You have no floating task";
 const char Logic::DONE_NOT_FOUND_MESSAGE[] = "You are lazy, you have done nothing at all";
 const char Logic::SEARCH_NOT_FOUND_MESSAGE[] = "Oops, there is no matching task in your BlinkList\n";
-const char Logic::HELP_MESSAGE[] = "Please type 'show commands' or 'show features'";
-const char Logic::CANNOT_UNDO_MESSAGE[] = "You can only undo once";
+const char Logic::HELP_MESSAGE[] = "Please type 'show commands' or 'show features' to get started";
+const char Logic::CANNOT_UNDO_MESSAGE[] = "You can only undo the latest command and undo once";
 const char Logic::WELCOME_MESSAGE[] = "Welcome to BlinkList!" ;
 const char Logic::TODAY_MESSAGE[] = "Today's Agenda is as follows:";
 const char Logic::NO_SAVED_DATA_MESSAGE[] = "There is no saved data";
@@ -39,10 +39,12 @@ const char Logic::NO_TASK_TODAY_MESSAGE[] = ":) You have no task for today\n";
 const char Logic::NO_TASK_ON_MESSAGE[] = "You have no task on ";
 const char Logic::AGENDA_FOR_MESSAGE[] = "Your agenda for ";
 const char Logic::NO_FLOAT_TASK_MESSAGE[] = "You have no task with unspecified date";
-const char Logic::FLOAT_TASK_MESSAGE[] = "Your tasks with unspecified date are as follows: ";
+const char Logic::FLOAT_TASK_MESSAGE[] = "Your tasks with unspecified date are as follows: \n";
 const char Logic::PATH_MESSAGE[] = "New user path: ";
 const char Logic::REINPUT_PATH[] = "Please reinput path ";
 const char Logic::INPUT_PATH_MESSAGE[] = "Please enter a path to save your tasks, e.g: path c:/user/local";
+const char Logic::AGENDA_THIS_MONTH_MESSAGE[] = "Your Agenda for This Month: ";
+const char Logic::AGENDA_THIS_WEEK_MESSAGE[] = "Your Agenda for This Week: ";
 
 string Feedback::display;
 string Feedback::response;
@@ -157,12 +159,20 @@ string Logic::displaySpecificDay(DataProcessor dataProcessor, TimeMacro current)
 string Logic::showReturnDisplay(string returnDisplay, TimeMacro current, Data task){
 	if(returnDisplay == EMPTY_RESPONSE){
 		returnDisplay = displayIfEmpty(returnDisplay, current, task.getTimeMacroBeg(), task.getTimeMacroEnd());
-	} else {
+	} else if(task.getTimeMacroEnd().getDate() == task.getTimeMacroBeg().getDate()) {
 		ostringstream out;
 		out << AGENDA_FOR_MESSAGE << task.getTimeMacroBeg().getDay() << COMMA  
 			<< task.getTimeMacroBeg().getDate() << DASH 
 			<< task.getTimeMacroBeg().getMonth() << DASH
 			<< task.getTimeMacroBeg().getYear() << COLON << endl << endl;	
+		returnDisplay = out.str() + returnDisplay;
+	} else if((task.getTimeMacroEnd().getDate() - task.getTimeMacroBeg().getDate()) >= 28){
+		ostringstream out;
+		out << AGENDA_THIS_MONTH_MESSAGE << endl << endl;	
+		returnDisplay = out.str() + returnDisplay;
+	} else if((task.getTimeMacroEnd().getDate() - task.getTimeMacroBeg().getDate()) < 28){
+		ostringstream out;
+		out << AGENDA_THIS_WEEK_MESSAGE << endl << endl;	
 		returnDisplay = out.str() + returnDisplay;
 	}
 
@@ -182,17 +192,6 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 		returnResponse = EMPTY_RESPONSE;
 		returnDisplay = dataProcessor.displayTask(task.getTimeMacroBeg(), task.getTimeMacroEnd());
 		returnDisplay = showReturnDisplay(returnDisplay, currentTime, task);
-	
-		/*	if(returnDisplay == EMPTY_RESPONSE){
-			returnDisplay = displayIfEmpty(returnDisplay, currentTime, task.getTimeMacroBeg(), task.getTimeMacroEnd());
-		} else {
-			ostringstream out;
-			out << AGENDA_FOR_MESSAGE << task.getTimeMacroBeg().getDay() << COMMA  
-				<< task.getTimeMacroBeg().getDate() << DASH 
-				<< task.getTimeMacroBeg().getMonth() << DASH
-				<< task.getTimeMacroBeg().getYear() << COLON << endl << endl;
-			returnDisplay = out.str() + returnDisplay;
-		}*/
 	}else if(command == DELETE_COMMAND){
 		try{
 			returnResponse = dataProcessor.deleteTask(taskNo);
@@ -276,7 +275,7 @@ void Logic::executeCommand(string& returnDisplay, string& returnResponse, string
 	}else if(command == PATH_COMMAND){
 		if(dataProcessor.savePath(directory)){
 			ostringstream out;
-			out << PATH_MESSAGE << directory <<endl ;
+			out << PATH_MESSAGE << directory << endl << HELP_MESSAGE <<endl ;
 			returnResponse = out.str();
 		} else{
 			returnResponse = REINPUT_PATH;
