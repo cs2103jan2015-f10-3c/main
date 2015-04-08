@@ -3,7 +3,13 @@
 const unsigned int Parser::LENGTH_OF_DATE_NUMBER = 3;  //"d/m"
 const unsigned int Parser::LENGTH_OF_DATE_ALPHABET = 5;  //"d MMM"
 const unsigned int Parser::LENGTH_OF_YEAR_ALPHABET = 5;
-const unsigned int Parser::START = 0;
+const unsigned int Parser::LENGTH_OF_STARTING_TIME = 4;  //"9:00"
+const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 9;  //"9:00-9:30"
+const unsigned int Parser::START_OF_YEAR = 1900;
+const unsigned int Parser::YEAR_MIN = 2000;
+const unsigned int Parser::YEAR_MAX = 2100;
+
+const unsigned int Parser::ZERO = 0;
 const unsigned int Parser::ONE = 1;
 const unsigned int Parser::TWO = 2;
 const unsigned int Parser::THREE = 3;
@@ -11,9 +17,84 @@ const unsigned int Parser::FOUR = 4;
 const unsigned int Parser::FIVE = 5;
 const unsigned int Parser::SIX = 6;
 const unsigned int Parser::SEVEN = 7;
-const unsigned int Parser::LENGTH_OF_STARTING_TIME = 4;  //"9:00"
-const unsigned int Parser::LENGTH_OF_TIME_PERIOD = 9;  //"9:00-9:30"
-const char Parser::SLASH = '/';
+const unsigned int Parser::EIGHT = 8;
+const unsigned int Parser::NINE = 9;
+const unsigned int Parser::TEN = 10;
+const unsigned int Parser::ELEVEN = 11;
+const unsigned int Parser::TWELVE = 12;
+const unsigned int Parser::TWENTY_THREE = 23;
+const unsigned int Parser::TWENTY_EIGHT = 28;
+const unsigned int Parser::TWENTY_NINE = 29;
+const unsigned int Parser::THIRTY = 30;
+const unsigned int Parser::THIRTY_ONE = 31;
+const unsigned int Parser::FIFTY_NINE = 59;
+const unsigned int Parser::HUNDRAD = 100;
+const unsigned int Parser::FOUR_HUNDRAD = 400;
+const char Parser::AM[] = "am";
+const char Parser::PM[] = "pm";
+const char Parser::M[] = "m";
+
+const unsigned int Parser::TIMEMICRO_INITIAL = -1;
+const char Parser::EMPTY_STRING[] = "";
+const char Parser::SPACE[] = " ";
+const char Parser::SLASH[] = "/";
+const char Parser::SPACE_SLASH[] = " /";
+const char Parser::COLON[] = ":";
+const char Parser::DOT[] = ".";
+const char Parser::DASH[] = "-";
+
+const char Parser::JAN_CAP[] = "Jan";
+const char Parser::FEB_CAP[] = "Feb";
+const char Parser::MAR_CAP[] = "Mar";
+const char Parser::APR_CAP[] = "Apr";
+const char Parser::MAY_CAP[] = "May";
+const char Parser::JUN_CAP[] = "Jun";
+const char Parser::JUL_CAP[] = "Jul";
+const char Parser::AUG_CAP[] = "Aug";
+const char Parser::SEP_CAP[] = "Sep";
+const char Parser::OCT_CAP[] = "Oct";
+const char Parser::NOV_CAP[] = "Nov";
+const char Parser::DEC_CAP[] = "Dec";
+const char Parser::JAN_SMALL[] = "jan";
+const char Parser::FEB_SMALL[] = "feb";
+const char Parser::MAR_SMALL[] = "mar";
+const char Parser::APR_SMALL[] = "apr";
+const char Parser::MAY_SMALL[] = "may";
+const char Parser::JUN_SMALL[] = "jun";
+const char Parser::JUL_SMALL[] = "jul";
+const char Parser::AUG_SMALL[] = "aug";
+const char Parser::SEP_SMALL[] = "sep";
+const char Parser::OCT_SMALL[] = "oct";
+const char Parser::NOV_SMALL[] = "nov";
+const char Parser::DEC_SMALL[] = "dec";
+
+const char Parser::MONDAY[] = "Monday";
+const char Parser::TUESDAY[] = "Tuesday";
+const char Parser::WEDNESDAY[] = "Wednesday";
+const char Parser::THURSDAY[] = "Thursday";
+const char Parser::FRIDAY[] = "Friday";
+const char Parser::SATURDAY[] = "Saturday";
+const char Parser::SUNDAY[] = "Sunday";
+
+const char Parser::COMMAND_ADD[] = "add";
+const char Parser::COMMAND_EDIT[] = "edit";
+const char Parser::COMMAND_SEARCH[] = "search";
+const char Parser::COMMAND_UNDO[] = "undo";
+const char Parser::COMMAND_DELETE[] = "delete";
+const char Parser::COMMAND_DONE[] = "done";
+const char Parser::COMMAND_UNDONE[] = "undone";
+const char Parser::COMMAND_SHOW[] = "show";
+const char Parser::COMMAND_CLEAR[] = "clear";
+const char Parser::COMMAND_PATH[] = "path";
+const char Parser::COMMAND_HELP[] = "help";
+const char Parser::COMMAND_TODAY[] = "today";
+const char Parser::COMMAND_TOMORROW[] = "tomorrow";
+const char Parser::COMMAND_THIS_WEEK[] = "this week";
+const char Parser::COMMAND_THIS_MONTH[] = "this month";
+const char Parser::COMMAND_COMMANDS[] = "commands";
+const char Parser::COMMAND_FLOAT[] = "float";
+const char Parser::COMMAND_FEATURES[] = "features";
+
 const char Parser::ERROR_MESSAGE_COMMAND[] = "Please enter the correct command";
 const char Parser::ERROR_MESSAGE_INPUT[] = "Please enter correct input following the command word";
 const char Parser::ERROR_MESSAGE_EDIT[] = "Please enter content you want to edit";
@@ -25,20 +106,33 @@ const char Parser::ERROR_MESSAGE_YEAR[] = "Please enter the correct year";
 const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
 const char Parser::ERROR_MESSAGE_DESC[] = "Please enter task description";
 
+const char Parser::LOG_START[] = "Parser starts to parse user input";
+const char Parser::LOG_SUCCESS[] = "Parser has parsed user input successfully";
+const char Parser::LOG_ERROR[] = "Parser has found an invalid user input";
+
+
 
 //This method is called by OperationCenter.
 //It takes in user's input message
 //and updates error message if the user's command word is incorrect.
 void Parser::parseInput (string userInput) {
 	string commandWord;
+	Logger logStart;
+	logStart.logging (LOG_START);
 
 	commandWord = extractCommandWord (userInput);
 
 	try {
 		checkCommandWord (userInput, commandWord);
+		Logger logSuccess;
+		logSuccess.logging (LOG_SUCCESS);
 	}
 
 	catch (const char* errorMessge) {
+		Logger logError;
+		Logger logMessage;
+		logError.logging (LOG_ERROR);
+		logMessage.logging (errorMessge);
 		updateErrorMessage (errorMessge);
 	}
 }
@@ -49,37 +143,37 @@ void Parser::parseInput (string userInput) {
 //If the user enters an incorrect command word,
 //it will throw an exception.
 void Parser::checkCommandWord (string userInput, string commandWord) {
-	if (commandWord == "add") {
+	if (commandWord == COMMAND_ADD) {
 		parseAdd (userInput, commandWord);
 	}
-	else if (commandWord == "edit") {
+	else if (commandWord == COMMAND_EDIT) {
 		parseEdit (userInput, commandWord);
 	}
-	else if (commandWord == "search") {
+	else if (commandWord == COMMAND_SEARCH) {
 		parseSearch (userInput, commandWord);
 	}
-	else if (commandWord == "undo") {
+	else if (commandWord == COMMAND_UNDO) {
 		parseUndo (userInput, commandWord);
 	}
-	else if (commandWord == "delete") {
+	else if (commandWord == COMMAND_DELETE) {
 		parseDelete (userInput, commandWord);
 	}
-	else if (commandWord == "done") {
+	else if (commandWord == COMMAND_DONE) {
 		parseDone (userInput, commandWord);
 	}
-	else if (commandWord == "undone") {
+	else if (commandWord == COMMAND_UNDONE) {
 		parseUndone (userInput, commandWord);
 	}
-	else if (commandWord == "show") {
+	else if (commandWord == COMMAND_SHOW) {
 		parseShow (userInput, commandWord);
 	}
-	else if (commandWord == "clear") {
+	else if (commandWord == COMMAND_CLEAR) {
 		parseClear (userInput, commandWord);
 	}
-	else if (commandWord == "path") {
+	else if (commandWord == COMMAND_PATH) {
 		parsePath (userInput, commandWord);
 	}
-	else if (commandWord == "help") {
+	else if (commandWord == COMMAND_HELP) {
 		parseHelp (userInput, commandWord);
 	}
 	else {
@@ -96,8 +190,8 @@ void Parser::checkCommandWord (string userInput, string commandWord) {
 string Parser::extractCommandWord (string userInput) {
 	int end = 0;
 	string commandWord;
-	end = userInput.find_first_of (' ');
-	commandWord = userInput.substr (0, end);
+	end = userInput.find_first_of (SPACE);
+	commandWord = userInput.substr (ZERO, end);
 	return commandWord;
 }
 
@@ -118,7 +212,7 @@ void Parser::parseAdd (string userInput, string commandWord) {
 	string desc;
 
 	inputToBeParsed = inputToBeParsed.substr (commandWord.size());
-	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+	if (inputToBeParsed != EMPTY_STRING && inputToBeParsed != SPACE) {
 		//This "if" condition is to account for the cases where
 		//the user only enters the command word
 		//or enters a command word followed by a white space.
@@ -131,9 +225,9 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 		parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-		if (timeMacro.getDate() == 0 &&
-			timeMacro.getMonth() == 0 &&
-			timeMacro.getYear() == 0) {
+		if (timeMacro.getDate() == ZERO &&
+			timeMacro.getMonth() == ZERO &&
+			timeMacro.getYear() == ZERO) {
 				parseDateNumber (inputToBeParsed, timeMacro);
 				parseDateAlphabet (inputToBeParsed, timeMacro);
 		}
@@ -142,7 +236,7 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		
 		desc = inputToBeParsed;
 
-		if (desc == "") {
+		if (desc == EMPTY_STRING) {
 			throw ERROR_MESSAGE_DESC;
 		}
 
@@ -151,8 +245,8 @@ void Parser::parseAdd (string userInput, string commandWord) {
 		updateTimeMicroPeriod (timeMicroBeg, timeMicroEnd);
 		updateDesc (desc);
 
-		if (timeMacro.getDate() == 0 &&
-			timeMicroBeg.getHour() != -1) {
+		if (timeMacro.getDate() == ZERO &&
+			timeMicroBeg.getHour() != TIMEMICRO_INITIAL) {
 				getTodayDate (timeMacro);
 		}
 		updateTimeMacro (timeMacro);
@@ -180,17 +274,17 @@ void Parser::parseEdit (string userInput, string commandWord) {
 	string index;
 
 	inputToBeParsed = userInput.substr (commandWord.size());
-	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+	if (inputToBeParsed != EMPTY_STRING && inputToBeParsed != SPACE) {
 		inputToBeParsed = inputToBeParsed.substr (ONE);
 
 		index = parseTaskNo (inputToBeParsed);
 		taskNo = convertStringToInteger (index);
-		if (taskNo < 1) {
+		if (taskNo < ONE) {
 			throw ERROR_MESSAGE_TASK_NO;
 		}
 
 		inputToBeParsed = inputToBeParsed.substr(index.size ());
-		if (inputToBeParsed != "" && inputToBeParsed != " ") {
+		if (inputToBeParsed != EMPTY_STRING && inputToBeParsed != SPACE) {
 			inputToBeParsed = inputToBeParsed.substr(ONE);
 
 			parseDateNumber (inputToBeParsed, timeMacro);
@@ -199,9 +293,9 @@ void Parser::parseEdit (string userInput, string commandWord) {
 			parseTimeTwentyFour (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 			parseTimeTwelve (inputToBeParsed, timeMicroBeg, timeMicroEnd);
 
-			if (timeMacro.getDate() == 0 &&
-				timeMacro.getMonth() == 0 &&
-				timeMacro.getYear() == 0) {
+			if (timeMacro.getDate() == ZERO &&
+				timeMacro.getMonth() == ZERO &&
+				timeMacro.getYear() == ZERO) {
 					parseDateNumber (inputToBeParsed, timeMacro);
 					parseDateAlphabet (inputToBeParsed, timeMacro);
 			}
@@ -230,7 +324,7 @@ void Parser::parseEdit (string userInput, string commandWord) {
 void Parser::parseSearch (string userInput, string commandWord) {
 	string desc = userInput.substr (commandWord.size());
 	int end = 0;
-	if (desc != "" && desc != " ") {
+	if (desc != EMPTY_STRING && desc != SPACE) {
 		desc = desc.substr (ONE);
 
 		updateCommand (commandWord);
@@ -248,7 +342,7 @@ void Parser::parseUndo (string userInput, string commandWord) {
     updateCommand (commandWord);
 
 	string leftOver = userInput.substr (commandWord.size());
-	if (leftOver != "" && leftOver != " ") {
+	if (leftOver != EMPTY_STRING && leftOver != SPACE) {
 		throw ERROR_MESSAGE_COMMAND;
 	}
 }
@@ -259,10 +353,10 @@ void Parser::parseUndo (string userInput, string commandWord) {
 void Parser::parseDelete (string userInput, string commandWord) {
 	int taskNo;
 	string index = userInput.substr (commandWord.size());
-	if (index != "" && index != " ") {
+	if (index != EMPTY_STRING && index != SPACE) {
 		index = index.substr (ONE);
 		taskNo = convertStringToInteger (index);
-		if (taskNo < 1) {
+		if (taskNo < ONE) {
 			throw ERROR_MESSAGE_TASK_NO;
 		}
 		updateCommand (commandWord);
@@ -279,10 +373,10 @@ void Parser::parseDelete (string userInput, string commandWord) {
 void Parser::parseDone (string userInput, string commandWord) {
 	int taskNo;
 	string index = userInput.substr (commandWord.size());
-	if (index != "" && index != " ") {
+	if (index != EMPTY_STRING && index != SPACE) {
 		index = index.substr (ONE);
 		taskNo = convertStringToInteger (index);
-		if (taskNo < 1) {
+		if (taskNo < ONE) {
 			throw ERROR_MESSAGE_TASK_NO;
 		}
 		updateCommand (commandWord);
@@ -300,10 +394,10 @@ void Parser::parseDone (string userInput, string commandWord) {
 void Parser::parseUndone (string userInput, string commandWord) {
 	int taskNo;
 	string index = userInput.substr (commandWord.size());
-	if (index != "" && index != " ") {
+	if (index != EMPTY_STRING && index != SPACE) {
 		index = index.substr (ONE);
 		taskNo = convertStringToInteger (index);
-		if (taskNo < 1) {
+		if (taskNo < ONE) {
 			throw ERROR_MESSAGE_TASK_NO;
 		}
 		updateCommand (commandWord);
@@ -334,7 +428,7 @@ void Parser::parseShow (string userInput, string commandWord) {
 	int dateInt;
 	int monthInt;
 
-	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+	if (inputToBeParsed != EMPTY_STRING && inputToBeParsed != SPACE) {
 		inputToBeParsed = inputToBeParsed.substr(ONE);
 
 		if (isDateNumber (inputToBeParsed, dateInt, monthInt) ||
@@ -342,7 +436,7 @@ void Parser::parseShow (string userInput, string commandWord) {
 				parseDateNumber (inputToBeParsed, timeMacroBeg);
 				parseDateAlphabet (inputToBeParsed, timeMacroBeg);
 
-				if (inputToBeParsed != "" && inputToBeParsed != " ") {
+				if (inputToBeParsed != EMPTY_STRING && inputToBeParsed != SPACE) {
 					throw ERROR_MESSAGE_SHOW;
 				}
 
@@ -350,34 +444,34 @@ void Parser::parseShow (string userInput, string commandWord) {
 				timeMacroEnd = timeMacroBeg;
 				updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}		
-		else if (inputToBeParsed == "today") {
+		else if (inputToBeParsed == COMMAND_TODAY) {
 			getTodayDate (timeMacroBeg);
 			timeMacroEnd = timeMacroBeg;
 			updateCommand (commandWord);
 			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}
-		else if (inputToBeParsed == "tomorrow") {
+		else if (inputToBeParsed == COMMAND_TOMORROW) {
 			getTomorrowDate (timeMacroBeg);
 			timeMacroEnd = timeMacroBeg;
 			updateCommand (commandWord);
 			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}
-		else if (inputToBeParsed == "this week") {
+		else if (inputToBeParsed == COMMAND_THIS_WEEK) {
 			getMondayDate (timeMacroBeg);
 			getSundayDate (timeMacroEnd);
 			updateCommand (commandWord);
 			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}
-		else if (inputToBeParsed == "this month") {
+		else if (inputToBeParsed == COMMAND_THIS_MONTH) {
 			getThisMonth (timeMacroBeg, timeMacroEnd);
 			updateCommand (commandWord);
 			updateTimeMacroPeriod (timeMacroBeg, timeMacroEnd);
 		}
-		else if (inputToBeParsed == "commands" ||
-			inputToBeParsed == "float" ||
-			inputToBeParsed == "done" ||
-			inputToBeParsed == "features") {
-				commandWord = commandWord + " " + inputToBeParsed;
+		else if (inputToBeParsed == COMMAND_COMMANDS ||
+			inputToBeParsed == COMMAND_FLOAT ||
+			inputToBeParsed == COMMAND_DONE ||
+			inputToBeParsed == COMMAND_FEATURES) {
+				commandWord = commandWord + SPACE + inputToBeParsed;
 				updateCommand (commandWord);
 		}
 		else {
@@ -398,7 +492,7 @@ void Parser::parseClear (string userInput, string commandWord) {
 	updateCommand (commandWord);
 
 	string leftOver = userInput.substr (commandWord.size());
-	if (leftOver != "" && leftOver != " ") {
+	if (leftOver != EMPTY_STRING && leftOver != SPACE) {
 		throw ERROR_MESSAGE_COMMAND;
 	}
 }
@@ -406,23 +500,14 @@ void Parser::parseClear (string userInput, string commandWord) {
 
 //This method is to parse user's input if the command word is "path".
 //The command word "path" must be followed by a directory.
-//If the directory does not contain at least one slash, 
-//it means it is a wrong directory.
-//In this case, an exception is thrown.
 void Parser::parsePath (string userInput, string commandWord) {
 	string inputToBeParsed = userInput.substr (commandWord.size ());
 
-	if (inputToBeParsed != "" && inputToBeParsed != " ") {
+	if (inputToBeParsed != EMPTY_STRING && inputToBeParsed != SPACE) {
 		inputToBeParsed = inputToBeParsed.substr(ONE);
 
-		if (isSlash (inputToBeParsed)) {
-			updateCommand (commandWord);
-			updateDirectory (inputToBeParsed);	
-		}
-		else {
-			throw ERROR_MESSAGE_DIRECTORY;
-		}
-
+		updateCommand (commandWord);
+		updateDirectory (inputToBeParsed);	
 	}
 	else {
 		throw ERROR_MESSAGE_DIRECTORY;
@@ -438,7 +523,7 @@ void Parser::parseHelp (string userInput, string commandWord) {
 	updateCommand (commandWord);
 
 	string leftOver = userInput.substr (commandWord.size());
-	if (leftOver != "" && leftOver != " ") {
+	if (leftOver != EMPTY_STRING && leftOver != SPACE) {
 		throw ERROR_MESSAGE_COMMAND;
 	}
 }
@@ -460,16 +545,16 @@ void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 		timeMacro.updateDate (dateInt);
 		timeMacro.updateMonth (monthInt);
 
-		end = inputToBeParsesd.find_first_of ('/');
-		inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+		end = inputToBeParsesd.find_first_of (SLASH);
+		inputToBeParsesd = inputToBeParsesd.substr (end + ONE);
 		if (isYearNumber (inputToBeParsesd, yearInt)) {
 			timeMacro.updateYear (yearInt);
 		}
 		else {
-			time_t t = time (0);
+			time_t t = time (ZERO);
 			struct tm now;
 			localtime_s (&now, &t);
-			now.tm_year = now.tm_year + 1900;
+			now.tm_year = now.tm_year + START_OF_YEAR;
 			yearInt = now.tm_year;
 			timeMacro.updateYear (yearInt);
 		}
@@ -477,12 +562,12 @@ void Parser::parseDateNumber (string& inputToBeParsesd, TimeMacro& timeMacro) {
 		day = convertDateToDayOfTheWeek (dateInt, monthInt, yearInt);
 		timeMacro.updateDay (day);
 
-		end = inputToBeParsesd.find_first_of (' ');
+		end = inputToBeParsesd.find_first_of (SPACE);
 		if (end != string::npos) {
-			inputToBeParsesd = inputToBeParsesd.substr (end + 1);
+			inputToBeParsesd = inputToBeParsesd.substr (end + ONE);
 		}
 		else {
-			inputToBeParsesd = "";
+			inputToBeParsesd = EMPTY_STRING;
 		}
 	}
 }
@@ -503,9 +588,9 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 	if (isDateAlphabet (inputToBeParsesd, dateInt)) {
 		timeMacro.updateDate (dateInt);
 
-		end = inputToBeParsesd.find_first_of (' ');
+		end = inputToBeParsesd.find_first_of (SPACE);
 		inputToBeParsesd = inputToBeParsesd.substr (end + ONE);
-		monthInt = convertAlphabetMonthToInteger (inputToBeParsesd.substr (START, THREE));
+		monthInt = convertAlphabetMonthToInteger (inputToBeParsesd.substr (ZERO, THREE));
 		timeMacro.updateMonth (monthInt);
 		inputToBeParsesd = inputToBeParsesd.substr (THREE);
 
@@ -515,7 +600,7 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 				inputToBeParsesd = inputToBeParsesd.substr (SIX); //there is still content after the year
 			}
 			else {
-				inputToBeParsesd = "";
+				inputToBeParsesd = EMPTY_STRING;
 			}
 		}
 
@@ -524,10 +609,10 @@ void Parser::parseDateAlphabet (string& inputToBeParsesd, TimeMacro& timeMacro) 
 				inputToBeParsesd = inputToBeParsesd.substr (ONE);
 			}
 
-			time_t t = time (0);
+			time_t t = time (ZERO);
 			struct tm now;
 			localtime_s (&now, &t);
-			now.tm_year = now.tm_year + 1900;
+			now.tm_year = now.tm_year + START_OF_YEAR;
 			yearInt = now.tm_year;
 			timeMacro.updateYear (yearInt);
 		}
@@ -558,6 +643,8 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 				timeMicroBeg.updateMin (minuteBegInt);
 				timeMicroEnd.updateHour (hourEndInt);
 				timeMicroEnd.updateMin (minuteEndInt);
+				assert (timeMicroEnd.getHour() != TIMEMICRO_INITIAL);
+				assert (timeMicroEnd.getMin() != TIMEMICRO_INITIAL);
 			}
 
 			else {
@@ -567,9 +654,12 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 				}
 			}
 
-			end = inputToBeParsed.find_first_of (' ');
+			assert (timeMicroBeg.getHour() != TIMEMICRO_INITIAL);
+			assert (timeMicroBeg.getMin() != TIMEMICRO_INITIAL);
+
+			end = inputToBeParsed.find_first_of (SPACE);
 			if (end == string::npos) {
-				inputToBeParsed = "";
+				inputToBeParsed = EMPTY_STRING;
 			}
 			else {
 				inputToBeParsed = inputToBeParsed.substr (end + ONE);
@@ -600,6 +690,8 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 				timeMicroBeg.updateMin (minuteBegInt);
 				timeMicroEnd.updateHour (hourEndInt);
 				timeMicroEnd.updateMin (minuteEndInt);
+				assert (timeMicroEnd.getHour() != TIMEMICRO_INITIAL);
+				assert (timeMicroEnd.getMin() != TIMEMICRO_INITIAL);
 			}
 
 			else {
@@ -609,9 +701,12 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 				}
 			}
 
-			end = inputToBeParsed.find_first_of (' ');
+			assert (timeMicroBeg.getHour() != TIMEMICRO_INITIAL);
+			assert (timeMicroBeg.getMin() != TIMEMICRO_INITIAL);
+
+			end = inputToBeParsed.find_first_of (SPACE);
 			if (end == string::npos) {
-				inputToBeParsed = "";
+				inputToBeParsed = EMPTY_STRING;
 			}
 			else {
 				inputToBeParsed = inputToBeParsed.substr (end + ONE);
@@ -625,8 +720,8 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 //or the task number is the end of the string.
 //The task number returned is a string.
 string Parser::parseTaskNo (string inputToBeParsed) {
-	int lengthOfTaskNo = inputToBeParsed.find_first_of (' ');
-	string index = inputToBeParsed.substr (0, lengthOfTaskNo);
+	int lengthOfTaskNo = inputToBeParsed.find_first_of (SPACE);
+	string index = inputToBeParsed.substr (ZERO, lengthOfTaskNo);
 	return index;
 }
 
@@ -666,30 +761,30 @@ bool Parser::isDateNumber (string inputToBeParsed, int& dateInt, int& monthInt) 
 	string month;
 
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE_NUMBER) {
-		end = inputToBeParsed.find_first_of ('/');
+		end = inputToBeParsed.find_first_of (SLASH);
 		if (end == ONE || end == TWO) {
-			date = inputToBeParsed.substr (0, end);
+			date = inputToBeParsed.substr (ZERO, end);
 			if (isInteger (date)) {
 				dateInt = convertStringToInteger (date);
-				if (dateInt < 1 || dateInt > 31) {
+				if (dateInt < ONE || dateInt > THIRTY_ONE) {
 					throw ERROR_MESSAGE_DATE;
 				}
 
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
-				end = inputToBeParsed.find_first_of(" /");
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
+				end = inputToBeParsed.find_first_of(SPACE_SLASH);
 				if (end == ONE || end == TWO ||
 					(end == string::npos && 
-					(inputToBeParsed.size() == 1 || inputToBeParsed.size () ==2))) {
-						month = inputToBeParsed.substr (0, end);
+					(inputToBeParsed.size() == ONE || inputToBeParsed.size () == TWO))) {
+						month = inputToBeParsed.substr (ZERO, end);
 						if (isInteger (month)) {
 							monthInt= convertStringToInteger (month);
-							if (monthInt < 1 || monthInt > 12) {
+							if (monthInt < ONE || monthInt > TWELVE) {
 								throw ERROR_MESSAGE_DATE;
 							}
 
-							if ((monthInt == 4 || monthInt == 6 ||
-								monthInt == 9 || monthInt == 11) &&
-								dateInt == 31) {
+							if ((monthInt == FOUR || monthInt == SIX ||
+								monthInt == NINE || monthInt == ELEVEN) &&
+								dateInt == THIRTY_ONE) {
 									throw ERROR_MESSAGE_DATE;
 							}
 							return true;
@@ -711,12 +806,12 @@ bool Parser::isYearNumber (string inputToBeParsed, int& yearInt) {
 	int end;
 	string year;
 
-	end = inputToBeParsed.find_first_of ("/");
+	end = inputToBeParsed.find_first_of (SLASH);
 	if (end == ONE || end == TWO) {
 		year = inputToBeParsed.substr (end + ONE, FOUR);
 		if (isInteger (year)) {
 			yearInt = convertStringToInteger (year);
-			if (yearInt < 2000 || yearInt > 2100) {
+			if (yearInt < YEAR_MIN || yearInt > YEAR_MAX) {
 				throw ERROR_MESSAGE_YEAR;
 			}
 			return true;
@@ -738,49 +833,53 @@ bool Parser::isDateAlphabet (string inputToBeParsed, int& dateInt) {
 	string date;
 	string month;
 	vector<string> monthList;
-	monthList.push_back ("Jan");
-	monthList.push_back ("Feb");
-	monthList.push_back ("Mar");
-	monthList.push_back ("Apr");
-	monthList.push_back ("May");
-	monthList.push_back ("Jun");
-	monthList.push_back ("Jul");
-	monthList.push_back ("Aug");
-	monthList.push_back ("Sep");
-	monthList.push_back ("Oct");
-	monthList.push_back ("Nov");
-	monthList.push_back ("Dec");
-	monthList.push_back ("jan");
-	monthList.push_back ("feb");
-	monthList.push_back ("mar");
-	monthList.push_back ("apr");
-	monthList.push_back ("may");
-	monthList.push_back ("jun");
-	monthList.push_back ("jul");
-	monthList.push_back ("aug");
-	monthList.push_back ("sep");
-	monthList.push_back ("oct");
-	monthList.push_back ("nov");
-	monthList.push_back ("dec");
+	monthList.push_back (JAN_CAP);
+	monthList.push_back (FEB_CAP);
+	monthList.push_back (MAR_CAP);
+	monthList.push_back (APR_CAP);
+	monthList.push_back (MAY_CAP);
+	monthList.push_back (JUN_CAP);
+	monthList.push_back (JUL_CAP);
+	monthList.push_back (AUG_CAP);
+	monthList.push_back (SEP_CAP);
+	monthList.push_back (OCT_CAP);
+	monthList.push_back (NOV_CAP);
+	monthList.push_back (DEC_CAP);
+	monthList.push_back (JAN_SMALL);
+	monthList.push_back (FEB_SMALL);
+	monthList.push_back (MAR_SMALL);
+	monthList.push_back (APR_SMALL);
+	monthList.push_back (MAY_SMALL);
+	monthList.push_back (JUN_SMALL);
+	monthList.push_back (JUL_SMALL);
+	monthList.push_back (AUG_SMALL);
+	monthList.push_back (SEP_SMALL);
+	monthList.push_back (OCT_SMALL);
+	monthList.push_back (NOV_SMALL);
+	monthList.push_back (DEC_SMALL);
 
 	if (inputToBeParsed.size() >= LENGTH_OF_DATE_ALPHABET) {
-		end = inputToBeParsed.find_first_of (' ');
+		end = inputToBeParsed.find_first_of (SPACE);
 		if (end == ONE || end == TWO) {
-			date = inputToBeParsed.substr (0, end);
+			date = inputToBeParsed.substr (ZERO, end);
 			if (isInteger (date)) {
 				dateInt = convertStringToInteger (date);
-				if (dateInt < 1 || dateInt > 31) {
+				if (dateInt < ONE || dateInt > THIRTY_ONE) {
 					throw ERROR_MESSAGE_DATE;
 				}
 
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
-				month = inputToBeParsed.substr (0, THREE);
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
+				month = inputToBeParsed.substr (ZERO, THREE);
 				if (isStringEqual (month, monthList)) {
-					if ((month == "Apr" || month == "apr" ||
-						month == "Jun" || month == "jun" ||
-						month == "Sep" || month == "sep" ||
-						month == "Nov" || month == "nov") &&
-						dateInt == 31) {
+					if ((month == APR_CAP || month == APR_SMALL ||
+						month == JUN_CAP || month == JUN_SMALL ||
+						month == SEP_CAP || month == SEP_SMALL ||
+						month == NOV_CAP || month == NOV_SMALL) &&
+						dateInt == THIRTY_ONE) {
+							throw ERROR_MESSAGE_DATE;
+					}
+					else if ((month == FEB_CAP || month == FEB_SMALL) &&
+						(dateInt == THIRTY_ONE || dateInt == THIRTY)) {
 							throw ERROR_MESSAGE_DATE;
 					}
 					return true;
@@ -801,12 +900,12 @@ bool Parser::isYearAlphabet (string inputToBeParsed, int& yearInt) {
 	int end = 0;
 	string year;
 	if (inputToBeParsed.size() >= LENGTH_OF_YEAR_ALPHABET) {
-		end = inputToBeParsed.find_first_of (' ');
-		if (end == 0) {
-			year = inputToBeParsed.substr (end + 1, FOUR);
+		end = inputToBeParsed.find_first_of (SPACE);
+		if (end == ZERO) {
+			year = inputToBeParsed.substr (end + ONE, FOUR);
 			if (isInteger (year)) {
 				yearInt = convertStringToInteger (year);
-				if (yearInt > 2100 || yearInt < 2000) {
+				if (yearInt > YEAR_MAX || yearInt < YEAR_MIN) {
 					throw ERROR_MESSAGE_YEAR;
 				}
 				return true;
@@ -829,20 +928,20 @@ bool Parser::isStartingTimeTwentyFour (string inputToBeParsed, int& hourInt, int
 	string minute;
 
 	if (inputToBeParsed.size() >= LENGTH_OF_STARTING_TIME) {
-		end = inputToBeParsed.find_first_of (':');
+		end = inputToBeParsed.find_first_of (COLON);
 		if (end == ONE || end == TWO) {
-			hour = inputToBeParsed.substr (START, end);
+			hour = inputToBeParsed.substr (ZERO, end);
 			if (isInteger (hour)) {
 				hourInt = convertStringToInteger (hour);
-				if (hourInt < 0 || hourInt > 23) {
+				if (hourInt < ZERO || hourInt > TWENTY_THREE) {
 					throw ERROR_MESSAGE_TIME;
 				}
 
 				inputToBeParsed = inputToBeParsed.substr (end + ONE);
-				minute = inputToBeParsed.substr (START, TWO);
+				minute = inputToBeParsed.substr (ZERO, TWO);
 				if (isInteger (minute)) {
 					minuteInt = convertStringToInteger (minute);
-					if (minuteInt < 0 || minuteInt > 59) {
+					if (minuteInt < ZERO || minuteInt > FIFTY_NINE) {
 						throw ERROR_MESSAGE_TIME;
 					}
 					return true;
@@ -865,9 +964,9 @@ bool Parser::isTimePeriodTwentyFour (string inputToBeParsed, int& hourBegInt, in
 	int end = 0;
 	if (inputToBeParsed.size() >= LENGTH_OF_TIME_PERIOD) {
 		if (isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
-			end = inputToBeParsed.find_first_of ('-');
+			end = inputToBeParsed.find_first_of (DASH);
 			if (end == FOUR || end == FIVE) {
-				inputToBeParsed = inputToBeParsed.substr (end + 1);
+				inputToBeParsed = inputToBeParsed.substr (end + ONE);
 				if (isStartingTimeTwentyFour (inputToBeParsed, hourEndInt, minuteEndInt)) {
 					return true;
 				}
@@ -891,33 +990,33 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& mi
 	string minute;
 
 	if (inputToBeParsed.size () >= SIX) {  //"9.00am"
-		end = inputToBeParsed.find_first_of ('.');
+		end = inputToBeParsed.find_first_of (DOT);
 		if (end == ONE || end == TWO) { //case 9.00am or 09.00am
-			hour = inputToBeParsed.substr (START, end);
+			hour = inputToBeParsed.substr (ZERO, end);
 			if (isInteger (hour)) {
 				hourInt = convertStringToInteger (hour);
-				if (hourInt < 1 || hourInt > 12) {
+				if (hourInt < ONE || hourInt > TWELVE) {
 					throw ERROR_MESSAGE_TIME;
 				}
 
 				minute = inputToBeParsed.substr (end + ONE, TWO);
 				if (isInteger (minute)) {
 					minuteInt = convertStringToInteger (minute);
-					if (minuteInt < 0 || minuteInt > 59) {
+					if (minuteInt < ZERO || minuteInt > FIFTY_NINE) {
 						throw ERROR_MESSAGE_TIME;
 					}
 
-					if (inputToBeParsed.substr (end + THREE, TWO) == "am" ||
-						inputToBeParsed.substr (end + THREE, TWO) == "pm") {
-							if (inputToBeParsed.substr (end + THREE, TWO) == "am") {
-								if (hourInt == 12) {
-									hourInt = 0;
+					if (inputToBeParsed.substr (end + THREE, TWO) == AM ||
+						inputToBeParsed.substr (end + THREE, TWO) == PM) {
+							if (inputToBeParsed.substr (end + THREE, TWO) == AM) {
+								if (hourInt == TWELVE) {
+									hourInt = ZERO;
 								}
 							}
 
 							else {
-								if (hourInt <= 11 && hourInt >= 1) {
-									hourInt += 12;
+								if (hourInt <= ELEVEN && hourInt >= ONE) {
+									hourInt += TWELVE;
 								}
 							}
 								return true;
@@ -928,27 +1027,27 @@ bool Parser::isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& mi
 	}
 
 	if (inputToBeParsed.size () >= THREE) {  //"9am"
-		end = inputToBeParsed.find_first_of ('m');
+		end = inputToBeParsed.find_first_of (M);
 		if (end == TWO || end == THREE) { //case 9am or 19am
-			hour = inputToBeParsed.substr (START, end - ONE);
+			hour = inputToBeParsed.substr (ZERO, end - ONE);
 			if (isInteger (hour)) {
 				hourInt = convertStringToInteger (hour);
-				if (hourInt < 1 || hourInt > 12) {
+				if (hourInt < ONE || hourInt > TWELVE) {
 					throw ERROR_MESSAGE_TIME;
 				}
-				minuteInt = START;
+				minuteInt = ZERO;
 
-				if (inputToBeParsed.substr (end - ONE, TWO) == "am" ||
-					inputToBeParsed.substr (end - ONE, TWO) == "pm") {
-						if (inputToBeParsed.substr (end - ONE, TWO) == "am") {
-							if (hourInt == 12) {
-								hourInt = 0;
+				if (inputToBeParsed.substr (end - ONE, TWO) == AM ||
+					inputToBeParsed.substr (end - ONE, TWO) == PM) {
+						if (inputToBeParsed.substr (end - ONE, TWO) == AM) {
+							if (hourInt == TWELVE) {
+								hourInt = ZERO;
 							}
 						}
 							
 						else {
-							if (hourInt <= 11 && hourInt >= 1) {
-								hourInt += 12;
+							if (hourInt <= ELEVEN && hourInt >= ONE) {
+								hourInt += TWELVE;
 							}
 						}
 							
@@ -972,7 +1071,7 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed,  int& hourBegInt, int& 
 	int end = 0;
 	if (inputToBeParsed.size() >= SEVEN ) { //9am-9pm
 		if (isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
-			end = inputToBeParsed.find_first_of ('-');
+			end = inputToBeParsed.find_first_of (DASH);
 			if (end == THREE || end == FOUR ||
 				end ==SIX || end == SEVEN) {
 					inputToBeParsed = inputToBeParsed.substr (end + ONE);
@@ -983,18 +1082,6 @@ bool Parser::isTimePeriodTwelve (string inputToBeParsed,  int& hourBegInt, int& 
 		}
 	}
 
-	return false;
-}
-
-
-//This method is to check if the directory contains slash.
-bool Parser::isSlash (string directory) {
-	unsigned int index = 0;
-	for (index = 0; index < directory.size(); index ++) {
-		if (directory[index] == SLASH) {
-			return true;
-		}
-	}
 	return false;
 }
 
@@ -1013,41 +1100,41 @@ bool Parser::isStringEqual (string inputString, vector<string> compString) {
 //This method is to month in alphabet format to integer format.
 int Parser::convertAlphabetMonthToInteger (string month) {
 	int monthInt;
-	if (month == "Jan" || month == "jan") {
-		monthInt = 1;
+	if (month == JAN_CAP || month == JAN_SMALL) {
+		monthInt = ONE;
 	}
-	else if (month == "Feb" || month == "feb") {
-		monthInt = 2;
+	else if (month == FEB_CAP || month == FEB_SMALL) {
+		monthInt = TWO;
 	}
-	else if (month == "Mar" || month == "mar") {
-		monthInt = 3;
+	else if (month == MAR_CAP || month == MAR_SMALL) {
+		monthInt = THREE;
 	}
-	else if (month == "Apr" || month == "apr") {
-		monthInt = 4;
+	else if (month == APR_CAP || month == APR_SMALL) {
+		monthInt = FOUR;
 	}
-	else if (month == "May" || month == "may") {
-		monthInt = 5;
+	else if (month == MAY_CAP || month == MAY_SMALL) {
+		monthInt = FIVE;
 	}
-	else if (month == "Jun" || month == "jun") {
-		monthInt = 6;
+	else if (month == JUN_CAP || month == JUN_SMALL) {
+		monthInt = SIX;
 	}
-	else if (month == "Jul" || month == "jul") {
-		monthInt = 7;
+	else if (month == JUL_CAP || month == JUL_SMALL) {
+		monthInt = SEVEN;
 	}
-	else if (month == "Aug" || month == "aug") {
-		monthInt = 8;
+	else if (month == AUG_CAP || month == AUG_SMALL) {
+		monthInt = EIGHT;
 	}
-	else if (month == "Sep" || month == "sep") {
-		monthInt = 9;
+	else if (month == SEP_CAP || month == SEP_SMALL) {
+		monthInt = NINE;
 	}
-	else if (month == "Oct" || month == "oct") {
-		monthInt = 10;
+	else if (month == OCT_CAP || month == OCT_SMALL) {
+		monthInt = TEN;
 	}
-	else if (month == "Nov" || month == "nov") {
-		monthInt = 11;
+	else if (month == NOV_CAP || month == NOV_SMALL) {
+		monthInt = ELEVEN;
 	}
-	else if (month == "Dec" || month == "dec") {
-		monthInt = 12;
+	else if (month == DEC_CAP || month == DEC_SMALL) {
+		monthInt = TWELVE;
 	}
 	return monthInt;
 }
@@ -1058,14 +1145,13 @@ int Parser::convertAlphabetMonthToInteger (string month) {
 string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
   time_t rawtime;
   struct tm timeinfo;
-  const char * weekday[] = { "Sunday", "Monday",
-                             "Tuesday", "Wednesday",
-                             "Thursday", "Friday", "Saturday"};
+  const char* weekday[] = {SUNDAY, MONDAY, TUESDAY, WEDNESDAY,
+	  THURSDAY, FRIDAY, SATURDAY};
 
   time ( &rawtime );
   localtime_s (&timeinfo, &rawtime);
-  timeinfo.tm_year = year - 1900;
-  timeinfo.tm_mon = month - 1;
+  timeinfo.tm_year = year - START_OF_YEAR;
+  timeinfo.tm_mon = month - ONE;
   timeinfo.tm_mday = date;
 
   mktime ( &timeinfo );
@@ -1078,11 +1164,11 @@ string Parser::convertDateToDayOfTheWeek (int date, int month, int year) {
 //and store them in a TimeMacro object
 //which its caller can access.
 void Parser::getTodayDate (TimeMacro& timeMacro) {
-    time_t t = time (0);   // get time now
+    time_t t = time (ZERO);   // get time now
     struct tm now;
 	localtime_s (&now, &t);
-    now.tm_year = now.tm_year + 1900;
-    now.tm_mon = now.tm_mon + 1;
+    now.tm_year = now.tm_year + START_OF_YEAR;
+    now.tm_mon = now.tm_mon + ONE;
 	string dayOfTheWeek = convertDateToDayOfTheWeek (now.tm_mday, now.tm_mon, now.tm_year);
 	
 	timeMacro.updateYear (now.tm_year);
@@ -1096,41 +1182,41 @@ void Parser::getTodayDate (TimeMacro& timeMacro) {
 //and store them in a TimeMacro object
 //which its caller can access.
 void Parser::getTomorrowDate (TimeMacro& timeMacro) {
-    time_t t = time (0);   
+    time_t t = time (ZERO);   
     struct tm now;
 	localtime_s (&now, &t);
-    now.tm_year = now.tm_year + 1900;
-    now.tm_mon = now.tm_mon + 1;
+    now.tm_year = now.tm_year + START_OF_YEAR;
+    now.tm_mon = now.tm_mon + ONE;
 
-	if (now.tm_mday == 31) {
-		if (now.tm_mon == 12) {
-			now.tm_year += 1;
-			now.tm_mon = 1;
+	if (now.tm_mday == THIRTY_ONE) {
+		if (now.tm_mon == TWELVE) {
+			now.tm_year += ONE;
+			now.tm_mon = ONE;
 		}
 		else {
-			now.tm_mon += 1;
+			now.tm_mon += ONE;
 		}
-		now.tm_mday = 1;
+		now.tm_mday = ONE;
 	}
-	else if (now.tm_mday == 30) {
-		if (now.tm_mon == 4 || now.tm_mon == 6 ||
-			now.tm_mon == 9 || now.tm_mon == 11) {
-				now.tm_mday = 1;
-				now.tm_mon += 1;
+	else if (now.tm_mday == THIRTY) {
+		if (now.tm_mon == FOUR || now.tm_mon == SIX ||
+			now.tm_mon == NINE || now.tm_mon == ELEVEN) {
+				now.tm_mday = ONE;
+				now.tm_mon += ONE;
 		}
 	}
-	else if (now.tm_mday == 28 && !isLeapYear (now.tm_year) &&
-		now.tm_mon == 2) {
-			now.tm_mday = 1;
-			now.tm_mon += 1;
+	else if (now.tm_mday == TWENTY_EIGHT && !isLeapYear (now.tm_year) &&
+		now.tm_mon == TWO) {
+			now.tm_mday = ONE;
+			now.tm_mon += ONE;
 	}
-	else if (now.tm_mday == 29 && isLeapYear (now.tm_year) &&
-		now.tm_mon ==2) {
-			now.tm_mday =1;
-			now.tm_mon += 1;
+	else if (now.tm_mday == TWENTY_NINE && isLeapYear (now.tm_year) &&
+		now.tm_mon ==TWO) {
+			now.tm_mday = ONE;
+			now.tm_mon += ONE;
 	}
 	else {
-		now.tm_mday += 1;
+		now.tm_mday += ONE;
 	}
 
 	string dayOfTheWeek = convertDateToDayOfTheWeek (now.tm_mday, now.tm_mon, now.tm_year);
@@ -1147,50 +1233,50 @@ void Parser::getTomorrowDate (TimeMacro& timeMacro) {
 void Parser::getMondayDate (TimeMacro &timeMacro) {
 	int day;
 	int date;
-	time_t t = time (0);   
+	time_t t = time (ZERO);   
     struct tm now;
 	localtime_s (&now, &t);
-    now.tm_year = now.tm_year + 1900;
-    now.tm_mon = now.tm_mon + 1;
+    now.tm_year = now.tm_year + START_OF_YEAR;
+    now.tm_mon = now.tm_mon + ONE;
 
-	if (now.tm_wday == 0) {
-		day = 6;
+	if (now.tm_wday == ZERO) {
+		day = SIX;
 	}
 	else {
-		day = now.tm_wday - 1;
+		day = now.tm_wday - ONE;
 	}
 	date = now.tm_mday - day;
 
-	if (date < 1) {  //if Monday is on previous month
-		if (now.tm_mon == 0) {   //if it is Jan now
-			date += 31;
-			timeMacro.updateMonth (12);
-			timeMacro.updateYear (now.tm_year - 1);
+	if (date < ONE) {  //if Monday is on previous month
+		if (now.tm_mon == ZERO) {   //if it is Jan now
+			date += THIRTY_ONE;
+			timeMacro.updateMonth (TWELVE);
+			timeMacro.updateYear (now.tm_year - ONE);
 		}
 		else {
-			timeMacro.updateMonth (now.tm_mon - 1);
+			timeMacro.updateMonth (now.tm_mon - ONE);
 			timeMacro.updateYear (now.tm_year);
-			if (now.tm_mon == 1 ||
-				now.tm_mon == 3 ||
-				now.tm_mon == 5 ||
-				now.tm_mon == 7 ||
-				now.tm_mon ==8 ||
-				now.tm_mon == 10) {  //Feb, Apr, Jun, Aug, Sep, Nov
-				date += 31;
+			if (now.tm_mon == ONE ||
+				now.tm_mon == THREE ||
+				now.tm_mon == FIVE ||
+				now.tm_mon == SEVEN ||
+				now.tm_mon ==EIGHT ||
+				now.tm_mon == TEN) {  //Feb, Apr, Jun, Aug, Sep, Nov
+				date += THIRTY_ONE;
 			}
-			else if (now.tm_mon == 2) {  //Mar
+			else if (now.tm_mon == TWO) {  //Mar
 				if (isLeapYear (now.tm_year)) {
-					date += 29;
+					date += TWENTY_NINE;
 				}
 				else {
-					date += 28;
+					date += TWENTY_EIGHT;
 				}
 			}
-			else if (now.tm_mon == 4 ||
-				now.tm_mon == 6 ||
-				now.tm_mon == 9 ||
-				now.tm_mon == 11) {  //May, Jul, Oct, Dec
-				date += 30;
+			else if (now.tm_mon == FOUR ||
+				now.tm_mon == SIX ||
+				now.tm_mon == NINE ||
+				now.tm_mon == ELEVEN) {  //May, Jul, Oct, Dec
+				date += THIRTY;
 			}
 		}
 	}
@@ -1200,7 +1286,7 @@ void Parser::getMondayDate (TimeMacro &timeMacro) {
 	}
 
 	timeMacro.updateDate (date);
-	timeMacro.updateDay ("Monday");
+	timeMacro.updateDay (MONDAY);
 
 }
 
@@ -1211,51 +1297,51 @@ void Parser::getMondayDate (TimeMacro &timeMacro) {
 void Parser::getSundayDate (TimeMacro &timeMacro) {
 	int day;
 	int date;
-	time_t t = time (0);   
+	time_t t = time (ZERO);   
     struct tm now;
 	localtime_s (&now, &t);
-    now.tm_year = now.tm_year + 1900;
-    now.tm_mon = now.tm_mon + 1;
+    now.tm_year = now.tm_year + START_OF_YEAR;
+    now.tm_mon = now.tm_mon + ONE;
 
-	if (now.tm_wday == 0) {
-		day = 0;
+	if (now.tm_wday == ZERO) {
+		day = ZERO;
 	}
 	else {
-		day = 7 - now.tm_wday;
+		day = SEVEN - now.tm_wday;
 	}
 	date = now.tm_mday + day;
 
-	if (now.tm_mon != 11 || date <=31) { //not end of Dec
+	if (now.tm_mon != ELEVEN || date <= THIRTY_ONE) { //not end of Dec
 		timeMacro.updateYear (now.tm_year);
-		if ((now.tm_mon == 0 || //Jan, Mar, May, Jul, Aug, Oct
-			now.tm_mon == 2 ||
-			now.tm_mon == 4 ||
-			now.tm_mon == 6 ||
-			now.tm_mon == 7 ||
-			now.tm_mon == 9) && 
-			date > 31) {
-				date -= 31;
+		if ((now.tm_mon == ZERO || //Jan, Mar, May, Jul, Aug, Oct
+			now.tm_mon == TWO ||
+			now.tm_mon == FOUR ||
+			now.tm_mon == SIX ||
+			now.tm_mon == SEVEN ||
+			now.tm_mon == NINE) && 
+			date > THIRTY_ONE) {
+				date -= THIRTY_ONE;
 				timeMacro.updateMonth (now.tm_mon + 1);
 		}
 
-		else if ((now.tm_mon == 3 ||  //Apr, Jun, Sep, Nov
-			now.tm_mon == 5 ||
-			now.tm_mon == 8 ||
-			now.tm_mon == 10) &&
-			date > 30) {
-				date -= 30;
-				timeMacro.updateMonth (now.tm_mon + 1);
+		else if ((now.tm_mon == THREE ||  //Apr, Jun, Sep, Nov
+			now.tm_mon == FIVE ||
+			now.tm_mon == EIGHT ||
+			now.tm_mon == TEN) &&
+			date > THIRTY) {
+				date -= THIRTY;
+				timeMacro.updateMonth (now.tm_mon + ONE);
 		}
 
-		else if (now.tm_mon == 1 &&  //Feb
-			isLeapYear (now.tm_year) && date > 29) {
-				date -= 29;
-				timeMacro.updateMonth (now.tm_mon + 1);
+		else if (now.tm_mon == ONE &&  //Feb
+			isLeapYear (now.tm_year) && date > TWENTY_NINE) {
+				date -= TWENTY_NINE;
+				timeMacro.updateMonth (now.tm_mon + ONE);
 		}
-		else if (now.tm_mon == 1 &&
-			!isLeapYear (now.tm_year) && date > 28) {
-				date -= 28;
-				timeMacro.updateMonth (now.tm_mon + 1);
+		else if (now.tm_mon == ONE &&
+			!isLeapYear (now.tm_year) && date > TWENTY_EIGHT) {
+				date -= TWENTY_EIGHT;
+				timeMacro.updateMonth (now.tm_mon + ONE);
 		}
 
 		else {
@@ -1263,14 +1349,14 @@ void Parser::getSundayDate (TimeMacro &timeMacro) {
 		}
 	}
 	else {
-		date -= 31;
-		timeMacro.updateYear (now.tm_year + 1);
-		timeMacro.updateMonth (0);
+		date -= THIRTY_ONE;
+		timeMacro.updateYear (now.tm_year + ONE);
+		timeMacro.updateMonth (ZERO);
 	}
 
 
 	timeMacro.updateDate (date);
-	timeMacro.updateDay ("Sunday");
+	timeMacro.updateDay (SUNDAY);
 }
 
 
@@ -1281,34 +1367,34 @@ void Parser::getSundayDate (TimeMacro &timeMacro) {
 //which will be passed to its caller.
 //Please no
 void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
-	time_t t = time (0);
+	time_t t = time (ZERO);
     struct tm now;
 	localtime_s (&now, &t);
-    now.tm_year = now.tm_year + 1900;
-    now.tm_mon = now.tm_mon + 1;
+    now.tm_year = now.tm_year + START_OF_YEAR;
+    now.tm_mon = now.tm_mon + ONE;
 
 	timeMacroBeg.updateYear (now.tm_year);
 	timeMacroBeg.updateMonth (now.tm_mon);
-	timeMacroBeg.updateDate (1);
+	timeMacroBeg.updateDate (ONE);
 
 	timeMacroEnd.updateYear (now.tm_year);
 	timeMacroEnd.updateMonth (now.tm_mon);
 
-	if (now.tm_mon == 1 || now.tm_mon == 3 ||
-		now.tm_mon == 5 || now.tm_mon == 7 ||
-		now.tm_mon == 8 || now.tm_mon == 10 ||
-		now.tm_mon == 12) {
-			timeMacroEnd.updateDate (31);
+	if (now.tm_mon == ONE || now.tm_mon == THREE ||
+		now.tm_mon == FIVE || now.tm_mon == SEVEN ||
+		now.tm_mon == EIGHT || now.tm_mon == TEN ||
+		now.tm_mon == TWELVE) {
+			timeMacroEnd.updateDate (THIRTY_ONE);
 	}
-	else if (now.tm_mon == 4 || now.tm_mon == 6 ||
-		now.tm_mon == 9 || now.tm_mon == 11) {
-			timeMacroEnd.updateDate (30);
+	else if (now.tm_mon == FOUR || now.tm_mon == SIX ||
+		now.tm_mon == NINE || now.tm_mon == ELEVEN) {
+			timeMacroEnd.updateDate (THIRTY);
 	}
-	else if (now.tm_mon == 2 && isLeapYear (now.tm_year)) {
-		timeMacroEnd.updateDate (29);
+	else if (now.tm_mon == TWO && isLeapYear (now.tm_year)) {
+		timeMacroEnd.updateDate (TWENTY_NINE);
 	}
 	else {
-		timeMacroEnd.updateDate (28);
+		timeMacroEnd.updateDate (TWENTY_EIGHT);
 	}	
 }
 
@@ -1319,13 +1405,13 @@ void Parser::getThisMonth (TimeMacro& timeMacroBeg, TimeMacro& timeMacroEnd) {
 
 //This method is to check if a certain year is a leap year or not
 bool Parser::isLeapYear (int year) {
-	if (year % 4 != 0) {
+	if (year % FOUR != ZERO) {
 		return false;
 	}
-	else if (year % 100 != 0) {
+	else if (year % HUNDRAD != ZERO) {
 		return true;
 	}
-	else if (year % 400 != 0) {
+	else if (year % FOUR_HUNDRAD != ZERO) {
 		return false;
 	}
 	else {

@@ -3,7 +3,8 @@
 #include <iostream>
 #include <string>
 #include <time.h>
-#include <exception>
+#include <vector>
+#include <assert.h>
 #include "Commons.h"
 
 using namespace std;
@@ -67,7 +68,13 @@ private:
 	static const unsigned int LENGTH_OF_DATE_NUMBER;
 	static const unsigned int LENGTH_OF_DATE_ALPHABET;
 	static const unsigned int LENGTH_OF_YEAR_ALPHABET;
-	static const unsigned int START;
+	static const unsigned int LENGTH_OF_STARTING_TIME;
+	static const unsigned int LENGTH_OF_TIME_PERIOD;
+	static const unsigned int START_OF_YEAR;
+	static const unsigned int YEAR_MIN;
+	static const unsigned int YEAR_MAX;
+
+	static const unsigned int ZERO;
 	static const unsigned int ONE;
 	static const unsigned int TWO;
 	static const unsigned int THREE;
@@ -75,9 +82,84 @@ private:
 	static const unsigned int FIVE;
 	static const unsigned int SIX;
 	static const unsigned int SEVEN;
-	static const unsigned int LENGTH_OF_STARTING_TIME;
-	static const unsigned int LENGTH_OF_TIME_PERIOD;
-	static const char SLASH;
+	static const unsigned int EIGHT;
+	static const unsigned int NINE;
+	static const unsigned int TEN;
+	static const unsigned int ELEVEN;
+	static const unsigned int TWELVE;
+	static const unsigned int TWENTY_THREE;
+	static const unsigned int TWENTY_EIGHT;
+	static const unsigned int TWENTY_NINE;
+	static const unsigned int THIRTY;
+	static const unsigned int THIRTY_ONE;
+	static const unsigned int FIFTY_NINE;
+	static const unsigned int HUNDRAD;
+	static const unsigned int FOUR_HUNDRAD;
+	static const char AM[100];
+	static const char PM[100];
+	static const char M[100];
+	
+	static const unsigned int TIMEMICRO_INITIAL;
+	static const char EMPTY_STRING[100];
+	static const char SPACE[100];
+	static const char SLASH[100];
+	static const char SPACE_SLASH[100];
+	static const char COLON[100];
+	static const char DOT[100];
+	static const char DASH[100];
+	
+	static const char JAN_CAP[100];
+	static const char FEB_CAP[100];
+	static const char MAR_CAP[100];
+	static const char APR_CAP[100];
+	static const char MAY_CAP[100];
+	static const char JUN_CAP[100];
+	static const char JUL_CAP[100];
+	static const char AUG_CAP[100];
+	static const char SEP_CAP[100];
+	static const char OCT_CAP[100];
+	static const char NOV_CAP[100];
+	static const char DEC_CAP[100];
+	static const char JAN_SMALL[100];
+	static const char FEB_SMALL[100];
+	static const char MAR_SMALL[100];
+	static const char APR_SMALL[100];
+	static const char MAY_SMALL[100];
+	static const char JUN_SMALL[100];
+	static const char JUL_SMALL[100];
+	static const char AUG_SMALL[100];
+	static const char SEP_SMALL[100];
+	static const char OCT_SMALL[100];
+	static const char NOV_SMALL[100];
+	static const char DEC_SMALL[100];
+
+	static const char MONDAY[100];
+	static const char TUESDAY[100];
+	static const char WEDNESDAY[100];
+	static const char THURSDAY[100];
+	static const char FRIDAY[100];
+	static const char SATURDAY[100];
+	static const char SUNDAY[100];
+
+	static const char COMMAND_ADD[100];
+	static const char COMMAND_EDIT[100];
+	static const char COMMAND_SEARCH[100];
+	static const char COMMAND_UNDO[100];
+	static const char COMMAND_DELETE[100];
+	static const char COMMAND_DONE[100];
+	static const char COMMAND_UNDONE[100];
+	static const char COMMAND_SHOW[100];
+	static const char COMMAND_CLEAR[100];
+	static const char COMMAND_PATH[100];
+	static const char COMMAND_HELP[100];
+	static const char COMMAND_TODAY[100];
+	static const char COMMAND_TOMORROW[100];
+	static const char COMMAND_THIS_WEEK[100];
+	static const char COMMAND_THIS_MONTH[100];
+	static const char COMMAND_COMMANDS[100];
+	static const char COMMAND_FLOAT[100];
+	static const char COMMAND_FEATURES[100];
+
 	static const char ERROR_MESSAGE_COMMAND[100];
 	static const char ERROR_MESSAGE_INPUT[100];
 	static const char ERROR_MESSAGE_EDIT[100];
@@ -89,6 +171,9 @@ private:
 	static const char ERROR_MESSAGE_TIME[100];
 	static const char ERROR_MESSAGE_DESC[100];
 
+	static const char LOG_START[100];
+	static const char LOG_SUCCESS[100];
+	static const char LOG_ERROR[100];
 
 	
 public:
@@ -154,7 +239,6 @@ public:
 	bool isStartingTimeTwelve (string inputToBeParsed, int& hourInt, int& minuteInt);
 	bool isTimePeriodTwelve (string inputToBeParsed, int& hourBegInt, int& hourEndInt, 
 		int& minuteBegInt, int& minuteEndInt);
-	bool isSlash (string directory);
 	bool isStringEqual (string inputString, vector<string> compString);
 	int convertAlphabetMonthToInteger (string month);
 	void getTodayDate (TimeMacro& timeMacro);
