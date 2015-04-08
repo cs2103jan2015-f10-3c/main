@@ -88,7 +88,9 @@ private:
 	static const char ERROR_MESSAGE_YEAR[100];
 	static const char ERROR_MESSAGE_TIME[100];
 	static const char ERROR_MESSAGE_DESC[100];
-
+	static const char LOG_START[100];
+	static const char LOG_SUCCESS[100];
+	static const char LOG_ERROR[100];
 
 	
 public:

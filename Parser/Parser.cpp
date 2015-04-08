@@ -23,6 +23,10 @@ const char Parser::ERROR_MESSAGE_DATE[] = "Please enter the correct date";
 const char Parser::ERROR_MESSAGE_YEAR[] = "Please enter the correct year";
 const char Parser::ERROR_MESSAGE_TIME[] = "Please enter the correct time";
 const char Parser::ERROR_MESSAGE_DESC[] = "Please enter task description";
+const char Parser::LOG_START[] = "Parser starts to parse user input";
+const char Parser::LOG_SUCCESS[] = "Parser has parsed user input successfully";
+const char Parser::LOG_ERROR[] = "Parser has found an invalid user input";
+
 
 
 //This method is called by OperationCenter.
@@ -30,14 +34,22 @@ const char Parser::ERROR_MESSAGE_DESC[] = "Please enter task description";
 //and updates error message if the user's command word is incorrect.
 void Parser::parseInput (string userInput) {
 	string commandWord;
+	Logger logStart;
+	logStart.logging (LOG_START);
 
 	commandWord = extractCommandWord (userInput);
 
 	try {
 		checkCommandWord (userInput, commandWord);
+		Logger logSuccess;
+		logSuccess.logging (LOG_SUCCESS);
 	}
 
 	catch (const char* errorMessge) {
+		Logger logError;
+		Logger logMessage;
+		logError.logging (LOG_ERROR);
+		logMessage.logging (errorMessge);
 		updateErrorMessage (errorMessge);
 	}
 }
