@@ -77,6 +77,7 @@ public:
 	static void updateUndoCount(string command);
 	static void checkCommand(string command);
 	static void clearScreen();
+	static string showReturnDisplay(string returnDisplay, TimeMacro current, Data task);
 };
 
 #endif
