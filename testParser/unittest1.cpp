@@ -1063,7 +1063,7 @@ namespace testParser
 		TEST_METHOD(testErrorDateAlphabet)
 		{
 			Parser parser;
-			string input = "add 30 feb 2000 lalala";
+			string input = "add 30 feb 2000 breakfast";
 			string errorMessage = "Please enter the correct date";
 			parser.parseInput (input);
 			Assert::AreEqual (parser.getErrorMessage(), errorMessage);
@@ -1074,7 +1074,7 @@ namespace testParser
 		TEST_METHOD(testErrorDateNumber)
 		{
 			Parser parser;
-			string input = "add 32/13/2015 lalala";
+			string input = "add 32/13/2015 breakfast";
 			string errorMessage = "Please enter the correct date";
 			parser.parseInput (input);
 			Assert::AreEqual (parser.getErrorMessage(), errorMessage);
@@ -1085,7 +1085,7 @@ namespace testParser
 		TEST_METHOD(testErrorStartingTimeTwelve)
 		{
 			Parser parser;
-			string input = "add 13.60am lol";
+			string input = "add 13.60am breakfast";
 			string errorMessage = "Please enter the correct time";
 			parser.parseInput (input);
 			Assert::AreEqual (parser.getErrorMessage (), errorMessage);
@@ -1107,7 +1107,7 @@ namespace testParser
 		TEST_METHOD(testErrorYearAlphabet)
 		{
 			Parser parser;
-			string input = "add 8 apr 2101 lalala";
+			string input = "add 8 apr 2101 breakfast";
 			string errorMessage = "Please enter the correct year";
 			parser.parseInput (input);
 			Assert::AreEqual (parser.getErrorMessage(), errorMessage);
@@ -1118,7 +1118,7 @@ namespace testParser
 		TEST_METHOD(testErrorYearNumber)
 		{
 			Parser parser;
-			string input = "add 12/12/2101 hoho";
+			string input = "add 12/12/2101 breakfast";
 			string errorMessage = "Please enter the correct year";
 			parser.parseInput (input);
 			Assert::AreEqual (parser.getErrorMessage (), errorMessage);
