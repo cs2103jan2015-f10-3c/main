@@ -42,7 +42,7 @@ const char Logic::NO_FLOAT_TASK_MESSAGE[] = "You have no task with unspecified d
 const char Logic::FLOAT_TASK_MESSAGE[] = "Your tasks with unspecified date are as follows: ";
 const char Logic::PATH_MESSAGE[] = "New user path: ";
 const char Logic::REINPUT_PATH[] = "Please reinput path ";
-const char Logic::INPUT_PATH_MESSAGE[] = "Please input path by typing 'path *your directory* ' ";
+const char Logic::INPUT_PATH_MESSAGE[] = "Please enter a path to save your tasks, e.g: path c:/user/local";
 
 string Feedback::display;
 string Feedback::response;
