@@ -1,2 +1,37 @@
--842150444
+174
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
+140	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		haiku
+141	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		makan siang
+142	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		lala
+143	undefined/0/0/0		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		rabu
+144	Thursday/1/1/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		makan
+145	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		play with mochi
+146	Wednesday/1/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		a
+147	Wednesday/1/4/2015		undefined/0/0/0		15/0		-1/-1		true		None		undefined/0/0/0		-1/-1		do unit testing cs
+148	Wednesday/1/4/2015		undefined/0/0/0		19/0		-1/-1		false		None		undefined/0/0/0		-1/-1		dinner with alvinna
+149	Thursday/2/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		b
+150	Thursday/2/4/2015		undefined/0/0/0		9/0		-1/-1		false		None		undefined/0/0/0		-1/-1		project
+151	Thursday/2/4/2015		undefined/0/0/0		11/0		-1/-1		false		None		undefined/0/0/0		-1/-1		study ie2150
+152	Thursday/2/4/2015		undefined/0/0/0		20/0		-1/-1		false		None		undefined/0/0/0		-1/-1		charity concert
+153	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		good friday
+154	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		hellow
+155	Friday/3/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		c
+156	Friday/3/4/2015		undefined/0/0/0		9/0		10/20		true		None		undefined/0/0/0		-1/-1		project
+157	Friday/3/4/2015		undefined/0/0/0		10/0		-1/-1		true		None		undefined/0/0/0		-1/-1		cs v0.3
+158	Saturday/4/4/2015		undefined/0/0/0		0/0		-1/-1		true		None		undefined/0/0/0		-1/-1		dreamtown
+159	Saturday/4/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		d
+160	Saturday/4/4/2015		undefined/0/0/0		9/0		-1/-1		true		None		undefined/0/0/0		-1/-1		meeting 2150
+161	Sunday/5/4/2015		undefined/0/0/0		11/0		13/0		false		None		undefined/0/0/0		-1/-1		meeting 2150 again
+162	Sunday/5/4/2015		undefined/0/0/0		12/0		-1/-1		true		None		undefined/0/0/0		-1/-1		makan
+163	Monday/6/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		e
+164	Tuesday/7/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		f
+165	Wednesday/8/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		g
+166	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		meeting2150 to consolidate
+167	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		f
+168	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline internal 2150 report
+169	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		j
+170	Monday/13/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		cs v0.5 deadline
+171	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		ie2130 report deadline
+172	Saturday/18/4/2015		undefined/0/0/0		10/0		13/0		false		None		undefined/0/0/0		-1/-1		gem1919 test1
+173	Saturday/25/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		gem1919 test 2
+174	Thursday/31/12/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		heyo

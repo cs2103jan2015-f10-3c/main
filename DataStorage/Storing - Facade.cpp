@@ -101,7 +101,7 @@ bool Storing::saveUserPathName(std::string userPathName){
 
 void Storing::loadData(bool& status, std::string directory){
 	LocalStorage *localStorage = LocalStorage::getInstance();
-	directory = localStorage->checkPathName();
+	directory = localStorage->checkPathName(); //check whether there's path stored
 	localStorage->loadData(status, directory);
 }
 

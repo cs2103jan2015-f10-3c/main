@@ -113,7 +113,6 @@ std::vector<Data> DisplayStorage::getListFromLocal(){
 }
 
 
-// !!unit testing done
 //helper method for getDisplayList()
 //to update all taskNo in displayList vector
 void DisplayStorage::enterDataToList(std::vector<long long> timePeriod){
@@ -172,7 +171,10 @@ void DisplayStorage::displayDone(std::vector<Data> tempList){
 void DisplayStorage::displayFloat(std::vector<Data> tempList){
 	for(int i = 0; i != tempList.size(); i++){
 		if(tempList[i].getTimeMacroBeg().getDay() == DEFAULT_DESCRIPTION){
-			displayList.push_back(tempList[i]);
+			//input to list if task is not done
+			if(tempList[i].getCompleteStatus() == false){
+				displayList.push_back(tempList[i]);
+			}
 		}
 	}
 }
