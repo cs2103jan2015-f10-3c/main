@@ -187,7 +187,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput("add 1/4 task 3");
 			OperationCenter::executeInput("add jogging");
 			OperationCenter::executeInput("add 1 Apr 10:00-12:00 task 4");
-
+			
+			//word search
 			OperationCenter::executeInput("search task");
 
 			string actualResponse = OperationCenter::getResponse(); 
@@ -213,6 +214,7 @@ namespace BlinkListSystemTest
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 			
+			//phrase search
 			OperationCenter::executeInput("search sit");
 
 			actualDisplay = OperationCenter::getDisplay();
@@ -225,6 +227,7 @@ namespace BlinkListSystemTest
 			expectedDisplay = out2.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 
+			//sentence search
 			OperationCenter::executeInput("search task 1 running");
 
 			actualDisplay = OperationCenter::getDisplay();
@@ -236,6 +239,14 @@ namespace BlinkListSystemTest
 				
 			expectedDisplay = out3.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
+
+			//exception for search
+			OperationCenter::executeInput("search blabla");
+
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Oops, there is no matching task in your BlinkList\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
 		}
 
 
