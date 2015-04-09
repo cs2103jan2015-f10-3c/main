@@ -523,14 +523,46 @@ namespace BlinkListSystemTest
 			Assert::AreEqual (actualAddResponse, expectedAddResponse);
 
 			OperationCenter::executeInput ("clear");
-			string actualDoneResponse = OperationCenter::getResponse(); 
-			string expectedDoneResponse = "all contents are cleared";
-			Assert::AreEqual (actualDoneResponse, expectedDoneResponse);
+			string actualClearResponse = OperationCenter::getResponse(); 
+			string expectedClearResponse = "all contents are cleared";
+			Assert::AreEqual (actualClearResponse, expectedClearResponse);
 
 			OperationCenter::executeInput ("undo");
 			string actualUndoResponse = OperationCenter::getResponse(); 
 			string expectedUndoResponse = "You have undone your operation\n";
 			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoErrorTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("undo");
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You can only undo the latest command and undo once";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(PathTest)			
+		{
+			OperationCenter::executeInput ("path E:/focus");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "New user path: E:/focus\n"
+				"Please type 'show commands' or 'show features' to get started\n";
+			Assert::AreEqual (actualResponse, expectedResponse);
+		}
+
+		TEST_METHOD(PathErrorTest)			
+		{
+			OperationCenter::executeInput ("path C:/focus");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "Please reinput path ";
+			Assert::AreEqual (actualResponse, expectedResponse);
 		}
 
 		//@author A0113538J
