@@ -14,7 +14,7 @@ namespace BlinkListSystemTest
 	{
 	public:
 		
-		//@angelitasasmita
+		//@author A0114002J
 		//For command "add"	
 		//testing for different format
 		//also testing for sorting of the container
@@ -40,8 +40,8 @@ namespace BlinkListSystemTest
 			expectedResponse = "task 3 on Wednesday, 1-4-2015  is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
 			
-			//format: D MMM HH:MM-HH:MM Desc
-			OperationCenter::executeInput("add 1 Apr 10:00-12:00 task 4");
+			//format: D MMM HHam-HHpm Desc
+			OperationCenter::executeInput("add 1 Apr 10am-12pm task 4");
 			actualResponse = OperationCenter::getResponse(); 
 			expectedResponse = "task 4 on Wednesday, 1-4-2015 at 10:00-12:00 is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
@@ -49,7 +49,7 @@ namespace BlinkListSystemTest
 			string actualDisplay = OperationCenter::getDisplay();
 			string expectedDisplay;
 			ostringstream out;
-			out	<< "Your agenda for Wednesday, 1-4-2015:" << endl
+			out	<< "Your agenda for Wednesday, 1-4-2015:" << endl << endl
 				<< "1. task 3" << endl
 				<< "   Wednesday                                                           1-4-2015" << endl 
 				<< "________________________________________________________________________________" << endl
@@ -65,26 +65,9 @@ namespace BlinkListSystemTest
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 			
-			//format: Desc 
-			//floating task
-			OperationCenter::executeInput("add task 5");
-			actualResponse = OperationCenter::getResponse(); 
-			expectedResponse = "task 5 is added\n";
-			Assert::AreEqual(expectedResponse, actualResponse);
-			
-			actualDisplay = OperationCenter::getDisplay();
-			expectedDisplay;
-			ostringstream out2;
-			out2<< "Your tasks with unspecified date are as follows: " << endl
-				<< "1. task 5" << endl 
-				<< "                                                                               " <<endl
-				<< "________________________________________________________________________________"<< endl;
-			expectedDisplay = out2.str();
-			Assert::AreEqual(expectedDisplay, actualDisplay);
-
 			//add in different date
-			//format: DD MMM YYYY HH:MM Desc
-			OperationCenter::executeInput("add 10 Apr 2015 12:00 task 6");
+			//format: DD MMM YYYY HHPM Desc
+			OperationCenter::executeInput("add 10 Apr 2015 12pm task 6");
 			actualResponse = OperationCenter::getResponse(); 
 			expectedResponse = "task 6 on Friday, 10-4-2015 at 12:00 is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
@@ -100,7 +83,8 @@ namespace BlinkListSystemTest
 			actualDisplay = OperationCenter::getDisplay();
 			expectedDisplay;
 			ostringstream out3;
-			out3<< "1. task 3" << endl
+			out3<< "Your Agenda for This Month: " << endl << endl
+				<< "1. task 3" << endl
 				<< "   Wednesday                                                           1-4-2015" << endl 
 				<< "________________________________________________________________________________" << endl
 				<< "2. task 4" << endl
@@ -122,10 +106,143 @@ namespace BlinkListSystemTest
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
 
+		TEST_METHOD(addFloatingTask)
+		{
+			//format: Desc 
+			//floating task
+			OperationCenter::executeInput("add task 5");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "task 5 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out2;
+			out2<< "Your tasks with unspecified date are as follows: \n" << endl
+				<< "1. task 5" << endl 
+				<< "                                                                               " <<endl
+				<< "________________________________________________________________________________"<< endl;
+			expectedDisplay = out2.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+
+		}
+
+		TEST_METHOD(addDefault)
+		{
+			//format: HH:MM Desc
+			//by default without date
+			//will add task to Today
+			OperationCenter::executeInput("add 12:30 lunch");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "lunch on Thursday, 9-4-2015 at 12:30 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out2;
+			out2<< "Today's Agenda is as follows:\n" << endl
+				<< "1. lunch" << endl
+				<< "   Thursday        12:30                                               9-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out2.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+
+
+		}
+
+		//@author A0114002J
+		//exception response when command entry is wrong
+		TEST_METHOD(wrongCommandException)
+		{
+			OperationCenter::executeInput("adds hellow");
+
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "Please enter the correct command";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+		}
+
+		//@author A0114002J
+		//For command "clear"	
+		TEST_METHOD(clear)			
+		{
+			OperationCenter::executeInput("add 01/04/2015 11:00-12:00 task 1");
+			OperationCenter::executeInput("add 01/04 11:00 task 2");
+			OperationCenter::executeInput("add 1/4 task 3");
+			OperationCenter::executeInput("add 1 Apr 10:00-12:00 task 4");
+			OperationCenter::executeInput("clear");
+
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "all contents are cleared";
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+		}
+
+		//@author A0114002J
+		//For command "search"
+		TEST_METHOD(searchWordPhrase)
+		{
+			OperationCenter::executeInput("add 01/04/2015 11:00-12:00 task 1 running");
+			OperationCenter::executeInput("add 01/04 11:00 task 2 sitting up");
+			OperationCenter::executeInput("add 1/4 task 3");
+			OperationCenter::executeInput("add jogging");
+			OperationCenter::executeInput("add 1 Apr 10:00-12:00 task 4");
+
+			OperationCenter::executeInput("search task");
+
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out << "1. task 3" << endl
+				<< "   Wednesday                                                           1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "2. task 4" << endl
+				<< "   Wednesday       10:00-12:00                                         1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "3. task 1 running" << endl
+				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "4. task 2 sitting up" << endl
+				<< "   Wednesday       11:00                                               1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl;
+			
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+			
+			OperationCenter::executeInput("search sit");
+
+			actualDisplay = OperationCenter::getDisplay();
+			expectedDisplay;
+			ostringstream out2;
+			out2<< "1. task 2 sitting up" << endl
+				<< "   Wednesday       11:00                                               1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl;
+
+			expectedDisplay = out2.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+
+			OperationCenter::executeInput("search task 1 running");
+
+			actualDisplay = OperationCenter::getDisplay();
+			expectedDisplay;
+			ostringstream out3;
+			out3<< "1. task 1 running" << endl
+				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl;
+				
+			expectedDisplay = out3.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+
+
 
 		//Kevin
 		//For command "delete"
-		TEST_METHOD(deleteUntilNoMoreTaskLeftTest)			//Example, change it if you need to.
+		TEST_METHOD(deleteUntilNoMoreTaskLeftTest)			
 		{
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add 25/4 12:00 task 1");
