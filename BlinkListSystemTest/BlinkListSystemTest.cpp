@@ -123,7 +123,7 @@ namespace BlinkListSystemTest
 		}
 
 
-		//Kevin
+		//@KevinChristian a0114421y
 		//For command "delete"
 		TEST_METHOD(deleteUntilNoMoreTaskLeftTest)			//Example, change it if you need to.
 		{
@@ -155,7 +155,7 @@ namespace BlinkListSystemTest
 			string actualDisplay = OperationCenter::getDisplay();
 			string expectedDisplay;
 			ostringstream out;
-			out	<< "Your agenda for Saturday, 25-4-2015:" << endl
+			out	<< "Your agenda for Saturday, 25-4-2015:" << endl << endl
 				<< "1. task 1" << endl
 				<< "   Saturday        12:00                                              25-4-2015" <<endl 
 				<< "________________________________________________________________________________"<< endl
@@ -180,13 +180,14 @@ namespace BlinkListSystemTest
 			string actualDisplay = OperationCenter::getDisplay();
 			string expectedDisplay;
 			ostringstream out;
-			out	<< "Your tasks with unspecified date are as follows: " << endl
-				<< "1. task 2" << endl << "                    " <<endl
+			out	<< "Your tasks with unspecified date are as follows: " << endl << endl
+				<< "1. task 2" << endl << "                   " <<endl
 				<< "________________________________________________________________________________"<< endl
-				<< "2. task 3" << endl << "                    " <<endl
+				<< "2. task 3" << endl << "                   " <<endl
 				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
+
 		}
 
 		TEST_METHOD(deleteUntilNoMoreFloatingTaskTest){
