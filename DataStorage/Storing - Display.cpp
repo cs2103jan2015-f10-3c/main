@@ -4,6 +4,8 @@
 const char DisplayStorage::LOGGING_MESSAGE_1[] = "Exception is caught in DisplayStorage";
 const char DisplayStorage::LOGGING_MESSAGE_2[] = "Exception is thrown from DisplayStorage";
 const char DisplayStorage::DEFAULT_DESCRIPTION[] = "undefined";
+const int DisplayStorage::MAX_DISPLAY_FLOATING = 10;
+const int DisplayStorage::MAX_DISPLAY_TIMED = 50;
 
 ///////////////////////////////////////
 //Singleton Definition / Implementation
@@ -163,11 +165,45 @@ void DisplayStorage::displaySearch(std::vector<Data> tempList, std::string keywo
 
 //get all completed tasks from dataList
 //transfer to displayList
+//displaying only the latest 10 floating tasks
+//and latest 50 timed tasks
 void DisplayStorage::displayDone(std::vector<Data> tempList){
-	for(int i = 0; i != tempList.size(); i++){
-		if(tempList[i].getCompleteStatus() == true){
-			displayList.push_back(tempList[i]);
+	displayDoneFloating(tempList);
+	displayDoneTimed(tempList);
+}
+
+//helper method for displayDone
+//to input the latest 10 floating tasks
+void DisplayStorage::displayDoneFloating(std::vector<Data> tempList){
+	int iter1=tempList.size()-1;
+	int iter2=0;
+
+	//for displaying first 10 floating tasks
+	while (iter1 != -1 && iter2 < MAX_DISPLAY_FLOATING){
+		// if 'day' is not specified, implying task in floating
+		if(tempList[iter1].getTimeMacroBeg().getDay() == DEFAULT_DESCRIPTION){
+			if(tempList[iter1].getCompleteStatus() == true){
+				displayList.push_back(tempList[iter1]);
+				iter2++;
+			}
 		}
+		iter1--;
+	}
+}
+
+//helper method for displayDone
+//to input latest 50 timed tasks
+void DisplayStorage::displayDoneTimed(std::vector<Data> tempList){
+	int iter1=tempList.size()-1;
+	int iter2=0;
+
+	//for displaying first 50 timed tasks
+	while (iter1 != -1 && iter2 < MAX_DISPLAY_TIMED){
+		if(tempList[iter1].getCompleteStatus() == true){
+			displayList.push_back(tempList[iter1]);
+			iter2++;
+		}
+		iter1--;
 	}
 }
 

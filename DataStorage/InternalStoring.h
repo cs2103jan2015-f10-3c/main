@@ -149,6 +149,8 @@ private:
 	static const char LOGGING_MESSAGE_1[100];
 	static const char LOGGING_MESSAGE_2[100];
 	static const char DEFAULT_DESCRIPTION[10];
+	static const int MAX_DISPLAY_FLOATING;
+	static const int MAX_DISPLAY_TIMED;
 
 	//instance and private constructor for singleton pattern
 	static DisplayStorage* instance;
@@ -165,6 +167,8 @@ private:
 	void enterDataToList(std::vector<long long> timePeriod);
 	std::vector<Data> getListFromLocal();
 	void checkTaskNoValidity(int taskNo);
+	void displayDoneFloating(std::vector<Data> tempList);
+	void displayDoneTimed(std::vector<Data> tempList);
 
 public:
 	//getInstance for singleton pattern
