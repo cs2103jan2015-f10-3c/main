@@ -228,10 +228,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 9:00");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			ostringstream outDisplay;
@@ -253,10 +251,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 exercise");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			ostringstream outDisplay;
@@ -277,10 +273,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 3/4");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
@@ -305,10 +299,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 3/4 9am");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
@@ -333,10 +325,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 9am 3/4");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
@@ -361,10 +351,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 3/4 9am exercise");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
@@ -389,10 +377,8 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 9am 3/4 exercise");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
@@ -422,7 +408,130 @@ namespace BlinkListSystemTest
 			Assert::AreEqual (acturalResponse, expectedResponse);
 		}
 
+		TEST_METHOD(undoAddTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
 
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoEditTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("edit 1 9:00");
+			string actualEditResponse = OperationCenter::getResponse(); 
+			string expectedEditResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
+			Assert::AreEqual (actualEditResponse, expectedEditResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoDeleteTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("delete 1");
+			string actualDeleteResponse = OperationCenter::getResponse(); 
+			string expectedDeleteResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is deleted from BlinkList\n";
+			Assert::AreEqual (actualDeleteResponse, expectedDeleteResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoDoneTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("done 1");
+			string actualDoneResponse = OperationCenter::getResponse(); 
+			string expectedDoneResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is done\n";
+			Assert::AreEqual (actualDoneResponse, expectedDoneResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoUndoneTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("done 1");
+			string actualDoneResponse = OperationCenter::getResponse(); 
+			string expectedDoneResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is done\n";
+			Assert::AreEqual (actualDoneResponse, expectedDoneResponse);
+
+			OperationCenter::executeInput ("show done");
+			OperationCenter::executeInput ("undone 1");
+			string actualUndoneResponse = OperationCenter::getResponse(); 
+			string expectedUndoneResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is reopened\n";
+			Assert::AreEqual (actualUndoneResponse, expectedUndoneResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoClearTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("add 3/4 1pm lunch");
+			actualAddResponse = OperationCenter::getResponse(); 
+			expectedAddResponse = "lunch on Friday, 3-4-2015 at 13:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("add 4/4 6pm dinner");
+			actualAddResponse = OperationCenter::getResponse(); 
+			expectedAddResponse = "dinner on Saturday, 4-4-2015 at 18:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("clear");
+			string actualDoneResponse = OperationCenter::getResponse(); 
+			string expectedDoneResponse = "all contents are cleared";
+			Assert::AreEqual (actualDoneResponse, expectedDoneResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
 
 		//@author A0113538J
 		//For command "show"
