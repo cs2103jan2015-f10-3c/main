@@ -1,3 +1,5 @@
+//@author A0114002J
+
 #include "Commons.h"
 
 const char Logger::LOG_FILE_NAME[] = "log.txt";

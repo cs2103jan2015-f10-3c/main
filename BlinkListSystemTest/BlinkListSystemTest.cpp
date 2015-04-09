@@ -150,6 +150,44 @@ namespace BlinkListSystemTest
 
 		}
 
+		TEST_METHOD(addException){
+			//no description
+			OperationCenter::executeInput("add 4 apr");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "Please enter task description";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//date outside boundary
+			OperationCenter::executeInput("add 33/4 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct date";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//month outside boundary
+			OperationCenter::executeInput("add 31/14 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct date";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//year outside boundary
+			OperationCenter::executeInput("add 31/12/1000 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct year";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//time outside boundary
+			OperationCenter::executeInput("add 31/12 25:00 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct time";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//incorrect time
+			OperationCenter::executeInput("add 13am task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct time";
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+
 		//@author A0114002J
 		//exception response when command entry is wrong
 		TEST_METHOD(wrongCommandException)
