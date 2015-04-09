@@ -10,6 +10,8 @@ private:
 	static const char Storing::ERROR_MESSAGE_2[100];
 	static const char Storing::ERROR_MESSAGE_3[100]; 
 
+	void adjustRetrievedPath(std::string& pathName);
+
 public:
 	Storing() {}
 

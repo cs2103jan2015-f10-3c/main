@@ -55,7 +55,8 @@ std::string Storing::retrieveCommandList(){
 	try{
 		PrewrittenData prewrittenData;
 		return prewrittenData.retrieveList(command);
-	} catch (int errorNo){
+	} 
+	catch (int errorNo){
 		Logger log;
 		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
@@ -66,7 +67,8 @@ std::string Storing::retrieveFeatureList(){
 	try{
 		PrewrittenData prewrittenData;
 		return prewrittenData.retrieveList(feature);
-	} catch (int errorNo){
+	} 
+	catch (int errorNo){
 		Logger log;
 		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
@@ -74,28 +76,41 @@ std::string Storing::retrieveFeatureList(){
 }
 
 bool Storing::findPathName(){
+	std::string pathName;
+	PrewrittenData prewrittenData;
+	LocalStorage *localStorage = LocalStorage::getInstance();
+
 	try {
-		PrewrittenData prewrittenData;
-		return prewrittenData.checkPath();
-	} catch (int errorNo){
+		pathName = prewrittenData.retrieveList(path); //return exception when not found
+		adjustRetrievedPath(pathName);
+	} 
+	catch (int errorNo){
 		Logger log;
 		log.logging(LOGGING_MESSAGE_1);
 		handleException(errorNo);
 	}
+
+	localStorage->setPathName(pathName); // store path locally
+	return true;
+}
+
+void Storing::adjustRetrievedPath(std::string& pathName){
+	pathName = pathName.substr(0,pathName.size()-1);
 }
 
 bool Storing::saveUserPathName(std::string userPathName){
 	bool status;
+	std::ofstream out;
 
 	LocalStorage *localStorage = LocalStorage::getInstance();
 	localStorage->firstSave(); //set up for first time saving
-	status = localStorage->saveData(userPathName); //return validity of directory given by user
+	status = localStorage->directoryCheck(out, userPathName); //return validity of directory given by user
 	
 	PrewrittenData prewrittenData;
 	if(status == true){
 		prewrittenData.savePath(userPathName); //save path in path.txt
+		localStorage->setPathName(userPathName); // store path locally
 	}
-
 	return status;
 }
 
@@ -107,7 +122,7 @@ void Storing::loadData(bool& status, std::string directory){
 
 bool Storing::saveData(std::string directory){
 	LocalStorage *localStorage = LocalStorage::getInstance();
-	directory = localStorage->checkPathName();
+	directory = localStorage->checkPathName(); //check whether there's path stored
 	return localStorage->saveData(directory);
 }
 

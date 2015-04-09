@@ -14,7 +14,7 @@ const char LocalStorage::FALSE_STRING[] = "false";
 const char LocalStorage::EMPTY_STRING[] = "";
 
 //API for loading Data from txt file
-void LocalStorage::loadData(bool& status, std::string& directory){
+void LocalStorage::loadData(bool& status, std::string directory){
 	adjustFormat(directory);
 	
 	std::ifstream in(directory);
@@ -57,7 +57,11 @@ void LocalStorage::firstSave(){
 }
 
 //check whether user input directory exists
-bool LocalStorage::directoryCheck(std::ofstream& out){
+bool LocalStorage::directoryCheck(std::ofstream& out, std::string directory){
+	adjustFormat(directory);
+
+	out.open(directory.c_str());
+
 	try{
 		if(!out.is_open()){
 			Logger log;
@@ -74,24 +78,13 @@ bool LocalStorage::directoryCheck(std::ofstream& out){
 	}
 }
 
-//format the input directory from user
-//so that it can be read by all compiler
-void LocalStorage::adjustFormat(std::string& inputDirectory){
-	if (inputDirectory != EMPTY_STRING){
-		inputDirectory += SLASH;
-	}
-	inputDirectory += DEFAULT_SAVE_DIRECTORY;
-}
-
 
 //API for saving data into file
-bool LocalStorage::saveData(std::string& directory){
-	adjustFormat(directory);
-	bool status;
-
+bool LocalStorage::saveData(std::string directory){
 	std::ofstream out;
-	out.open(directory.c_str());
-	status = directoryCheck(out);
+	bool status;
+	status = directoryCheck(out, directory);
+	adjustFormat(directory);
 
 	if(status){
 		out << uniqueCodeStore << std::endl;
@@ -131,6 +124,15 @@ bool LocalStorage::saveData(std::string& directory){
 
 //////////////////////////////////////////
 //Start of Helper Methods for Loading Data
+
+//format the input directory from user
+//so that it can be read by all compiler
+void LocalStorage::adjustFormat(std::string& inputDirectory){
+	if (inputDirectory != EMPTY_STRING){
+		inputDirectory += SLASH;
+	}
+	inputDirectory += DEFAULT_SAVE_DIRECTORY;
+}
 
 //helper method for loadDate to parse input
 void LocalStorage::parseLoad(std::string strData, int i, Data& data){

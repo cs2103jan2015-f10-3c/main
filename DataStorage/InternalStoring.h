@@ -60,8 +60,10 @@ private:
 	//Private Attribute
 	std::vector<Data> dataList;
 	int uniqueCodeStore;
+	std::string pathName;
 	
 	//Helper Methods for internal working
+	std::string getPathName();
 	std::vector<Data> deleteDataOfUniqueCode(int uniqueCode);
 	long long allocateTimeMacroToPsedoDate(TimeMacro time);
 	long long allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro);
@@ -84,7 +86,6 @@ private:
 	TimeMicro microParser(std::string tempMicro);
 	std::string convertTimeMacroToString(TimeType type, int i);
 	std::string convertTimeMicroToString(TimeType type, int i);
-	bool directoryCheck(std::ofstream& out);
 	void adjustFormat(std::string& inputDirectory);
 
 
@@ -95,6 +96,9 @@ public:
 	//API for DisplayStorage
 	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 
+	//API for PrewrittenData
+	void setPathName(std::string inPathName);
+
 	//API for Facade Class
 	void addData(Data& inData);	
 	Data deleteData(int taskNo);
@@ -102,8 +106,9 @@ public:
 	void clearDataList();
 	void undoAdd();
 	std::vector<Data>& getDataList();
-	bool saveData(std::string& directory);
-	void loadData(bool& status, std::string& directory);
+	bool saveData(std::string directory);
+	void loadData(bool& status, std::string directory);
+	bool directoryCheck(std::ofstream& out, std::string directory);
 	std::string checkPathName();
 	void firstSave();
 
@@ -203,7 +208,6 @@ private:
 
 	std::string retrievedList;
 	std::string txtFile;
-	std::string pathName;
 
 	//helper method
 	std::string determineListType(ListType type);
@@ -214,9 +218,7 @@ public:
 	//API for facade class
 	std::string retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
-	bool checkPath();	
 	void savePath(std::string inPath);
-	std::string getPath();
 };
 
 
