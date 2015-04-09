@@ -30,7 +30,7 @@ namespace testParser
 		}
 
 		//To test for a leap year
-		TEST_METHOD(testLeapYear1)
+		TEST_METHOD(testIsLeapYear1)
 		{
 			Parser parser;
 			int year = 2004;
@@ -38,7 +38,7 @@ namespace testParser
 		}
 
 		//To test for a non-leap year
-		TEST_METHOD(testLeapYear2)
+		TEST_METHOD(testIsNotLeapYear)
 		{
 			Parser parser;
 			int year = 2015;
@@ -46,7 +46,7 @@ namespace testParser
 		}
 
 		//To test for a leap year which can be divided by 400
-		TEST_METHOD(testLeapYear3)
+		TEST_METHOD(testIsLeapYear2)
 		{
 			Parser parser;
 			int year = 2000;
@@ -55,7 +55,7 @@ namespace testParser
 
 		//To test whether a string is contained in a vector.
 		//In this case, it is contained in the vector.
-		TEST_METHOD(testStringEqual1)
+		TEST_METHOD(testStringEqual)
 		{
 			Parser parser;
 			string string = "abc";
@@ -67,7 +67,7 @@ namespace testParser
 
 		//To test whether a string is contained in a vector.
 		//In this case, it is not contained in the vector.
-		TEST_METHOD(testStringEqual2)
+		TEST_METHOD(testStringNotEqual)
 		{
 			Parser parser;
 			string string = "abc";
@@ -197,7 +197,7 @@ namespace testParser
 
 		//To test whether a string is a time period
 		//In this case, the string is not a time period but a starting time
-		TEST_METHOD(testIsTimePeriodTwentyFour5)
+		TEST_METHOD(testIsNotTimePeriodTwentyFour)
 		{
 			Parser parser;
 			int hourBeg;
@@ -267,7 +267,7 @@ namespace testParser
 
 		//To test whether a string is a starting time
 		//In this case, the string is not a starting time but a date
-		TEST_METHOD(testIsStartingTimeTwentyFour5)
+		TEST_METHOD(testIsNotStartingTimeTwentyFour)
 		{
 			Parser parser;
 			int hour;
@@ -476,7 +476,7 @@ namespace testParser
 
 		//To test whether a string is a date
 		//In this case, the string is not a date but a task description
-		TEST_METHOD(testIsDateNumber9)
+		TEST_METHOD(testIsNotDateNumber)
 		{
 			Parser parser;
 			int date;
@@ -572,7 +572,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a time period
-		TEST_METHOD(testparseTimeTwentyFour1)
+		TEST_METHOD(testparseTimeTwentyFourPeriod)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -586,7 +586,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a starting time
-		TEST_METHOD(testparseTimeTwentyFour2)
+		TEST_METHOD(testparseTimeTwentyFourStarting)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -600,7 +600,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a time period
-		TEST_METHOD(testparseTimeTwelve1)
+		TEST_METHOD(testparseTimeTwelvePeriod)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -614,7 +614,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a starting time
-		TEST_METHOD(testparseTimeTwelve2)
+		TEST_METHOD(testparseTimeTwelveStarting)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -639,7 +639,7 @@ namespace testParser
 
 		//To test whether can parse for the "delete" feature
 		//The boundary case is 1
-		TEST_METHOD(testParseDelete1)
+		TEST_METHOD(testParseDelete)
 		{
 			Parser parser;
 			string input = "delete 1";
@@ -666,7 +666,7 @@ namespace testParser
 
 		//To test whether can ignore it when parsing date
 		//when the input string is a time period
-		TEST_METHOD(testparseDateNumber2)
+		TEST_METHOD(testparseNotDateNumber)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
@@ -686,7 +686,7 @@ namespace testParser
 			TimeMacro timeMacro;
 			string dayOfTheWeek = "Friday";
 			parser.getTomorrowDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 3);
+			Assert::AreEqual (timeMacro.getDate(), 10);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
@@ -857,7 +857,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a string to search for a single keyword
-		TEST_METHOD(testParseSearch1)
+		TEST_METHOD(testParseSearchWord)
 		{
 			Parser parser;
 			string userInput = "search breakfast";
@@ -870,7 +870,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a string to search for a string
-		TEST_METHOD(testParseSearch2)
+		TEST_METHOD(testParseSearchPhrase)
 		{
 			Parser parser;
 			string userInput = "search breakfast at UT";
@@ -885,7 +885,7 @@ namespace testParser
 		//To test whether can parse for "edit" feature
 		//In this case, the task number has a single digit
 		//and there is a starting time
-		TEST_METHOD(testParseEdit1)
+		TEST_METHOD(testParseEdit)
 		{
 			Parser parser;
 			string userInput = "edit 4 13/03/2015 09:00 breakfast";
@@ -909,7 +909,7 @@ namespace testParser
 
 		//To test whether can parse for "add" feature
 		//In this case,there is a starting time
-		TEST_METHOD(testParseAdd1)
+		TEST_METHOD(testParseAddStartingTime)
 		{
 			Parser parser;
 			string userInput = "add 13/03/2015 19:00 dinner";
@@ -933,7 +933,7 @@ namespace testParser
 
 		//To test whether can parse for "add" feature
 		//In this case,there is a time period
-		TEST_METHOD(testParseAdd2)
+		TEST_METHOD(testParseAddPeriod)
 		{
 			Parser parser;
 			string userInput = "add 13/03/2015 10:00-14:00 project work";
@@ -955,7 +955,7 @@ namespace testParser
 		}
 
 		//To test whether can parse for "add" feature
-		TEST_METHOD(testParseInput1)
+		TEST_METHOD(testParseInputAdd)
 		{
 			Parser parser;
 			string userInput = "add 13/03/2015 10:00-14:00 project work";
@@ -977,7 +977,7 @@ namespace testParser
 		}
 
 		//To test whether can parse for "edit" feature
-		TEST_METHOD(testParseInput2)
+		TEST_METHOD(testParseInputEdit)
 		{
 			Parser parser;
 			string userInput = "edit 9 13/03/2015 10:00 project work";
@@ -1000,7 +1000,7 @@ namespace testParser
 		}
 
 		//To test whether can parse for "delete" feature
-		TEST_METHOD(testParseInput3)
+		TEST_METHOD(testParseInputDelete)
 		{
 			Parser parser;
 			string userInput = "delete 99";

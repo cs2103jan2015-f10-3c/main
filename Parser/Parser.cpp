@@ -1183,47 +1183,47 @@ void Parser::getTodayDate (TimeMacro& timeMacro) {
 //and store them in a TimeMacro object
 //which its caller can access.
 void Parser::getTomorrowDate (TimeMacro& timeMacro) {
-    time_t t = time (ZERO);   
-    struct tm now;
-	localtime_s (&now, &t);
-    now.tm_year = now.tm_year + START_OF_YEAR;
-    now.tm_mon = now.tm_mon + ONE;
+	TimeMacro today;
+	getTodayDate (today);
+	int date = today.getDate();
+	int month = today.getMonth();
+	int year = today.getYear();
 
-	if (now.tm_mday == THIRTY_ONE) {
-		if (now.tm_mon == TWELVE) {
-			now.tm_year += ONE;
-			now.tm_mon = ONE;
+	if (date == THIRTY_ONE) {
+		if (month == TWELVE) {
+			year += ONE;
+			month = ONE;
 		}
 		else {
-			now.tm_mon += ONE;
+			month += ONE;
 		}
-		now.tm_mday = ONE;
+		date = ONE;
 	}
-	else if (now.tm_mday == THIRTY) {
-		if (now.tm_mon == FOUR || now.tm_mon == SIX ||
-			now.tm_mon == NINE || now.tm_mon == ELEVEN) {
-				now.tm_mday = ONE;
-				now.tm_mon += ONE;
+	else if (date == THIRTY) {
+		if (month == FOUR || month == SIX ||
+			month == NINE || month == ELEVEN) {
+				date = ONE;
+				month += ONE;
 		}
 	}
-	else if (now.tm_mday == TWENTY_EIGHT && !isLeapYear (now.tm_year) &&
-		now.tm_mon == TWO) {
-			now.tm_mday = ONE;
-			now.tm_mon += ONE;
+	else if (date == TWENTY_EIGHT && !isLeapYear (year) &&
+		month == TWO) {
+			date = ONE;
+			month += ONE;
 	}
-	else if (now.tm_mday == TWENTY_NINE && isLeapYear (now.tm_year) &&
-		now.tm_mon ==TWO) {
-			now.tm_mday = ONE;
-			now.tm_mon += ONE;
+	else if (date == TWENTY_NINE && isLeapYear (year) &&
+		month ==TWO) {
+			date = ONE;
+			month += ONE;
 	}
 	else {
-		now.tm_mday += ONE;
+		date += ONE;
 	}
 
-	string dayOfTheWeek = convertDateToDayOfTheWeek (now.tm_mday, now.tm_mon, now.tm_year);
-    timeMacro.updateYear (now.tm_year);
-	timeMacro.updateMonth (now.tm_mon);
-	timeMacro.updateDate (now.tm_mday);
+	string dayOfTheWeek = convertDateToDayOfTheWeek (date, month, year);
+    timeMacro.updateYear (year);
+	timeMacro.updateMonth (month);
+	timeMacro.updateDate (date);
 	timeMacro.updateDay (dayOfTheWeek);
 }
 
