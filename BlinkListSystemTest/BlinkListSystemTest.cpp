@@ -52,16 +52,16 @@ namespace BlinkListSystemTest
 			out	<< "Your agenda for Wednesday, 1-4-2015:" << endl
 				<< "1. task 3" << endl
 				<< "   Wednesday                                                           1-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "2. task 4" << endl
 				<< "   Wednesday       10:00-12:00                                         1-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "3. task 1" << endl
 				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "4. task 2" << endl
 				<< "   Wednesday       11:00                                               1-4-2015" << endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 			
@@ -78,7 +78,7 @@ namespace BlinkListSystemTest
 			out2<< "Your tasks with unspecified date are as follows: " << endl
 				<< "1. task 5" << endl 
 				<< "                                                                               " <<endl
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 			expectedDisplay = out2.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 
@@ -102,22 +102,22 @@ namespace BlinkListSystemTest
 			ostringstream out3;
 			out3<< "1. task 3" << endl
 				<< "   Wednesday                                                           1-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "2. task 4" << endl
 				<< "   Wednesday       10:00-12:00                                         1-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "3. task 1" << endl
 				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "4. task 2" << endl
 				<< "   Wednesday       11:00                                               1-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "5. task 7" << endl
 				<< "   Thursday                                                            9-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "6. task 6" << endl
 				<< "   Friday          12:00                                              10-4-2015" << endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out3.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -158,10 +158,10 @@ namespace BlinkListSystemTest
 			out	<< "Your agenda for Saturday, 25-4-2015:" << endl
 				<< "1. task 1" << endl
 				<< "   Saturday        12:00                                              25-4-2015" <<endl 
-				<< "********************************************************************************"<< endl
+				<< "________________________________________________________________________________"<< endl
 				<< "2. task 3" << endl
 				<< "   Saturday        16:00                                              25-4-2015" <<endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -182,9 +182,9 @@ namespace BlinkListSystemTest
 			ostringstream out;
 			out	<< "Your tasks with unspecified date are as follows: " << endl
 				<< "1. task 2" << endl << "                    " <<endl
-				<< "********************************************************************************"<< endl
+				<< "________________________________________________________________________________"<< endl
 				<< "2. task 3" << endl << "                    " <<endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -220,7 +220,7 @@ namespace BlinkListSystemTest
 		}
 
 
-		//Chunhan
+		//@author A0093895J
 		//For command "edit"
 		TEST_METHOD(editTimeTest)			
 		{
@@ -228,18 +228,17 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 9:00");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			ostringstream outDisplay;
 			string actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "Your agenda for Thursday,2-4-2015:" << endl
+			outDisplay	<< "Your agenda for Thursday, 2-4-2015:" << endl
+				<< endl
 				<< "1. breakfast" << endl
 				<< "   Thursday        09:00                                               2-4-2015" << endl 
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 
 			string expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
@@ -252,18 +251,17 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 exercise");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			ostringstream outDisplay;
 			string actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "Your agenda for Thursday,2-4-2015:" << endl
+			outDisplay	<< "Your agenda for Thursday, 2-4-2015:" << endl
+				<< endl
 				<< "1. exercise" << endl
 				<< "   Thursday        10:00                                               2-4-2015" << endl 
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 
 			string expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
@@ -275,22 +273,22 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 3/4");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay = "You have no task on Thursday,2-4-2015\n";
+			string expectedDisplay = "You have no task on Thursday, 2-4-2015\n";
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 
 			OperationCenter::executeInput ("show 3/4");
 			ostringstream outDisplay;
 			actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "1. breakfast" << endl
+			outDisplay	<< "Your agenda for Friday, 3-4-2015:" << endl
+				<< endl
+				<< "1. breakfast" << endl
 				<< "   Friday          10:00                                               3-4-2015" << endl 
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 			expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -301,22 +299,22 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 3/4 9am");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay = "You have no task on Thursday,2-4-2015\n";
+			string expectedDisplay = "You have no task on Thursday, 2-4-2015\n";
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 
 			OperationCenter::executeInput ("show 3/4");
 			ostringstream outDisplay;
 			actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "1. breakfast" << endl
+			outDisplay	<< "Your agenda for Friday, 3-4-2015:" << endl
+				<< endl
+				<< "1. breakfast" << endl
 				<< "   Friday          09:00                                               3-4-2015" << endl 
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 			expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -327,22 +325,22 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 9am 3/4");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay = "You have no task on Thursday,2-4-2015\n";
+			string expectedDisplay = "You have no task on Thursday, 2-4-2015\n";
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 
 			OperationCenter::executeInput ("show 3/4");
 			ostringstream outDisplay;
 			actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "1. breakfast" << endl
+			outDisplay	<< "Your agenda for Friday, 3-4-2015:" << endl
+				<< endl
+				<< "1. breakfast" << endl
 				<< "   Friday          09:00                                               3-4-2015" << endl 
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 			expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -353,22 +351,22 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 3/4 9am exercise");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay = "You have no task on Thursday,2-4-2015\n";
+			string expectedDisplay = "You have no task on Thursday, 2-4-2015\n";
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 
 			OperationCenter::executeInput ("show 3/4");
 			ostringstream outDisplay;
 			actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "1. exercise" << endl
+			outDisplay	<< "Your agenda for Friday, 3-4-2015:" << endl
+				<< endl
+				<< "1. exercise" << endl
 				<< "   Friday          09:00                                               3-4-2015" << endl 
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 			expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -379,22 +377,22 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput ("add 2/4 10am breakfast");
 			OperationCenter::executeInput ("edit 1 9am 3/4 exercise");
 
-			ostringstream outResponse;
 			string acturalResponse = OperationCenter::getResponse();
-			outResponse << "breakfast on Thursday, 2-4-2015 at 10:00 is edited" << endl;
-			string expectedResponse = outResponse.str();
+			string expectedResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
 			Assert::AreEqual (acturalResponse, expectedResponse);
 
 			string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay = "You have no task on Thursday,2-4-2015\n";
+			string expectedDisplay = "You have no task on Thursday, 2-4-2015\n";
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 
 			OperationCenter::executeInput ("show 3/4");
 			ostringstream outDisplay;
 			actualDisplay = OperationCenter::getDisplay();
-			outDisplay	<< "1. exercise" << endl
+			outDisplay	<< "Your agenda for Friday, 3-4-2015:" << endl
+				<< endl
+				<< "1. exercise" << endl
 				<< "   Friday          09:00                                               3-4-2015" << endl 
-				<< "********************************************************************************"<< endl;
+				<< "________________________________________________________________________________"<< endl;
 			expectedDisplay = outDisplay.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -410,7 +408,162 @@ namespace BlinkListSystemTest
 			Assert::AreEqual (acturalResponse, expectedResponse);
 		}
 
+		TEST_METHOD(undoAddTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
 
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoEditTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("edit 1 9:00");
+			string actualEditResponse = OperationCenter::getResponse(); 
+			string expectedEditResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is edited\n";
+			Assert::AreEqual (actualEditResponse, expectedEditResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoDeleteTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("delete 1");
+			string actualDeleteResponse = OperationCenter::getResponse(); 
+			string expectedDeleteResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is deleted from BlinkList\n";
+			Assert::AreEqual (actualDeleteResponse, expectedDeleteResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoDoneTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("done 1");
+			string actualDoneResponse = OperationCenter::getResponse(); 
+			string expectedDoneResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is done\n";
+			Assert::AreEqual (actualDoneResponse, expectedDoneResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoUndoneTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("done 1");
+			string actualDoneResponse = OperationCenter::getResponse(); 
+			string expectedDoneResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is done\n";
+			Assert::AreEqual (actualDoneResponse, expectedDoneResponse);
+
+			OperationCenter::executeInput ("show done");
+			OperationCenter::executeInput ("undone 1");
+			string actualUndoneResponse = OperationCenter::getResponse(); 
+			string expectedUndoneResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is reopened\n";
+			Assert::AreEqual (actualUndoneResponse, expectedUndoneResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoClearTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("add 3/4 1pm lunch");
+			actualAddResponse = OperationCenter::getResponse(); 
+			expectedAddResponse = "lunch on Friday, 3-4-2015 at 13:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("add 4/4 6pm dinner");
+			actualAddResponse = OperationCenter::getResponse(); 
+			expectedAddResponse = "dinner on Saturday, 4-4-2015 at 18:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("clear");
+			string actualClearResponse = OperationCenter::getResponse(); 
+			string expectedClearResponse = "all contents are cleared";
+			Assert::AreEqual (actualClearResponse, expectedClearResponse);
+
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You have undone your operation\n";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(undoErrorTest)			
+		{
+			OperationCenter::executeInput ("clear");
+			OperationCenter::executeInput ("add 2/4 10am breakfast");
+			string actualAddResponse = OperationCenter::getResponse(); 
+			string expectedAddResponse = "breakfast on Thursday, 2-4-2015 at 10:00 is added\n";
+			Assert::AreEqual (actualAddResponse, expectedAddResponse);
+
+			OperationCenter::executeInput ("undo");
+			OperationCenter::executeInput ("undo");
+			string actualUndoResponse = OperationCenter::getResponse(); 
+			string expectedUndoResponse = "You can only undo the latest command and undo once";
+			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
+		}
+
+		TEST_METHOD(PathTest)			
+		{
+			OperationCenter::executeInput ("path E:/focus");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "New user path: E:/focus\n"
+				"Please type 'show commands' or 'show features' to get started\n";
+			Assert::AreEqual (actualResponse, expectedResponse);
+		}
+
+		TEST_METHOD(PathErrorTest)			
+		{
+			OperationCenter::executeInput ("path C:/focus");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "Please reinput path ";
+			Assert::AreEqual (actualResponse, expectedResponse);
+		}
 
 		//@author A0113538J
 		//For command "show"
@@ -431,13 +584,13 @@ namespace BlinkListSystemTest
 			ostringstream out;
 			out	<< "1. task 1" << endl
 				<< "   Thursday        14:00                                               2-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "2. task 2" << endl
 				<< "   Thursday        15:00                                               2-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "3. task 3" << endl
 				<< "   Thursday        16:00-17:00                                         2-4-2015" << endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -460,13 +613,13 @@ namespace BlinkListSystemTest
 			ostringstream out;
 			out	<< "1. task 1" << endl
 				<< "   Friday          14:00                                               3-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "2. task 2" << endl
 				<< "   Friday          15:00                                               3-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "3. task 3" << endl
 				<< "   Friday          16:00                                               3-4-2015" <<endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -490,16 +643,16 @@ namespace BlinkListSystemTest
 			ostringstream out;
 			out	<< "1. task 1" << endl
 				<< "   Thursday        14:00                                               2-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "2. task 2" << endl
 				<< "   Friday          15:00                                               3-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "3. task 3" << endl
 				<< "   Saturday        16:00                                               4-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "4. task 4" << endl
 				<< "   Sunday          17:00                                               5-4-2015" << endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -522,16 +675,16 @@ namespace BlinkListSystemTest
 			ostringstream out;
 			out	<< "1. task 1" << endl
 				<< "   Thursday        14:00                                               2-4-2015" << endl 
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "2. task 2" << endl
 				<< "   Friday          15:00                                              10-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "3. task 3" << endl
 				<< "   Saturday        16:00                                              25-4-2015" << endl
-				<< "********************************************************************************" << endl
+				<< "________________________________________________________________________________" << endl
 				<< "4. task 4" << endl
 				<< "   Thursday        17:00                                              30-4-2015" << endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
@@ -547,7 +700,7 @@ namespace BlinkListSystemTest
 			
 			OperationCenter::executeInput("done 4");
 			string actualResponse = OperationCenter::getResponse();
-			string expectedResponse = "task 4 on Thursday, 30-4-2015 at 17:00 is done";
+			string expectedResponse = "task 4 on Thursday, 30-4-2015 at 17:00 is done\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
 			
 			OperationCenter::executeInput("show done");
@@ -557,7 +710,7 @@ namespace BlinkListSystemTest
 			ostringstream out;
 			out	<< "1. task 4" << endl
 				<< "   Thursday        17:00                                              30-4-2015" << endl
-				<< "********************************************************************************" << endl;
+				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}

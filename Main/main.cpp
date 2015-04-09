@@ -17,8 +17,9 @@ int main(){
 	}
 
 	coutc (13, OperationCenter::getResponse()); 
-	cout << endl << endl;
-
+	if(OperationCenter::getResponse() != ""){
+		cout << endl << endl;
+	}
 	cout << OperationCenter::showWelcomeMessage(status);
 	//coutc(6, OperationCenter::showWelcomeMessage(status));	
 	

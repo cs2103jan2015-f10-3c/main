@@ -9,5 +9,7 @@
 
 // Headers for CppUnitTest
 #include "CppUnitTest.h"
-#include "DataStorage.h"
+//@author A0093895J
+#include "InternalStoring.h"
+#include "Storing.h"
 // TODO: reference additional headers your program requires here
