@@ -1,3 +1,5 @@
+//author A0114002J
+
 #pragma once
 
 #include <iostream>
@@ -37,11 +39,7 @@ public:
 		day(UNDEFINED), date(DEFAULT_TIME_MACRO_VALUE), month(DEFAULT_TIME_MACRO_VALUE), year(DEFAULT_TIME_MACRO_VALUE) {}
 	TimeMacro (int inDate, int inMonth, int inYear) :
 		day(UNDEFINED), date(inDate), month(inMonth), year(inYear) {}
-	TimeMacro (std::string inDay):
-		day(inDay), date(DEFAULT_TIME_MACRO_VALUE), month(DEFAULT_TIME_MACRO_VALUE), year(DEFAULT_TIME_MACRO_VALUE) {}
-	TimeMacro (std::string inDay, int inDate, int inMonth, int inYear) :
-		day(inDay), date(inDate), month(inMonth), year(inYear) {}
-
+	
 	//getter methods
 	std::string getDay();
 	int getDate();
@@ -104,6 +102,9 @@ private:
 	TimeMicro microTimeBeg;
 	TimeMicro microTimeEnd;
 	bool completeStatus; 
+	
+	//Alarm and Priority not supported
+	//by other components
 	std::string priority;
 	TimeMacro alarmMacro;
 	TimeMicro alarmMicro;
@@ -147,6 +148,9 @@ public:
 	TimeMicro getTimeMicroBeg();
 	TimeMicro getTimeMicroEnd();
 	bool getCompleteStatus();
+
+	//Alarm and Priority not supported
+	//by other components
 	std::string getPriority();
 	TimeMacro getAlarmMacro();
 	TimeMicro getAlarmMicro();
@@ -163,6 +167,9 @@ public:
 	void updateTimeMicroBeg(TimeMicro inMicroBeg);
 	void updateTimeMicroEnd(TimeMicro inMicroEnd);
 	void updateCompleteStatus(bool status);
+	
+	//Alarm and Priority not supported
+	//by other components
 	void updatePriority(std::string inPriority);
 	void updateAlarmMacro(TimeMacro inAlarm);
 	void updateAlarmMicro(TimeMicro inAlarm);

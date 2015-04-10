@@ -1,3 +1,5 @@
+//@author A0114002J
+
 #include "InternalStoring.h"
 
 //Implementation of LocalStorage class
