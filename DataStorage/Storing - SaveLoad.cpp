@@ -15,6 +15,22 @@ const char LocalStorage::TRUE_STRING[] = "true";
 const char LocalStorage::FALSE_STRING[] = "false";
 const char LocalStorage::EMPTY_STRING[] = "";
 
+//checking if pathName exist locally
+std::string LocalStorage::checkPathName(){
+	std::string directory;
+	if (getPathName() != EMPTY_STRING){
+		directory = getPathName();
+		return directory;
+	} else {
+		return EMPTY_STRING;
+	}
+}
+
+//API for PrewrittenData
+void LocalStorage::setPathName(std::string inPathName){
+	pathName = inPathName;
+}
+
 //API for loading Data from txt file
 void LocalStorage::loadData(bool& status, std::string directory){
 	adjustFormat(directory);
@@ -265,6 +281,10 @@ std::string LocalStorage::tokenizerSpace(std::string& str){
 
 /////////////////////////////////////////
 //Start of Helper method for saving Data
+
+std::string LocalStorage::getPathName(){
+	return pathName;
+}
 
 //helper method to convert TimeMacro into String
 //adding slash in the middle for readability
