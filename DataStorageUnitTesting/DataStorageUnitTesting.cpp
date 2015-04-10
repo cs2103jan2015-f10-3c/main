@@ -564,4 +564,48 @@ namespace DataStorageUnitTesting
 		}
 
 	};
+
+	TEST_CLASS(PrewrittenDataUnitTest){
+		TEST_METHOD(retrieveListAllCommands){
+			PrewrittenData prewrittenData;
+			try{
+				std::string result;
+				result = prewrittenData.retrieveList(command);
+				Assert::AreEqual(false, result.empty());
+			}
+			catch(int errorNo){
+				Assert::AreEqual(2,errorNo);
+			}
+		}
+
+		TEST_METHOD(retrieveListAllFeatures){
+			PrewrittenData prewrittenData;
+			try{
+				std::string result;
+				result = prewrittenData.retrieveList(feature);
+				Assert::AreEqual(false, result.empty());
+			}
+			catch(int errorNo){
+				Assert::AreEqual(2,errorNo);
+			}
+		}
+
+		TEST_METHOD(retrieveListPath){
+			PrewrittenData prewrittenData;
+			try{
+				std::string result;
+				result = prewrittenData.retrieveList(path);
+				Assert::AreEqual(false, result.empty());
+			}
+			catch(int errorNo){
+				Assert::AreEqual(2,errorNo);
+			}
+		}
+	};
+
+	//
+	////API for facade class
+	//std::string retrieveList(ListType type);
+	//void retrieveList(ListType type, std::ofstream& out);
+	//void savePath(std::string inPath);
 }
