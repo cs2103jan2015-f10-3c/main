@@ -877,6 +877,7 @@ namespace BlinkListSystemTest
 				<< "1. task 4" << endl
 				<< "   Thursday                                                          31-12-2015" << endl
 				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
 
