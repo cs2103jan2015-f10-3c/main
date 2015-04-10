@@ -234,7 +234,7 @@ namespace DataStorageUnitTesting
 
 			Data data1(time1,timeM1,timeM5,str1); //task 1 10/04/2015 11:30
 			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
-			data1.updateCompleteStatus(false);
+			data1.updateCompleteStatus(true);
 
 			localStorage->addData(data2);
 			localStorage->addData(data1);
@@ -255,6 +255,7 @@ namespace DataStorageUnitTesting
 			Assert::AreEqual(true,result);
 		}
 
+		//check whether directory exists
 		TEST_METHOD(directoryCheck){
 			bool result;
 			LocalStorage *localStorage = LocalStorage::getInstance();
@@ -272,7 +273,8 @@ namespace DataStorageUnitTesting
 			Assert::AreEqual(false,result);
 
 		}
-
+		
+		//test method for setPath and checkPath
 		TEST_METHOD(checkSetPathLocally){
 			LocalStorage *localStorage = LocalStorage::getInstance();
 			std::string result;
@@ -289,69 +291,215 @@ namespace DataStorageUnitTesting
 		}
 	};
 
-	//TEST_CLASS(DisplayStorageUnitTesting)
-	//{
-	//public:
-	//		
-	////test addData, getDisplayList and updateTaskNo
-	//	TEST_METHOD(addGetData)
-	//	{
-	//		Data myData;
-	//		Data yourData;
-	//		myData.updateCompleteStatus(false);
-	//		yourData.updateDesc("Thurs");
-	//		Data hData;
+	TEST_CLASS(DisplayStorageUnitTesting)
+	{
+	public:
 
-	//		DisplayStorage::addData(myData);
-	//		DisplayStorage::addData(yourData);
-	//		DisplayStorage::addData(hData);
+		//test of getDisplayList
+		//with for two time periods
+		TEST_METHOD(getDisplayTypePeriod){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
 
-	//		std::vector<Data> dList;
-	//		dList = DisplayStorage::getDisplayList();
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+			TimeMacro time3(10,04,2015);
 
-	//		std::vector<Data>::iterator iter;
-	//		iter=dList.begin();
-	//		Assert::AreEqual(false, iter->getCompleteStatus());
-	//		Assert::AreEqual(1, iter->getTaskNo());
-	//		iter++;
-	//		std::string myS = "Thurs";
-	//		Assert::AreEqual(myS, iter->getDesc());
-	//		Assert::AreEqual(2, iter->getTaskNo());
-	//		iter++;
-	//		Assert::AreEqual(3, iter->getTaskNo());
-	//	}
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+			TimeMicro timeM5(0,0);
 
-	//	TEST_METHOD(getUniqueCodeTest){
-	//		Data myStory;
-	//		Data hello;
-	//		myStory.updateDesc("THURS");
-	//		hello.updateDesc("lala");
-	//		hello.updateUniqueCode(3);
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
 
-	//		DisplayStorage::clearList();
-	//		DisplayStorage::addData(myStory);
-	//		DisplayStorage::addData(hello);
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
 
-	//		Assert::AreEqual (3,DisplayStorage::getUniqueCode(2));
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
 
-	//	}
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
 
-	//	TEST_METHOD(getDataTest){
-	//		Data myStory;
-	//		Data hello;
-	//		myStory.updateDesc("THURS");
-	//		hello.updateDesc("lala");
-	//		hello.updateUniqueCode(3);
+			//initiate displayList
+			std::vector<Data> result;
+			result = displayStorage->getDisplayList(time1,time2); 
+			
+			Assert::AreEqual(str3,result[0].getDesc());
+			Assert::AreEqual(str1,result[1].getDesc());
+			Assert::AreEqual(str2,result[2].getDesc());
 
-	//		DisplayStorage::clearList();
-	//		DisplayStorage::addData(myStory);
-	//		DisplayStorage::addData(hello);
+			//for the same time period
+			result = displayStorage->getDisplayList(time1,time1);
 
-	//		Data save = DisplayStorage::getData(2);
-	//		std::string boredom = "lala";
-	//		Assert::AreEqual(boredom, save.getDesc());
+			Assert::AreEqual(str3,result[0].getDesc());
+			Assert::AreEqual(str1,result[1].getDesc());
+		}
+		
+		//test of getDisplayList
+		//for completed tasks
+		TEST_METHOD(getDisplayListDone){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
 
-	//	}
-	//};
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			data2.updateCompleteStatus(true);
+			data3.updateCompleteStatus(true);
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+
+			//initiate displayList
+			std::vector<Data> result;
+			result = displayStorage->getDisplayList(done); 
+			
+			Assert::AreEqual(str2,result[0].getDesc());
+			Assert::AreEqual(str3,result[1].getDesc());
+
+		}
+
+		TEST_METHOD(getDisplayListFloat){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+
+			//initiate displayList
+			std::vector<Data> result;
+			result = displayStorage->getDisplayList(floating); 
+			
+			Assert::AreEqual(str2,result[0].getDesc());
+
+		}
+
+		TEST_METHOD(getDisplayListSearch){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+
+			//initiate displayList
+			std::vector<Data> result;
+			std::string keyword = "task";
+			result = displayStorage->getDisplayList(search, keyword); 
+			
+			Assert::AreEqual(str2,result[0].getDesc());
+			Assert::AreEqual(str3,result[1].getDesc());
+			Assert::AreEqual(str1,result[2].getDesc());
+		}
+
+		TEST_METHOD(getData){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+			std::string keyword = "task";
+			displayStorage->getDisplayList(search, keyword); 
+			
+			Data result = displayStorage->getData(2);
+
+			Assert::AreEqual(str3,result.getDesc());
+
+			//test for exception
+			try{
+			result = displayStorage->getData(10);
+			}
+			catch(int errorNo){
+				Assert::AreEqual(1,errorNo);
+			}
+		}
+	};
 
 }
