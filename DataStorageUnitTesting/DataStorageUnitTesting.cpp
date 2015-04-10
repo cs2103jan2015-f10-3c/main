@@ -9,7 +9,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 namespace DataStorageUnitTesting
 {		
-	
+	//@author A0114002J
 	TEST_CLASS(LocalStoringUnitTest)
 	{
 	public:
