@@ -1,3 +1,27 @@
-0
+39
 uCode	macroTBeg		macroTEnd		microTBeg	microTEnd	completeStatus	priority	alarmMacro		alarmMicro	desc
-1	Friday/10/4/2015		undefined/0/0/0		12/0		-1/-1		false		None		undefined/0/0/0		-1/-1		lunch
+28	Saturday/21/3/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		IE2150 report
+26	Monday/23/3/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		VIP acceptance deadline
+24	Friday/27/3/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		return mid-term script!!
+20	Sunday/29/3/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		IE2150 bustop report
+21	Monday/30/3/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		bsp problem set3
+22	Monday/30/3/2015		undefined/0/0/0		12/0		-1/-1		true		None		undefined/0/0/0		-1/-1		IE2150 homework
+2	Wednesday/1/4/2015		undefined/0/0/0		14/0		-1/-1		true		None		undefined/0/0/0		-1/-1		IE2100 homework6
+38	Friday/3/4/2015		undefined/0/0/0		11/0		-1/-1		true		None		undefined/0/0/0		-1/-1		bsp meeting
+30	Sunday/5/4/2015		undefined/0/0/0		19/30		-1/-1		true		None		undefined/0/0/0		-1/-1		concert at audi2
+5	Wednesday/8/4/2015		undefined/0/0/0		14/0		-1/-1		true		None		undefined/0/0/0		-1/-1		IE2100 homework7
+7	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		dsc report
+9	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		p chart
+11	Thursday/9/4/2015		undefined/0/0/0		-1/-1		-1/-1		true		None		undefined/0/0/0		-1/-1		HO AGM docs
+12	Friday/10/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		HO meeting
+13	Saturday/11/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		dsc slides
+14	Monday/13/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		bsp problem set4
+15	Tuesday/14/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2150 report
+16	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2130 report
+39	Thursday/16/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		deadline of application of vacation stay
+31	Saturday/25/4/2015		undefined/0/0/0		13/0		-1/-1		false		None		undefined/0/0/0		-1/-1		cs2103 exam
+32	Tuesday/28/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		bsp1005 exam
+33	Tuesday/28/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2150 exam
+34	Thursday/30/4/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		dsc2006 exam
+35	Saturday/2/5/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2130 exam
+36	Monday/4/5/2015		undefined/0/0/0		-1/-1		-1/-1		false		None		undefined/0/0/0		-1/-1		IE2100 exam
