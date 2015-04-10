@@ -124,7 +124,7 @@ namespace BlinkListSystemTest
 			//will add task to Today
 			OperationCenter::executeInput("add 12:30 lunch");
 			string actualResponse = OperationCenter::getResponse(); 
-			string expectedResponse = "lunch on Friday, 10-4-2015 at 12:30 is added\n";
+			string expectedResponse = "lunch on Saturday, 11-4-2015 at 12:30 is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
 
