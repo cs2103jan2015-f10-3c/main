@@ -220,6 +220,24 @@ namespace DataStorageUnitTesting
 		TEST_METHOD(saveData){
 			bool result;
 			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+
+			Data data1(time1,timeM1,timeM5,str1); //task 1 10/04/2015 11:30
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			data1.updateCompleteStatus(false);
+
+			localStorage->addData(data2);
+			localStorage->addData(data1);
 			result = localStorage->saveData("");
 			Assert::AreEqual(true,result);
 		}
@@ -229,6 +247,11 @@ namespace DataStorageUnitTesting
 			bool result = false;
 			LocalStorage *localStorage = LocalStorage::getInstance();
 			localStorage->loadData(result, "");
+
+			std::vector<Data> result1 = localStorage->getDataList();
+			std::string str1 = "task 1";
+
+			Assert::AreEqual(str1,result1[0].getDesc());
 			Assert::AreEqual(true,result);
 		}
 
@@ -241,6 +264,13 @@ namespace DataStorageUnitTesting
 			std::string directory = "C:/NG only";
 			result = localStorage->directoryCheck(out, directory);
 			Assert::AreEqual(true,result);
+
+			std::ofstream out1;
+			//exception test
+			directory = "sample";
+			result = localStorage->directoryCheck(out1, directory);
+			Assert::AreEqual(false,result);
+
 		}
 
 		TEST_METHOD(checkSetPathLocally){
