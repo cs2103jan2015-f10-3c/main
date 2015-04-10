@@ -19,6 +19,9 @@ const char DataProcessor::DONE_COMMAND[]	= "done";
 const char DataProcessor::UNDONE_COMMAND[]	= "undone";
 const char DataProcessor::EDIT_COMMAND[]	= "edit";
 const char DataProcessor::NO_DATE[]			= "undefined";
+const char DataProcessor::EDIT_DATA_LOG_MESSAGE_START[] = "start editing data";
+const char DataProcessor::EDIT_DATA_LOG_MESSAGE_END[] = "editing data is done";
+const char DataProcessor::UPDATE_DISPLAY_LIST_LOG_MESSAGE[] = "update current displayList to display matched tasks";
 
 const unsigned int DataProcessor::TIME_WIDTH	= 16;
 const unsigned int DataProcessor::TIME_10		= 10;
@@ -49,7 +52,7 @@ string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
 	try{
-	out << convertDataObjectToLine(storing.deleteData(number)) << DELETE_MESSAGE << endl;
+		out << convertDataObjectToLine(storing.deleteData(number)) << DELETE_MESSAGE << endl;
 	}
 	catch(string errorMessage){
 		throw errorMessage;
@@ -98,12 +101,15 @@ void DataProcessor::setLatestData(Data data){
 string DataProcessor::editTask(int taskNumber, Data task){
 	Storing  storing;
 	Logger	 logger;
+	Data	 uneditedTask;
+
 	if(taskNumber <= 0){
 		logger.logging(EXCEPTION_INVALID_TASKNUMBER);
 		throw std::exception(EXCEPTION_INVALID_TASKNUMBER);
 	}
-	Data	 uneditedTask;
-	logger.logging("start editing data");
+	
+	logger.logging(EDIT_DATA_LOG_MESSAGE_START);
+	
 	try{
 		uneditedTask = storing.changeData(taskNumber, task);
 	}
@@ -112,7 +118,7 @@ string DataProcessor::editTask(int taskNumber, Data task){
 	}
 	string	 editMessage = getEditMessage(uneditedTask);
 	
-	logger.logging("edit data is done");
+	logger.logging(EDIT_DATA_LOG_MESSAGE_END);
 	setLatestData(uneditedTask);
 	
 	return	 editMessage;
@@ -195,7 +201,7 @@ string DataProcessor::searchTask(string keyword){
 	Storing		 storing;
 	storing.clearDisplayList();
 	
-	logger.logging("update current displayList to display matched tasks");
+	logger.logging(UPDATE_DISPLAY_LIST_LOG_MESSAGE);
 	vector<Data> returnTaskList = storing.displaySearch(keyword);
 
 	string		 returnTaskListString = convertTaskListToString(returnTaskList);
