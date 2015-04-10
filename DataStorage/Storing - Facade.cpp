@@ -1,3 +1,5 @@
+//@author A0114002J
+
 #include "Storing.h"
 
 //go into specific methods implementation
