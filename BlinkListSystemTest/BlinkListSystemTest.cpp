@@ -1027,9 +1027,9 @@ namespace BlinkListSystemTest
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add 1/4 task 1");
 			OperationCenter::executeInput("add 2/4 task 2");
-			OperationCenter::executeInput("add 1/4 task 3");
-			OperationCenter::executeInput("add 31/12/2015 task 4");
-			OperationCenter::executeInput("show 31/12/2015");
+			OperationCenter::executeInput("add 3/4 task 3");
+			OperationCenter::executeInput("add 30/4/2015 3pm task 4");
+			OperationCenter::executeInput("show 1/4/2015");
 			
 			string actualResponse = OperationCenter::getResponse();
 			string expectedResponse = "";
@@ -1038,10 +1038,9 @@ namespace BlinkListSystemTest
 			string actualDisplay = OperationCenter::getDisplay();
 			string expectedDisplay;
 			ostringstream out;
-			out	<< "Your Agenda for Thursday, 31-12-2015 " << endl
-				<< endl
-				<< "1. task 4" << endl
-				<< "   Thursday                                                          31-12-2015" << endl
+			out	<< "Your agenda for Wednesday, 1-4-2015:" << endl << endl
+				<< "1. task 1" << endl
+				<< "   Wednesday                                                           1-4-2015" << endl 
 				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
