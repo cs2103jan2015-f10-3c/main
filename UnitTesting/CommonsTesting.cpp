@@ -183,7 +183,7 @@ namespace UnitTesting
 			std::string priority = "None";
 			std::string desc = "desc";
 
-			//Constructor 1 test
+			
 			Assert::AreEqual(10,time3.getDate());
 			Assert::AreEqual(1,time3.getMonth());
 			Assert::AreEqual(2015,time3.getYear());

@@ -502,4 +502,66 @@ namespace DataStorageUnitTesting
 		}
 	};
 
+	TEST_CLASS(HistoryUnitTest){
+	public:
+		TEST_METHOD(getUpdateLatestCommand){
+			std::string command = "add";
+
+			History::updateLatestData(command);
+			Assert::AreEqual(command, History::getLatestCommand());
+		}
+
+		TEST_METHOD(getUpdateLatestVector){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			History::updateLatestVector();
+
+			std::vector<Data> result;
+			result = History::getLatestVector();
+
+			Assert::AreEqual(str2,result[0].getDesc());
+			Assert::AreEqual(str3,result[1].getDesc());
+			Assert::AreEqual(str1,result[2].getDesc());
+
+		}
+		
+		TEST_METHOD(getUpdateLatestData){
+			TimeMacro time1(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+
+			History::updateLatestData(data1);
+
+			Assert::AreEqual(str1,History::getLatestData().getDesc());
+
+		}
+
+	};
 }
