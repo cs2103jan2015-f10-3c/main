@@ -24,6 +24,8 @@ typedef enum TimeType {begin, end, alarm};
 //using singleton pattern
 class LocalStorage {
 private:
+	friend class LocalStoringUnitTest;
+
 	//Magic String declarations
 	//used in Storing - local.cpp
 	static const char LOGGING_MESSAGE_1[100];
@@ -64,8 +66,7 @@ private:
 	int uniqueCodeStore;
 	std::string pathName;
 	
-	//Helper Methods for internal working
-	std::string getPathName();
+	//Helper Methods for internal working in Storing - Local.cpp
 	std::vector<Data> deleteDataOfUniqueCode(int uniqueCode);
 	long long allocateTimeMacroToPsedoDate(TimeMacro time);
 	long long allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro);
@@ -79,7 +80,7 @@ private:
 	Data updateData(Data dataToEdit, Data updatedData);
 	void checkTaskNoValidity(int taskNo);
 
-	//Helper methods for internal working Save and Load
+	//Helper methods for internal working in Storing - SaveLoad.cpp
 	void writeHeading (std::string fileName, std::ofstream& out);
 	void parseLoad(std::string strData, int i, Data& data);
 	std::string tokenizerSlash(std::string& str);
@@ -89,25 +90,28 @@ private:
 	std::string convertTimeMacroToString(TimeType type, int i);
 	std::string convertTimeMicroToString(TimeType type, int i);
 	void adjustFormat(std::string& inputDirectory);
+	std::string getPathName();
 
 
 public: 
 	//get instance for singleton pattern
 	static LocalStorage* getInstance();
 	
-	//API for DisplayStorage
+	//API for DisplayStorage in Storing - Local.cpp
 	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 
-	//API for PrewrittenData
+	//API for PrewrittenData in Storing - SaveLoad.cpp
 	void setPathName(std::string inPathName);
 
-	//API for Facade Class
+	//API for Facade Class in Storing - Local.cpp
 	void addData(Data& inData);	
 	Data deleteData(int taskNo);
 	Data editData(int taskNo, Data updatedData);
 	void clearDataList();
 	void undoAdd();
 	std::vector<Data>& getDataList();
+	
+	//API for Facade Class in Storing - SaveLoad.cpp
 	bool saveData(std::string directory);
 	void loadData(bool& status, std::string directory);
 	bool directoryCheck(std::ofstream& out, std::string directory);
@@ -115,8 +119,6 @@ public:
 	void firstSave();
 
 };
-
-
 
 
 //an internal storage 
