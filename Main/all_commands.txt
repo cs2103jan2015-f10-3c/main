@@ -30,6 +30,12 @@ undo
 8. Done
 done #
 
+9. Undone
+undone #
+
+10. Help
+help
+
 * # refers to the number on your displayed list
 
 -------------------------------end of all commands-----------------------
