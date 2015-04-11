@@ -114,16 +114,6 @@ namespace BlinkListSystemTest
 			string actualResponse = OperationCenter::getResponse(); 
 			string expectedResponse = "task 5 is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
-			
-			string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay;
-			ostringstream out2;
-			out2<< "Your tasks with unspecified date are as follows: \n" << endl
-				<< "1. task 5" << endl 
-				<< "                                                                               " <<endl
-				<< "________________________________________________________________________________"<< endl;
-			expectedDisplay = out2.str();
-			Assert::AreEqual(expectedDisplay, actualDisplay);
 
 		}
 
@@ -134,20 +124,8 @@ namespace BlinkListSystemTest
 			//will add task to Today
 			OperationCenter::executeInput("add 12:30 lunch");
 			string actualResponse = OperationCenter::getResponse(); 
-			string expectedResponse = "lunch on Thursday, 9-4-2015 at 12:30 is added\n";
+			string expectedResponse = "lunch on Saturday, 11-4-2015 at 12:30 is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
-
-			string actualDisplay = OperationCenter::getDisplay();
-			string expectedDisplay;
-			ostringstream out2;
-			out2<< "Today's Agenda is as follows:\n" << endl
-				<< "1. lunch" << endl
-				<< "   Thursday        12:30                                               9-4-2015" << endl 
-				<< "________________________________________________________________________________" << endl;
-			expectedDisplay = out2.str();
-			Assert::AreEqual(expectedDisplay, actualDisplay);
-
-
 		}
 
 		TEST_METHOD(addException){

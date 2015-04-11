@@ -60,11 +60,6 @@ std::vector<long long> LocalStorage::searchPeriod(TimeMacro startTime, TimeMacro
 	return searchRelevantDates(pStartTime,pEndTime);
 }
 
-//API for PrewrittenData
-void LocalStorage::setPathName(std::string inPathName){
-	pathName = inPathName;
-}
-
 //return the list containing all tasks
 //in internal storage
 std::vector<Data>& LocalStorage::getDataList() {
@@ -163,26 +158,12 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	return display->getData(taskNo);
 }
 
-std::string LocalStorage::checkPathName(){
-	std::string directory;
-	if (getPathName() != EMPTY_STRING){
-		directory = getPathName();
-		return directory;
-	} else {
-		return EMPTY_STRING;
-	}
-}
 
 //End of API implementation
 ////////////////////////////////////
 
 /////////////////////////////////////
 //Helper methods for internal working
-
-
-std::string LocalStorage::getPathName(){
-	return pathName;
-}
 
 //helper method for deleteData and editData
 //check whether input no is within the boundary

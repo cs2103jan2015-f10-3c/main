@@ -93,6 +93,7 @@ namespace UnitTesting
 			Assert::AreEqual(30,time.getDate());
 		}
 
+		//boundary cases of get and update month
 		TEST_METHOD(getUpdateMonthTest)
 		{
 			TimeMacro time;
@@ -103,14 +104,19 @@ namespace UnitTesting
 			Assert::AreEqual(12,time.getMonth());
 
 		}
-
+		
+		//boundary cases of get and update year
 		TEST_METHOD(getUpdateYearTest)
 		{
 			TimeMacro time;
-			time.updateYear(2014);
-			Assert::AreEqual(2014,time.getYear());
+			time.updateYear(1901);
+			Assert::AreEqual(1901,time.getYear());
+			
+			time.updateYear(2099);
+			Assert::AreEqual(2099,time.getYear());
 		}
 
+		//check for default
 		TEST_METHOD(TimeMacroCheckDefault){
 			TimeMacro time;
 			std::string str = "undefined";
@@ -120,6 +126,7 @@ namespace UnitTesting
 			Assert::AreEqual(0,time.getYear());
 		}
 
+		//check for constructor
 		TEST_METHOD(TimeMacroConstructor){
 			TimeMacro time(31,12,2015);
 			std::string str = "undefined";
@@ -136,6 +143,9 @@ namespace UnitTesting
 	{
 	public:
 		
+		//getter and update methods test
+		//for time related attributes
+		//also constructor tests
 		TEST_METHOD(getUpdateTimeDataTest)
 		{
 			TimeMacro time;			
@@ -158,20 +168,22 @@ namespace UnitTesting
 			timeM2.updateHour(2);
 			timeM2.updateMin(7);
 
-			Data myData;
-			myData.updateTimeMacroBeg(time);
-			myData.updateTimeMacroEnd(time2);
-			myData.updateTimeMicroBeg(timeM1);
-			myData.updateTimeMicroEnd(timeM2);
-
-			TimeMacro time3 = myData.getTimeMacroBeg();
-			TimeMacro time4 = myData.getTimeMacroEnd();
-			TimeMicro time5 = myData.getTimeMicroBeg();
-			TimeMicro time6 = myData.getTimeMicroEnd();
+			Data data;
+			data.updateTimeMacroBeg(time);
+			data.updateTimeMacroEnd(time2);
+			data.updateTimeMicroBeg(timeM1);
+			data.updateTimeMicroEnd(timeM2);
+			TimeMacro time3 = data.getTimeMacroBeg();
+			TimeMacro time4 = data.getTimeMacroEnd();
+			TimeMicro time5 = data.getTimeMicroBeg();
+			TimeMicro time6 = data.getTimeMicroEnd();
 
 			std::string day1 = "Wednesday";
 			std::string day2 = "Friday";
+			std::string priority = "None";
+			std::string desc = "desc";
 
+			
 			Assert::AreEqual(10,time3.getDate());
 			Assert::AreEqual(1,time3.getMonth());
 			Assert::AreEqual(2015,time3.getYear());
@@ -184,26 +196,106 @@ namespace UnitTesting
 			Assert::AreEqual(5, time5.getMin());
 			Assert::AreEqual(2, time6.getHour());
 			Assert::AreEqual(7, time6.getMin());
+
+			//constructor 1
+			Data myData(time,time2,timeM1,timeM2,"desc");
+
+			//extract detail timing for testing
+			time3 = myData.getTimeMacroBeg();
+			time4 = myData.getTimeMacroEnd();
+			time5 = myData.getTimeMicroBeg();
+			time6 = myData.getTimeMicroEnd();
+			
+			//Constructor 1 test
+			Assert::AreEqual(10,time3.getDate());
+			Assert::AreEqual(1,time3.getMonth());
+			Assert::AreEqual(2015,time3.getYear());
+			Assert::AreEqual(11,time4.getDate());
+			Assert::AreEqual(10,time4.getMonth());
+			Assert::AreEqual(2017,time4.getYear());
+			Assert::AreEqual(day1, time3.getDay());
+			Assert::AreEqual(day2, time4.getDay());
+			Assert::AreEqual(1, time5.getHour());
+			Assert::AreEqual(5, time5.getMin());
+			Assert::AreEqual(2, time6.getHour());
+			Assert::AreEqual(7, time6.getMin());
+			Assert::AreEqual(false, myData.getCompleteStatus());
+			Assert::AreEqual(priority, myData.getPriority());
+			Assert::AreEqual(desc, myData.getDesc());
 		
+
+			//constructor 2
+			Data myData2(time,timeM1,timeM2,"desc");
+
+			//extract detail timing for testing
+			time3 = myData2.getTimeMacroBeg();
+			time5 = myData2.getTimeMicroBeg();
+			time6 = myData2.getTimeMicroEnd();
+
+			//Constructor 2 test
+			Assert::AreEqual(10,time3.getDate());
+			Assert::AreEqual(1,time3.getMonth());
+			Assert::AreEqual(2015,time3.getYear());
+			Assert::AreEqual(day1, time3.getDay());
+			Assert::AreEqual(1, time5.getHour());
+			Assert::AreEqual(5, time5.getMin());
+			Assert::AreEqual(2, time6.getHour());
+			Assert::AreEqual(7, time6.getMin());
+			Assert::AreEqual(false, myData2.getCompleteStatus());
+			Assert::AreEqual(priority, myData2.getPriority());
+			Assert::AreEqual(desc, myData2.getDesc());
+
+			//constructor 3
+			Data myData3(time,"desc");
+
+			//extract detail timing for testing
+			time3 = myData3.getTimeMacroBeg();
+
+			//Constructor 3 test
+			Assert::AreEqual(10,time3.getDate());
+			Assert::AreEqual(1,time3.getMonth());
+			Assert::AreEqual(2015,time3.getYear());
+			Assert::AreEqual(day1, time3.getDay());
+			Assert::AreEqual(false, myData3.getCompleteStatus());
+			Assert::AreEqual(priority, myData3.getPriority());
+			Assert::AreEqual(desc, myData3.getDesc());
+
+			//constructor 4
+			Data myData4(time,"desc");
+
+			//extract detail timing for testing
+			time4 = myData3.getTimeMacroBeg();
+			
+			//constructor 4 test
+			Assert::AreEqual(false, myData3.getCompleteStatus());
+			Assert::AreEqual(priority, myData3.getPriority());
+			Assert::AreEqual(desc, myData3.getDesc());
+
 		}	
 
+		//getter and setter tests for various private attributes
 		TEST_METHOD(getUpdateDataAttributes){
+			//taskNo
 			Data data;
 			data.updateTaskNo(15);
 			Assert::AreEqual(15,data.getTaskNo());
 			
+			//alarmMacro
 			TimeMacro time(1,12,2015);
 			data.updateAlarmMacro(time);
 			Assert::AreEqual(12,data.getAlarmMacro().getMonth());
 
+			//alarmMicro
 			TimeMicro time2(12,30);
 			data.updateAlarmMicro(time2);
 			Assert::AreEqual(30,data.getAlarmMicro().getMin());
 
+			//Priority
 			std::string str= "HIGH";
 			data.updatePriority(str);
 			Assert::AreEqual(str,data.getPriority());
 
+			//completeStatus
 			data.updateCompleteStatus(true);
 			Assert::AreEqual(true,data.getCompleteStatus());
 		}
