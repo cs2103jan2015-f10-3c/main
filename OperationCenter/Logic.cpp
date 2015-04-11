@@ -1,3 +1,5 @@
+//@author A0114421Y
+
 #include "OperationCenter.h"
 
 using namespace std;
@@ -335,6 +337,8 @@ void Logic::executeInput(string input){
 
 	saveData();
 }
+
+//@author A0114002J
 
 void Logic::clearScreen(){
 
