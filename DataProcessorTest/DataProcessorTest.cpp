@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CppUnitTest.h"
 #include <sstream>
+#include <exception>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -24,6 +25,7 @@ namespace DataProcessorTest
 		}
 
 		TEST_METHOD(DisplayTaskTest){
+
 			TimeMacro start(1, 2, 2000);
 			TimeMacro end(1, 2, 2001);
 			TimeMacro date(31, 1, 2000);
@@ -31,6 +33,7 @@ namespace DataProcessorTest
 			Data task2(end, "john");
 			Data task3(date, "jane");
 			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
 			//string displayTask(TimeMacro startTime, TimeMacro endTime);
 			
 			myDataProcessor.addTask(task1);
@@ -48,33 +51,64 @@ namespace DataProcessorTest
 			std::string expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
-
-		//TEST_METHOD(DeleteTaskTest){
-		//	DataProcessor myDataProcessor;
-		//	int taskNo = 3;
-		//	std::string actualDeleteMessage = myDataProcessor.deleteTask(taskNo);
-		//	std::string expectedDeleteMessage = "breakfast at utown is deleted from BlinkList";
-		//	ostringstream out;
-		//	out << expectedDeleteMessage << endl;
-		//	expectedDeleteMessage = out.str();
-		//	Assert::AreEqual(expectedDeleteMessage, actualDeleteMessage);
-		//}
-
-		//TEST_METHOD(EditTaskTest){
-		//	DataProcessor myDataProcessor;
-		//	myDataProcessor.clearTask();
-		//	TimeMacro start(1, 2, 2000);
-		//	TimeMicro begin(1,30);
-		//	TimeMicro end(2, 30);
-		//	Data task1(start, begin, end, "jim");
-		//	Data task2(start, begin, end, "john");
-		//	std::string addMessage = myDataProcessor.addTask(task1);
-		//	std::string actualEditMessage = myDataProcessor.editTask(1, task2);
-		//	std::string expectedEditMessage = "jim on undefined, 1-2-2000  is edited";
-		//	Assert::AreEqual(expectedEditMessage, actualEditMessage);
-		//}
-
+		
+		
 		//@author A0113538J
+		TEST_METHOD(Delete_Task_Test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			std::string actualDeleteMessage;
+			
+			//Exception: invalid task number
+			try{ 
+				actualDeleteMessage = myDataProcessor.deleteTask(1);
+			}catch(string errorMessage){
+				actualDeleteMessage = errorMessage;
+			}
+			std::string expectedDeleteMessage = "Please enter a valid task number. \n";
+			Assert::AreEqual(expectedDeleteMessage, actualDeleteMessage);
+
+			//Normal case
+			TimeMacro start(1, 2, 2000);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, begin, end, "jim");
+			std::string addMessage = myDataProcessor.addTask(task1);
+			myDataProcessor.searchTask("jim");
+			actualDeleteMessage = myDataProcessor.deleteTask(1);
+			expectedDeleteMessage = "jim on undefined, 1-2-2000 at 01:30-02:30 is deleted from BlinkList\n";
+			Assert::AreEqual(expectedDeleteMessage, actualDeleteMessage);
+		}
+
+		TEST_METHOD(Edit_Task_Test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			TimeMacro start(1, 2, 2000);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, begin, end, "jim");
+			Data task2(start, begin, end, "john");
+
+			//Exeception: invalid task number
+			std::string addMessage = myDataProcessor.addTask(task1);
+			std::string actualEditMessage;
+			try{
+				actualEditMessage = myDataProcessor.editTask(1, task2);
+			}catch(string errorMessage){
+				actualEditMessage = errorMessage;
+			}
+			std::string expectedEditMessage = "Please enter a valid task number. \n";
+			Assert::AreEqual(expectedEditMessage, actualEditMessage);
+
+			//Normal case
+			myDataProcessor.searchTask("jim");
+			actualEditMessage = myDataProcessor.editTask(1, task2);
+			expectedEditMessage = "jim on undefined, 1-2-2000 at 01:30-02:30 is edited\n";
+			Assert::AreEqual(expectedEditMessage, actualEditMessage);
+		}
+
 		TEST_METHOD(GetEditMessageTest){
 			TimeMacro start(1, 2, 2000);
 			TimeMicro begin(1,30);
@@ -85,6 +119,23 @@ namespace DataProcessorTest
 			std::string expectedEditMessage = "jim overslept on undefined, 1-2-2000 at 01:30-02:30 is edited\n";
 			Assert::AreEqual(expectedEditMessage, actualEditMessage);
 		}
+
+		TEST_METHOD(set_get_latest_data_test){
+			TimeMacro start(1, 2, 2000);
+			TimeMicro begin(15,30);
+			TimeMicro end(16, 30);
+			Data task1(start, begin, end, "jim overslept");
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.setLatestData(task1);
+			Data actualData = myDataProcessor.getLatestData();
+			Assert::AreEqual(task1.getDesc(), actualData.getDesc());
+			Assert::AreEqual(task1.getTimeMacroBeg().getDate(), start.getDate());
+			Assert::AreEqual(task1.getTimeMicroBeg().getHour(), begin.getHour());
+			Assert::AreEqual(task1.getTimeMicroEnd().getHour(), end.getHour());
+
+		}
+
 		
 		TEST_METHOD(ConvertDataObjectToStringTest){
 			TimeMacro start(10, 4, 2015);
@@ -110,19 +161,39 @@ namespace DataProcessorTest
 			Data task2(start, "john is a good boy");
 			Data task3(date, "jane is sexy and fat");
 			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+
 			std::string string1 = myDataProcessor.addTask(task1);
 			std::string string2 = myDataProcessor.addTask(task2);
 			std::string string3 = myDataProcessor.addTask(task3);
-			std::string actualTaskList = myDataProcessor.searchTask("and");
 			ostringstream out;
+			std::string expectedTaskList = "";
+			std::string actualTaskList;
+
+			////Exception: empty keyword entered
+			//try{
+			//	actualTaskList = myDataProcessor.searchTask("");
+			//}catch(string errorMessage){
+			//	actualTaskList = errorMessage;
+			//}
+			//expectedTaskList = "Exception:empty keyword entered";
+			//Assert::AreEqual(expectedTaskList,actualTaskList);
+			
+			//Boundary case: No task matched
+			actualTaskList = myDataProcessor.searchTask("something");
+			Assert::AreEqual(expectedTaskList, actualTaskList);
+
+			//Partition in the middle
+			actualTaskList = myDataProcessor.searchTask("and");
 			out << "1. jim is smart and stupid" << endl
 				<< "                                                          1-2-2000" << endl 
 				<< "________________________________________________________________________________" << endl
 				<< "2. jane is sexy and fat" << endl
 				<< "                                                          1-2-2001" << endl 
 				<< "________________________________________________________________________________" << endl;
-			std::string expectedTaskList = out.str();
+			expectedTaskList = out.str();
 			Assert::AreEqual(expectedTaskList, actualTaskList);
+			myDataProcessor.clearTask();
 		}
 
 		TEST_METHOD(clear_task_test){
@@ -158,10 +229,56 @@ namespace DataProcessorTest
 			
 			string expectedResponse = "You have undone your operation\n";
 			string actualResponse;
+			
+			//Undo "add" command
 			actualResponse = myDataProcessor.executeUndo();
 			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//Undo "delete" command
+			myDataProcessor.searchTask("jim");
+			myDataProcessor.deleteTask(1);
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "done" command
+			myDataProcessor.searchTask("john");
+			myDataProcessor.markDone(1);
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "undone" command
+			myDataProcessor.searchTask("john");
+			myDataProcessor.unDone(1);
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "edit" command
+			myDataProcessor.searchTask("john");
+			myDataProcessor.editTask(1, task2);			
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "clear" command
+			myDataProcessor.clearTask();
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
 		}
 
+		TEST_METHOD(mark_done_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			TimeMacro date(10, 4, 2015);
+			Data task1(date, "jim is smart and stupid");
+			myDataProcessor.addTask(task1);
+			myDataProcessor.searchTask("jim");
+			string expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is done\n";
+			string actualResponse;
+			actualResponse = myDataProcessor.markDone(1);
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+		
 		TEST_METHOD(get_done_message_test){
 			DataProcessor myDataProcessor;
 			myDataProcessor.clearTask();			
@@ -173,6 +290,22 @@ namespace DataProcessorTest
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
 
+		TEST_METHOD(undone_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			TimeMacro date(10, 4, 2015);
+			Data task1(date, "jim is smart and stupid");
+			myDataProcessor.addTask(task1);
+			myDataProcessor.searchTask("jim");
+			myDataProcessor.markDone(1);
+			myDataProcessor.searchTask("jim");			
+			string expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is reopened\n";
+			string actualResponse;
+			actualResponse = myDataProcessor.unDone(1);
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+		
 		TEST_METHOD(get_undone_message_test){
 			DataProcessor myDataProcessor;
 			myDataProcessor.clearTask();			
@@ -184,5 +317,25 @@ namespace DataProcessorTest
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
 
+		TEST_METHOD(show_float_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			Data task1("jim is smart and stupid");
+			string actualTaskList = myDataProcessor.showFloat();
+			string expectedTaskList;
+			expectedTaskList = "";
+			Assert::AreEqual(expectedTaskList, actualTaskList);
+
+			myDataProcessor.addTask(task1);
+			actualTaskList = myDataProcessor.showFloat();
+			ostringstream out;
+			out << "1. jim is smart and stupid" << endl
+				<< "                   " << endl
+				<< "________________________________________________________________________________" << endl;
+			expectedTaskList = out.str();
+			Assert::AreEqual(expectedTaskList,actualTaskList);
+
+		}
 	};
 }
