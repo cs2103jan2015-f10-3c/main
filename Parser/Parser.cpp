@@ -639,20 +639,14 @@ void Parser::parseTimeTwentyFour (string& inputToBeParsed, TimeMicro& timeMicroB
 
 	if (isTimePeriodTwentyFour (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt) ||
 		isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
-			if (isTimePeriodTwentyFour (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {
-				timeMicroBeg.updateHour (hourBegInt);
-				timeMicroBeg.updateMin (minuteBegInt);
+			timeMicroBeg.updateHour (hourBegInt);
+			timeMicroBeg.updateMin (minuteBegInt);
+
+			if (isTimePeriodTwentyFour (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {	
 				timeMicroEnd.updateHour (hourEndInt);
 				timeMicroEnd.updateMin (minuteEndInt);
 				assert (timeMicroEnd.getHour() != TIMEMICRO_INITIAL);
 				assert (timeMicroEnd.getMin() != TIMEMICRO_INITIAL);
-			}
-
-			else {
-				if (isStartingTimeTwentyFour (inputToBeParsed, hourBegInt, minuteBegInt)) {
-					timeMicroBeg.updateHour (hourBegInt);
-					timeMicroBeg.updateMin (minuteBegInt);
-				}
 			}
 
 			assert (timeMicroBeg.getHour() != TIMEMICRO_INITIAL);
@@ -686,20 +680,14 @@ void Parser::parseTimeTwelve (string& inputToBeParsed, TimeMicro& timeMicroBeg, 
 
 	if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt) ||
 		isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
-			if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {
-				timeMicroBeg.updateHour (hourBegInt);
-				timeMicroBeg.updateMin (minuteBegInt);
+			timeMicroBeg.updateHour (hourBegInt);
+			timeMicroBeg.updateMin (minuteBegInt);
+
+			if (isTimePeriodTwelve (inputToBeParsed, hourBegInt, hourEndInt, minuteBegInt, minuteEndInt)) {				
 				timeMicroEnd.updateHour (hourEndInt);
 				timeMicroEnd.updateMin (minuteEndInt);
 				assert (timeMicroEnd.getHour() != TIMEMICRO_INITIAL);
 				assert (timeMicroEnd.getMin() != TIMEMICRO_INITIAL);
-			}
-
-			else {
-				if (isStartingTimeTwelve (inputToBeParsed, hourBegInt, minuteBegInt)) {
-					timeMicroBeg.updateHour (hourBegInt);
-					timeMicroBeg.updateMin (minuteBegInt);
-				}
 			}
 
 			assert (timeMicroBeg.getHour() != TIMEMICRO_INITIAL);
