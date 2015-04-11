@@ -1,3 +1,5 @@
+//@author A0114002J
+
 #ifndef INTERNAL_STORING_H_
 #define INTERNAL_STORING_H_
 
@@ -22,6 +24,8 @@ typedef enum TimeType {begin, end, alarm};
 //using singleton pattern
 class LocalStorage {
 private:
+	friend class LocalStoringUnitTest;
+
 	//Magic String declarations
 	//used in Storing - local.cpp
 	static const char LOGGING_MESSAGE_1[100];
@@ -60,8 +64,9 @@ private:
 	//Private Attribute
 	std::vector<Data> dataList;
 	int uniqueCodeStore;
+	std::string pathName;
 	
-	//Helper Methods for internal working
+	//Helper Methods for internal working in Storing - Local.cpp
 	std::vector<Data> deleteDataOfUniqueCode(int uniqueCode);
 	long long allocateTimeMacroToPsedoDate(TimeMacro time);
 	long long allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro);
@@ -75,7 +80,7 @@ private:
 	Data updateData(Data dataToEdit, Data updatedData);
 	void checkTaskNoValidity(int taskNo);
 
-	//Helper methods for internal working Save and Load
+	//Helper methods for internal working in Storing - SaveLoad.cpp
 	void writeHeading (std::string fileName, std::ofstream& out);
 	void parseLoad(std::string strData, int i, Data& data);
 	std::string tokenizerSlash(std::string& str);
@@ -84,32 +89,36 @@ private:
 	TimeMicro microParser(std::string tempMicro);
 	std::string convertTimeMacroToString(TimeType type, int i);
 	std::string convertTimeMicroToString(TimeType type, int i);
-	bool directoryCheck(std::ofstream& out);
 	void adjustFormat(std::string& inputDirectory);
+	std::string getPathName();
 
 
 public: 
 	//get instance for singleton pattern
 	static LocalStorage* getInstance();
 	
-	//API for DisplayStorage
+	//API for DisplayStorage in Storing - Local.cpp
 	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
 
-	//API for Facade Class
+	//API for PrewrittenData in Storing - SaveLoad.cpp
+	void setPathName(std::string inPathName);
+
+	//API for Facade Class in Storing - Local.cpp
 	void addData(Data& inData);	
 	Data deleteData(int taskNo);
 	Data editData(int taskNo, Data updatedData);
 	void clearDataList();
 	void undoAdd();
 	std::vector<Data>& getDataList();
-	bool saveData(std::string& directory);
-	void loadData(bool& status, std::string& directory);
+	
+	//API for Facade Class in Storing - SaveLoad.cpp
+	bool saveData(std::string directory);
+	void loadData(bool& status, std::string directory);
+	bool directoryCheck(std::ofstream& out, std::string directory);
 	std::string checkPathName();
 	void firstSave();
 
 };
-
-
 
 
 //an internal storage 
@@ -149,6 +158,8 @@ private:
 	static const char LOGGING_MESSAGE_1[100];
 	static const char LOGGING_MESSAGE_2[100];
 	static const char DEFAULT_DESCRIPTION[10];
+	static const int MAX_DISPLAY_FLOATING;
+	static const int MAX_DISPLAY_TIMED;
 
 	//instance and private constructor for singleton pattern
 	static DisplayStorage* instance;
@@ -165,6 +176,8 @@ private:
 	void enterDataToList(std::vector<long long> timePeriod);
 	std::vector<Data> getListFromLocal();
 	void checkTaskNoValidity(int taskNo);
+	void displayDoneFloating(std::vector<Data> tempList);
+	void displayDoneTimed(std::vector<Data> tempList);
 
 public:
 	//getInstance for singleton pattern
@@ -199,7 +212,6 @@ private:
 
 	std::string retrievedList;
 	std::string txtFile;
-	std::string pathName;
 
 	//helper method
 	std::string determineListType(ListType type);
@@ -210,9 +222,7 @@ public:
 	//API for facade class
 	std::string retrieveList(ListType type);
 	void retrieveList(ListType type, std::ofstream& out);
-	bool checkPath();	
 	void savePath(std::string inPath);
-	std::string getPath();
 };
 
 

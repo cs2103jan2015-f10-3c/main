@@ -13,6 +13,7 @@
 #include "Commons.h"
 #include "Storing.h"
 
+//@author A0113538J
 using namespace std;
 class DataProcessor{
 private:
@@ -34,6 +35,10 @@ private:
 	static const char UNDONE_COMMAND[100];
 	static const char NO_DATE[100];
 
+	static const char EDIT_DATA_LOG_MESSAGE_START[100];
+	static const char EDIT_DATA_LOG_MESSAGE_END[100];
+	static const char UPDATE_DISPLAY_LIST_LOG_MESSAGE[100];
+
 	static const unsigned int TIME_WIDTH;
 	static const unsigned int TIME_10;
 	static const unsigned int NO_TIME;
@@ -51,6 +56,7 @@ public:
 	void setLatestData(Data data);
 	Data getLatestData();
 	
+	//@author 
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);

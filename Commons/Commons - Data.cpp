@@ -1,3 +1,5 @@
+//author A0114002J
+
 #include "Commons.h"
 
 const char Data::NONE[] = "None";
@@ -99,6 +101,9 @@ void Data::updateTimeMicroBeg(TimeMicro inMicroBeg){
 	microTimeBeg = inMicroBeg;
 }
 
+//@author A0114002J - unused
+//Priority and Alarm is not supported by other components
+//for this version
 void Data::updatePriority(std::string inPriority){
 	_ASSERTE ( inPriority == LOW || inPriority == MEDIUM ||
 				inPriority == HIGH || inPriority == NONE );

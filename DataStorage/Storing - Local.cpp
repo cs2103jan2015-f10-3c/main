@@ -1,8 +1,10 @@
+//@author A0114002J
+
 #include "InternalStoring.h"
 
 //Magic string definition
 const char LocalStorage::LOGGING_MESSAGE_1[] = "Exception is caught in LocalStorage Class";
-const char LocalStorage::LOGGING_MESSAGE_2[] = "Esception is thrown from LocalStorage Class";
+const char LocalStorage::LOGGING_MESSAGE_2[] = "Exception is thrown from LocalStorage Class";
 const char LocalStorage::LOGGING_MESSAGE_3[] = "LocalStorage is initiated";
 const char LocalStorage::LOGGING_MESSAGE_4[] = "Adding data in storage is succesful";
 const char LocalStorage::LOGGING_MESSAGE_5[] = "Editing data in storage is succesful";
@@ -156,23 +158,12 @@ Data LocalStorage::editData(int taskNo, Data updatedData){
 	return display->getData(taskNo);
 }
 
-std::string LocalStorage::checkPathName(){
-	PrewrittenData prewrittenData;
-	std::string directory;
-	if (prewrittenData.getPath() != EMPTY_STRING){
-		directory = prewrittenData.getPath();
-		return directory;
-	} else {
-		return EMPTY_STRING;
-	}
-}
 
 //End of API implementation
 ////////////////////////////////////
 
 /////////////////////////////////////
 //Helper methods for internal working
-
 
 //helper method for deleteData and editData
 //check whether input no is within the boundary
@@ -376,6 +367,7 @@ Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
 			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
 	}
 
+	//Not used in current version as not supported by other components
 	//update TimeMacro End when there is a change
 	if (updatedData.getTimeMacroEnd().getDate() != TIME_MACRO_DEFAULT 
 		&& updatedData.getTimeMacroEnd().getMonth() != TIME_MACRO_DEFAULT
@@ -390,6 +382,7 @@ Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
 			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
 	}
 
+	//Not used in current version as not supported by other components
 	//update AlarmMacro when there is a change
 	//alarm is not a supported feature of the software at submission time
 	if (updatedData.getAlarmMacro().getDate() != TIME_MACRO_DEFAULT 
@@ -398,6 +391,7 @@ Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
 			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
 	}
 	
+	//Not used in current version as not supported by other components
 	//update AlarmMicro when there is a change
 	//alarm is not a supported feature of the software at submission time
 	if (updatedData.getAlarmMicro().getHour() != TIME_MICRO_DEFAULT
