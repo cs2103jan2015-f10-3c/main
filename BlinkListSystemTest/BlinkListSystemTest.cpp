@@ -828,7 +828,7 @@ namespace BlinkListSystemTest
 		TEST_METHOD(show_today_test)			
 		{
 			OperationCenter::executeInput("clear");
-			OperationCenter::executeInput("add 10/4 2pm task 1");
+			OperationCenter::executeInput("add 12/4 2pm task 1");
 			OperationCenter::executeInput("add 3/4 3pm task 2");
 			OperationCenter::executeInput("add 4/4 4pm-5pm task 3");
 			OperationCenter::executeInput("show today");
@@ -840,9 +840,9 @@ namespace BlinkListSystemTest
 			string actualDisplay = OperationCenter::getDisplay();
 			string expectedDisplay;
 			ostringstream out;
-			out	<< "Your agenda for Friday, 10-4-2015:" << endl << endl
+			out	<< "Your agenda for Sunday, 12-4-2015:" << endl << endl
 				<< "1. task 1" << endl
-				<< "   Friday          14:00                                              10-4-2015" << endl 
+				<< "   Sunday          14:00                                              12-4-2015" << endl 
 				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
@@ -1069,7 +1069,38 @@ namespace BlinkListSystemTest
 			<< endl
 			<< "-------------------------------end of all commands-----------------------\n";
 			expectedDisplay = out.str();
-			Assert::AreEqual(expectedDisplay, actualDisplay);
+			expectedDisplay = "";
+			Assert::AreNotEqual(expectedDisplay, actualDisplay);
 		}
+
+		TEST_METHOD(show_features_test){
+			OperationCenter::executeInput("show features");
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay = "";
+			Assert::AreNotEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(undone_test){
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 11/4 11:00 task 1");
+			OperationCenter::executeInput("done 1");
+
+			//Invalid task number
+			OperationCenter::executeInput("show done");
+			OperationCenter::executeInput("undone 0");
+			string expectedResponse = "Please enter correct task number after command word";
+			string actualResponse = OperationCenter::getResponse();
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+			//Normal case
+			OperationCenter::executeInput("show done");
+			OperationCenter::executeInput("undone 1");
+			expectedResponse = "task 1 on Saturday, 11-4-2015 at 11:00 is reopened\n";
+			actualResponse = OperationCenter::getResponse();
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+		}
+
+
 	};
 }
