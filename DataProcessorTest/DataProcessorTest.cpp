@@ -74,7 +74,9 @@ namespace DataProcessorTest
 			TimeMicro begin(1,30);
 			TimeMicro end(2, 30);
 			Data task1(start, begin, end, "jim");
-			std::string addMessage = myDataProcessor.addTask(task1);
+			bool status = true;
+			myDataProcessor.loadData(status);
+			myDataProcessor.addTask(task1);
 			myDataProcessor.searchTask("jim");
 			actualDeleteMessage = myDataProcessor.deleteTask(1);
 			expectedDeleteMessage = "jim on undefined, 1-2-2000 at 01:30-02:30 is deleted from BlinkList\n";
@@ -169,15 +171,6 @@ namespace DataProcessorTest
 			ostringstream out;
 			std::string expectedTaskList = "";
 			std::string actualTaskList;
-
-			////Exception: empty keyword entered
-			//try{
-			//	actualTaskList = myDataProcessor.searchTask("");
-			//}catch(string errorMessage){
-			//	actualTaskList = errorMessage;
-			//}
-			//expectedTaskList = "Exception:empty keyword entered";
-			//Assert::AreEqual(expectedTaskList,actualTaskList);
 			
 			//Boundary case: No task matched
 			actualTaskList = myDataProcessor.searchTask("something");
@@ -244,12 +237,18 @@ namespace DataProcessorTest
 			myDataProcessor.searchTask("john");
 			myDataProcessor.markDone(1);
 			actualResponse = myDataProcessor.executeUndo();
+			//bool expectedStatus = true;
+			//bool actualStatus = myDataProcessor.getLatestData().getCompleteStatus();
+			//Assert::AreEqual(expectedStatus,actualStatus);
 			Assert::AreEqual(expectedResponse,actualResponse);
 
 			//Undo "undone" command
 			myDataProcessor.searchTask("john");
 			myDataProcessor.unDone(1);
 			actualResponse = myDataProcessor.executeUndo();
+			//expectedStatus = true;
+			//actualStatus = myDataProcessor.getLatestData().getCompleteStatus();
+			//Assert::AreEqual(expectedStatus,actualStatus);
 			Assert::AreEqual(expectedResponse,actualResponse);
 
 			//Undo "edit" command
@@ -272,9 +271,21 @@ namespace DataProcessorTest
 			TimeMacro date(10, 4, 2015);
 			Data task1(date, "jim is smart and stupid");
 			myDataProcessor.addTask(task1);
-			myDataProcessor.searchTask("jim");
-			string expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is done\n";
+			
+			//Exception: invalid task number
 			string actualResponse;
+			string expectedResponse = "Please enter a valid task number. \n";
+			try {
+				actualResponse = myDataProcessor.markDone(1);
+			}catch(string errorMessage){
+				actualResponse = errorMessage;
+			}
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Normal case
+			myDataProcessor.searchTask("jim");
+			expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is done\n";
+			actualResponse;
 			actualResponse = myDataProcessor.markDone(1);
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
@@ -297,11 +308,23 @@ namespace DataProcessorTest
 			TimeMacro date(10, 4, 2015);
 			Data task1(date, "jim is smart and stupid");
 			myDataProcessor.addTask(task1);
+			
+			//Exception: invalid task number
+			string actualResponse;
+			string expectedResponse = "Please enter a valid task number. \n";
+			try {
+				actualResponse = myDataProcessor.unDone(1);
+			}catch(string errorMessage){
+				actualResponse = errorMessage;
+			}
+			Assert::AreEqual(expectedResponse,actualResponse);
+			
+			//Normal case
 			myDataProcessor.searchTask("jim");
 			myDataProcessor.markDone(1);
 			myDataProcessor.searchTask("jim");			
-			string expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is reopened\n";
-			string actualResponse;
+			expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is reopened\n";
+			actualResponse;
 			actualResponse = myDataProcessor.unDone(1);
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
@@ -335,6 +358,22 @@ namespace DataProcessorTest
 				<< "________________________________________________________________________________" << endl;
 			expectedTaskList = out.str();
 			Assert::AreEqual(expectedTaskList,actualTaskList);
+
+		}
+
+		TEST_METHOD(check_path_existence_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.savePath("c:\\");
+			try{
+				bool actualStatus = myDataProcessor.checkPathExistence();
+				bool expectedStatus = true;
+				Assert::AreEqual(expectedStatus, actualStatus);
+			}catch(string errorMessage){
+				string actualMessage = errorMessage;
+				string expectedMessage = "Data could not be found. \n";
+				Assert::AreEqual(expectedMessage, actualMessage);
+			}
+
 
 		}
 	};
