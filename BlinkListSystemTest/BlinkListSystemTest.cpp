@@ -267,7 +267,7 @@ namespace BlinkListSystemTest
 
 
 
-		//@KevinChristian A0114421Y
+		//@author A0114421Y
 		//For command "delete"
 		TEST_METHOD(deleteUntilNoMoreTaskLeftTest)			
 		{
@@ -285,7 +285,8 @@ namespace BlinkListSystemTest
 
 		}
 
-		TEST_METHOD(deleteWithTasksLeftTest){
+		TEST_METHOD(deleteWithTasksLeftTest)
+		{
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add 25/4 12:00 task 1");
 			OperationCenter::executeInput("add 25/4 14:00 task 2");
@@ -310,7 +311,8 @@ namespace BlinkListSystemTest
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
 
-		TEST_METHOD(deleteFloatingTask){
+		TEST_METHOD(deleteFloatingTask)
+		{
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add task 1");
 			OperationCenter::executeInput("add task 2");
@@ -334,8 +336,8 @@ namespace BlinkListSystemTest
 
 		}
 
-		TEST_METHOD(deleteUntilNoMoreFloatingTaskTest){
-			
+		TEST_METHOD(deleteUntilNoMoreFloatingTaskTest)
+		{	
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add task 1");
 			OperationCenter::executeInput("add task 2");
@@ -363,7 +365,9 @@ namespace BlinkListSystemTest
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
 		}
-		TEST_METHOD(deleteWithoutTaskNumber){
+
+		TEST_METHOD(deleteWithoutTaskNumber)
+		{
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add task 1");
 			OperationCenter::executeInput("add task 2");
@@ -381,7 +385,8 @@ namespace BlinkListSystemTest
 		}
 
 		//For command "done"
-		TEST_METHOD(doneAllTasksTest){
+		TEST_METHOD(doneAllTasksTest)
+		{
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add 25/4 12:00 task 1");
 			OperationCenter::executeInput("done 1");
@@ -405,7 +410,8 @@ namespace BlinkListSystemTest
 			Assert::AreEqual(expectedDisplay1, actualDisplay1);
 		}
 
-		TEST_METHOD(doneSomeTasksTest){
+		TEST_METHOD(doneSomeTasksTest)
+		{
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add 25/4 12:00 task 1");
 			OperationCenter::executeInput("add 25/4 14:00 task 2");
@@ -460,7 +466,8 @@ namespace BlinkListSystemTest
 			Assert::AreEqual(expectedDisplay2, actualDisplay2);
 		}
 
-		TEST_METHOD(doneWithoutTaskNumberTest){
+		TEST_METHOD(doneWithoutTaskNumberTest)
+		{
 			OperationCenter::executeInput("clear");
 			OperationCenter::executeInput("add task 1");
 			OperationCenter::executeInput("add task 2");
@@ -478,6 +485,28 @@ namespace BlinkListSystemTest
 
 		}
 
+		TEST_METHOD(showWelcomeMessageFalseTest)
+		{
+			bool status = false;
+			string actualMessage = OperationCenter::showWelcomeMessage(status);
+			string expectedMessage = "Welcome to BlinkList!\n\nThere is no saved data\n\n";
+			Assert::AreEqual(expectedMessage, actualMessage);
+		}
+
+		TEST_METHOD(showWelcomeMessageTrueTest)
+		{
+			OperationCenter::executeInput("clear");
+			bool status = true;
+			string actualMessage = OperationCenter::showWelcomeMessage(status);
+			string expectedMessage = "Welcome to BlinkList!\n\nToday's Agenda is as follows:\n\n:) You have no task for today\n\n";
+			Assert::AreEqual(expectedMessage, actualMessage);
+		}
+
+		TEST_METHOD(findPathTrueTest){
+			bool actualStatus = OperationCenter::findPath();
+			bool expectedStatus = true;
+			Assert::AreEqual(expectedStatus, actualStatus);
+		}
 		//@author A0093895J
 		//For command "edit"
 		TEST_METHOD(editTimeTest)			
