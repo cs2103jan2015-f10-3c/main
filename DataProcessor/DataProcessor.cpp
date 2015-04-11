@@ -31,7 +31,7 @@ const unsigned int DataProcessor::DAY_WIDTH		= 13;
 const unsigned int DataProcessor::WINDOW_WIDTH	= 81;
 
 const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[] = "Exception:invalid tasknumber";
-const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[]		 = "Exception:empty keyword entere";
+const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[]		 = "Exception:empty keyword entered";
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
@@ -195,7 +195,7 @@ string DataProcessor::searchTask(string keyword){
 	Logger logger;
 	if(keyword.size() == 0){
 		logger.logging(EXCEPTION_EMPTY_KEYWORD);
-		throw std::exception(EXCEPTION_EMPTY_KEYWORD);
+		throw EXCEPTION_EMPTY_KEYWORD;
 	}
 	
 	Storing		 storing;
