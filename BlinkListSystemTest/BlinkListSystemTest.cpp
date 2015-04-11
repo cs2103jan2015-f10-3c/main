@@ -808,9 +808,9 @@ namespace BlinkListSystemTest
 
 		TEST_METHOD(PathTest)			
 		{
-			OperationCenter::executeInput ("path E:/focus");
+			OperationCenter::executeInput ("path C:/");
 			string actualResponse = OperationCenter::getResponse(); 
-			string expectedResponse = "New user path: E:/focus\n"
+			string expectedResponse = "New user path: C:/\n"
 				"Please type 'show commands' or 'show features' to get started\n";
 			Assert::AreEqual (actualResponse, expectedResponse);
 		}

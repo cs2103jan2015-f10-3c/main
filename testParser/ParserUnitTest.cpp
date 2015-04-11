@@ -82,9 +82,9 @@ namespace testParser
 		{
 			Parser parser;
 			TimeMacro timeMacro;
-			string dayOfTheWeek = "Thursday";
+			string dayOfTheWeek = "Saturday";
 			parser.getTodayDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 2);
+			Assert::AreEqual (timeMacro.getDate(), 11);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
@@ -109,13 +109,173 @@ namespace testParser
 		}
 
 		//To test whether a string can be converted to a month
-		TEST_METHOD(testConvertStringToMonth)
+		TEST_METHOD(testConvertStringToMonthJanCap)
 		{
 			Parser parser;
 			string month = "Jan";	
 			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 1);
 		}
 
+		TEST_METHOD(testConvertStringToMonthJanSmall)
+		{
+			Parser parser;
+			string month = "jan";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 1);
+		}
+
+		TEST_METHOD(testConvertStringToMonthFebCap)
+		{
+			Parser parser;
+			string month = "Feb";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 2);
+		}
+
+		TEST_METHOD(testConvertStringToMonthFebSmall)
+		{
+			Parser parser;
+			string month = "feb";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 2);
+		}
+
+		TEST_METHOD(testConvertStringToMonthMarCap)
+		{
+			Parser parser;
+			string month = "Mar";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 3);
+		}
+
+		TEST_METHOD(testConvertStringToMonthMarSmall)
+		{
+			Parser parser;
+			string month = "mar";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 3);
+		}
+
+		TEST_METHOD(testConvertStringToMonthAprCap)
+		{
+			Parser parser;
+			string month = "Apr";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 4);
+		}
+
+		TEST_METHOD(testConvertStringToMonthAprSmall)
+		{
+			Parser parser;
+			string month = "apr";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 4);
+		}
+
+		TEST_METHOD(testConvertStringToMonthMayCap)
+		{
+			Parser parser;
+			string month = "May";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 5);
+		}
+
+		TEST_METHOD(testConvertStringToMonthMaySamll)
+		{
+			Parser parser;
+			string month = "may";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 5);
+		}
+
+		TEST_METHOD(testConvertStringToMonthJunCap)
+		{
+			Parser parser;
+			string month = "Jun";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 6);
+		}
+
+		TEST_METHOD(testConvertStringToMonthJunSmall)
+		{
+			Parser parser;
+			string month = "jun";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 6);
+		}
+
+		TEST_METHOD(testConvertStringToMonthJulCap)
+		{
+			Parser parser;
+			string month = "Jul";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 7);
+		}
+
+		TEST_METHOD(testConvertStringToMonthJulSmall)
+		{
+			Parser parser;
+			string month = "jul";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 7);
+		}
+
+		TEST_METHOD(testConvertStringToMonthAugCap)
+		{
+			Parser parser;
+			string month = "Aug";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 8);
+		}
+
+		TEST_METHOD(testConvertStringToMonthAugSmall)
+		{
+			Parser parser;
+			string month = "aug";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 8);
+		}
+
+		TEST_METHOD(testConvertStringToMonthSepCap)
+		{
+			Parser parser;
+			string month = "Sep";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 9);
+		}
+
+		TEST_METHOD(testConvertStringToMonthSepSmall)
+		{
+			Parser parser;
+			string month = "sep";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 9);
+		}
+
+		TEST_METHOD(testConvertStringToMonthOctCap)
+		{
+			Parser parser;
+			string month = "Oct";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 10);
+		}
+
+		TEST_METHOD(testConvertStringToMonthOctSmall)
+		{
+			Parser parser;
+			string month = "oct";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 10);
+		}
+
+		TEST_METHOD(testConvertStringToMonthNovCap)
+		{
+			Parser parser;
+			string month = "Nov";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 11);
+		}
+
+		TEST_METHOD(testConvertStringToMonthNovSmall)
+		{
+			Parser parser;
+			string month = "nov";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 11);
+		}
+
+		TEST_METHOD(testConvertStringToMonthDecCap)
+		{
+			Parser parser;
+			string month = "Dec";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 12);
+		}
+
+		TEST_METHOD(testConvertStringToMonthDecCapSmall)
+		{
+			Parser parser;
+			string month = "dec";	
+			Assert::AreEqual (parser.convertAlphabetMonthToInteger (month), 12);
+		}
 
 		//To test whether a string is a time period
 		//In this case, the string is a time period
@@ -684,9 +844,9 @@ namespace testParser
 		{
 			Parser parser;
 			TimeMacro timeMacro;
-			string dayOfTheWeek = "Friday";
+			string dayOfTheWeek = "Sunday";
 			parser.getTomorrowDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 10);
+			Assert::AreEqual (timeMacro.getDate(), 12);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
@@ -769,11 +929,11 @@ namespace testParser
 			Parser parser;
 			string userInput = "show today";
 			string commandWord = "show";
-			string expectedDay = "Thursday";
+			string expectedDay = "Saturday";
 			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 2);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 11);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
@@ -785,11 +945,11 @@ namespace testParser
 			Parser parser;
 			string userInput = "show tomorrow";
 			string commandWord = "show";
-			string expectedDay = "Friday";
+			string expectedDay = "Sunday";
 			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 3);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 12);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (),4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
