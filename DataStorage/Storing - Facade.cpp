@@ -96,6 +96,9 @@ bool Storing::findPathName(){
 	return true;
 }
 
+//private method
+//adjusting pathName from retrieved file
+//by deleting newline
 void Storing::adjustRetrievedPath(std::string& pathName){
 	pathName = pathName.substr(0,pathName.size()-1);
 }
@@ -190,14 +193,9 @@ void Storing::handleException(int errorNo){
 	case 1:
 		errorMessage = ERROR_MESSAGE_1;
 		throw errorMessage;
-		break;
 	case 2:
 		errorMessage = ERROR_MESSAGE_2;
 		throw errorMessage;
-		break;
-	default:
-		errorMessage = ERROR_MESSAGE_3;
-		break;
 
 	}
 

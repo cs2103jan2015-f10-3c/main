@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "fstream"
 #include "InternalStoring.h"
+#include "Storing.h"
 
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -603,9 +604,54 @@ namespace DataStorageUnitTesting
 		}
 	};
 
-	//
-	////API for facade class
-	//std::string retrieveList(ListType type);
-	//void retrieveList(ListType type, std::ofstream& out);
-	//void savePath(std::string inPath);
+	TEST_CLASS(FacadeUnitTest){
+		TEST_METHOD(retrieveFeatureList){
+			Storing storing;
+			std::string result;
+			try{
+				result = storing.retrieveFeatureList();
+				Assert::AreEqual(false,result.empty());
+			}
+			catch(std::string str){
+				Assert::AreEqual(false, str.empty());
+			}
+
+			
+		}
+
+		TEST_METHOD(findPathName){
+			Storing storing;
+			bool result;
+			try{
+				result = storing.findPathName();
+				Assert::AreEqual(true,result);
+			}
+			catch(std::string str){
+				Assert::AreEqual(false, str.empty());
+			}
+		}
+		
+		
+		TEST_METHOD(loadData){
+			Storing storing;
+			bool status;
+			std::string directory = "";
+			storing.loadData(status, directory);
+		}
+		
+		//test for exception
+		TEST_METHOD(getData){
+			Storing storing;
+			try{
+				storing.getData(1000);
+			}
+			catch(std::string errorMessage){
+				Assert::AreEqual(false,errorMessage.empty());
+			}
+		}
+	};
+	//bool Storing::findPathName(){
+	//	void Storing::adjustRetrievedPath(std::string& pathName){
+	//		void Storing::loadData(bool& status, std::string directory){
+	//			Data Storing::getData(int taskNo){//exception
 }
