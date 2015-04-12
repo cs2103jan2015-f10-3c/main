@@ -239,7 +239,8 @@ namespace DataStorageUnitTesting
 
 			localStorage->addData(data2);
 			localStorage->addData(data1);
-			result = localStorage->saveData("");
+			std::string emptyString = "";
+			result = localStorage->saveData(emptyString);
 			Assert::AreEqual(true,result);
 		}
 
@@ -247,7 +248,8 @@ namespace DataStorageUnitTesting
 		TEST_METHOD(loadData){
 			bool result = false;
 			LocalStorage *localStorage = LocalStorage::getInstance();
-			localStorage->loadData(result, "");
+			std::string emptyString = "";
+			localStorage->loadData(result, emptyString);
 
 			std::vector<Data> result1 = localStorage->getDataList();
 			std::string str1 = "task 1";
@@ -263,7 +265,7 @@ namespace DataStorageUnitTesting
 			std::ofstream out;
 
 			//change into your directory
-			std::string directory = "C:/Users/Admin/Desktop";
+			std::string directory = "c:/ng only";
 			result = localStorage->directoryCheck(out, directory);
 			Assert::AreEqual(true,result);
 
@@ -632,7 +634,7 @@ namespace DataStorageUnitTesting
 		}
 		
 		
-		TEST_METHOD(loadData){
+		TEST_METHOD(loadData2){
 			Storing storing;
 			bool status;
 			std::string directory = "";
@@ -650,8 +652,4 @@ namespace DataStorageUnitTesting
 			}
 		}
 	};
-	//bool Storing::findPathName(){
-	//	void Storing::adjustRetrievedPath(std::string& pathName){
-	//		void Storing::loadData(bool& status, std::string directory){
-	//			Data Storing::getData(int taskNo){//exception
 }

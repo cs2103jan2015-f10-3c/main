@@ -82,9 +82,9 @@ namespace testParser
 		{
 			Parser parser;
 			TimeMacro timeMacro;
-			string dayOfTheWeek = "Sunday";
+			string dayOfTheWeek = "Friday";
 			parser.getTodayDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 12);
+			Assert::AreEqual (timeMacro.getDate(), 17);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
@@ -732,7 +732,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a time period
-		TEST_METHOD(testparseTimeTwentyFourPeriod)
+		TEST_METHOD(testParseTimeTwentyFourPeriod)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -746,7 +746,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a starting time
-		TEST_METHOD(testparseTimeTwentyFourStarting)
+		TEST_METHOD(testParseTimeTwentyFourStarting)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -760,7 +760,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a time period
-		TEST_METHOD(testparseTimeTwelvePeriod)
+		TEST_METHOD(testParseTimeTwelvePeriod)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -774,7 +774,7 @@ namespace testParser
 		}
 
 		//To test whether can parse a starting time
-		TEST_METHOD(testparseTimeTwelveStarting)
+		TEST_METHOD(testParseTimeTwelveStarting)
 		{
 			Parser parser;
 			TimeMicro timeMicroBeg;
@@ -811,7 +811,7 @@ namespace testParser
 
 		//To test whether can update and get
 		//date, month, year, day
-		TEST_METHOD(testparseDateNumber)
+		TEST_METHOD(testParseDateNumber)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
@@ -826,7 +826,7 @@ namespace testParser
 
 		//To test whether can ignore it when parsing date
 		//when the input string is a time period
-		TEST_METHOD(testparseNotDateNumber)
+		TEST_METHOD(testParseNotDateNumber)
 		{
 			Parser parser;
 			TimeMacro timeMacro;
@@ -844,9 +844,9 @@ namespace testParser
 		{
 			Parser parser;
 			TimeMacro timeMacro;
-			string dayOfTheWeek = "Monday";
+			string dayOfTheWeek = "Saturday";
 			parser.getTomorrowDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 13);
+			Assert::AreEqual (timeMacro.getDate(), 18);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
@@ -858,7 +858,7 @@ namespace testParser
 			Parser parser;
 			TimeMacro timeMacro;
 			parser.getMondayDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 6);
+			Assert::AreEqual (timeMacro.getDate(), 13);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 		}
@@ -869,7 +869,7 @@ namespace testParser
 			Parser parser;
 			TimeMacro timeMacro;
 			parser.getSundayDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 12);
+			Assert::AreEqual (timeMacro.getDate(), 19);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 		}
@@ -890,7 +890,7 @@ namespace testParser
 		}
 
 		//To test whether can parse "show this month"
-		TEST_METHOD(testparseShowThisMonth)
+		TEST_METHOD(testParseShowThisMonth)
 		{
 			Parser parser;
 			string userInput = "show this month";
@@ -907,7 +907,7 @@ namespace testParser
 		}
 
 		//To test whether can parse "show this week"
-		TEST_METHOD(testparseShowThisWeek)
+		TEST_METHOD(testParseShowThisWeek)
 		{
 			Parser parser;
 			string userInput = "show this week";
@@ -915,47 +915,47 @@ namespace testParser
 			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 6);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getDate (), 12);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getDate (), 19);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getMonth (), 4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroEnd ()).getYear (), 2015);
 		}
 
 		//To test whether can parse "show today"
-		TEST_METHOD(testparseShowToday)
+		TEST_METHOD(testParseShowToday)
 		{
 			Parser parser;
 			string userInput = "show today";
 			string commandWord = "show";
-			string expectedDay = "Sunday";
+			string expectedDay = "Friday";
 			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 12);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 17);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
 		}
 
 		//To test whether can parse "show tomorrow"
-		TEST_METHOD(testparseShowTomorrow)
+		TEST_METHOD(testParseShowTomorrow)
 		{
 			Parser parser;
 			string userInput = "show tomorrow";
 			string commandWord = "show";
-			string expectedDay = "Monday";
+			string expectedDay = "Saturday";
 			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 18);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (),4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
 		}
 
-		TEST_METHOD(testparseShowADay)
+		TEST_METHOD(testParseShowADay)
 		{
 			Parser parser;
 			string userInput = "show 01/01/2000";
@@ -971,7 +971,7 @@ namespace testParser
 		}
 
 		//To test whether can parse "show commands"
-		TEST_METHOD(testparseShowCommands)
+		TEST_METHOD(testParseShowCommands)
 		{
 			Parser parser;
 			string userInput = "show commands";
@@ -982,7 +982,7 @@ namespace testParser
 		}
 
 		//To test whether can parse "clear"
-		TEST_METHOD(testparseClear)
+		TEST_METHOD(testParseClear)
 		{
 			Parser parser;
 			string userInput = "clear";
@@ -993,7 +993,7 @@ namespace testParser
 		}
 
 		//To test whether can parse "path"
-		TEST_METHOD(testparsePath)
+		TEST_METHOD(testParsePath)
 		{
 			Parser parser;
 			string userInput = "path c:/user/admin";
@@ -1006,7 +1006,7 @@ namespace testParser
 		}
 
 		//To test whether can parse "help"
-		TEST_METHOD(testparseHelp)
+		TEST_METHOD(testParseHelp)
 		{
 			Parser parser;
 			string userInput = "help";
@@ -1287,7 +1287,7 @@ namespace testParser
 
 		//To test whether an error message is updated
 		//when the word "clear" is followed by something else
-		TEST_METHOD(testparseClearError)
+		TEST_METHOD(testParseClearError)
 		{
 			Parser parser;
 			string userInput = "clear 1";
@@ -1299,7 +1299,7 @@ namespace testParser
 
 		//To test whether an error message is updated
 		//when the word "help" is followed by something else
-		TEST_METHOD(testparseHelpError)
+		TEST_METHOD(testParseHelpError)
 		{
 			Parser parser;
 			string userInput = "help a";
