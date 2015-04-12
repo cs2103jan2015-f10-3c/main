@@ -1,3 +1,4 @@
+//@author A0113538J
 #include <assert.h>
 #include <exception>
 #include <iomanip>
@@ -30,7 +31,10 @@ const unsigned int DataProcessor::DATE_WIDTH	= 40;
 const unsigned int DataProcessor::DAY_WIDTH		= 13;
 const unsigned int DataProcessor::WINDOW_WIDTH	= 81;
 
+const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[]	= "Exception:invalid tasknumber";
 const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[]		 = "Exception:empty keyword entered";
+
+//@author A0114421Y
 
 //This function reads in the Data object to be added,
 //then return the string reporting the adding which contains the descripiton of the data added
@@ -50,6 +54,7 @@ string DataProcessor::addTask(Data task){
 string DataProcessor::deleteTask(int number){
 	ostringstream out;
 	Storing storing;
+	Logger logger;
 	try{
 		out << convertDataObjectToLine(storing.deleteData(number)) << DELETE_MESSAGE << endl;
 	}

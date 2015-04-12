@@ -11,6 +11,7 @@ namespace DataProcessorTest
 	{
 	public:
 		
+		//@author A0114421Y
 		TEST_METHOD(AddTaskTest)
 		{
 			Data task1("jim");
@@ -237,18 +238,12 @@ namespace DataProcessorTest
 			myDataProcessor.searchTask("john");
 			myDataProcessor.markDone(1);
 			actualResponse = myDataProcessor.executeUndo();
-			//bool expectedStatus = true;
-			//bool actualStatus = myDataProcessor.getLatestData().getCompleteStatus();
-			//Assert::AreEqual(expectedStatus,actualStatus);
 			Assert::AreEqual(expectedResponse,actualResponse);
 
 			//Undo "undone" command
 			myDataProcessor.searchTask("john");
 			myDataProcessor.unDone(1);
 			actualResponse = myDataProcessor.executeUndo();
-			//expectedStatus = true;
-			//actualStatus = myDataProcessor.getLatestData().getCompleteStatus();
-			//Assert::AreEqual(expectedStatus,actualStatus);
 			Assert::AreEqual(expectedResponse,actualResponse);
 
 			//Undo "edit" command

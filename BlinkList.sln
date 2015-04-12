@@ -13,17 +13,17 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InternalStoring", "DataStor
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CommonsUnitTesting", "UnitTesting\UnitTesting.vcxproj", "{0ED25F72-0B14-4C96-8F43-5151EFE60775}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataStorageUnitTesting", "DataStorageUnitTesting\DataStorageUnitTesting.vcxproj", "{FBFB770E-067F-4DF3-A961-05705A83913B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InternalStoringUnitTesting", "DataStorageUnitTesting\DataStorageUnitTesting.vcxproj", "{FBFB770E-067F-4DF3-A961-05705A83913B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "main", "Main\main.vcxproj", "{F5184EB8-D116-4416-9D0D-503D43B8806B}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlinkList", "Main\main.vcxproj", "{F5184EB8-D116-4416-9D0D-503D43B8806B}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testParser", "testParser\testParser.vcxproj", "{12BF0E2B-10F1-4E6F-B928-7973D2E94B80}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ParserUnitTesting", "testParser\testParser.vcxproj", "{12BF0E2B-10F1-4E6F-B928-7973D2E94B80}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BlinkListSystemTest", "BlinkListSystemTest\BlinkListSystemTest.vcxproj", "{D5FCCF3C-DD41-4993-A97A-493EF18D8066}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testHistory", "testHistory\testHistory.vcxproj", "{42F50286-8DC2-48EE-BE84-0AD60860F285}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HistoryUnitTesting", "testHistory\testHistory.vcxproj", "{42F50286-8DC2-48EE-BE84-0AD60860F285}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataProcessorTest", "DataProcessorTest\DataProcessorTest.vcxproj", "{290DE6A5-061C-412A-AB02-0869705C60DA}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataProcessorUnitTest", "DataProcessorTest\DataProcessorTest.vcxproj", "{290DE6A5-061C-412A-AB02-0869705C60DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

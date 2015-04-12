@@ -1,3 +1,4 @@
+//@author A0113538J
 #ifndef DATAPROCESSOR_H
 #define DATAPROCESSOR_H
 
@@ -13,7 +14,6 @@
 #include "Commons.h"
 #include "Storing.h"
 
-//@author A0113538J
 using namespace std;
 class DataProcessor{
 private:
@@ -46,6 +46,7 @@ private:
 	static const unsigned int DAY_WIDTH;
 	static const unsigned int WINDOW_WIDTH;
 
+	static const char EXCEPTION_INVALID_TASKNUMBER[100];
 	static const char EXCEPTION_EMPTY_KEYWORD[100];
 	Data _latestData;
 
@@ -55,11 +56,12 @@ public:
 	void setLatestData(Data data);
 	Data getLatestData();
 	
-	//@author 
+	//@author A0114421Y
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);
 	string clearTask();
+	//@author A0113538J
 	string executeUndo();
 	string searchTask(string keyword);
 	string editTask(int taskNumber, Data task);
@@ -69,8 +71,10 @@ public:
 	string showDone();
 	static string showCommands();
 	static string showFeatures();
+	//@author A0114421Y
 	static void saveData();
 	static void loadData(bool& status);
+	//@author A0113538J
 	static void clearDisplayList();
 	static void undoEditOrClear(Storing & storing, vector<Data> & latestVector);
 	static void getTimeObject(TimeMacro & timeMacroBeg,TimeMicro & timeMicroBeg, TimeMicro & timeMicroEnd, Data task);

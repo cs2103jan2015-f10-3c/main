@@ -3,6 +3,7 @@
 #include "Commons.h"
 #include "fstream"
 #include "InternalStoring.h"
+#include "Storing.h"
 
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -238,7 +239,8 @@ namespace DataStorageUnitTesting
 
 			localStorage->addData(data2);
 			localStorage->addData(data1);
-			result = localStorage->saveData("");
+			std::string emptyString = "";
+			result = localStorage->saveData(emptyString);
 			Assert::AreEqual(true,result);
 		}
 
@@ -246,7 +248,8 @@ namespace DataStorageUnitTesting
 		TEST_METHOD(loadData){
 			bool result = false;
 			LocalStorage *localStorage = LocalStorage::getInstance();
-			localStorage->loadData(result, "");
+			std::string emptyString = "";
+			localStorage->loadData(result, emptyString);
 
 			std::vector<Data> result1 = localStorage->getDataList();
 			std::string str1 = "task 1";
@@ -262,7 +265,7 @@ namespace DataStorageUnitTesting
 			std::ofstream out;
 
 			//change into your directory
-			std::string directory = "C:/NG only";
+			std::string directory = "c:/ng only";
 			result = localStorage->directoryCheck(out, directory);
 			Assert::AreEqual(true,result);
 
@@ -603,9 +606,50 @@ namespace DataStorageUnitTesting
 		}
 	};
 
-	//
-	////API for facade class
-	//std::string retrieveList(ListType type);
-	//void retrieveList(ListType type, std::ofstream& out);
-	//void savePath(std::string inPath);
+	TEST_CLASS(FacadeUnitTest){
+		TEST_METHOD(retrieveFeatureList){
+			Storing storing;
+			std::string result;
+			try{
+				result = storing.retrieveFeatureList();
+				Assert::AreEqual(false,result.empty());
+			}
+			catch(std::string str){
+				Assert::AreEqual(false, str.empty());
+			}
+
+			
+		}
+
+		TEST_METHOD(findPathName){
+			Storing storing;
+			bool result;
+			try{
+				result = storing.findPathName();
+				Assert::AreEqual(true,result);
+			}
+			catch(std::string str){
+				Assert::AreEqual(false, str.empty());
+			}
+		}
+		
+		
+		TEST_METHOD(loadData2){
+			Storing storing;
+			bool status;
+			std::string directory = "";
+			storing.loadData(status, directory);
+		}
+		
+		//test for exception
+		TEST_METHOD(getData){
+			Storing storing;
+			try{
+				storing.getData(1000);
+			}
+			catch(std::string errorMessage){
+				Assert::AreEqual(false,errorMessage.empty());
+			}
+		}
+	};
 }
