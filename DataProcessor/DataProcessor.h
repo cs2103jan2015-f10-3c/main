@@ -46,6 +46,7 @@ private:
 	static const unsigned int DAY_WIDTH;
 	static const unsigned int WINDOW_WIDTH;
 
+	static const char EXCEPTION_INVALID_TASKNUMBER[100];
 	static const char EXCEPTION_EMPTY_KEYWORD[100];
 	Data _latestData;
 

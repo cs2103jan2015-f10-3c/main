@@ -30,6 +30,7 @@ const unsigned int DataProcessor::DATE_WIDTH	= 40;
 const unsigned int DataProcessor::DAY_WIDTH		= 13;
 const unsigned int DataProcessor::WINDOW_WIDTH	= 81;
 
+const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[]	= "Exception:invalid tasknumber";
 const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[]		 = "Exception:empty keyword entered";
 
 //@author A0114421Y
