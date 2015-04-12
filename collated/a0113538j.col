@@ -1,0 +1,1181 @@
+//@author: a0113538j
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 */
+
+		//For command "show"
+		TEST_METHOD(show_today_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 17/4 2pm task 1");
+			OperationCenter::executeInput("add 3/4 3pm task 2");
+			OperationCenter::executeInput("add 4/4 4pm-5pm task 3");
+			OperationCenter::executeInput("show today");
+
+			string actualResponse = OperationCenter::getResponse();
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out	<< "Your agenda for Friday, 17-4-2015:" << endl << endl
+				<< "1. task 1" << endl
+				<< "   Friday          14:00                                              17-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+
+
+		TEST_METHOD(show_tomorrow_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 3 apr 2pm task 1");
+			OperationCenter::executeInput("add 3 apr 3pm task 2");
+			OperationCenter::executeInput("add 3 apr 4pm task 3");
+			OperationCenter::executeInput("show tomorrow");
+
+			string actualResponse = OperationCenter::getResponse();
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			//out	<< "1. task 1" << endl
+			//	<< "   Friday          14:00                                               3-4-2015" << endl 
+			//	<< "________________________________________________________________________________" << endl
+			//	<< "2. task 2" << endl
+			//	<< "   Friday          15:00                                               3-4-2015" << endl
+			//	<< "________________________________________________________________________________" << endl
+			//	<< "3. task 3" << endl
+			//	<< "   Friday          16:00                                               3-4-2015" <<endl
+			//	<< "________________________________________________________________________________" << endl;
+			out << "You have no task within the specified time period" << endl;
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+		
+		
+		TEST_METHOD(show_this_week_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 2 apr 2pm task 1");
+			OperationCenter::executeInput("add 3 apr 3pm task 2");
+			OperationCenter::executeInput("add 4 apr 4pm task 3");
+			OperationCenter::executeInput("add 5 apr 5pm task 4");
+			OperationCenter::executeInput("show this week");
+
+			string actualResponse = OperationCenter::getResponse();
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			/*out	<< "1. task 1" << endl
+				<< "   Thursday        14:00                                               2-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "2. task 2" << endl
+				<< "   Friday          15:00                                               3-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "3. task 3" << endl
+				<< "   Saturday        16:00                                               4-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "4. task 4" << endl
+				<< "   Sunday          17:00                                               5-4-2015" << endl
+				<< "________________________________________________________________________________" << endl;*/
+			out << "You have no task within the specified time period" << endl;
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(show_this_month_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 2 apr 2pm task 1");
+			OperationCenter::executeInput("add 10 apr 3pm task 2");
+			OperationCenter::executeInput("add 25 apr 4pm task 3");
+			OperationCenter::executeInput("add 30 apr 5pm task 4");
+			OperationCenter::executeInput("show this month");
+
+			string actualResponse = OperationCenter::getResponse();
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out	<< "Your Agenda for This Month: " << endl
+				<< endl
+				<< "1. task 1" << endl
+				<< "   Thursday        14:00                                               2-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "2. task 2" << endl
+				<< "   Friday          15:00                                              10-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "3. task 3" << endl
+				<< "   Saturday        16:00                                              25-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "4. task 4" << endl
+				<< "   Thursday        17:00                                              30-4-2015" << endl
+				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(show_done_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 2 apr 2pm task 1");
+			OperationCenter::executeInput("add 10 apr 3pm task 2");
+			OperationCenter::executeInput("add 25 apr 4pm task 3");
+			OperationCenter::executeInput("add 30 apr 5pm task 4");
+			OperationCenter::executeInput("show this month");
+			
+			OperationCenter::executeInput("done 4");
+			string actualResponse = OperationCenter::getResponse();
+			string expectedResponse = "task 4 on Thursday, 30-4-2015 at 17:00 is done\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+			OperationCenter::executeInput("show done");
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out	<< "1. task 4" << endl
+				<< "   Thursday        17:00                                              30-4-2015" << endl
+				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(show_float_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add task 1");
+			OperationCenter::executeInput("add task 2");
+			OperationCenter::executeInput("add task 3");
+			OperationCenter::executeInput("add task 4");
+			OperationCenter::executeInput("show float");
+			
+			string actualResponse = OperationCenter::getResponse();
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			OperationCenter::executeInput("delete 1");
+			OperationCenter::executeInput("delete 1");
+			OperationCenter::executeInput("delete 1");
+			OperationCenter::executeInput("delete 1");
+			OperationCenter::executeInput("show float");
+			actualResponse = OperationCenter::getResponse();
+			expectedResponse = "You have no task with unspecified date\n"; 
+		}
+
+		TEST_METHOD(show_specific_day_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 1/4 task 1");
+			OperationCenter::executeInput("add 2/4 task 2");
+			OperationCenter::executeInput("add 3/4 task 3");
+			OperationCenter::executeInput("add 30/4/2015 3pm task 4");
+			OperationCenter::executeInput("show 1/4/2015");
+			
+			string actualResponse = OperationCenter::getResponse();
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out	<< "Your agenda for Wednesday, 1-4-2015:" << endl << endl
+				<< "1. task 1" << endl
+				<< "   Wednesday                                                           1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(show_commands_test)			
+		{
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("show commands");
+			
+			
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out << "BlinkList Commands\n"
+			<< "-------------------------------------------------------------------------\n"
+			<< "1. Add\n"
+			<< "add DD MMM HH:MM Description\n"
+			<< endl
+			<< "2. Edit\n"
+			<< "edit # DD MMM HH:MM Description\n"
+			<< endl
+			<< "3. Delete\n"
+			<< "delete #\n"
+			<< endl
+			<< "4. Clear\n"
+			<< "clear\n"
+			<< endl
+			<< "5. Show\n"
+			<< "show today\n"
+			<< "show tomorrow\n"
+			<< "show this week\n"
+			<< "show this month\n"
+			<< "show DD/MM/YYYY (show a particular day, date format may vary)\n"
+			<< "show done\n"
+			<< "show float\n"
+			<< endl
+			<< "6. Search\n"
+			<< "search Keyword\n"
+			<< endl
+			<< "7. Undo\n"
+			<< "undo\n"
+			<< endl
+			<< "8. Done\n"
+			<< "done #\n"
+			<< endl
+			<< "9. Undone\n"
+			<< "undone #\n"
+			<< endl
+			<< "10. Help\n"
+			<< "help\n"
+			<< endl
+			<< "* # refers to the number on your displayed list\n"
+			<< endl
+			<< "-------------------------------end of all commands-----------------------\n";
+			expectedDisplay = out.str();
+			expectedDisplay = "";
+			Assert::AreNotEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(show_features_test){
+			OperationCenter::executeInput("show features");
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay = "";
+			Assert::AreNotEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(undone_test){
+			OperationCenter::executeInput("clear");
+			OperationCenter::executeInput("add 11/4 11:00 task 1");
+			OperationCenter::executeInput("done 1");
+
+			//Invalid task number
+			OperationCenter::executeInput("show done");
+			OperationCenter::executeInput("undone 0");
+			string expectedResponse = "Please enter correct task number after command word";
+			string actualResponse = OperationCenter::getResponse();
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+			//Normal case
+			OperationCenter::executeInput("show done");
+			OperationCenter::executeInput("undone 1");
+			expectedResponse = "task 1 on Saturday, 11-4-2015 at 11:00 is reopened\n";
+			actualResponse = OperationCenter::getResponse();
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+		}
+
+
+	};
+}
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.cpp
+	 */
+
+#include <assert.h>
+#include <exception>
+#include <iomanip>
+#include "DataProcessor.h"
+
+
+const char DataProcessor::ADD_MESSAGE[]		= " is added";
+const char DataProcessor::DELETE_MESSAGE[]  = " is deleted from BlinkList";
+const char DataProcessor::CLEAR_MESSAGE[]	= "all contents are cleared";
+const char DataProcessor::EDIT_MESSAGE[]	= " is edited";
+const char DataProcessor::UNDO_MESSAGE[]	= "You have undone your operation\n";
+const char DataProcessor::DONE_MESSAGE[]	= " is done";
+const char DataProcessor::UNDONE_MESSAGE[]	= " is reopened\n";
+const char DataProcessor::ADD_COMMAND[]		= "add";
+const char DataProcessor::DELETE_COMMAND[]	= "delete";
+const char DataProcessor::SHOW_COMMAND[]	= "show";
+const char DataProcessor::CLEAR_COMMAND[]	= "clear";
+const char DataProcessor::DONE_COMMAND[]	= "done";
+const char DataProcessor::UNDONE_COMMAND[]	= "undone";
+const char DataProcessor::EDIT_COMMAND[]	= "edit";
+const char DataProcessor::NO_DATE[]			= "undefined";
+const char DataProcessor::EDIT_DATA_LOG_MESSAGE_START[] = "start editing data";
+const char DataProcessor::EDIT_DATA_LOG_MESSAGE_END[] = "editing data is done";
+const char DataProcessor::UPDATE_DISPLAY_LIST_LOG_MESSAGE[] = "update current displayList to display matched tasks";
+
+const unsigned int DataProcessor::TIME_WIDTH	= 16;
+const unsigned int DataProcessor::TIME_10		= 10;
+const unsigned int DataProcessor::NO_TIME		= -1;
+const unsigned int DataProcessor::DATE_WIDTH	= 40;
+const unsigned int DataProcessor::DAY_WIDTH		= 13;
+const unsigned int DataProcessor::WINDOW_WIDTH	= 81;
+
+const char DataProcessor::EXCEPTION_INVALID_TASKNUMBER[]	= "Exception:invalid tasknumber";
+const char DataProcessor::EXCEPTION_EMPTY_KEYWORD[]		 = "Exception:empty keyword entered";
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.cpp
+	 */
+
+
+//This function reads in the taskNumber of the task that is
+//currently in display and the Data object which contains
+//the updated information about the task.
+//The return string is the successfuly message after edit operation
+string DataProcessor::editTask(int taskNumber, Data task){
+	Storing  storing;
+	Logger	 logger;
+	Data	 uneditedTask;
+	
+	logger.logging(EDIT_DATA_LOG_MESSAGE_START);
+	
+	try{
+		uneditedTask = storing.changeData(taskNumber, task);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
+	string	 editMessage = getEditMessage(uneditedTask);
+	
+	logger.logging(EDIT_DATA_LOG_MESSAGE_END);
+	setLatestData(uneditedTask);
+	
+	return	 editMessage;
+}
+
+string DataProcessor::getEditMessage(Data uneditedTask){
+	assert (uneditedTask.getDesc() != "\0");
+	string editMessage = convertDataObjectToLine(uneditedTask) + EDIT_MESSAGE + "\n";;	
+	return editMessage;
+}
+
+//This function clears the current display list
+void DataProcessor::clearDisplayList(){
+	Storing storing;
+	storing.clearDisplayList();
+}
+
+//This function clears all the tasks inside storage
+string DataProcessor::clearTask(){
+	Storing storing;
+	storing.clearDataList();
+
+	return  CLEAR_MESSAGE;
+}
+
+
+string DataProcessor::executeUndo(){
+	Data latestData;
+	string latestCommand;
+	vector<Data> latestVector;
+	Storing storing; 
+
+	latestVector = storing.getLatestVector();
+	latestCommand = storing.getLatestCommand();
+	latestData = storing.getLatestData();
+
+	if (latestCommand == ADD_COMMAND){
+		storing.undoAdd();
+	}
+	else if (latestCommand == DELETE_COMMAND){
+		storing.addData(latestData);
+	}
+	else if (latestCommand == DONE_COMMAND){
+		latestData.updateCompleteStatus(false);
+		storing.changeData(latestData.getTaskNo(), latestData);
+	}
+	else if (latestCommand == UNDONE_COMMAND){
+		latestData.updateCompleteStatus(true);
+		storing.changeData(latestData.getTaskNo(), latestData);
+	}
+	else if (latestCommand == EDIT_COMMAND || latestCommand == CLEAR_COMMAND){
+		undoEditOrClear(storing, latestVector);
+	}
+
+	setLatestData(latestData);
+	return UNDO_MESSAGE;
+}
+
+//This function is the undo helper function
+//it performs the undo action whenever
+//the latest command is edit or clear
+void DataProcessor::undoEditOrClear(Storing & storing, vector<Data> & latestVector){
+		storing.clearDataList();
+		for(int i = 0; i != latestVector.size(); i++){
+			storing.addData(latestVector[i]);
+		}
+}
+
+
+
+//This function reads in the desired keyword to be searched in the current
+//task list, all tasks with description containing the keyword will be returned
+string DataProcessor::searchTask(string keyword){
+	Logger logger;
+	assert(keyword.size() > 0);
+	
+	Storing		 storing;
+	storing.clearDisplayList();
+	
+	logger.logging(UPDATE_DISPLAY_LIST_LOG_MESSAGE);
+	vector<Data> returnTaskList = storing.displaySearch(keyword);
+
+	string		 returnTaskListString = convertTaskListToString(returnTaskList);
+	return		 returnTaskListString;
+
+}
+
+
+//this function reads in the task number 
+//and update the status of the corresponding
+//task to done
+string DataProcessor::markDone(int taskNo){
+	Storing storing;
+	Data targetData;
+	try{
+ 		targetData = storing.getData(taskNo);		 	
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
+	targetData.updateCompleteStatus(true);
+	storing.changeData(taskNo, targetData);
+	string	doneMessage = getDoneMessage(targetData);
+
+	return doneMessage;
+}
+
+string DataProcessor::getDoneMessage(Data targetData){
+	string doneMessage = convertDataObjectToLine(targetData) + DONE_MESSAGE + "\n";
+	return doneMessage;
+}
+
+//this function reads in the task number 
+//and update the status of the corresponding
+//task to ongoing
+string DataProcessor::unDone(int taskNo){
+	Storing storing;
+	Data targetData;
+
+	try{
+		targetData = storing.getData(taskNo);
+	}
+	catch (string errorMessage){
+		throw errorMessage;
+	}
+	targetData.updateCompleteStatus(false);
+	storing.changeData(taskNo, targetData);
+	string	undoneMessage = getUndoneMessage(targetData);
+	setLatestData(targetData);
+	return	undoneMessage;
+}
+
+string DataProcessor::getUndoneMessage(Data targetData){
+	string undoneMessage = convertDataObjectToLine(targetData) + UNDONE_MESSAGE;
+	return undoneMessage;
+}
+
+//This function gets a list of floating tasks
+//and return it to Operation Center for displaying
+string DataProcessor::showFloat(){
+	Storing			storing;
+	vector<Data>	floatingTaskList = storing.displayfloat();
+	string			floatingTaskListString = convertTaskListToString(floatingTaskList);
+	return			floatingTaskListString;
+}
+
+//This function get a list of completed tasks
+//and return it to Operation Center for displaying
+string DataProcessor::showDone(){
+	Storing			storing;
+	vector<Data>	completedTaskList = storing.displayDone();
+	string			completedTaskListString = convertTaskListToString(completedTaskList);
+	return			completedTaskListString;
+}
+
+//This function calls up a list of commands 
+//available at BlinkList
+string DataProcessor::showCommands(){
+	Storing		storing;
+	string		commandList = storing.retrieveCommandList();
+	return		commandList;
+}
+
+//This function calls up a list of features
+//features will be more elaborated than command file
+string DataProcessor::showFeatures(){
+	Storing		storing;
+	string		featureList = storing.retrieveFeatureList();
+	return		featureList;
+}
+
+//This function passes the save 
+//file path to DataSotrage
+bool DataProcessor::savePath(string path){
+	Storing storing;
+	if(storing.saveUserPathName(path)){
+		return true;
+	}
+	else{
+		return false;
+	}
+}
+
+//This function ask DataStorage
+//to check whether there is 
+//an existing path for saving file
+bool DataProcessor::checkPathExistence(){
+	Storing storing;
+	try{
+		if(storing.findPathName()){
+			return true;
+		}
+	}
+	catch(string errorMessage){
+		throw(errorMessage);
+	}
+}
+
+//This function reads in a Data object and convert it into a string
+//that contains all the information of that data and ready to be displayed
+string DataProcessor::convertDataObjectToString(Data task){
+	assert ( task.getDesc() != "\0");
+	TimeMacro timeMacroBeg;
+	TimeMicro timeMicroBeg, timeMicroEnd;
+	getTimeObject(timeMacroBeg, timeMicroBeg, timeMicroEnd, task);	
+	
+	string descriptionLine = getDescriptionLine(task);
+	string dayLine		   = getDayLine(timeMacroBeg);
+	string timeLine		   = getTimeLine(timeMicroBeg, timeMicroEnd);
+	string dateLine		   = getDateLine(timeMacroBeg);
+
+	string taskString = descriptionLine + dayLine + timeLine + dateLine;
+	return taskString;
+
+}
+
+//This function receives a Data object
+//and converts it into one line of string
+//that is ready to be put into response string
+string DataProcessor::convertDataObjectToLine(Data task){
+	assert ( task.getDesc() != "\0");
+	setLatestData(task);
+	ostringstream outData;
+	TimeMacro timeMacroBeg;
+	TimeMicro timeMicroBeg, timeMicroEnd;
+	getTimeObject(timeMacroBeg, timeMicroBeg, timeMicroEnd, task);	
+	
+	outData << task.getDesc();
+	//If there is deadline date associated with the task
+	if(timeMacroBeg.getDate() != 0){
+		outData << " on " 
+				<< timeMacroBeg.getDay() << ", "
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
+				<< timeMacroBeg.getYear() << " ";
+	}
+
+	//Check if there is deadline time associated with the task
+	if(timeMicroBeg.getHour() != -1){
+		outData << "at ";
+		if (timeMicroBeg.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getHour() << ":";
+		if (timeMicroBeg.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroBeg.getMin();
+
+	}
+	if(timeMicroEnd.getHour() != -1){
+		outData << "-";
+		if (timeMicroEnd.getHour() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getHour() << ":";
+		if (timeMicroEnd.getMin() < 10) {
+			outData << "0";
+		}
+		outData << timeMicroEnd.getMin();
+	}
+
+	return outData.str();
+
+}
+
+//This function reads in a vector of Data object and subsequently converts
+//them into a string that contains all datas in the vector
+//The string will be ready for display by UI
+string DataProcessor::convertTaskListToString(vector<Data>& taskList){
+	ostringstream outList;
+	int numberOfTask = 1;
+	for(int i = 0; i != taskList.size(); i++){
+		outList << numberOfTask << ". "
+				<< convertDataObjectToString(taskList[i]) << endl
+				<< setfill('_') << setw(WINDOW_WIDTH) << "\n";
+		numberOfTask++;
+	}
+	assert (numberOfTask >= 1);
+
+	string taskListString = outList.str();
+	return taskListString;
+
+}
+
+
+//This function gets and returns all the
+//time associated with the target task
+void DataProcessor::getTimeObject(TimeMacro & timeMacroBeg, TimeMicro & timeMicroBeg,
+								  TimeMicro & timeMicroEnd, Data task){
+	timeMacroBeg = task.getTimeMacroBeg();
+	timeMicroBeg = task.getTimeMicroBeg();
+	timeMicroEnd = task.getTimeMicroEnd();
+}
+
+//This function converts the description
+//of the target task into a formated string
+string DataProcessor::getDescriptionLine(Data task){
+	ostringstream outData;
+	int descriptionWidth = task.getDesc().length();
+	outData << setw(descriptionWidth) << left 
+			<< task.getDesc() << endl << "   ";
+	return outData.str();
+}
+
+//This function converts the day value
+//of the target task into a formated string
+string DataProcessor::getDayLine(TimeMacro timeMacroBeg){
+	ostringstream outData;
+	if(timeMacroBeg.getDay() != NO_DATE){
+		outData << setfill(' ') << setw(DAY_WIDTH) << left << timeMacroBeg.getDay();
+	}
+	else{
+		outData << setfill(' ') << setw(DAY_WIDTH) << left;
+	}
+	return outData.str();
+}
+
+//This function converts the time value
+//of the target task into a formated string
+string DataProcessor::getTimeLine(TimeMicro timeMicroBeg, TimeMicro timeMicroEnd){
+	ostringstream outData;
+	string timeMicroString = "   ";
+	//Check if there is deadline time associated with the task
+	if(timeMicroBeg.getHour() != NO_TIME){
+		if (timeMicroBeg.getHour() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroBeg.getHour()) + ":";
+		if (timeMicroBeg.getMin() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroBeg.getMin());
+
+	}
+	if(timeMicroEnd.getHour() != NO_TIME){
+		timeMicroString += "-";
+		if (timeMicroEnd.getHour() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroEnd.getHour()) + ":";
+		if (timeMicroEnd.getMin() < TIME_10) {
+			timeMicroString += "0";
+		}
+		timeMicroString += to_string(timeMicroEnd.getMin());
+	}
+	
+	outData << setw(TIME_WIDTH) << left << timeMicroString;
+	return outData.str();
+}
+
+//This function converts the date value
+//of the target task into a formated string
+string DataProcessor::getDateLine(TimeMacro timeMacroBeg){
+	ostringstream outData;
+	//If there is deadline date associated with the task
+	if(timeMacroBeg.getDate() != 0){
+		outData << setw(DATE_WIDTH) << right
+				<< timeMacroBeg.getDate() << "-"
+				<< timeMacroBeg.getMonth() << "-"
+				<< timeMacroBeg.getYear();
+	}
+
+	return outData.str();
+}
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+	 */
+
+#ifndef DATAPROCESSOR_H
+#define DATAPROCESSOR_H
+
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <algorithm>
+#include <vector>
+#include <iterator>
+#include <assert.h>
+#include "Commons.h"
+#include "Storing.h"
+
+using namespace std;
+class DataProcessor{
+private:
+
+	static const char ADD_MESSAGE[100];
+	static const char DELETE_MESSAGE[100];
+	static const char CLEAR_MESSAGE[100];
+	static const char EDIT_MESSAGE[100];
+	static const char UNDO_MESSAGE[100];
+	static const char DONE_MESSAGE[100];
+	static const char UNDONE_MESSAGE[100];
+
+	static const char ADD_COMMAND[100];
+	static const char DELETE_COMMAND[100];
+	static const char SHOW_COMMAND[100];
+	static const char CLEAR_COMMAND[100];
+	static const char EDIT_COMMAND[100];
+	static const char DONE_COMMAND[100];
+	static const char UNDONE_COMMAND[100];
+	static const char NO_DATE[100];
+
+	static const char EDIT_DATA_LOG_MESSAGE_START[100];
+	static const char EDIT_DATA_LOG_MESSAGE_END[100];
+	static const char UPDATE_DISPLAY_LIST_LOG_MESSAGE[100];
+
+	static const unsigned int TIME_WIDTH;
+	static const unsigned int TIME_10;
+	static const unsigned int NO_TIME;
+	static const unsigned int DATE_WIDTH;
+	static const unsigned int DAY_WIDTH;
+	static const unsigned int WINDOW_WIDTH;
+
+	static const char EXCEPTION_INVALID_TASKNUMBER[100];
+	static const char EXCEPTION_EMPTY_KEYWORD[100];
+	Data _latestData;
+
+public:
+
+	DataProcessor(){}
+	void setLatestData(Data data);
+	Data getLatestData();
+	
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+	 */
+
+	string executeUndo();
+	string searchTask(string keyword);
+	string editTask(int taskNumber, Data task);
+	string markDone(int taskNo);
+	string unDone(int taskNo);
+	string showFloat();
+	string showDone();
+	static string showCommands();
+	static string showFeatures();
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+	 */
+
+	static void clearDisplayList();
+	static void undoEditOrClear(Storing & storing, vector<Data> & latestVector);
+	static void getTimeObject(TimeMacro & timeMacroBeg,TimeMicro & timeMicroBeg, TimeMicro & timeMicroEnd, Data task);
+	static bool savePath(string path);
+	static bool checkPathExistence();
+	
+	string convertTaskListToString(vector<Data> & taskList);
+	string convertDataObjectToString(Data task);
+	string convertDataObjectToLine(Data task);
+	string getClearMessage();
+	string getEditMessage(Data uneditedTask);
+	string getDoneMessage(Data targetData);
+	string getUndoneMessage(Data targetData);
+	string getDescriptionLine(Data task);
+	string getDayLine(TimeMacro timeMacroBeg);
+	string getTimeLine(TimeMicro timeMicroBeg, TimeMicro timeMicroEnd);
+	string getDateLine(TimeMacro timeMacroBeg);
+
+};
+#endif
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessorTest\DataProcessorTest.cpp
+	 */
+
+		TEST_METHOD(Delete_Task_Test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			std::string actualDeleteMessage;
+			
+			//Exception: invalid task number
+			try{ 
+				actualDeleteMessage = myDataProcessor.deleteTask(1);
+			}catch(string errorMessage){
+				actualDeleteMessage = errorMessage;
+			}
+			std::string expectedDeleteMessage = "Please enter a valid task number. \n";
+			Assert::AreEqual(expectedDeleteMessage, actualDeleteMessage);
+
+			//Normal case
+			TimeMacro start(1, 2, 2000);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, begin, end, "jim");
+			bool status = true;
+			myDataProcessor.loadData(status);
+			myDataProcessor.addTask(task1);
+			myDataProcessor.searchTask("jim");
+			actualDeleteMessage = myDataProcessor.deleteTask(1);
+			expectedDeleteMessage = "jim on undefined, 1-2-2000 at 01:30-02:30 is deleted from BlinkList\n";
+			Assert::AreEqual(expectedDeleteMessage, actualDeleteMessage);
+		}
+
+		TEST_METHOD(Edit_Task_Test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			TimeMacro start(1, 2, 2000);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, begin, end, "jim");
+			Data task2(start, begin, end, "john");
+
+			//Exeception: invalid task number
+			std::string addMessage = myDataProcessor.addTask(task1);
+			std::string actualEditMessage;
+			try{
+				actualEditMessage = myDataProcessor.editTask(1, task2);
+			}catch(string errorMessage){
+				actualEditMessage = errorMessage;
+			}
+			std::string expectedEditMessage = "Please enter a valid task number. \n";
+			Assert::AreEqual(expectedEditMessage, actualEditMessage);
+
+			//Normal case
+			myDataProcessor.searchTask("jim");
+			actualEditMessage = myDataProcessor.editTask(1, task2);
+			expectedEditMessage = "jim on undefined, 1-2-2000 at 01:30-02:30 is edited\n";
+			Assert::AreEqual(expectedEditMessage, actualEditMessage);
+		}
+
+		TEST_METHOD(GetEditMessageTest){
+			TimeMacro start(1, 2, 2000);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, begin, end, "jim overslept");
+			DataProcessor myDataProcessor;
+			std::string actualEditMessage = myDataProcessor.getEditMessage(task1);
+			std::string expectedEditMessage = "jim overslept on undefined, 1-2-2000 at 01:30-02:30 is edited\n";
+			Assert::AreEqual(expectedEditMessage, actualEditMessage);
+		}
+
+		TEST_METHOD(set_get_latest_data_test){
+			TimeMacro start(1, 2, 2000);
+			TimeMicro begin(15,30);
+			TimeMicro end(16, 30);
+			Data task1(start, begin, end, "jim overslept");
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.setLatestData(task1);
+			Data actualData = myDataProcessor.getLatestData();
+			Assert::AreEqual(task1.getDesc(), actualData.getDesc());
+			Assert::AreEqual(task1.getTimeMacroBeg().getDate(), start.getDate());
+			Assert::AreEqual(task1.getTimeMicroBeg().getHour(), begin.getHour());
+			Assert::AreEqual(task1.getTimeMicroEnd().getHour(), end.getHour());
+
+		}
+
+		
+		TEST_METHOD(ConvertDataObjectToStringTest){
+			TimeMacro start(10, 4, 2015);
+			TimeMicro begin(14,00);
+			TimeMicro end(15,00);
+			Data task1(start, begin, end, "jim overslept");
+			DataProcessor myDataProcessor;
+			std::string actualEditMessage = myDataProcessor.convertDataObjectToString(task1);
+			std::string expectedEditMessage;
+			ostringstream out;
+			out	<< "jim overslept" << endl
+				<< "      14:00-15:00                                        10-4-2015"; 
+			expectedEditMessage = out.str();
+			Assert::AreEqual(expectedEditMessage, actualEditMessage);
+		}
+
+		TEST_METHOD(SearchTest){
+			TimeMacro start(1, 2, 2000);
+			TimeMacro date(1, 2, 2001);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, "jim is smart and stupid");
+			Data task2(start, "john is a good boy");
+			Data task3(date, "jane is sexy and fat");
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+
+			std::string string1 = myDataProcessor.addTask(task1);
+			std::string string2 = myDataProcessor.addTask(task2);
+			std::string string3 = myDataProcessor.addTask(task3);
+			ostringstream out;
+			std::string expectedTaskList = "";
+			std::string actualTaskList;
+			
+			//Boundary case: No task matched
+			actualTaskList = myDataProcessor.searchTask("something");
+			Assert::AreEqual(expectedTaskList, actualTaskList);
+
+			//Partition in the middle
+			actualTaskList = myDataProcessor.searchTask("and");
+			out << "1. jim is smart and stupid" << endl
+				<< "                                                          1-2-2000" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "2. jane is sexy and fat" << endl
+				<< "                                                          1-2-2001" << endl 
+				<< "________________________________________________________________________________" << endl;
+			expectedTaskList = out.str();
+			Assert::AreEqual(expectedTaskList, actualTaskList);
+			myDataProcessor.clearTask();
+		}
+
+		TEST_METHOD(clear_task_test){
+			TimeMacro start(1, 2, 2000);
+			TimeMacro date(1, 2, 2001);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, "jim is smart and stupid");
+			Data task2(start, "john is a good boy");
+			Data task3(date, "jane is sexy and fat");
+			DataProcessor myDataProcessor;
+			std::string string1 = myDataProcessor.addTask(task1);
+			std::string string2 = myDataProcessor.addTask(task2);
+			std::string string3 = myDataProcessor.addTask(task3);
+			string expectedResponse = "all contents are cleared";
+			string actualResponse;
+			actualResponse = myDataProcessor.clearTask();
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+
+		TEST_METHOD(execute_undo_test){
+			TimeMacro start(1, 2, 2000);
+			TimeMacro date(1, 2, 2001);
+			TimeMicro begin(1,30);
+			TimeMicro end(2, 30);
+			Data task1(start, "jim is smart and stupid");
+			Data task2(start, "john is a good boy");
+			Data task3(date, "jane is sexy and fat");
+			DataProcessor myDataProcessor;
+			std::string string1 = myDataProcessor.addTask(task1);
+			std::string string2 = myDataProcessor.addTask(task2);
+			std::string string3 = myDataProcessor.addTask(task3);
+			
+			string expectedResponse = "You have undone your operation\n";
+			string actualResponse;
+			
+			//Undo "add" command
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//Undo "delete" command
+			myDataProcessor.searchTask("jim");
+			myDataProcessor.deleteTask(1);
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "done" command
+			myDataProcessor.searchTask("john");
+			myDataProcessor.markDone(1);
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "undone" command
+			myDataProcessor.searchTask("john");
+			myDataProcessor.unDone(1);
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "edit" command
+			myDataProcessor.searchTask("john");
+			myDataProcessor.editTask(1, task2);			
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Undo "clear" command
+			myDataProcessor.clearTask();
+			actualResponse = myDataProcessor.executeUndo();
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+		}
+
+		TEST_METHOD(mark_done_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			TimeMacro date(10, 4, 2015);
+			Data task1(date, "jim is smart and stupid");
+			myDataProcessor.addTask(task1);
+			
+			//Exception: invalid task number
+			string actualResponse;
+			string expectedResponse = "Please enter a valid task number. \n";
+			try {
+				actualResponse = myDataProcessor.markDone(1);
+			}catch(string errorMessage){
+				actualResponse = errorMessage;
+			}
+			Assert::AreEqual(expectedResponse,actualResponse);
+
+			//Normal case
+			myDataProcessor.searchTask("jim");
+			expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is done\n";
+			actualResponse;
+			actualResponse = myDataProcessor.markDone(1);
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+		
+		TEST_METHOD(get_done_message_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();			
+			TimeMacro date(10, 4, 2015);
+			Data task1(date, "jim is smart and stupid");
+			string expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is done\n";
+			string actualResponse;
+			actualResponse = myDataProcessor.getDoneMessage(task1);
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+
+		TEST_METHOD(undone_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			TimeMacro date(10, 4, 2015);
+			Data task1(date, "jim is smart and stupid");
+			myDataProcessor.addTask(task1);
+			
+			//Exception: invalid task number
+			string actualResponse;
+			string expectedResponse = "Please enter a valid task number. \n";
+			try {
+				actualResponse = myDataProcessor.unDone(1);
+			}catch(string errorMessage){
+				actualResponse = errorMessage;
+			}
+			Assert::AreEqual(expectedResponse,actualResponse);
+			
+			//Normal case
+			myDataProcessor.searchTask("jim");
+			myDataProcessor.markDone(1);
+			myDataProcessor.searchTask("jim");			
+			expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is reopened\n";
+			actualResponse;
+			actualResponse = myDataProcessor.unDone(1);
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+		
+		TEST_METHOD(get_undone_message_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();			
+			TimeMacro date(10, 4, 2015);
+			Data task1(date, "jim is smart and stupid");
+			string expectedResponse = "jim is smart and stupid on undefined, 10-4-2015  is reopened\n";
+			string actualResponse;
+			actualResponse = myDataProcessor.getUndoneMessage(task1);
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+
+		TEST_METHOD(show_float_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.clearTask();
+			myDataProcessor.clearDisplayList();
+			Data task1("jim is smart and stupid");
+			string actualTaskList = myDataProcessor.showFloat();
+			string expectedTaskList;
+			expectedTaskList = "";
+			Assert::AreEqual(expectedTaskList, actualTaskList);
+
+			myDataProcessor.addTask(task1);
+			actualTaskList = myDataProcessor.showFloat();
+			ostringstream out;
+			out << "1. jim is smart and stupid" << endl
+				<< "                   " << endl
+				<< "________________________________________________________________________________" << endl;
+			expectedTaskList = out.str();
+			Assert::AreEqual(expectedTaskList,actualTaskList);
+
+		}
+
+		TEST_METHOD(check_path_existence_test){
+			DataProcessor myDataProcessor;
+			myDataProcessor.savePath("c:\\");
+			try{
+				bool actualStatus = myDataProcessor.checkPathExistence();
+				bool expectedStatus = true;
+				Assert::AreEqual(expectedStatus, actualStatus);
+			}catch(string errorMessage){
+				string actualMessage = errorMessage;
+				string expectedMessage = "Data could not be found. \n";
+				Assert::AreEqual(expectedMessage, actualMessage);
+			}
+
+
+		}
+	};
+}
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessorTest\DataProcessorTest.cpp
+
+
+
+
+

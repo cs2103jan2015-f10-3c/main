@@ -1,0 +1,3123 @@
+//@author: a0114002j
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 */
+
+		//For command "add"	
+		//testing for different format
+		//also testing for sorting of the container
+		TEST_METHOD(addDifferentInputFormat)			
+		{
+			OperationCenter::executeInput("clear");
+
+			//format: DD/MM/YYYY HH:MM-HH:MM Desc
+			OperationCenter::executeInput("add 01/04/2015 11:00-12:00 task 1");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "task 1 on Wednesday, 1-4-2015 at 11:00-12:00 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//format: DD/MM HH:MM Desc
+			OperationCenter::executeInput("add 01/04 11:00 task 2");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "task 2 on Wednesday, 1-4-2015 at 11:00 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//format: D/M Desc
+			OperationCenter::executeInput("add 1/4 task 3");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "task 3 on Wednesday, 1-4-2015  is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+			//format: D MMM HHam-HHpm Desc
+			OperationCenter::executeInput("add 1 Apr 10am-12pm task 4");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "task 4 on Wednesday, 1-4-2015 at 10:00-12:00 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out	<< "Your agenda for Wednesday, 1-4-2015:" << endl << endl
+				<< "1. task 3" << endl
+				<< "   Wednesday                                                           1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "2. task 4" << endl
+				<< "   Wednesday       10:00-12:00                                         1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "3. task 1" << endl
+				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "4. task 2" << endl
+				<< "   Wednesday       11:00                                               1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+			
+			//add in different date
+			//format: DD MMM YYYY HHPM Desc
+			OperationCenter::executeInput("add 10 Apr 2015 12pm task 6");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "task 6 on Friday, 10-4-2015 at 12:00 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//add in different date
+			//format: D/MM/YY Desc
+			OperationCenter::executeInput("add 9/04/15 task 7");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "task 7 on Thursday, 9-4-2015  is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			OperationCenter::executeInput("show this month");
+			actualDisplay = OperationCenter::getDisplay();
+			expectedDisplay;
+			ostringstream out3;
+			out3<< "Your Agenda for This Month: " << endl << endl
+				<< "1. task 3" << endl
+				<< "   Wednesday                                                           1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "2. task 4" << endl
+				<< "   Wednesday       10:00-12:00                                         1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "3. task 1" << endl
+				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "4. task 2" << endl
+				<< "   Wednesday       11:00                                               1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "5. task 7" << endl
+				<< "   Thursday                                                            9-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "6. task 6" << endl
+				<< "   Friday          12:00                                              10-4-2015" << endl
+				<< "________________________________________________________________________________" << endl;
+			expectedDisplay = out3.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+		}
+
+		TEST_METHOD(addFloatingTask)
+		{
+			//format: Desc 
+			//floating task
+			OperationCenter::executeInput("add task 5");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "task 5 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+		}
+
+		TEST_METHOD(addDefault)
+		{
+			//format: HH:MM Desc
+			//by default without date
+			//will add task to Today
+			OperationCenter::executeInput("add 12:30 lunch");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "lunch on Friday, 17-4-2015 at 12:30 is added\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+
+		TEST_METHOD(addException){
+			//no description
+			OperationCenter::executeInput("add 4 apr");
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "Please enter task description";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//date outside boundary
+			OperationCenter::executeInput("add 33/4 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct date";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//month outside boundary
+			OperationCenter::executeInput("add 31/14 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct date";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//year outside boundary
+			OperationCenter::executeInput("add 31/12/1000 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct year";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//time outside boundary
+			OperationCenter::executeInput("add 31/12 25:00 task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct time";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			//incorrect time
+			OperationCenter::executeInput("add 13am task");
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Please enter the correct time";
+			Assert::AreEqual(expectedResponse, actualResponse);
+		}
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 */
+
+		//exception response when command entry is wrong
+		TEST_METHOD(wrongCommandException)
+		{
+			OperationCenter::executeInput("adds hellow");
+
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "Please enter the correct command";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+		}
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 */
+
+		//For command "clear"	
+		TEST_METHOD(clear)			
+		{
+			OperationCenter::executeInput("add 01/04/2015 11:00-12:00 task 1");
+			OperationCenter::executeInput("add 01/04 11:00 task 2");
+			OperationCenter::executeInput("add 1/4 task 3");
+			OperationCenter::executeInput("add 1 Apr 10:00-12:00 task 4");
+			OperationCenter::executeInput("clear");
+
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "all contents are cleared";
+			Assert::AreEqual(expectedResponse, actualResponse);
+			
+		}
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 */
+
+		//For command "search"
+		TEST_METHOD(searchWordPhrase)
+		{
+			OperationCenter::executeInput("add 01/04/2015 11:00-12:00 task 1 running");
+			OperationCenter::executeInput("add 01/04 11:00 task 2 sitting up");
+			OperationCenter::executeInput("add 1/4 task 3");
+			OperationCenter::executeInput("add jogging");
+			OperationCenter::executeInput("add 1 Apr 10:00-12:00 task 4");
+			
+			//word search
+			OperationCenter::executeInput("search task");
+
+			string actualResponse = OperationCenter::getResponse(); 
+			string expectedResponse = "";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+			string actualDisplay = OperationCenter::getDisplay();
+			string expectedDisplay;
+			ostringstream out;
+			out << "1. task 3" << endl
+				<< "   Wednesday                                                           1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "2. task 4" << endl
+				<< "   Wednesday       10:00-12:00                                         1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl
+				<< "3. task 1 running" << endl
+				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl
+				<< "4. task 2 sitting up" << endl
+				<< "   Wednesday       11:00                                               1-4-2015" << endl
+				<< "________________________________________________________________________________" << endl;
+			
+			expectedDisplay = out.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+			
+			//phrase search
+			OperationCenter::executeInput("search sit");
+
+			actualDisplay = OperationCenter::getDisplay();
+			expectedDisplay;
+			ostringstream out2;
+			out2<< "1. task 2 sitting up" << endl
+				<< "   Wednesday       11:00                                               1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl;
+
+			expectedDisplay = out2.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+
+			//sentence search
+			OperationCenter::executeInput("search task 1 running");
+
+			actualDisplay = OperationCenter::getDisplay();
+			expectedDisplay;
+			ostringstream out3;
+			out3<< "1. task 1 running" << endl
+				<< "   Wednesday       11:00-12:00                                         1-4-2015" << endl 
+				<< "________________________________________________________________________________" << endl;
+				
+			expectedDisplay = out3.str();
+			Assert::AreEqual(expectedDisplay, actualDisplay);
+
+			//exception for search
+			OperationCenter::executeInput("search blabla");
+
+			actualResponse = OperationCenter::getResponse(); 
+			expectedResponse = "Oops, there is no matching task in your BlinkList\n";
+			Assert::AreEqual(expectedResponse, actualResponse);
+
+		}
+
+
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - Logger.cpp
+	 */
+
+
+#include "Commons.h"
+
+const char Logger::LOG_FILE_NAME[] = "log.txt";
+
+void Logger::logging(std::string inputMessage){
+	std::string directory = LOG_FILE_NAME;
+	writeLog.open(directory.c_str() , std::ofstream::app);
+	writeLog << inputMessage << '\n';
+}
+
+void Logger::deleteLogContent(){
+	std::string directory = LOG_FILE_NAME;
+	writeLog.open(directory.c_str() , std::ofstream::app);
+}
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - Logger.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMacro.cpp
+	 */
+
+
+#include "Commons.h"
+#include <assert.h>
+
+const char TimeMacro::MONDAY[] = "Monday";
+const char TimeMacro::TUESDAY[] = "Tuesday";
+const char TimeMacro::WEDNESDAY[] = "Wednesday";
+const char TimeMacro::THURSDAY[] = "Thursday";
+const char TimeMacro::FRIDAY[] = "Friday";
+const char TimeMacro::SATURDAY[] = "Saturday";
+const char TimeMacro::SUNDAY[] = "Sunday";
+const char TimeMacro::UNDEFINED[] = "undefined";
+const int TimeMacro::DEFAULT_TIME_MACRO_VALUE = 0;
+const int TimeMacro::MAX_MONTH_BOUNDARY = 12;
+const int TimeMacro::MAX_DATE_BOUNDARY = 31;
+const int TimeMacro::MAX_YEAR_BOUNDARY = 2100;
+const int TimeMacro::MIN_YEAR_BOUNDARY = 1900;
+
+std::string TimeMacro::getDay(){
+	return day;
+}
+
+int TimeMacro::getDate(){
+	return date;
+}
+
+int TimeMacro::getMonth(){
+	return month;
+}
+
+int TimeMacro::getYear(){
+	return year;
+}
+
+void TimeMacro::updateDay(std::string inDay){
+	assert (inDay == MONDAY || inDay == TUESDAY || 
+		inDay == WEDNESDAY || inDay == THURSDAY || 
+		inDay == FRIDAY || inDay == SATURDAY || 
+		inDay == SUNDAY || inDay == UNDEFINED);
+
+			day = inDay;
+}
+
+void TimeMacro::updateDate(int inDate){
+	assert (inDate >= DEFAULT_TIME_MACRO_VALUE && inDate <= MAX_DATE_BOUNDARY);
+		date = inDate;
+}
+
+void TimeMacro::updateMonth(int inMonth){
+	assert (inMonth >= DEFAULT_TIME_MACRO_VALUE && inMonth <= MAX_MONTH_BOUNDARY);
+		month = inMonth;
+}
+
+void TimeMacro::updateYear(int inYear){
+	assert (inYear > MIN_YEAR_BOUNDARY && inYear < MAX_YEAR_BOUNDARY || inYear == DEFAULT_TIME_MACRO_VALUE);
+		year = inYear;
+}
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMacro.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMicro.cpp
+	 */
+
+
+#include "Commons.h"
+#include <assert.h>
+
+const int TimeMicro::DEFAULT_TIME_MICRO_VALUE = -1;
+const int TimeMicro::MAX_HOUR_BOUNDARY = 24;
+const int TimeMicro::MIN_TIME_MICRO_BOUNDARY = 0;
+const int TimeMicro::MAX_MIN_BOUNDARY = 59;
+
+int TimeMicro::getHour(){
+	return hour;
+}
+
+int TimeMicro::getMin(){
+	return minute;
+}
+
+void TimeMicro::updateHour(int inHour){
+	assert (inHour >= MIN_TIME_MICRO_BOUNDARY && inHour <= MAX_HOUR_BOUNDARY || inHour == DEFAULT_TIME_MICRO_VALUE);
+		hour = inHour;
+		
+}
+
+void TimeMicro::updateMin(int inMin){
+	assert (inMin >= MIN_TIME_MICRO_BOUNDARY && inMin <= MAX_MIN_BOUNDARY || inMin == DEFAULT_TIME_MICRO_VALUE);
+		minute = inMin;
+}
+
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMicro.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\InternalStoring.h
+	 */
+
+
+#ifndef INTERNAL_STORING_H_
+#define INTERNAL_STORING_H_
+
+#include <iostream>
+#include <cstdio>
+#include <string>
+#include <vector>
+#include <iterator>
+#include <queue>
+#include <fstream>
+#include <sstream>
+#include "Commons.h"
+
+typedef enum ListType {command, feature, heading, path};
+typedef enum DisplayType {search, done, floating};
+typedef enum TimeType {begin, end, alarm};
+
+
+//acts as internal database
+//all data entry is recorded in this class
+//saving and loading is done into and from this class.
+//using singleton pattern
+class LocalStorage {
+private:
+	friend class LocalStoringUnitTest;
+
+	//Magic String declarations
+	//used in Storing - local.cpp
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+	static const char LOGGING_MESSAGE_4[100];
+	static const char LOGGING_MESSAGE_5[100];
+	static const char LOGGING_MESSAGE_6[100];
+	static const char LOGGING_MESSAGE_7[100];
+	static const char ADD[10];
+	static const char EDIT[10];
+	static const char DELETE_WORD[10];
+	static const char CLEAR[10];
+	static const int TIME_MICRO_DEFAULT;
+	static const int TIME_MACRO_DEFAULT;
+	static const int TIME_MICRO_ADJUSTMENT;
+	static const int NO_OF_DIGITS;
+	static const int LENGTH_OF_PSEDODATE;
+	static const int ZERO;
+	static const int TEN_THOUSAND;
+	static const int ONE_MILLION;
+	static const int HUNDRED_MILLION;
+	
+	//used in Storing - SaveLoad.cpp
+	static const char DEFAULT_SAVE_DIRECTORY[100];
+	static const char SLASH[10];
+	static const char TAB[10];
+	static const char TRUE_STRING[10];
+	static const char FALSE_STRING[10];
+	static const char EMPTY_STRING[10];
+
+	//Singleton instance and private constructor
+	static LocalStorage* instance;
+	LocalStorage () {}
+
+	//Private Attribute
+	std::vector<Data> dataList;
+	int uniqueCodeStore;
+	std::string pathName;
+	
+	//Helper Methods for internal working in Storing - Local.cpp
+	std::vector<Data> deleteDataOfUniqueCode(int uniqueCode);
+	long long allocateTimeMacroToPsedoDate(TimeMacro time);
+	long long allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro);
+	std::vector<long long> searchRelevantDates(long long pStartTime, long long pEndTime);
+	void sortDataList();
+	int allocateUniqueCode(int& uniqueCodeStore);
+	void allocatePsedoDate();
+	void radixDistribute(std::queue<Data> digitQ[], int power);
+	void radixCollect(std::queue<Data> digitQ[]);
+	Data getData(int uniqueNo);
+	Data updateData(Data dataToEdit, Data updatedData);
+	void checkTaskNoValidity(int taskNo);
+
+	//Helper methods for internal working in Storing - SaveLoad.cpp
+	void writeHeading (std::string fileName, std::ofstream& out);
+	void parseLoad(std::string strData, int i, Data& data);
+	std::string tokenizerSlash(std::string& str);
+	std::string tokenizerSpace(std::string& str);
+	TimeMacro macroParser(std::string tempMacro);
+	TimeMicro microParser(std::string tempMicro);
+	std::string convertTimeMacroToString(TimeType type, int i);
+	std::string convertTimeMicroToString(TimeType type, int i);
+	void adjustFormat(std::string& inputDirectory);
+	std::string getPathName();
+
+
+public: 
+	//get instance for singleton pattern
+	static LocalStorage* getInstance();
+	
+	//API for DisplayStorage in Storing - Local.cpp
+	std::vector<long long> searchPeriod(TimeMacro startTime, TimeMacro endTime);
+
+	//API for PrewrittenData in Storing - SaveLoad.cpp
+	void setPathName(std::string inPathName);
+
+	//API for Facade Class in Storing - Local.cpp
+	void addData(Data& inData);	
+	Data deleteData(int taskNo);
+	Data editData(int taskNo, Data updatedData);
+	void clearDataList();
+	void undoAdd();
+	std::vector<Data>& getDataList();
+	
+	//API for Facade Class in Storing - SaveLoad.cpp
+	bool saveData(std::string directory);
+	void loadData(bool& status, std::string directory);
+	bool directoryCheck(std::ofstream& out, std::string directory);
+	std::string checkPathName();
+	void firstSave();
+
+};
+
+
+//an internal storage 
+//for storing latest data.
+//Singleton method was tried
+//but was not implemented
+//as it caused unsolvable bug
+class History {
+private:
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+
+	//private attribute
+	static std::string latestCommand;
+	static Data latestData;
+	static std::vector<Data> latestVector;
+
+public:
+	//API for facade class
+	static std::string getLatestCommand();
+	static Data getLatestData();
+	static std::vector<Data>& getLatestVector();
+	static void updateLatestCommand(std::string inCommand);
+	static void updateLatestData(Data inData);
+	static void updateLatestVector();
+
+};
+
+
+
+
+//container to store list to be displayed
+//using singleton pattern
+class DisplayStorage {
+private:
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char DEFAULT_DESCRIPTION[10];
+	static const int MAX_DISPLAY_FLOATING;
+	static const int MAX_DISPLAY_TIMED;
+
+	//instance and private constructor for singleton pattern
+	static DisplayStorage* instance;
+	DisplayStorage() {}
+
+	//private attribute
+	std::vector<Data> displayList;
+	
+	//Helper Method for internal working
+	void updateTaskNo();
+	void displaySearch(std::vector<Data> tempList, std::string keyword);
+	void displayFloat(std::vector<Data> tempList);
+	void displayDone(std::vector<Data> tempList);
+	void enterDataToList(std::vector<long long> timePeriod);
+	std::vector<Data> getListFromLocal();
+	void checkTaskNoValidity(int taskNo);
+	void displayDoneFloating(std::vector<Data> tempList);
+	void displayDoneTimed(std::vector<Data> tempList);
+
+public:
+	//getInstance for singleton pattern
+	static DisplayStorage* getInstance();
+
+	//API for facade Class
+	std::vector<Data>& getDisplayList(TimeMacro startTime, TimeMacro endTime);
+	std::vector<Data>& getDisplayList(DisplayType type, std::string= "");
+	void clearList();
+	Data getData(int taskNo);
+
+	//API for LocalStorage
+	int getUniqueCode(int taskNo);
+	int getListSize();
+};
+
+
+
+
+
+//to retrieve data from prewritten .txt files
+class PrewrittenData {
+private:
+	static const char ALL_COMMANDS_FILE[100];
+	static const char ALL_FEATURES_FILE[100];
+	static const char HEADING_TEMPLATE_FILE[100];
+	static const char PATH_FILE[100];
+	static const char LOGGING_MESSAGE_1[100];
+	static const char LOGGING_MESSAGE_2[100];
+	static const char LOGGING_MESSAGE_3[100];
+	static const char DIRECTORY_FILE[100];
+
+	std::string retrievedList;
+	std::string txtFile;
+
+	//helper method
+	std::string determineListType(ListType type);
+
+public:
+	PrewrittenData() {}
+
+	//API for facade class
+	std::string retrieveList(ListType type);
+	void retrieveList(ListType type, std::ofstream& out);
+	void savePath(std::string inPath);
+};
+
+
+
+#endif
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\InternalStoring.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Display.cpp
+	 */
+
+
+#include "InternalStoring.h"
+
+//magic string definition
+const char DisplayStorage::LOGGING_MESSAGE_1[] = "Exception is caught in DisplayStorage";
+const char DisplayStorage::LOGGING_MESSAGE_2[] = "Exception is thrown from DisplayStorage";
+const char DisplayStorage::DEFAULT_DESCRIPTION[] = "undefined";
+const int DisplayStorage::MAX_DISPLAY_FLOATING = 10;
+const int DisplayStorage::MAX_DISPLAY_TIMED = 50;
+
+///////////////////////////////////////
+//Singleton Definition / Implementation
+
+DisplayStorage* DisplayStorage::instance = NULL;
+
+DisplayStorage* DisplayStorage::getInstance(){
+	if(instance == NULL){
+		instance = new DisplayStorage;
+	}
+	return instance;
+}
+
+
+//End of Definition
+///////////////////////////////////////
+
+
+//get display list method for a time frame
+std::vector<Data>& DisplayStorage::getDisplayList(TimeMacro startTime, TimeMacro endTime){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	
+	std::vector<long long> timePeriod;
+	timePeriod = localStorage->searchPeriod(startTime,endTime);
+	
+	if(!timePeriod.empty()){
+		enterDataToList(timePeriod);
+		updateTaskNo();
+	}
+	return displayList;
+}
+
+
+
+//get display list method for specific purpose (defined in DisplayType)
+std::vector<Data>& DisplayStorage::getDisplayList(DisplayType type, std::string keyword){
+	std::vector<Data> tempList = getListFromLocal();
+	
+	switch (type){
+	case search:
+		displaySearch(tempList, keyword);		
+		break;
+	
+	case done:
+		displayDone(tempList);
+		break;
+
+	case floating:
+		displayFloat(tempList);
+		break;
+	}
+	
+	updateTaskNo();
+	
+	return displayList;
+}
+
+void DisplayStorage::clearList(){
+	displayList.clear();
+}
+
+// !!unit testing done
+//getting Data from the displayList taskNo
+Data DisplayStorage::getData(int taskNo){
+	Data desiredTask;
+	try{
+		checkTaskNoValidity(taskNo);
+	}
+	catch(int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_2);
+		throw errorNo;
+	}
+	desiredTask = displayList[taskNo-1];
+	return desiredTask;
+}
+
+void DisplayStorage::checkTaskNoValidity(int taskNo){
+	int listSize = displayList.size();
+	if (taskNo <= 0 || taskNo > listSize){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		throw 1;
+	}
+}
+// !! unit test done
+//API DataBase to get unique code of the data
+int DisplayStorage::getUniqueCode(int taskNo){
+	Data desiredTask = displayList[taskNo-1];
+	return desiredTask.getUniqueCode();
+}
+
+int DisplayStorage::getListSize(){
+	return displayList.size();
+}
+
+
+//////////////////////////////////
+// Start of Internal Helper methods
+
+//helper method to get dataList from LocalStorage
+std::vector<Data> DisplayStorage::getListFromLocal(){
+	LocalStorage *localStorage;
+	localStorage = LocalStorage::getInstance();
+	std::vector<Data> tempList = localStorage->getDataList();
+	return tempList;
+}
+
+
+//helper method for getDisplayList()
+//to update all taskNo in displayList vector
+void DisplayStorage::enterDataToList(std::vector<long long> timePeriod){
+	int endT;
+	int startT;
+	
+	std::vector<Data> tempList = getListFromLocal();
+
+	if(timePeriod.size() == 1){
+		endT = startT = timePeriod[0];
+	} else {
+		endT = timePeriod[1];
+		startT = timePeriod[0];
+	}
+	
+	for (int i = startT; i <= endT; i++){
+		//if task is not done
+		if(tempList[i].getCompleteStatus()==false){
+			displayList.push_back(tempList[i]);
+		}
+	}
+}
+
+//update taskNo for tasks in displayList
+void DisplayStorage::updateTaskNo(){
+	int trackNo=1;
+		
+	for(int i = 0; i != displayList.size(); i++){
+		displayList[i].updateTaskNo(trackNo);
+		trackNo++;
+	}
+}
+
+//get all relevant tasks for dataList
+//transfer to displayList
+void DisplayStorage::displaySearch(std::vector<Data> tempList, std::string keyword){
+	std::string taskDescription;
+	size_t found;
+
+	for(int i = 0; i != tempList.size(); i++){
+		taskDescription = tempList[i].getDesc();
+		found = taskDescription.find(keyword);
+		if(found != std::string::npos){
+			displayList.push_back(tempList[i]);
+		}
+	}
+}
+
+//get all completed tasks from dataList
+//transfer to displayList
+//displaying only the latest 10 floating tasks
+//and latest 50 timed tasks
+void DisplayStorage::displayDone(std::vector<Data> tempList){
+	displayDoneFloating(tempList);
+	displayDoneTimed(tempList);
+}
+
+//helper method for displayDone
+//to input the latest 10 floating tasks
+void DisplayStorage::displayDoneFloating(std::vector<Data> tempList){
+	int iter1=tempList.size()-1;
+	int iter2=0;
+
+	//for displaying first 10 floating tasks
+	while (iter1 != -1 && iter2 < MAX_DISPLAY_FLOATING){
+		// if 'day' is not specified, implying task in floating
+		if(tempList[iter1].getTimeMacroBeg().getDay() == DEFAULT_DESCRIPTION){
+			if(tempList[iter1].getCompleteStatus() == true){
+				displayList.push_back(tempList[iter1]);
+				iter2++;
+			}
+		}
+		iter1--;
+	}
+}
+
+//helper method for displayDone
+//to input latest 50 timed tasks
+void DisplayStorage::displayDoneTimed(std::vector<Data> tempList){
+	int iter1=tempList.size()-1;
+	int iter2=0;
+
+	//for displaying first 50 timed tasks
+	while (iter1 != -1 && iter2 < MAX_DISPLAY_TIMED){
+		if(tempList[iter1].getCompleteStatus() == true){
+			displayList.push_back(tempList[iter1]);
+			iter2++;
+		}
+		iter1--;
+	}
+}
+
+//get all floating tasks from dataList
+//transfer to displayList
+void DisplayStorage::displayFloat(std::vector<Data> tempList){
+	for(int i = 0; i != tempList.size(); i++){
+
+		// if 'day' is not specified, implying task in floating
+		if(tempList[i].getTimeMacroBeg().getDay() == DEFAULT_DESCRIPTION){
+
+			//input to list if task is not done
+			if(tempList[i].getCompleteStatus() == false){
+				displayList.push_back(tempList[i]);
+			}
+		}
+	}
+}
+
+//End of Internal Helper methods
+////////////////////////////////
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Display.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Facade.cpp
+	 */
+
+
+#include "Storing.h"
+
+//go into specific methods implementation
+//in different classes
+//for explanation on methods
+
+//magic string definition
+const char Storing::LOGGING_MESSAGE_1[] = "Exception is caught in Storing (facade) Class";
+const char Storing::LOGGING_MESSAGE_2[] = "Exception is thrown from Storing (facade) Class";
+const char Storing::ERROR_MESSAGE_1[] = "Please enter a valid task number. \n";
+const char Storing::ERROR_MESSAGE_2[] = "Data could not be found. \n";
+const char Storing::ERROR_MESSAGE_3[] = "Exception of unknown type is caught. \n"; 
+
+void Storing::addData(Data& inData){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->addData(inData);
+}
+
+Data Storing::deleteData(int taskNo){
+	try{
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->deleteData(taskNo);
+	}
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		handleException(errorNo);
+	}
+}
+
+Data Storing::changeData(int taskNo, Data& inData){
+	try{
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	return localStorage->editData(taskNo, inData);
+	}
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		handleException(errorNo);
+	}
+}
+
+void Storing::clearDataList(){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->clearDataList();
+}
+
+void Storing::undoAdd(){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->undoAdd();
+}
+
+
+std::string Storing::retrieveCommandList(){
+	try{
+		PrewrittenData prewrittenData;
+		return prewrittenData.retrieveList(command);
+	} 
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		handleException(errorNo);
+	}
+}
+
+std::string Storing::retrieveFeatureList(){
+	try{
+		PrewrittenData prewrittenData;
+		return prewrittenData.retrieveList(feature);
+	} 
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		handleException(errorNo);
+	}
+}
+
+bool Storing::findPathName(){
+	std::string pathName;
+	PrewrittenData prewrittenData;
+	LocalStorage *localStorage = LocalStorage::getInstance();
+
+	try {
+		pathName = prewrittenData.retrieveList(path); //return exception when not found
+		adjustRetrievedPath(pathName);
+	} 
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		handleException(errorNo);
+	}
+
+	localStorage->setPathName(pathName); // store path locally
+	return true;
+}
+
+//private method
+//adjusting pathName from retrieved file
+//by deleting newline
+void Storing::adjustRetrievedPath(std::string& pathName){
+	pathName = pathName.substr(0,pathName.size()-1);
+}
+
+bool Storing::saveUserPathName(std::string userPathName){
+	bool status;
+	std::ofstream out;
+
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	localStorage->firstSave(); //set up for first time saving
+	status = localStorage->directoryCheck(out, userPathName); //return validity of directory given by user
+	
+	PrewrittenData prewrittenData;
+	if(status == true){
+		prewrittenData.savePath(userPathName); //save path in path.txt
+		localStorage->setPathName(userPathName); // store path locally
+	}
+	return status;
+}
+
+void Storing::loadData(bool& status, std::string directory){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	directory = localStorage->checkPathName(); //check whether there's path stored
+	localStorage->loadData(status, directory);
+}
+
+bool Storing::saveData(std::string directory){
+	LocalStorage *localStorage = LocalStorage::getInstance();
+	directory = localStorage->checkPathName(); //check whether there's path stored
+	return localStorage->saveData(directory);
+}
+
+
+
+
+std::string Storing::getLatestCommand(){
+	return History::getLatestCommand();
+}
+
+Data Storing::getLatestData(){
+	return History::getLatestData();
+}
+
+std::vector<Data>& Storing::getLatestVector(){
+	return History::getLatestVector();
+}
+
+
+Data Storing::getData(int taskNo){
+	try{
+		DisplayStorage *display = DisplayStorage::getInstance();
+		return display->getData(taskNo);
+	}
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		handleException(errorNo);
+	}
+}
+
+std::vector<Data>& Storing::display(TimeMacro tBegin, TimeMacro tEnd){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(tBegin, tEnd);
+}
+
+std::vector<Data>& Storing::displaySearch(std::string word){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(search, word);
+}
+
+std::vector<Data>& Storing::displayDone(){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(done);
+}
+
+std::vector<Data>& Storing::displayfloat(){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->getDisplayList(floating);
+}
+
+void Storing::clearDisplayList(){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	return display->clearList();
+}
+
+void Storing::handleException(int errorNo){
+	std::string errorMessage;
+	Logger log;
+	log.logging(LOGGING_MESSAGE_2);
+
+	switch (errorNo){
+	case 1:
+		errorMessage = ERROR_MESSAGE_1;
+		throw errorMessage;
+	case 2:
+		errorMessage = ERROR_MESSAGE_2;
+		throw errorMessage;
+
+	}
+
+}
+
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Facade.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - History.cpp
+	 */
+
+
+#include "InternalStoring.h"
+
+/////////////////////////////////////////////
+//Definition of static attributes
+
+std::string History::latestCommand;
+Data History::latestData;
+std::vector<Data> History::latestVector;
+
+//magic string definition
+const char History::LOGGING_MESSAGE_1[] = "latestCommand is update";
+const char History::LOGGING_MESSAGE_2[] = "latestData is updated";
+const char History::LOGGING_MESSAGE_3[] = "latestVector is updated";
+
+//End of Definition
+////////////////////////////////////////////
+
+
+std::string History::getLatestCommand(){
+	return latestCommand;
+}
+
+Data History::getLatestData(){
+	return latestData;
+}
+
+std::vector<Data>& History::getLatestVector(){
+	return latestVector;
+}
+
+
+
+
+void History::updateLatestCommand(std::string inCommand){
+	latestCommand = inCommand;
+	Logger log;
+	log.logging("latestCommand is updated"); // write in log
+}
+
+void History::updateLatestData(Data inData){
+	latestData = inData;
+	Logger log;
+	log.logging("latestData is updated"); //write in log
+}
+
+void History::updateLatestVector(){
+	latestVector.clear(); //clear the container
+	LocalStorage *localStorage;
+	localStorage = LocalStorage::getInstance();
+
+	latestVector = localStorage->getDataList();
+	
+	Logger log;
+	log.logging("latestVector is updated"); //write in log
+}
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - History.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Local.cpp
+	 */
+
+
+#include "InternalStoring.h"
+
+//Magic string definition
+const char LocalStorage::LOGGING_MESSAGE_1[] = "Exception is caught in LocalStorage Class";
+const char LocalStorage::LOGGING_MESSAGE_2[] = "Exception is thrown from LocalStorage Class";
+const char LocalStorage::LOGGING_MESSAGE_3[] = "LocalStorage is initiated";
+const char LocalStorage::LOGGING_MESSAGE_4[] = "Adding data in storage is succesful";
+const char LocalStorage::LOGGING_MESSAGE_5[] = "Editing data in storage is succesful";
+const char LocalStorage::LOGGING_MESSAGE_6[] = "Clearing data in storage is succesful";
+const char LocalStorage::LOGGING_MESSAGE_7[] = "Deleting data in storage is succesful";
+const char LocalStorage::ADD[] = "add";
+const char LocalStorage::EDIT[] = "edit";
+const char LocalStorage::DELETE_WORD[] = "delete";
+const char LocalStorage::CLEAR[] = "clear";
+const int LocalStorage::TIME_MICRO_DEFAULT = -1;
+const int LocalStorage::TIME_MACRO_DEFAULT = 0;
+const int LocalStorage::TIME_MICRO_ADJUSTMENT = 2359;
+const int LocalStorage::NO_OF_DIGITS = 10;
+const int LocalStorage::LENGTH_OF_PSEDODATE =8;
+const int LocalStorage::ZERO = 0;
+const int LocalStorage::TEN_THOUSAND = 10000;
+const int LocalStorage::ONE_MILLION = 1000000;
+const int LocalStorage::HUNDRED_MILLION = 100000000;
+
+///////////////////////////////////////
+//Singleton Definition / Implementation
+
+LocalStorage* LocalStorage::instance = NULL;
+
+LocalStorage* LocalStorage::getInstance(){
+	if(instance == NULL){
+		instance = new LocalStorage;
+
+		Logger log;
+		log.logging(LOGGING_MESSAGE_3); //write in log
+	}
+	return instance;
+}
+
+
+//End of Singleton Definition
+///////////////////////////////////////
+
+
+
+///////////////////////////////
+//API implementation
+
+//API for DisplayStorage
+//to search for two dates from a specific period
+std::vector<long long> LocalStorage::searchPeriod(TimeMacro startTime, TimeMacro endTime){
+	allocatePsedoDate(); //allocating psedoDate to ensure all data have psedoDates
+
+	//allocate startTime & endTime into psedoDate format
+	long long pStartTime = allocateTimeMacroToPsedoDate(startTime);
+	long long pEndTime = allocateTimeMacroToPsedoDate(endTime);
+
+	return searchRelevantDates(pStartTime,pEndTime);
+}
+
+//return the list containing all tasks
+//in internal storage
+std::vector<Data>& LocalStorage::getDataList() {
+	return dataList;
+}
+
+//clearing all tasks from internal storage
+void LocalStorage::clearDataList(){
+	History::updateLatestCommand(CLEAR); //store for undo
+	History::updateLatestVector();
+	dataList.clear();
+
+	Logger log;
+	log.logging(LOGGING_MESSAGE_6); //log a message
+}
+
+//for add command to update the dataList
+//it allocates uniqueCode into Data
+//and also automaticallly sort dataList
+void LocalStorage::addData(Data& inData){
+	Logger log;
+	log.logging(LOGGING_MESSAGE_4); //log a message
+
+	int uniqueNo = allocateUniqueCode(uniqueCodeStore); //get unique code
+	inData.updateUniqueCode(uniqueNo);// assign unique code to Data
+	
+	dataList.push_back(inData);
+	sortDataList(); //automatic sorting of list chronologically
+
+	History::updateLatestCommand(ADD); //store for undo
+	History::updateLatestData(inData);
+}
+
+
+//method for delete command
+//input the taskno of the display list to be deleted
+Data LocalStorage::deleteData(int taskNo){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	try{
+		checkTaskNoValidity(taskNo);
+	}
+	catch(int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		throw errorNo; 
+	}
+
+	int uniqueCode = display->getUniqueCode(taskNo);
+	dataList = deleteDataOfUniqueCode(uniqueCode);
+
+	History::updateLatestCommand(DELETE_WORD); //store for undo
+	Logger log;
+	log.logging(LOGGING_MESSAGE_7);
+	return display->getData(taskNo);
+}
+
+//API to help undo add
+void LocalStorage::undoAdd(){
+	int uniqueCode;
+	uniqueCode = History::getLatestData().getUniqueCode();
+
+	dataList = deleteDataOfUniqueCode(uniqueCode);
+}
+
+
+
+//method for edit command
+//input the taskno of the displayList and the updatedData
+//return Data that was edited
+Data LocalStorage::editData(int taskNo, Data updatedData){
+	History::updateLatestVector(); //Store for undo
+	DisplayStorage *display = DisplayStorage::getInstance();
+
+	try{
+		checkTaskNoValidity(taskNo);
+
+	}
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_2);
+		throw errorNo;
+	}
+
+	int uniqueNo = display->getUniqueCode(taskNo);
+	Data dataToEdit = getData(uniqueNo);
+
+	dataToEdit = updateData(dataToEdit, updatedData);
+
+	deleteData(taskNo);
+	addData(dataToEdit);
+
+	History::updateLatestCommand(EDIT); //Store for undo
+	Logger log;
+	log.logging(LOGGING_MESSAGE_5);
+	
+	return display->getData(taskNo);
+}
+
+
+//End of API implementation
+////////////////////////////////////
+
+/////////////////////////////////////
+//Helper methods for internal working
+
+//helper method for deleteData and editData
+//check whether input no is within the boundary
+//throw exception otherwise
+void LocalStorage::checkTaskNoValidity(int taskNo){
+	DisplayStorage *display = DisplayStorage::getInstance();
+	int listSize = display->getListSize();
+
+	if(taskNo <= ZERO || taskNo > listSize){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_2);
+		throw 1;
+	} 
+}
+
+//helper method for undoAdd and deleteData
+//delete data that have a certain unique code
+std::vector<Data> LocalStorage::deleteDataOfUniqueCode(int uniqueCode){
+	std::vector<Data> listAfterDeletion;
+	for(int i = ZERO; i != dataList.size(); i++){
+		if(uniqueCode != dataList[i].getUniqueCode()){
+				listAfterDeletion.push_back(dataList[i]);
+		} else {
+			History::updateLatestData(dataList[i]); //store for undo
+		}
+	}
+	return listAfterDeletion;
+}
+
+
+//helper method for searchPeriod
+//to change time type
+//from TimeMacro to psedoDate
+long long LocalStorage::allocateTimeMacroToPsedoDate(TimeMacro time){
+	long long pTime;
+	long long tempMonth;
+	long long tempDate = TEN_THOUSAND;
+
+	//Allocate all components systematically to pTime
+	//addition is done slowly to prevent memory loss
+	//from changing type;
+	pTime= HUNDRED_MILLION;
+	pTime= time.getYear()*pTime;
+	tempMonth = ONE_MILLION;
+	tempMonth = tempMonth * time.getMonth();
+	pTime = pTime + tempMonth;
+	tempDate = tempDate * time.getDate();
+	pTime = pTime + tempDate;
+
+	return pTime;
+}
+
+//allocate TimeMicro in addition of TimeMacro to psedodate
+long long LocalStorage::allocateTimeMicroToPsedoDate(long long time, TimeMicro tMicro){
+	//extract HH/MM
+	int hour = tMicro.getHour();
+	int min = tMicro.getMin();
+
+	//qualify default hour
+	if(hour == TIME_MICRO_DEFAULT){
+		hour = ZERO;
+		}
+	
+	//qualify default min
+	if(min == TIME_MICRO_DEFAULT){
+		min =ZERO;
+	}
+
+	time += hour*100 + min; //update psedoData
+
+	return time;
+}
+
+//helper method for searchPeriod
+//to look for relevant dates
+std::vector<long long> LocalStorage::searchRelevantDates(long long pStartTime, long long pEndTime){
+	std::vector<long long> saveNo;
+	bool marker = false;
+	long long time;
+	Data copyTask;
+
+	//find first relevant date
+	for(int i = ZERO; marker == false && i != dataList.size(); i++){
+		copyTask = dataList[i];
+		time = copyTask.getPsedoDate();
+		if(time >= pStartTime && time <= pEndTime + TIME_MICRO_ADJUSTMENT){
+			marker = true;
+			saveNo.push_back(i);
+		}
+	}
+
+	//find last relevant date
+	for(int i = dataList.size()-1; marker == true && i != ZERO; i--){
+		if(dataList[i].getPsedoDate() <= pEndTime + TIME_MICRO_ADJUSTMENT ) {
+			marker = false;
+			saveNo.push_back(i);
+		}
+	}
+	return saveNo;
+}
+
+//helper method for deleteData and editData
+Data LocalStorage::getData(int uniqueNo){
+	Data desiredTask;
+	for(int i = ZERO; i != dataList.size(); i++){
+		if(dataList[i].getUniqueCode() == uniqueNo){
+			desiredTask = dataList[i];
+		}
+	}
+	return desiredTask;
+}
+
+
+
+// !! unit testing done
+//allocate uniqueCode to each Data
+int LocalStorage::allocateUniqueCode(int& uniqueNo){
+	uniqueNo++;
+	return uniqueNo;
+}
+
+
+//sorting dataList for maintenance
+//use radix sorting algorithm
+void LocalStorage::sortDataList(){
+	int i;
+	int power = 1;
+	std::queue<Data> digitQueue[NO_OF_DIGITS];
+	
+	allocatePsedoDate();
+
+	for (i=0; i < LENGTH_OF_PSEDODATE; i++) {
+		radixDistribute(digitQueue, power);
+		radixCollect(digitQueue);
+		power *= NO_OF_DIGITS;
+	}
+
+}
+
+//helper method for radix sort
+//organise items into groups using digit indicated by the power
+void LocalStorage::radixDistribute(std::queue<Data> digitQ[], int power){
+	int digit;
+
+	for(int i = 0; i != dataList.size(); i++){
+		long long sDate = dataList[i].getPsedoDate();
+		digit = (sDate / power ) % NO_OF_DIGITS; //extract digit
+		digitQ[digit].push(dataList[i]);
+
+	}
+}
+
+//helper method for radix sort
+//put Data back into dataList
+void LocalStorage::radixCollect(std::queue<Data> digitQ[]){
+	int digit;
+	int i=0;
+
+	for(digit = 0 ; digit < NO_OF_DIGITS; digit++){
+		while (!digitQ[digit].empty()) {
+			dataList[i] = digitQ[digit].front();
+			digitQ[digit].pop();
+	
+			i++;
+		}
+	}
+}
+
+//allocate psedoDate for all Data in dataList
+//for sorting purposes
+void LocalStorage::allocatePsedoDate(){
+	int i=0;
+	long long pDate;
+
+	while(i != dataList.size()){
+		TimeMacro tMacro = dataList[i].getTimeMacroBeg();
+		pDate = allocateTimeMacroToPsedoDate(tMacro);
+				
+		TimeMicro tMicro = dataList[i].getTimeMicroBeg();
+		pDate = allocateTimeMicroToPsedoDate(pDate, tMicro);
+
+		dataList[i].updatePsedoDate(pDate);
+		
+		i++;
+	}
+}
+
+//helper method for edit Data
+//go through Data components
+//to change what needed
+Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
+	//update description when there is a change
+	if (!updatedData.getDesc().empty()){
+		dataToEdit.updateDesc(updatedData.getDesc());
+	}
+
+	//update TimeMacro begin when there is a change
+	if (updatedData.getTimeMacroBeg().getDate() != TIME_MACRO_DEFAULT 
+		&& updatedData.getTimeMacroBeg().getMonth() != TIME_MACRO_DEFAULT
+		&& updatedData.getTimeMacroBeg().getYear() != 0) {
+			dataToEdit.updateTimeMacroBeg(updatedData.getTimeMacroBeg());
+	}
+
+	//Not used in current version as not supported by other components
+	//update TimeMacro End when there is a change
+	if (updatedData.getTimeMacroEnd().getDate() != TIME_MACRO_DEFAULT 
+		&& updatedData.getTimeMacroEnd().getMonth() != TIME_MACRO_DEFAULT
+		&& updatedData.getTimeMacroEnd().getYear() != TIME_MACRO_DEFAULT) {
+			dataToEdit.updateTimeMacroEnd(updatedData.getTimeMacroEnd());
+	}
+
+	//update TimeMicro begin when there is a change
+	if (updatedData.getTimeMicroBeg().getHour() != TIME_MICRO_DEFAULT
+		&& updatedData.getTimeMicroBeg().getMin() != TIME_MICRO_DEFAULT) {
+			dataToEdit.updateTimeMicroBeg(updatedData.getTimeMicroBeg());
+			dataToEdit.updateTimeMicroEnd(updatedData.getTimeMicroEnd());
+	}
+
+	//Not used in current version as not supported by other components
+	//update AlarmMacro when there is a change
+	//alarm is not a supported feature of the software at submission time
+	if (updatedData.getAlarmMacro().getDate() != TIME_MACRO_DEFAULT 
+		&& updatedData.getAlarmMacro().getMonth() != TIME_MACRO_DEFAULT
+		&& updatedData.getAlarmMacro().getYear() != TIME_MACRO_DEFAULT) {
+			dataToEdit.updateAlarmMacro(updatedData.getAlarmMacro());
+	}
+	
+	//Not used in current version as not supported by other components
+	//update AlarmMicro when there is a change
+	//alarm is not a supported feature of the software at submission time
+	if (updatedData.getAlarmMicro().getHour() != TIME_MICRO_DEFAULT
+		&& updatedData.getAlarmMicro().getMin() != TIME_MICRO_DEFAULT) {
+			dataToEdit.updateAlarmMicro(updatedData.getAlarmMicro());
+	}
+
+	//update complete status when there is a change
+	if (updatedData.getCompleteStatus() != dataToEdit.getCompleteStatus()){
+		dataToEdit.updateCompleteStatus(updatedData.getCompleteStatus());
+	}
+	return dataToEdit;
+}
+//End of Helper Methods for internal working
+////////////////////////////////////////////
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Local.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - PrewrittenData.cpp
+	 */
+
+
+#include "InternalStoring.h"
+
+//magic string definition
+const char PrewrittenData::ALL_COMMANDS_FILE[] = "all_commands.txt";
+const char PrewrittenData::ALL_FEATURES_FILE[] = "all_features.txt";
+const char PrewrittenData::HEADING_TEMPLATE_FILE[] = "heading_template.txt";
+const char PrewrittenData::PATH_FILE[] = "path.txt";
+const char PrewrittenData::LOGGING_MESSAGE_1[] = "Exception is caught in PrewrittenData Class";
+const char PrewrittenData::LOGGING_MESSAGE_2[] = "Exception is thrown from PrewrittenData Class";
+const char PrewrittenData::LOGGING_MESSAGE_3[] = "Heading for storage could not be found";
+const char PrewrittenData::DIRECTORY_FILE[] = "path.txt";
+
+//saving user's path in path.txt
+void PrewrittenData::savePath(std::string inPath){
+	std::string directory = DIRECTORY_FILE;
+	std::ofstream out;
+	out.open(directory.c_str());
+
+	out << inPath; // store in path.txt
+}
+
+
+//API for Retrieve list from various .txt file
+std::string PrewrittenData::retrieveList(ListType type){
+	std::stringstream ss;
+	txtFile = determineListType(type);
+	std::ifstream in(txtFile);
+	
+	try{
+		//if file exists
+		if (in){
+			while (getline(in,retrievedList)){
+				ss << retrievedList << std::endl;
+			} 
+		} else {
+			Logger log;
+			log.logging(LOGGING_MESSAGE_2);// log exception
+			throw 2; 
+		}
+	} 
+	catch (int errorNo){
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1); //log exception
+		throw errorNo;
+	}
+	
+	retrievedList = ss.str();
+	return retrievedList;
+}
+
+//retrieve list method specially for writing heading
+void PrewrittenData::retrieveList(ListType type, std::ofstream& out){	
+	txtFile = determineListType(type);
+
+	std::ifstream in(txtFile);
+	
+	//if file exists
+	if (in){
+		while (getline(in,retrievedList)){
+			out << retrievedList << std::endl;
+		} 
+	} else {
+		Logger log;
+		log.logging(LOGGING_MESSAGE_3); //log exception
+	}
+}
+
+//helper method to determine list type
+//directly setting .txt file based on type
+std::string PrewrittenData::determineListType(ListType type){
+	switch(type){
+	case command:
+		txtFile = ALL_COMMANDS_FILE;
+		break;
+	case feature:
+		txtFile = ALL_FEATURES_FILE;
+		break;
+	case heading:
+		txtFile = HEADING_TEMPLATE_FILE;
+		break;
+	case path:
+		txtFile = PATH_FILE;
+		break;
+	}
+	
+	return txtFile;
+}
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - PrewrittenData.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - SaveLoad.cpp
+	 */
+
+
+#include "InternalStoring.h"
+
+//Implementation of LocalStorage class
+//for saving and loading methods
+//.cpp file is separated from Storing - Local.cpp
+//to allow for more room
+
+//magic string definition
+const char LocalStorage::DEFAULT_SAVE_DIRECTORY[] = "save.txt";
+const char LocalStorage::SLASH[] = "/";
+const char LocalStorage::TAB[] = "\t";
+const char LocalStorage::TRUE_STRING[] = "true";
+const char LocalStorage::FALSE_STRING[] = "false";
+const char LocalStorage::EMPTY_STRING[] = "";
+
+//checking if pathName exist locally
+std::string LocalStorage::checkPathName(){
+	std::string directory;
+	if (getPathName() != EMPTY_STRING){
+		directory = getPathName();
+		return directory;
+	} else {
+		return EMPTY_STRING;
+	}
+}
+
+//API for PrewrittenData
+void LocalStorage::setPathName(std::string inPathName){
+	pathName = inPathName;
+}
+
+//API for loading Data from txt file
+void LocalStorage::loadData(bool& status, std::string directory){
+	adjustFormat(directory);
+	
+	std::ifstream in(directory);
+	//if file exists
+	if (in){
+
+		std::string strUnique;
+		getline(in,strUnique);
+		std::stringstream streamUnique;
+		int uniqueNo;
+
+		streamUnique << strUnique;
+		streamUnique >> uniqueNo;
+		uniqueCodeStore = uniqueNo;
+
+		//throw away Heading
+		std::string temp;
+		getline(in,temp);
+
+		std::string strData;
+		int i=0; //iterator for vector
+		Data data;
+
+		while(getline(in,strData)){
+			parseLoad(strData, i, data);
+			dataList.push_back(data);
+			i++;
+			} 
+		
+		status = true; //tell command file exist to display
+
+		} else {
+			uniqueCodeStore = 0;
+			status = false;
+	}
+}
+
+void LocalStorage::firstSave(){
+	uniqueCodeStore = 0;
+}
+
+//check whether user input directory exists
+bool LocalStorage::directoryCheck(std::ofstream& out, std::string directory){
+	adjustFormat(directory);
+
+	out.open(directory.c_str());
+
+	try{
+		if(!out.is_open()){
+			Logger log;
+			log.logging(LOGGING_MESSAGE_2);
+			throw false;
+		} else {
+			return true;
+		}
+	}
+	catch (const bool status) {
+		Logger log;
+		log.logging(LOGGING_MESSAGE_1);
+		return status;
+	}
+}
+
+
+//API for saving data into file
+bool LocalStorage::saveData(std::string directory){
+	std::ofstream out;
+	bool status;
+	status = directoryCheck(out, directory);
+	adjustFormat(directory);
+
+	if(status){
+		out << uniqueCodeStore << std::endl;
+ 		 	
+		writeHeading(directory, out); //write Heading for readability
+
+		//converting Time type to string 
+		//according different types
+		for(int i=0; i != dataList.size(); i++){
+			std::string tMacroBeg = convertTimeMacroToString(begin, i);
+			std::string tMacroEnd = convertTimeMacroToString(end, i);
+			std::string alarmMacro = convertTimeMacroToString(alarm, i);
+
+			std::string tMicroBeg = convertTimeMicroToString(begin, i);
+			std::string tMicroEnd = convertTimeMicroToString(end, i);
+			std::string alarmMicro = convertTimeMicroToString(alarm, i);
+
+			//convert boolean into string
+			std::string isDone;
+			if(dataList[i].getCompleteStatus() == true){
+				isDone = TRUE_STRING;
+			} else {
+				isDone = FALSE_STRING;
+			}
+
+			//save into file
+			out << dataList[i].getUniqueCode()
+				<< TAB << tMacroBeg
+				<< TAB << TAB << tMacroEnd << TAB << TAB << tMicroBeg << TAB << TAB << tMicroEnd
+				<< TAB << TAB << isDone << TAB << TAB << dataList[i].getPriority() 
+				<< TAB << TAB << alarmMacro << TAB << TAB << alarmMicro << TAB << TAB
+				<< dataList[i].getDesc() << std::endl;
+		}
+	}	
+	return status;
+}
+
+//////////////////////////////////////////
+//Start of Helper Methods for Loading Data
+
+//format the input directory from user
+//so that it can be read by all compiler
+void LocalStorage::adjustFormat(std::string& inputDirectory){
+	if (inputDirectory != EMPTY_STRING){
+		inputDirectory += SLASH;
+	}
+	inputDirectory += DEFAULT_SAVE_DIRECTORY;
+}
+
+//helper method for loadDate to parse input
+void LocalStorage::parseLoad(std::string strData, int i, Data& data){
+	std::stringstream streamConverter; //to help convert string to int
+
+	std::string tempMacroTBeg;
+	std::string tempMacroTEnd;
+	std::string tempMicroTBeg;
+	std::string tempMicroTEnd;
+	std::string tempCompleteStatus;
+	int uniqueCode;
+	std::string desc;
+	std::string priority;
+	std::string tempAlarmMacro;
+	std::string tempAlarmMicro;
+	std::string temp;
+
+	//get uniqueCode and convert to int
+	temp = tokenizerSpace(strData);
+	streamConverter << temp;
+	streamConverter >> uniqueCode;
+
+	//get each data by getting rid of spaces
+	tempMacroTBeg = tokenizerSpace(strData);
+	tempMacroTEnd = tokenizerSpace(strData);
+	tempMicroTBeg = tokenizerSpace(strData);
+	tempMicroTEnd = tokenizerSpace(strData);
+	tempCompleteStatus = tokenizerSpace(strData);
+	priority = tokenizerSpace(strData);
+	tempAlarmMacro = tokenizerSpace(strData);
+	tempAlarmMicro = tokenizerSpace(strData);
+	desc = tokenizerSpace(strData);
+	
+	//update Data object
+	data.updateUniqueCode(uniqueCode); 
+	data.updateDesc(desc);
+	TimeMacro inMacroTBeg = macroParser(tempMacroTBeg);
+	data.updateTimeMacroBeg(inMacroTBeg);
+	TimeMacro inMacroTEnd = macroParser(tempMacroTEnd);
+	data.updateTimeMacroEnd(inMacroTEnd);
+	TimeMacro inAlarmMacro = macroParser(tempAlarmMacro);
+	data.updateAlarmMacro(inAlarmMacro);
+	TimeMicro inMicroTBeg = microParser(tempMicroTBeg);
+	data.updateTimeMicroBeg(inMicroTBeg);
+	TimeMicro inMicroTEnd = microParser(tempMicroTEnd);
+	data.updateTimeMicroEnd(inMicroTEnd);
+	TimeMicro inAlarmMicro = microParser(tempAlarmMicro);
+	data.updateAlarmMicro(inAlarmMicro);
+
+	//update completeStatus for Data object
+	if(tempCompleteStatus == TRUE_STRING){
+		data.updateCompleteStatus(true);
+	} else {
+		if (tempCompleteStatus == FALSE_STRING){
+			data.updateCompleteStatus(false);
+		}
+	}
+
+}
+
+//helper method to parseLoad to parse string and convert to TimeMacro
+TimeMacro LocalStorage::macroParser(std::string tempMacro){
+	TimeMacro temp;
+	std::string inDay;
+	int inDate;
+	int inMonth;
+	int inYear;
+
+	inDay = tokenizerSlash(tempMacro);
+	temp.updateDay(inDay);
+	std::istringstream(tokenizerSlash(tempMacro)) >> inDate;
+	temp.updateDate(inDate);
+	std::istringstream(tokenizerSlash(tempMacro)) >> inMonth;
+	temp.updateMonth(inMonth);
+	std::istringstream(tempMacro) >> inYear;
+	temp.updateYear(inYear);
+
+	return temp;
+}
+
+//helper method to parseLoad to parse string to TimeMicro
+TimeMicro LocalStorage::microParser(std::string tempMicro){
+	TimeMicro temp;
+	int inHour;
+	int inMin;
+
+	std::istringstream(tokenizerSlash(tempMicro)) >> inHour;
+	temp.updateHour(inHour);
+	std::istringstream(tempMicro) >> inMin;
+	temp.updateMin(inMin);
+
+	return temp;
+}
+
+//helper method for MicroParser and Macro Parser to get individual token
+std::string LocalStorage::tokenizerSlash(std::string& str){
+	size_t start = 0;
+	size_t end = str.find_first_of(SLASH);
+	std::string firstToken = str.substr(start, end - start); //get the first token
+
+	//delete the first token from remaining string
+	str.erase(0,end+1);
+
+	return firstToken;
+}
+
+//helper method for loadParser to get individual token
+std::string LocalStorage::tokenizerSpace(std::string& str){
+	size_t start = str.find_first_not_of(TAB);
+	
+	//if there is more than one \t
+	if(start != 0){
+		str.erase(0,start);
+		start =0;
+	}
+
+	size_t end = str.find_first_of(TAB);
+	std::string firstToken = str.substr(start, end - start); //get the first token
+
+	//delete the first token from the remaining string
+	str.erase(0,end+1);
+
+	return firstToken;
+}
+
+//End of Helper method for Loading Data
+///////////////////////////////////////
+
+/////////////////////////////////////////
+//Start of Helper method for saving Data
+
+std::string LocalStorage::getPathName(){
+	return pathName;
+}
+
+//helper method to convert TimeMacro into String
+//adding slash in the middle for readability
+std::string LocalStorage::convertTimeMacroToString(TimeType type, int i){
+	std::string tMacro;
+	
+	switch(type){
+	case begin :
+		tMacro = dataList[i].getTimeMacroBeg().getDay() + SLASH
+		+ std::to_string(dataList[i].getTimeMacroBeg().getDate()) + SLASH
+		+ std::to_string(dataList[i].getTimeMacroBeg().getMonth()) + SLASH
+		+ std::to_string(dataList[i].getTimeMacroBeg().getYear());
+		break;
+
+	case end :
+		tMacro = dataList[i].getTimeMacroEnd().getDay() + SLASH
+		+ std::to_string(dataList[i].getTimeMacroEnd().getDate()) + SLASH
+		+ std::to_string(dataList[i].getTimeMacroEnd().getMonth()) + SLASH
+		+ std::to_string(dataList[i].getTimeMacroEnd().getYear());
+		break;
+
+	case alarm :
+		tMacro = dataList[i].getAlarmMacro().getDay() + SLASH
+		+ std::to_string(dataList[i].getAlarmMacro().getDate()) + SLASH
+		+ std::to_string(dataList[i].getAlarmMacro().getMonth()) + SLASH
+		+ std::to_string(dataList[i].getAlarmMacro().getYear());
+		break;
+	}
+
+	return tMacro;
+}
+
+//helper method to convert TimeMicro into String
+//adding slash in the middle for readability
+std::string LocalStorage::convertTimeMicroToString(TimeType type, int i){
+	std::string tMicro;
+
+	switch(type){
+	case begin :
+		tMicro = std::to_string(dataList[i].getTimeMicroBeg().getHour()) + SLASH
+		+ std::to_string(dataList[i].getTimeMicroBeg().getMin());
+		break;
+
+	case (end) :
+		tMicro = std::to_string(dataList[i].getTimeMicroEnd().getHour()) + SLASH
+		+ std::to_string(dataList[i].getTimeMicroEnd().getMin());
+		break;
+
+	case (alarm) :
+		tMicro = std::to_string(dataList[i].getAlarmMicro().getHour()) + SLASH
+		+ std::to_string(dataList[i].getAlarmMicro().getMin());
+		break;
+	}
+
+	return tMicro;
+}
+
+//write heading for output file
+void LocalStorage::writeHeading (std::string fileName, std::ofstream& out){
+	PrewrittenData list;
+	list.retrieveList(heading, out);
+}
+
+//End of Helper method for Saving Data
+//////////////////////////////////////
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - SaveLoad.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing.h
+	 */
+
+
+#pragma once
+#include "InternalStoring.h"
+
+//facade class for all InternalStorage classes
+class Storing {
+private:
+	static const char Storing::LOGGING_MESSAGE_1[100];
+	static const char Storing::LOGGING_MESSAGE_2[100];
+	static const char Storing::ERROR_MESSAGE_1[100];
+	static const char Storing::ERROR_MESSAGE_2[100];
+	static const char Storing::ERROR_MESSAGE_3[100]; 
+
+	void adjustRetrievedPath(std::string& pathName);
+
+public:
+	Storing() {}
+
+	//methods that call LocalStorage class
+	void addData(Data&);
+	Data deleteData(int taskNo);
+	Data changeData(int taskNo, Data& inData);
+	void clearDataList();
+	void undoAdd();
+	void loadData(bool& status , std::string directory = "");
+	bool saveData(std::string directory = "");
+
+	//methods that call PrewrittenData Class
+	std::string retrieveCommandList();
+	std::string retrieveFeatureList();
+	bool saveUserPathName(std::string userPathName);
+	bool findPathName();
+
+	//methods that call History Class
+	std::string getLatestCommand();
+	Data getLatestData();
+	std::vector<Data>& getLatestVector();
+	
+	//methods that call DisplayStorage Class
+	Data getData(int taskNo);
+	std::vector<Data>& display(TimeMacro tBegin, TimeMacro tEnd);
+	std::vector<Data>& displaySearch(std::string word);
+	std::vector<Data>& displayDone();
+	std::vector<Data>& displayfloat();
+	void clearDisplayList();
+	
+	//method for exception handling
+	void handleException(int errorNo);
+};
+
+
+
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing.h
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorageUnitTesting\DataStorageUnitTesting.cpp
+	 */
+
+	TEST_CLASS(LocalStoringUnitTest)
+	{
+	public:
+		
+		//test for adding method
+		//test for the automatic sorting inside the method
+		TEST_METHOD(addMethodTest)
+		{
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+			
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM5,str1); //task 1 10/04/2015 11:30
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			localStorage->addData(data1);
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			std::vector<Data> result;
+			result = localStorage->getDataList();
+
+			Assert::AreEqual(str3,result[0].getDesc());
+			Assert::AreEqual(str1,result[1].getDesc());
+			Assert::AreEqual(str2,result[2].getDesc());
+		}
+
+		//test deleteData method within boundary
+		//and its exception
+		TEST_METHOD(deleteData){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+
+			//initiate displayList
+			//so that we can use taskNo
+			displayStorage->getDisplayList(time1,time2); 
+
+			//delete data with 2 as taskNo in displayList
+			//expected deleted data is str1
+			Data result = localStorage->deleteData(1);  
+
+			Assert::AreEqual(str3,result.getDesc());
+
+			//test for exception
+			//taskNo inserted is out of bound
+			try{
+			localStorage->deleteData(9);
+			}
+			catch (int errorNo){
+				Assert::AreEqual(1,errorNo);
+			}
+		}
+
+		TEST_METHOD(editData){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			data3.updateAlarmMacro(time1);
+			data3.updateAlarmMicro(timeM1);
+			data3.updateTimeMacroEnd(time2);
+			data3.updateCompleteStatus(true);
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+
+			//initiate displayList
+			//so that we can use taskNo
+			displayStorage->getDisplayList(time1,time2); 
+
+			//edit by changing Data 1 to Data 3
+			Data result = localStorage->editData(1,data3);
+
+			Assert::AreEqual(str3,result.getDesc());
+
+			//test for the exception
+			//when out of bound
+			try{
+			localStorage->editData(9, data2);
+			}
+			catch (int errorNo){
+				Assert::AreEqual(1,errorNo);
+			}
+
+		}
+
+		TEST_METHOD(clearDataList){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+
+			Data data1(time1,timeM1,timeM5,str1); //task 1 10/04/2015 11:30
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+
+			localStorage->addData(data1);
+			localStorage->addData(data2);
+
+			//clearing method
+			localStorage->clearDataList();
+
+			std::vector<Data> result;
+			result = localStorage->getDataList();
+
+			//determine that the list is really empty
+			Assert::AreEqual(true,result.empty());
+
+		}
+
+		TEST_METHOD(undoAdd){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+
+			Data data1(time1,timeM1,timeM5,str1); //task 1 10/04/2015 11:30
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+
+			localStorage->addData(data2);
+			localStorage->addData(data1);
+
+			localStorage->undoAdd();
+
+			std::vector<Data> result = localStorage->getDataList();
+
+			Assert::AreEqual(str2,result[0].getDesc());
+			
+			//determine that there is only one data left
+			result.pop_back();
+			Assert::AreEqual(true,result.empty());
+
+		}
+
+		//save to default path
+		TEST_METHOD(saveData){
+			bool result;
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+
+			Data data1(time1,timeM1,timeM5,str1); //task 1 10/04/2015 11:30
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			data1.updateCompleteStatus(true);
+
+			localStorage->addData(data2);
+			localStorage->addData(data1);
+			std::string emptyString = "";
+			result = localStorage->saveData(emptyString);
+			Assert::AreEqual(true,result);
+		}
+
+		//load from default path
+		TEST_METHOD(loadData){
+			bool result = false;
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			std::string emptyString = "";
+			localStorage->loadData(result, emptyString);
+
+			std::vector<Data> result1 = localStorage->getDataList();
+			std::string str1 = "task 1";
+
+			Assert::AreEqual(str1,result1[0].getDesc());
+			Assert::AreEqual(true,result);
+		}
+
+		//check whether directory exists
+		TEST_METHOD(directoryCheck){
+			bool result;
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			std::ofstream out;
+
+			//change into your directory
+			std::string directory = "c:/ng only";
+			result = localStorage->directoryCheck(out, directory);
+			Assert::AreEqual(true,result);
+
+			std::ofstream out1;
+			//exception test
+			directory = "sample";
+			result = localStorage->directoryCheck(out1, directory);
+			Assert::AreEqual(false,result);
+
+		}
+		
+		//test method for setPath and checkPath
+		TEST_METHOD(checkSetPathLocally){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			std::string result;
+			std::string defaultPath = "";
+			//check for default path
+			result = localStorage->checkPathName();
+			Assert::AreEqual(defaultPath,result);
+
+			std::string pathName = "pathName";
+			localStorage->setPathName(pathName);
+			result = localStorage->checkPathName();
+			Assert::AreEqual(pathName,result);
+
+		}
+	};
+
+	TEST_CLASS(DisplayStorageUnitTesting)
+	{
+	public:
+
+		//test of getDisplayList
+		//with for two time periods
+		TEST_METHOD(getDisplayTypePeriod){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+
+			//initiate displayList
+			std::vector<Data> result;
+			result = displayStorage->getDisplayList(time1,time2); 
+			
+			Assert::AreEqual(str3,result[0].getDesc());
+			Assert::AreEqual(str1,result[1].getDesc());
+			Assert::AreEqual(str2,result[2].getDesc());
+
+			//for the same time period
+			result = displayStorage->getDisplayList(time1,time1);
+
+			Assert::AreEqual(str3,result[0].getDesc());
+			Assert::AreEqual(str1,result[1].getDesc());
+		}
+		
+		//test of getDisplayList
+		//for completed tasks
+		TEST_METHOD(getDisplayListDone){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time2(11,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM2(10,0);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+			TimeMicro timeM5(0,0);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data2(time2,timeM2,timeM5,str2); //task 2 11/04/2015 10:00
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			data2.updateCompleteStatus(true);
+			data3.updateCompleteStatus(true);
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+
+			//initiate displayList
+			std::vector<Data> result;
+			result = displayStorage->getDisplayList(done); 
+			
+			Assert::AreEqual(str2,result[0].getDesc());
+			Assert::AreEqual(str3,result[1].getDesc());
+
+		}
+
+		TEST_METHOD(getDisplayListFloat){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+
+			//initiate displayList
+			std::vector<Data> result;
+			result = displayStorage->getDisplayList(floating); 
+			
+			Assert::AreEqual(str2,result[0].getDesc());
+
+		}
+
+		TEST_METHOD(getDisplayListSearch){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+
+			//initiate displayList
+			std::vector<Data> result;
+			std::string keyword = "task";
+			result = displayStorage->getDisplayList(search, keyword); 
+			
+			Assert::AreEqual(str2,result[0].getDesc());
+			Assert::AreEqual(str3,result[1].getDesc());
+			Assert::AreEqual(str1,result[2].getDesc());
+		}
+
+		TEST_METHOD(getData){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			DisplayStorage *displayStorage = DisplayStorage::getInstance();
+			displayStorage->clearList();
+			std::string keyword = "task";
+			displayStorage->getDisplayList(search, keyword); 
+			
+			Data result = displayStorage->getData(2);
+
+			Assert::AreEqual(str3,result.getDesc());
+
+			//test for exception
+			try{
+			result = displayStorage->getData(10);
+			}
+			catch(int errorNo){
+				Assert::AreEqual(1,errorNo);
+			}
+		}
+	};
+
+	TEST_CLASS(HistoryUnitTest){
+	public:
+		TEST_METHOD(getUpdateLatestCommand){
+			std::string command = "add";
+
+			History::updateLatestData(command);
+			Assert::AreEqual(command, History::getLatestCommand());
+		}
+
+		TEST_METHOD(getUpdateLatestVector){
+			LocalStorage *localStorage = LocalStorage::getInstance();
+			localStorage->clearDataList();
+
+			TimeMacro time1(10,04,2015);
+			TimeMacro time3(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM3(9,0);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+			std::string str2 = "task 2";
+			std::string str3 = "task 3";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+			Data data3(time3,timeM3,timeM4,str3); //task 3 10/04/2015 09:00-12:45
+
+			Data data2;
+			data2.updateDesc(str2); //task 2 floating
+
+			localStorage->addData(data1); 
+			localStorage->addData(data2);
+			localStorage->addData(data3);
+
+			History::updateLatestVector();
+
+			std::vector<Data> result;
+			result = History::getLatestVector();
+
+			Assert::AreEqual(str2,result[0].getDesc());
+			Assert::AreEqual(str3,result[1].getDesc());
+			Assert::AreEqual(str1,result[2].getDesc());
+
+		}
+		
+		TEST_METHOD(getUpdateLatestData){
+			TimeMacro time1(10,04,2015);
+
+			TimeMicro timeM1(11,30);
+			TimeMicro timeM4(12,45);
+
+			std::string str1 = "task 1";
+
+			Data data1(time1,timeM1,timeM4,str1); //task 1 10/04/2015 11:30-12:45
+
+			History::updateLatestData(data1);
+
+			Assert::AreEqual(str1,History::getLatestData().getDesc());
+
+		}
+
+	};
+
+	TEST_CLASS(PrewrittenDataUnitTest){
+		TEST_METHOD(retrieveListAllCommands){
+			PrewrittenData prewrittenData;
+			try{
+				std::string result;
+				result = prewrittenData.retrieveList(command);
+				Assert::AreEqual(false, result.empty());
+			}
+			catch(int errorNo){
+				Assert::AreEqual(2,errorNo);
+			}
+		}
+
+		TEST_METHOD(retrieveListAllFeatures){
+			PrewrittenData prewrittenData;
+			try{
+				std::string result;
+				result = prewrittenData.retrieveList(feature);
+				Assert::AreEqual(false, result.empty());
+			}
+			catch(int errorNo){
+				Assert::AreEqual(2,errorNo);
+			}
+		}
+
+		TEST_METHOD(retrieveListPath){
+			PrewrittenData prewrittenData;
+			try{
+				std::string result;
+				result = prewrittenData.retrieveList(path);
+				Assert::AreEqual(false, result.empty());
+			}
+			catch(int errorNo){
+				Assert::AreEqual(2,errorNo);
+			}
+		}
+	};
+
+	TEST_CLASS(FacadeUnitTest){
+		TEST_METHOD(retrieveFeatureList){
+			Storing storing;
+			std::string result;
+			try{
+				result = storing.retrieveFeatureList();
+				Assert::AreEqual(false,result.empty());
+			}
+			catch(std::string str){
+				Assert::AreEqual(false, str.empty());
+			}
+
+			
+		}
+
+		TEST_METHOD(findPathName){
+			Storing storing;
+			bool result;
+			try{
+				result = storing.findPathName();
+				Assert::AreEqual(true,result);
+			}
+			catch(std::string str){
+				Assert::AreEqual(false, str.empty());
+			}
+		}
+		
+		
+		TEST_METHOD(loadData2){
+			Storing storing;
+			bool status;
+			std::string directory = "";
+			storing.loadData(status, directory);
+		}
+		
+		//test for exception
+		TEST_METHOD(getData){
+			Storing storing;
+			try{
+				storing.getData(1000);
+			}
+			catch(std::string errorMessage){
+				Assert::AreEqual(false,errorMessage.empty());
+			}
+		}
+	};
+}
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorageUnitTesting\DataStorageUnitTesting.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.cpp
+	 */
+
+
+void Logic::clearScreen(){
+
+	HANDLE                     hStdOut;
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	DWORD                      count;
+	DWORD                      cellCount;
+	COORD                      homeCoords = { 0, 0 };
+
+	hStdOut = GetStdHandle( STD_OUTPUT_HANDLE );
+	if (hStdOut == INVALID_HANDLE_VALUE){
+		return;
+	}
+	/* Get the number of cells in the current buffer */
+	if (!GetConsoleScreenBufferInfo( hStdOut, &csbi )){
+		return;
+	}
+	cellCount = csbi.dwSize.X *csbi.dwSize.Y;
+
+	/* Fill the entire buffer with spaces */
+	if (!FillConsoleOutputCharacter(hStdOut,(TCHAR) ' ', cellCount, homeCoords, &count)){
+		return;
+	}
+
+	/* Fill the entire buffer with the current colors and attributes */
+	if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount, homeCoords, &count)){
+		  return;
+	}
+	/* Move the cursor home */
+	SetConsoleCursorPosition( hStdOut, homeCoords );
+  }
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.cpp
+
+
+
+
+
+	/**
+	 * origin: C:\Users\Yang\Desktop\Projects\main\UnitTesting\CommonsTesting.cpp
+	 */
+
+namespace UnitTesting
+{		
+	TEST_CLASS(TimeMicroTest)
+	{
+	public:
+
+		//positive test of get and update hour
+		TEST_METHOD(getUpdateHourTest)
+		{
+			//boundary case
+			TimeMicro time;
+			time.updateHour(1);
+			Assert::AreEqual(1,time.getHour());
+
+			//boundary case
+			time.updateHour(24);
+			Assert::AreEqual(24,time.getHour());
+
+			//partition in the middle
+			time.updateHour(12);
+			Assert::AreEqual(12,time.getHour());
+
+		}
+
+		//postive test of get and update Min
+		TEST_METHOD(getUpdateMinTest)
+		{
+			//boundary case
+			TimeMicro time;
+			time.updateMin(1);
+			Assert::AreEqual(1,time.getMin());
+
+			//boundary case
+			time.updateMin(59);
+			Assert::AreEqual(59,time.getMin());
+
+			//partition in the middle
+			time.updateMin(30);
+			Assert::AreEqual(30,time.getMin());
+
+		}
+
+		//check for default;
+		TEST_METHOD(TimeMicroCheckDefault)
+		{
+			TimeMicro time;
+			//check default min
+			Assert::AreEqual(-1,time.getMin());
+			//check default hour
+			Assert::AreEqual(-1,time.getHour());
+		}
+
+		//TimeMicro constructor
+		TEST_METHOD(TimeMicroConstructor)
+		{
+			TimeMicro time(1,1);
+			TimeMicro time2;
+			time2.updateHour(1);
+			time2.updateMin(1);
+
+			Assert::AreEqual(time2.getMin(),time.getMin());
+			Assert::AreEqual(time2.getHour(),time.getHour());
+		}
+
+	};
+
+	TEST_CLASS(TimeMacroTest)
+	{
+	public:
+		//positive test get and update day
+		TEST_METHOD(getUpdateDayTest)
+		{
+			TimeMacro time;
+			time.updateDay("Thursday");
+			std::string day ="Thursday";
+			Assert::AreEqual(day,time.getDay());
+		}
+
+		//boundary cases of get and update day
+		TEST_METHOD(getUpdateDateTest)
+		{
+			TimeMacro time;
+			time.updateDate(01);
+			Assert::AreEqual(01,time.getDate());
+
+			time.updateDate(30);
+			Assert::AreEqual(30,time.getDate());
+		}
+
+		//boundary cases of get and update month
+		TEST_METHOD(getUpdateMonthTest)
+		{
+			TimeMacro time;
+			time.updateMonth(01);
+			Assert::AreEqual(1,time.getMonth());
+			
+			time.updateMonth(12);
+			Assert::AreEqual(12,time.getMonth());
+
+		}
+		
+		//boundary cases of get and update year
+		TEST_METHOD(getUpdateYearTest)
+		{
+			TimeMacro time;
+			time.updateYear(1901);
+			Assert::AreEqual(1901,time.getYear());
+			
+			time.updateYear(2099);
+			Assert::AreEqual(2099,time.getYear());
+		}
+
+		//check for default
+		TEST_METHOD(TimeMacroCheckDefault){
+			TimeMacro time;
+			std::string str = "undefined";
+			Assert::AreEqual(str,time.getDay());
+			Assert::AreEqual(0,time.getDate());
+			Assert::AreEqual(0,time.getMonth());
+			Assert::AreEqual(0,time.getYear());
+		}
+
+		//check for constructor
+		TEST_METHOD(TimeMacroConstructor){
+			TimeMacro time(31,12,2015);
+			std::string str = "undefined";
+			Assert::AreEqual(str,time.getDay());
+			Assert::AreEqual(31,time.getDate());
+			Assert::AreEqual(12,time.getMonth());
+			Assert::AreEqual(2015,time.getYear());
+
+		}
+
+	};
+
+	TEST_CLASS(DataTest)
+	{
+	public:
+		
+		//getter and update methods test
+		//for time related attributes
+		//also constructor tests
+		TEST_METHOD(getUpdateTimeDataTest)
+		{
+			TimeMacro time;			
+			time.updateDate(10);
+			time.updateMonth(01);
+			time.updateYear(2015);
+			time.updateDay("Wednesday");
+
+			TimeMacro time2;
+			time2.updateDate(11);
+			time2.updateMonth(10);
+			time2.updateYear(2017);
+			time2.updateDay("Friday");
+
+			TimeMicro timeM1;
+			timeM1.updateHour(1);
+			timeM1.updateMin(5);
+
+			TimeMicro timeM2;
+			timeM2.updateHour(2);
+			timeM2.updateMin(7);
+
+			Data data;
+			data.updateTimeMacroBeg(time);
+			data.updateTimeMacroEnd(time2);
+			data.updateTimeMicroBeg(timeM1);
+			data.updateTimeMicroEnd(timeM2);
+			TimeMacro time3 = data.getTimeMacroBeg();
+			TimeMacro time4 = data.getTimeMacroEnd();
+			TimeMicro time5 = data.getTimeMicroBeg();
+			TimeMicro time6 = data.getTimeMicroEnd();
+
+			std::string day1 = "Wednesday";
+			std::string day2 = "Friday";
+			std::string priority = "None";
+			std::string desc = "desc";
+
+			
+			Assert::AreEqual(10,time3.getDate());
+			Assert::AreEqual(1,time3.getMonth());
+			Assert::AreEqual(2015,time3.getYear());
+			Assert::AreEqual(11,time4.getDate());
+			Assert::AreEqual(10,time4.getMonth());
+			Assert::AreEqual(2017,time4.getYear());
+			Assert::AreEqual(day1, time3.getDay());
+			Assert::AreEqual(day2, time4.getDay());
+			Assert::AreEqual(1, time5.getHour());
+			Assert::AreEqual(5, time5.getMin());
+			Assert::AreEqual(2, time6.getHour());
+			Assert::AreEqual(7, time6.getMin());
+
+			//constructor 1
+			Data myData(time,time2,timeM1,timeM2,"desc");
+
+			//extract detail timing for testing
+			time3 = myData.getTimeMacroBeg();
+			time4 = myData.getTimeMacroEnd();
+			time5 = myData.getTimeMicroBeg();
+			time6 = myData.getTimeMicroEnd();
+			
+			//Constructor 1 test
+			Assert::AreEqual(10,time3.getDate());
+			Assert::AreEqual(1,time3.getMonth());
+			Assert::AreEqual(2015,time3.getYear());
+			Assert::AreEqual(11,time4.getDate());
+			Assert::AreEqual(10,time4.getMonth());
+			Assert::AreEqual(2017,time4.getYear());
+			Assert::AreEqual(day1, time3.getDay());
+			Assert::AreEqual(day2, time4.getDay());
+			Assert::AreEqual(1, time5.getHour());
+			Assert::AreEqual(5, time5.getMin());
+			Assert::AreEqual(2, time6.getHour());
+			Assert::AreEqual(7, time6.getMin());
+			Assert::AreEqual(false, myData.getCompleteStatus());
+			Assert::AreEqual(priority, myData.getPriority());
+			Assert::AreEqual(desc, myData.getDesc());
+		
+
+			//constructor 2
+			Data myData2(time,timeM1,timeM2,"desc");
+
+			//extract detail timing for testing
+			time3 = myData2.getTimeMacroBeg();
+			time5 = myData2.getTimeMicroBeg();
+			time6 = myData2.getTimeMicroEnd();
+
+			//Constructor 2 test
+			Assert::AreEqual(10,time3.getDate());
+			Assert::AreEqual(1,time3.getMonth());
+			Assert::AreEqual(2015,time3.getYear());
+			Assert::AreEqual(day1, time3.getDay());
+			Assert::AreEqual(1, time5.getHour());
+			Assert::AreEqual(5, time5.getMin());
+			Assert::AreEqual(2, time6.getHour());
+			Assert::AreEqual(7, time6.getMin());
+			Assert::AreEqual(false, myData2.getCompleteStatus());
+			Assert::AreEqual(priority, myData2.getPriority());
+			Assert::AreEqual(desc, myData2.getDesc());
+
+			//constructor 3
+			Data myData3(time,"desc");
+
+			//extract detail timing for testing
+			time3 = myData3.getTimeMacroBeg();
+
+			//Constructor 3 test
+			Assert::AreEqual(10,time3.getDate());
+			Assert::AreEqual(1,time3.getMonth());
+			Assert::AreEqual(2015,time3.getYear());
+			Assert::AreEqual(day1, time3.getDay());
+			Assert::AreEqual(false, myData3.getCompleteStatus());
+			Assert::AreEqual(priority, myData3.getPriority());
+			Assert::AreEqual(desc, myData3.getDesc());
+
+			//constructor 4
+			Data myData4(time,"desc");
+
+			//extract detail timing for testing
+			time4 = myData3.getTimeMacroBeg();
+			
+			//constructor 4 test
+			Assert::AreEqual(false, myData3.getCompleteStatus());
+			Assert::AreEqual(priority, myData3.getPriority());
+			Assert::AreEqual(desc, myData3.getDesc());
+
+		}	
+
+		//getter and setter tests for various private attributes
+		TEST_METHOD(getUpdateDataAttributes){
+			//taskNo
+			Data data;
+			data.updateTaskNo(15);
+			Assert::AreEqual(15,data.getTaskNo());
+			
+			//alarmMacro
+			TimeMacro time(1,12,2015);
+			data.updateAlarmMacro(time);
+			Assert::AreEqual(12,data.getAlarmMacro().getMonth());
+
+			//alarmMicro
+			TimeMicro time2(12,30);
+			data.updateAlarmMicro(time2);
+			Assert::AreEqual(30,data.getAlarmMicro().getMin());
+
+			//Priority
+			std::string str= "HIGH";
+			data.updatePriority(str);
+			Assert::AreEqual(str,data.getPriority());
+
+			//completeStatus
+			data.updateCompleteStatus(true);
+			Assert::AreEqual(true,data.getCompleteStatus());
+		}
+
+	};
+		
+}
+	// End of segment: C:\Users\Yang\Desktop\Projects\main\UnitTesting\CommonsTesting.cpp
+
+
+
+
+
