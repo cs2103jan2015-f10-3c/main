@@ -52,7 +52,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Parser;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\OperationCenter;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataProcessor;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\sony\Documents\Visual Studio 2012\Projects\BlinkList\Parser;C:\Users\sony\Documents\Visual Studio 2012\Projects\BlinkList\OperationCenter;C:\Users\sony\Documents\Visual Studio 2012\Projects\BlinkList\DataStorage;C:\Users\sony\Documents\Visual Studio 2012\Projects\BlinkList\DataProcessor;C:\Users\sony\Documents\Visual Studio 2012\Projects\BlinkList\Commons;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Parser;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\OperationCenter;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataStorage;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\DataProcessor;C:\Users\Admin\Documents\NUS Sem 4\CS2103\Project\BlinkList\Commons;$(VCInstallDir)UnitTest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <UseFullPaths>true</UseFullPaths>
     </ClCompile>
@@ -93,8 +93,20 @@
     <ClCompile Include="OperationCenterTest.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Commons\Commons.vcxproj">
+      <Project>{76a15500-02b2-4482-8610-9fbba376f502}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\DataProcessor\DataProcessor.vcxproj">
+      <Project>{00748712-4a07-4125-b153-8dffcf6c0827}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\DataStorage\DataStorage.vcxproj">
+      <Project>{21daf16e-0aeb-4767-8b3e-9c7322507362}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\OperationCenter\OperationCenter.vcxproj">
       <Project>{075e28d9-9d3a-424d-adfb-7241a1522057}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Parser\Parser.vcxproj">
+      <Project>{65d3adbf-2459-49aa-aa29-df3438fef66a}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
