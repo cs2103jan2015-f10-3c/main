@@ -263,7 +263,7 @@ namespace DataStorageUnitTesting
 			std::ofstream out;
 
 			//change into your directory
-			std::string directory = "C:/NG only";
+			std::string directory = "E:/focus";
 			result = localStorage->directoryCheck(out, directory);
 			Assert::AreEqual(true,result);
 

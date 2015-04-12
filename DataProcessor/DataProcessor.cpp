@@ -58,7 +58,6 @@ string DataProcessor::deleteTask(int number){
 		out << convertDataObjectToLine(storing.deleteData(number)) << DELETE_MESSAGE << endl;
 	}
 	catch(string errorMessage){
-		logger.logging(EXCEPTION_INVALID_TASKNUMBER);
 		throw errorMessage;
 	}
 	string deleteMessage;

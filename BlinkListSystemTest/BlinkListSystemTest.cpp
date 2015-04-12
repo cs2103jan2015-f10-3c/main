@@ -124,7 +124,7 @@ namespace BlinkListSystemTest
 			//will add task to Today
 			OperationCenter::executeInput("add 12:30 lunch");
 			string actualResponse = OperationCenter::getResponse(); 
-			string expectedResponse = "lunch on Saturday, 11-4-2015 at 12:30 is added\n";
+			string expectedResponse = "lunch on Sunday, 12-4-2015 at 12:30 is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
 
@@ -837,9 +837,9 @@ namespace BlinkListSystemTest
 
 		TEST_METHOD(PathTest)			
 		{
-			OperationCenter::executeInput ("path c:");
+			OperationCenter::executeInput ("path E:/focus");
 			string actualResponse = OperationCenter::getResponse(); 
-			string expectedResponse = "New user path: c:\n"
+			string expectedResponse = "New user path: E:/focus\n"
 				"Please type 'show commands' or 'show features' to get started\n";
 			Assert::AreEqual (actualResponse, expectedResponse);
 		}
