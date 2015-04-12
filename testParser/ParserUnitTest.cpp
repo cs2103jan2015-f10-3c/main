@@ -82,9 +82,9 @@ namespace testParser
 		{
 			Parser parser;
 			TimeMacro timeMacro;
-			string dayOfTheWeek = "Saturday";
+			string dayOfTheWeek = "Sunday";
 			parser.getTodayDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 11);
+			Assert::AreEqual (timeMacro.getDate(), 12);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
@@ -844,9 +844,9 @@ namespace testParser
 		{
 			Parser parser;
 			TimeMacro timeMacro;
-			string dayOfTheWeek = "Sunday";
+			string dayOfTheWeek = "Monday";
 			parser.getTomorrowDate (timeMacro);
-			Assert::AreEqual (timeMacro.getDate(), 12);
+			Assert::AreEqual (timeMacro.getDate(), 13);
 			Assert::AreEqual (timeMacro.getMonth(), 4);
 			Assert::AreEqual (timeMacro.getYear(), 2015);
 			Assert::AreEqual (timeMacro.getDay(), dayOfTheWeek);
@@ -929,11 +929,11 @@ namespace testParser
 			Parser parser;
 			string userInput = "show today";
 			string commandWord = "show";
-			string expectedDay = "Saturday";
+			string expectedDay = "Sunday";
 			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 11);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 12);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (), 4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
@@ -945,11 +945,11 @@ namespace testParser
 			Parser parser;
 			string userInput = "show tomorrow";
 			string commandWord = "show";
-			string expectedDay = "Sunday";
+			string expectedDay = "Monday";
 			parser.parseShow (userInput, commandWord);
 
 			Assert::AreEqual (parser.getCommand (), commandWord);
-			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 12);
+			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDate (), 13);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getMonth (),4);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getYear (), 2015);
 			Assert::AreEqual (((parser.getData ()).getTimeMacroBeg ()).getDay (), expectedDay);
