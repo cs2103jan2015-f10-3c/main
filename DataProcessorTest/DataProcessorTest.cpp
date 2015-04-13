@@ -94,7 +94,7 @@ namespace DataProcessorTest
 			Data task1(start, begin, end, "jim");
 			Data task2(start, begin, end, "john");
 
-			//Exeception: invalid task number
+			//Exception: invalid task number
 			std::string addMessage = myDataProcessor.addTask(task1);
 			std::string actualEditMessage;
 			try{
