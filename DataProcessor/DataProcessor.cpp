@@ -101,7 +101,7 @@ void DataProcessor::setLatestData(Data data){
 //This function reads in the taskNumber of the task that is
 //currently in display and the Data object which contains
 //the updated information about the task.
-//The return string is the successfuly message after edit operation
+//The return string is the successful message after edit operation
 string DataProcessor::editTask(int taskNumber, Data task){
 	Storing  storing;
 	Logger	 logger;
@@ -290,7 +290,7 @@ string DataProcessor::showFeatures(){
 }
 
 //This function passes the save 
-//file path to DataSotrage
+//file path to DataStorage
 bool DataProcessor::savePath(string path){
 	Storing storing;
 	if(storing.saveUserPathName(path)){
@@ -414,7 +414,7 @@ void DataProcessor::getTimeObject(TimeMacro & timeMacroBeg, TimeMicro & timeMicr
 }
 
 //This function converts the description
-//of the target task into a formated string
+//of the target task into a formatted string
 string DataProcessor::getDescriptionLine(Data task){
 	ostringstream outData;
 	int descriptionWidth = task.getDesc().length();
@@ -424,7 +424,7 @@ string DataProcessor::getDescriptionLine(Data task){
 }
 
 //This function converts the day value
-//of the target task into a formated string
+//of the target task into a formatted string
 string DataProcessor::getDayLine(TimeMacro timeMacroBeg){
 	ostringstream outData;
 	if(timeMacroBeg.getDay() != NO_DATE){
@@ -437,7 +437,7 @@ string DataProcessor::getDayLine(TimeMacro timeMacroBeg){
 }
 
 //This function converts the time value
-//of the target task into a formated string
+//of the target task into a formatted string
 string DataProcessor::getTimeLine(TimeMicro timeMicroBeg, TimeMicro timeMicroEnd){
 	ostringstream outData;
 	string timeMicroString = "   ";
@@ -470,7 +470,7 @@ string DataProcessor::getTimeLine(TimeMicro timeMicroBeg, TimeMicro timeMicroEnd
 }
 
 //This function converts the date value
-//of the target task into a formated string
+//of the target task into a formatetd string
 string DataProcessor::getDateLine(TimeMacro timeMacroBeg){
 	ostringstream outData;
 	//If there is deadline date associated with the task
