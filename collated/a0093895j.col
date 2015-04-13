@@ -1137,6 +1137,27 @@ bool Parser::isDateNumber (string inputToBeParsed, int& dateInt, int& monthInt) 
 								dateInt == THIRTY_ONE) {
 									throw ERROR_MESSAGE_DATE;
 							}
+							if (monthInt == TWO &&
+								(dateInt == THIRTY || dateInt == THIRTY_ONE)) {
+									throw ERROR_MESSAGE_DATE;
+							}
+							if (monthInt == TWO) {
+								int year;
+								if (isYearNumber (inputToBeParsed, year) &&
+									!isLeapYear (year) &&
+									dateInt == TWENTY_NINE) {
+										throw ERROR_MESSAGE_DATE;
+								}
+								if (!isYearNumber (inputToBeParsed, year)) {
+									TimeMacro timeMacro;
+									getTodayDate (timeMacro);
+									year = timeMacro.getYear();
+									if (!isLeapYear (year) &&
+										dateInt == TWENTY_NINE) {
+											throw ERROR_MESSAGE_DATE;
+									}
+								}
+							}
 							return true;
 						}
 				}
