@@ -124,7 +124,7 @@ namespace BlinkListSystemTest
 			//will add task to Today
 			OperationCenter::executeInput("add 12:30 lunch");
 			string actualResponse = OperationCenter::getResponse(); 
-			string expectedResponse = "lunch on Sunday, 12-4-2015 at 12:30 is added\n";
+			string expectedResponse = "lunch on Friday, 17-4-2015 at 12:30 is added\n";
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
 
@@ -835,7 +835,7 @@ namespace BlinkListSystemTest
 			Assert::AreEqual (actualUndoResponse, expectedUndoResponse);
 		}
 
-		TEST_METHOD(PathTest)			
+		TEST_METHOD(pathTest)			
 		{
 			OperationCenter::executeInput ("path E:/focus");
 			string actualResponse = OperationCenter::getResponse(); 
@@ -844,7 +844,7 @@ namespace BlinkListSystemTest
 			Assert::AreEqual (actualResponse, expectedResponse);
 		}
 
-		TEST_METHOD(PathErrorTest)			
+		TEST_METHOD(pathErrorTest)			
 		{
 			OperationCenter::executeInput ("path C:/focus");
 			string actualResponse = OperationCenter::getResponse(); 
@@ -857,7 +857,7 @@ namespace BlinkListSystemTest
 		TEST_METHOD(show_today_test)			
 		{
 			OperationCenter::executeInput("clear");
-			OperationCenter::executeInput("add 12/4 2pm task 1");
+			OperationCenter::executeInput("add 17/4 2pm task 1");
 			OperationCenter::executeInput("add 3/4 3pm task 2");
 			OperationCenter::executeInput("add 4/4 4pm-5pm task 3");
 			OperationCenter::executeInput("show today");
@@ -869,9 +869,9 @@ namespace BlinkListSystemTest
 			string actualDisplay = OperationCenter::getDisplay();
 			string expectedDisplay;
 			ostringstream out;
-			out	<< "Your agenda for Sunday, 12-4-2015:" << endl << endl
+			out	<< "Your agenda for Friday, 17-4-2015:" << endl << endl
 				<< "1. task 1" << endl
-				<< "   Sunday          14:00                                              12-4-2015" << endl 
+				<< "   Friday          14:00                                              17-4-2015" << endl 
 				<< "________________________________________________________________________________" << endl;
 			expectedDisplay = out.str();
 			Assert::AreEqual(expectedDisplay, actualDisplay);
