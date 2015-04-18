@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 	 */
 
 		//For command "add"	
@@ -157,14 +157,14 @@
 			Assert::AreEqual(expectedResponse, actualResponse);
 		}
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 	 */
 
 		//exception response when command entry is wrong
@@ -178,14 +178,14 @@
 
 		}
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 	 */
 
 		//For command "clear"	
@@ -203,14 +203,14 @@
 			
 		}
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 	 */
 
 		//For command "search"
@@ -285,14 +285,14 @@
 
 
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - Logger.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - Logger.cpp
 	 */
 
 
@@ -310,14 +310,14 @@ void Logger::deleteLogContent(){
 	std::string directory = LOG_FILE_NAME;
 	writeLog.open(directory.c_str() , std::ofstream::app);
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - Logger.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - Logger.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMacro.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - TimeMacro.cpp
 	 */
 
 
@@ -377,14 +377,14 @@ void TimeMacro::updateYear(int inYear){
 	assert (inYear > MIN_YEAR_BOUNDARY && inYear < MAX_YEAR_BOUNDARY || inYear == DEFAULT_TIME_MACRO_VALUE);
 		year = inYear;
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMacro.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - TimeMacro.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMicro.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - TimeMicro.cpp
 	 */
 
 
@@ -416,14 +416,14 @@ void TimeMicro::updateMin(int inMin){
 }
 
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - TimeMicro.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - TimeMicro.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\InternalStoring.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\InternalStoring.h
 	 */
 
 
@@ -655,14 +655,14 @@ public:
 
 
 #endif
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\InternalStoring.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\InternalStoring.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Display.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Display.cpp
 	 */
 
 
@@ -893,14 +893,14 @@ void DisplayStorage::displayFloat(std::vector<Data> tempList){
 
 //End of Internal Helper methods
 ////////////////////////////////
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Display.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Display.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Facade.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Facade.cpp
 	 */
 
 
@@ -1106,14 +1106,14 @@ void Storing::handleException(int errorNo){
 }
 
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Facade.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Facade.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - History.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - History.cpp
 	 */
 
 
@@ -1172,14 +1172,14 @@ void History::updateLatestVector(){
 	Logger log;
 	log.logging("latestVector is updated"); //write in log
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - History.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - History.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Local.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Local.cpp
 	 */
 
 
@@ -1468,52 +1468,15 @@ int LocalStorage::allocateUniqueCode(int& uniqueNo){
 	return uniqueNo;
 }
 
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Local.cpp
 
-//sorting dataList for maintenance
-//use radix sorting algorithm
-void LocalStorage::sortDataList(){
-	int i;
-	int power = 1;
-	std::queue<Data> digitQueue[NO_OF_DIGITS];
-	
-	allocatePsedoDate();
 
-	for (i=0; i < LENGTH_OF_PSEDODATE; i++) {
-		radixDistribute(digitQueue, power);
-		radixCollect(digitQueue);
-		power *= NO_OF_DIGITS;
-	}
 
-}
 
-//helper method for radix sort
-//organise items into groups using digit indicated by the power
-void LocalStorage::radixDistribute(std::queue<Data> digitQ[], int power){
-	int digit;
 
-	for(int i = 0; i != dataList.size(); i++){
-		long long sDate = dataList[i].getPsedoDate();
-		digit = (sDate / power ) % NO_OF_DIGITS; //extract digit
-		digitQ[digit].push(dataList[i]);
-
-	}
-}
-
-//helper method for radix sort
-//put Data back into dataList
-void LocalStorage::radixCollect(std::queue<Data> digitQ[]){
-	int digit;
-	int i=0;
-
-	for(digit = 0 ; digit < NO_OF_DIGITS; digit++){
-		while (!digitQ[digit].empty()) {
-			dataList[i] = digitQ[digit].front();
-			digitQ[digit].pop();
-	
-			i++;
-		}
-	}
-}
+	/**
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Local.cpp
+	 */
 
 //allocate psedoDate for all Data in dataList
 //for sorting purposes
@@ -1591,14 +1554,14 @@ Data LocalStorage::updateData(Data dataToEdit, Data updatedData){
 //End of Helper Methods for internal working
 ////////////////////////////////////////////
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - Local.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - Local.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - PrewrittenData.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - PrewrittenData.cpp
 	 */
 
 
@@ -1690,14 +1653,14 @@ std::string PrewrittenData::determineListType(ListType type){
 	return txtFile;
 }
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - PrewrittenData.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - PrewrittenData.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - SaveLoad.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - SaveLoad.cpp
 	 */
 
 
@@ -2051,14 +2014,14 @@ void LocalStorage::writeHeading (std::string fileName, std::ofstream& out){
 
 //End of Helper method for Saving Data
 //////////////////////////////////////
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing - SaveLoad.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing - SaveLoad.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing.h
 	 */
 
 
@@ -2113,14 +2076,14 @@ public:
 
 
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorage\Storing.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorage\Storing.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataStorageUnitTesting\DataStorageUnitTesting.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorageUnitTesting\DataStorageUnitTesting.cpp
 	 */
 
 	TEST_CLASS(LocalStoringUnitTest)
@@ -2765,14 +2728,14 @@ public:
 		}
 	};
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataStorageUnitTesting\DataStorageUnitTesting.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataStorageUnitTesting\DataStorageUnitTesting.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Logic.cpp
 	 */
 
 
@@ -2806,14 +2769,14 @@ void Logic::clearScreen(){
 	/* Move the cursor home */
 	SetConsoleCursorPosition( hStdOut, homeCoords );
   }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Logic.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\UnitTesting\CommonsTesting.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\UnitTesting\CommonsTesting.cpp
 	 */
 
 namespace UnitTesting
@@ -3115,7 +3078,7 @@ namespace UnitTesting
 	};
 		
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\UnitTesting\CommonsTesting.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\UnitTesting\CommonsTesting.cpp
 
 
 

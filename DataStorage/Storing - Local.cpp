@@ -285,7 +285,7 @@ int LocalStorage::allocateUniqueCode(int& uniqueNo){
 	return uniqueNo;
 }
 
-
+//@author A0114002J-reused
 //sorting dataList for maintenance
 //use radix sorting algorithm
 void LocalStorage::sortDataList(){
@@ -332,6 +332,7 @@ void LocalStorage::radixCollect(std::queue<Data> digitQ[]){
 	}
 }
 
+//@author A0114002J
 //allocate psedoDate for all Data in dataList
 //for sorting purposes
 void LocalStorage::allocatePsedoDate(){

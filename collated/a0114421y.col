@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 	 */
 
 		//For command "delete"
@@ -245,14 +245,14 @@
 			bool expectedStatus = true;
 			Assert::AreEqual(expectedStatus, actualStatus);
 		}
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor\DataProcessor.cpp
 	 */
 
 
@@ -316,40 +316,40 @@ void DataProcessor::setLatestData(Data data){
 }
 
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor\DataProcessor.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor\DataProcessor.h
 	 */
 
 	string addTask(Data task);
 	string displayTask(TimeMacro startTime, TimeMacro endTime);
 	string deleteTask(int number);
 	string clearTask();
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor\DataProcessor.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor\DataProcessor.h
 	 */
 
 	static void saveData();
 	static void loadData(bool& status);
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessor\DataProcessor.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessor\DataProcessor.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\DataProcessorTest\DataProcessorTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessorTest\DataProcessorTest.cpp
 	 */
 
 		TEST_METHOD(AddTaskTest)
@@ -394,14 +394,14 @@ void DataProcessor::setLatestData(Data data){
 		}
 		
 		
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\DataProcessorTest\DataProcessorTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\DataProcessorTest\DataProcessorTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Feedback.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Feedback.h
 	 */
 
 
@@ -442,14 +442,14 @@ public:
 };
 
 #endif
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Feedback.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Feedback.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Logic.cpp
 	 */
 
 
@@ -791,14 +791,14 @@ void Logic::executeInput(string input){
 	saveData();
 }
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Logic.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Logic.h
 	 */
 
 
@@ -887,14 +887,14 @@ public:
 };
 
 #endif
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\OperationCenter\Logic.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\Logic.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\OperationCenter\OperationCenter.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\OperationCenter.cpp
 	 */
 
 #include "OperationCenter.h"
@@ -933,14 +933,14 @@ void OperationCenter::clearScreen(){
 bool OperationCenter::findPath(){
 	return Logic::findPath();
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\OperationCenter\OperationCenter.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\OperationCenter.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\OperationCenter\OperationCenter.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\OperationCenter.h
 	 */
 
 
@@ -982,7 +982,7 @@ public:
 
 
 #endif
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\OperationCenter\OperationCenter.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\OperationCenter\OperationCenter.h
 
 
 

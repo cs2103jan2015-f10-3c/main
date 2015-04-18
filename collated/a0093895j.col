@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 	 */
 
 		//For command "edit"
@@ -350,14 +350,14 @@
 			Assert::AreEqual (actualResponse, expectedResponse);
 		}
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\BlinkListSystemTest\BlinkListSystemTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\BlinkListSystemTest\BlinkListSystemTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\Parser\Parser.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Parser\Parser.cpp
 	 */
 
 #include "Parser.h"
@@ -1789,14 +1789,14 @@ bool Parser::isLeapYear (int year) {
 		return true;
 	}
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\Parser\Parser.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Parser\Parser.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\Parser\Parser.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Parser\Parser.h
 	 */
 
 #ifndef PARSER_H
@@ -2052,28 +2052,28 @@ public:
 
 };
 #endif
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\Parser\Parser.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Parser\Parser.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\testHistory\stdafx.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testHistory\stdafx.h
 	 */
 
 #include "InternalStoring.h"
 #include "Storing.h"
 // TODO: reference additional headers your program requires here
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\testHistory\stdafx.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testHistory\stdafx.h
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\testHistory\unittest1.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testHistory\unittest1.cpp
 	 */
 
 #include "stdafx.h"
@@ -2120,14 +2120,14 @@ namespace testHistory
 
 	};
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\testHistory\unittest1.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testHistory\unittest1.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\testParser\ParserUnitTest.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testParser\ParserUnitTest.cpp
 	 */
 
 #include "stdafx.h"
@@ -3442,20 +3442,20 @@ namespace testParser
 
 	};
 }
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\testParser\ParserUnitTest.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testParser\ParserUnitTest.cpp
 
 
 
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\testParser\stdafx.h
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testParser\stdafx.h
 	 */
 
 #include "Parser.h"
 // TODO: reference additional headers your program requires here
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\testParser\stdafx.h
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\testParser\stdafx.h
 
 
 

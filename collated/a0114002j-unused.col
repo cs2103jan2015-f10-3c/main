@@ -3,7 +3,7 @@
 
 
 	/**
-	 * origin: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - Data.cpp
+	 * origin: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - Data.cpp
 	 */
 
 //Priority and Alarm is not supported by other components
@@ -23,7 +23,7 @@ void Data::updateAlarmMicro(TimeMicro inAlarm){
 	alarmMicro = inAlarm;
 }
 
-	// End of segment: C:\Users\Yang\Desktop\Projects\main\Commons\Commons - Data.cpp
+	// End of segment: C:\NG only\Studies\NUS\Sem 4\CS2103\BlitzListProject\Commons\Commons - Data.cpp
 
 
 
